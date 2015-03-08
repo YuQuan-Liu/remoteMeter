@@ -1,0 +1,11 @@
+* {margin: 0px;padding: 0px;border-width: 0px;}
+body {padding:0px;margin:0px auto; border:0px; width:100%; background:url(../images/login_bg.jpg) repeat left top;}
+ul,li,p,input,h1 {padding:0px; border:0px;margin:0px;}
+ul {list-style: none;}
+
+.gang{ width:1004px; margin:0px auto;}
+.login_midbg { float:left; background:url(../images/login_mid2.jpg) no-repeat left top; width:465px; height:255px;}
+.pa_bottom {font-size:14px; font-family:"微软雅黑", "黑体"; color:#fff;}
+.login_input{ height:23px; line-height:23px; width:169px;}
+.login_botton { background:url(../images/botton.jpg) no-repeat left top; width:86px; height:37px; line-height:25px; text-align:center; font-size:14px; font-family:"微软雅黑", "黑体"; border:0px; color:#fff;}
+.login_copyrightbg { background:url(../images/copyrightbg.jpg) no-repeat left top; height:83px; line-height:45px; text-align:center; font-size:12px; font-family:"宋体"; color:#fff;}

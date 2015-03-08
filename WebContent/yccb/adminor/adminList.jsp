@@ -1,0 +1,83 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>管理员列表</title>
+<%@include file="/commonjsp/top.jsp" %>
+</head>
+<script type="text/javascript">
+$(function(){
+	$('#adminListTab').datagrid({
+	    url:'${path}/admin/adminlistContent.do',
+	    fit:true,
+	    pagination:true,
+	    pageList:[5,10,15,20],
+	    queryParams:{},
+	    rownumbers:true,
+	    columns:[[
+	        {field:'pid',title:'ID',width:100},   
+	        {field:'adminName',title:'用户名',width:100},   
+	        {field:'loginName',title:'登录名',width:100},
+	        {field:'adminMobile',title:'手机',width:100},
+	        {field:'adminTel',title:'固话',width:100},   
+	        {field:'adminEmail',title:'邮箱',width:100},
+	        {field:'adminAddr',title:'地址',width:100}
+	    ]],
+	    toolbar: [{ 
+	        text: '添加', 
+	        iconCls: 'icon-add', 
+	        handler: function() { 
+	        	$('#addWin').window({   
+	    		    href:'${path}/admin/add.do',
+	    		    width:400,   
+	    		    height:350,
+	    		    minimizable:false,
+	    		    maximizable:false,
+	    		    title: '添加管理员', 
+	    		    onLoad:function(){   
+	    		        //alert('loaded successfully'); 
+	    		    }   
+	    		}); 
+	        } 
+	    }, '-', { 
+	        text: '修改', 
+	        iconCls: 'icon-edit', 
+	        handler: function() { 
+	        	
+	        } 
+	    }, '-',{ 
+	        text: '删除', 
+	        iconCls: 'icon-remove', 
+	        handler: function(){ 
+	        	
+	        } 
+	    }]
+	});
+	//设置分页控件 
+	/* var p = $('#adminListTab').datagrid('getPager'); 
+	$(p).pagination({
+		total:50,
+	    pageSize: 10,//每页显示的记录条数，默认为10 
+	    pageList: [5,10,15,20]//可以设置每页记录条数的列表 
+	    onBeforeRefresh:function(){
+	        $(this).pagination('loading');
+	        alert('before refresh');
+	        $(this).pagination('loaded');
+	    }
+	}); */
+	
+})
+//查询
+function query(){
+	var queryParams = $('#adminListTab').datagrid('options').queryParams;
+	queryParams.uid = 111;
+	queryParams.uname = "fdasf";
+	$('#adminListTab').datagrid('reload');
+}
+</script>
+<body>
+	<table id="adminListTab"></table>
+	<div id="addWin"></div>
+</body>
+</html>
