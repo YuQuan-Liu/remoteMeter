@@ -41,6 +41,13 @@ public interface AdministratorDAO {
 	 * @return
 	 */
 	boolean update (Admininfo adminInfo);
+	/**
+	 * 获取账户信息
+	 * @param loginName
+	 * @param password
+	 * @return
+	 */
+	Admininfo getByLoginName(String loginName,String password);
 	
 
 }

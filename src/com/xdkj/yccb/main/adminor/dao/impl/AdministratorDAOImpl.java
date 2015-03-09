@@ -2,7 +2,10 @@ package com.xdkj.yccb.main.adminor.dao.impl;
 
 import java.util.List;
 
+import javax.servlet.jsp.tagext.TryCatchFinally;
+
 import org.hibernate.Query;
+import org.springframework.asm.commons.TryCatchBlockSorter;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
@@ -62,6 +65,23 @@ public class AdministratorDAOImpl extends HibernateDAO<Admininfo> implements Adm
 		}
 		Query q = getSession().createQuery(sb.toString());
 		return ((Number)q.uniqueResult()).intValue();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Admininfo getByLoginName(String loginName, String password) {
+		List<Admininfo> admins = null;
+		try {
+			admins = getHibernateTemplate()
+					.find("from Admininfo a where a.loginName ='"+loginName+"'");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Admininfo adInfo = null;
+		if(null!=admins&&admins.size()>0){
+			adInfo = admins.get(0);
+		}
+		return adInfo;
 	}
 
 }

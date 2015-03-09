@@ -1,8 +1,5 @@
 package com.xdkj.yccb.security;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -13,11 +10,10 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
-import org.apache.shiro.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.xdkj.yccb.usermanage.entity.Users;
-import com.xdkj.yccb.usermanage.service.UserService;
+import com.xdkj.yccb.main.adminor.service.AdministratorService;
+import com.xdkj.yccb.main.entity.Admininfo;
 
 /**
  * 自定义DB Realm
@@ -25,7 +21,7 @@ import com.xdkj.yccb.usermanage.service.UserService;
  */
 public class MyAuthorizingRealm extends AuthorizingRealm {
 	@Autowired
-	private UserService userService;
+	private AdministratorService userService;
 
 	/**
 	 * 登录认证
@@ -33,10 +29,10 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		Users u = userService.findByUname(token.getUsername());
-		if (u != null) {
+		Admininfo adInfo = userService.getByLoginName(token.getUsername(), null);
+		if (adInfo != null) {
 			 // this.setSession("currentUser", u);
-			return new SimpleAuthenticationInfo(u.getUname(), u.getPasswd(),getName());
+			return new SimpleAuthenticationInfo(adInfo.getLoginName(), adInfo.getLoginKey(),getName());
 		} else {
 			return null;
 		}

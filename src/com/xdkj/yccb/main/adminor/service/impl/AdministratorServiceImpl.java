@@ -20,7 +20,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public List<AdminInfoView> getList(Admininfo adInfo,PageBase pageInfo) {
 		List<Admininfo> list = administratorDAO.getList(adInfo, pageInfo);
 		List<AdminInfoView> listView = new ArrayList<AdminInfoView>() ;
-		//if(null != list&&list.size() > 0){
 			for (Admininfo ai : list) {
 				AdminInfoView aiv = new AdminInfoView();
 				aiv.setPid(ai.getPid());
@@ -38,7 +37,6 @@ public class AdministratorServiceImpl implements AdministratorService {
 				aiv.setRemark(ai.getRemark());
 				listView.add(aiv);
 			}
-		//}
 		return listView;
 	}
 
@@ -67,4 +65,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 		return administratorDAO.getTotalCount(adInfo);
 	}
 
+	@Override
+	public Admininfo getByLoginName(String loginName, String password) {
+		return administratorDAO.getByLoginName(loginName, password);
+	}
 }

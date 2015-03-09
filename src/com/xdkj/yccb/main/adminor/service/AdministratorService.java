@@ -43,5 +43,12 @@ public interface AdministratorService {
 	 * @return
 	 */
 	boolean update (Admininfo adminInfo);
+	/**
+	 * 通过登录帐号和密码
+	 * @param loginName
+	 * @param password
+	 * @return
+	 */
+	Admininfo getByLoginName(String loginName,String password);
 
 }

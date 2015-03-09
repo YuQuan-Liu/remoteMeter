@@ -15,19 +15,19 @@
      <div style="width:277px; float:left; height:255px; overflow:hidden;"><img src="resource/images/login_mid1.jpg" width="277" height="255" /></div>
      <div class="login_midbg">
      	
-     	<form autocomplete="off" onsubmit="return submitInfo()">
+     	<form autocomplete="off" onsubmit="return submitInfo()" id = "loginForm">
 	     	<table width="285" border="0" cellspacing="0" cellpadding="0" style="margin-left:180px; margin-top:48px; line-height:24px;">
 			  <tr>
 			    <td width="71" class="pa_bottom" style=" padding-bottom:20px; ">用户名：</td>
-			    <td style=" padding-bottom:20px; " colspan="2"><input id="loginname" name="" type="text" class="login_input" tabindex="1" /></td>
+			    <td style=" padding-bottom:20px; " colspan="2"><input id="loginname" name="loginname" type="text" class="login_input" tabindex="1" /></td>
 			  </tr>
 			  <tr>
 			    <td class="pa_bottom" style=" padding-bottom:20px; ">密   码：</td>
-			    <td style=" padding-bottom:20px;" colspan="2"><input id="loginkey" name="" type="password" class="login_input" /></td>
+			    <td style=" padding-bottom:20px;" colspan="2"><input id="loginkey" name="loginkey" type="password" class="login_input" /></td>
 			  </tr>
 			    <tr>
 			    <td class="pa_bottom" style=" padding-bottom:20px; ">验证码：</td>
-			    <td width="105" style=" padding-bottom:20px;"><input id="checkcode" name="" type="text" class="login_input" maxlength="4" style="width:84px;" /></td>
+			    <td width="105" style=" padding-bottom:20px;"><input id="checkcode" name="checkcode" type="text" class="login_input" maxlength="4" style="width:84px;" /></td>
 			    <td width="109" style=" padding-bottom:20px;"><img id="checkimage" src="${path}/codeImg.do" onclick="changeCheck()"></td>
 			  </tr>
 			  <tr>
@@ -56,9 +56,6 @@
 		var loginname = $("#loginname").val();
 		var loginkey = $("#loginkey").val();
 		var checkcode = $("#checkcode").val();
-		
-		//alert(checkcode.length);
-		
 		if(loginname == ""){
 			$("#error_info").text("请输入用户名！");
 			$("#loginname").focus();
@@ -78,13 +75,9 @@
 		
 		$.ajax({
 			type:"post",
-			url:"Login",
-			dataType:"xml",
-			data:{
-				name:loginname,
-				key:loginkey,
-				check:checkcode
-			},
+			url:"${path}/login.do",
+			//dataType:"xml",
+			data:$("#loginForm").serialize(),
 			success:function(xml){
 				var result = $(xml).find("result").attr("msg");
 				var error = $(xml).find("result").attr("error");
