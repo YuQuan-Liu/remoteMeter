@@ -14,19 +14,16 @@ $(function(){
 	    validType: "remote['${path}/admin/check.do','loginName']"  
 	});  
 })
-
 function submitForm(){
-	 $.messager.alert('添加管理员','添加成功！','info',
-		function(){
-		 $('#addWin').window('close');
-		 });
-	
-	if($('#ff').form('validate')){
-		$('#ff').form('submit', {   
+	if($('#addForm').form('validate')){
+		$('#addForm').form('submit', {   
 		    success: function(data){   
 		       // var data = eval('(' + data + ')');  
-		        // change the JSON string to javascript object
-		       
+		        $.messager.alert('添加管理员','添加成功！','info',
+						function(){
+						 	$('#addWin').window('close');
+						 	$('#adminListTab').datagrid('reload');
+						 });
 		       /*  if (data.success){ 
 		            alert(data.message)   
 		        }  */  
@@ -35,11 +32,11 @@ function submitForm(){
 	}
 }
 function clearForm(){
-	$('#ff').form('clear');
+	$('#addForm').form('clear');
 	}
 </script>
 		<div style="padding:10px 0 10px 60px">
-	    <form id="ff" method="post" action="${path}/admin/addAdmin.do">
+	    <form id="addForm" method="post" action="${path}/admin/addAdmin.do">
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table>
 	    		<tr>
@@ -48,8 +45,8 @@ function clearForm(){
 	    		</tr>
 	    		<tr>
 	    			<td>登录名：</td>
-	    			<td><!-- <input id="loginName" /> -->
-	    			 <input class="easyui-validatebox" type="text" name="loginName" data-options="required:true"></input></td>
+	    			<td> <input id="loginName" name="loginName"/>
+	    			 <!-- <input class="easyui-validatebox" type="text" name="loginName" data-options="required:true"></input> --></td>
 	    		</tr>
 	    		<tr>
 	    			<td>手机：</td>

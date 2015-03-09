@@ -57,17 +57,18 @@ public class AdministratorCtrl {
 	@RequestMapping(value="addAdmin",method = RequestMethod.POST)
 	@ResponseBody
 	public void addAdmin(Admininfo adinfo){
-		System.out.println(adinfo.getAdminEmail());
 		Md5PwdEncoder md = new Md5PwdEncoder();
 		adinfo.setLoginKey(md.encodePassword("111111"));
 		adminstratorService.addAdmin(adinfo);
 	}
 	@RequestMapping(value="check",method = RequestMethod.POST)
 	@ResponseBody
-	public boolean checkLoginName(String loginName){
-		System.out.println(loginName);
-		
-		return false;
+	public String checkLoginName(String loginName){
+		Admininfo ad = adminstratorService.getByLoginName(loginName, null);
+		if(ad==null){
+			return "true";
+		}
+		return "false";
 		
 	}
 }

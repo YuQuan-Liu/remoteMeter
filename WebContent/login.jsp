@@ -18,21 +18,21 @@
      	<form autocomplete="off" onsubmit="return submitInfo()" id = "loginForm" action="${path}/login.do" method="post">
 	     	<table width="285" border="0" cellspacing="0" cellpadding="0" style="margin-left:180px; margin-top:48px; line-height:24px;">
 			  <tr>
-			    <td width="71" class="pa_bottom" style=" padding-bottom:20px; ">用户名：</td>
+			    <td width="71" class="pa_bottom" style=" padding-bottom:20px; "><fmt:message key='login.uname'/>：</td>
 			    <td style=" padding-bottom:20px; " colspan="2"><input id="loginname" name="loginname" type="text" class="login_input" tabindex="1" /></td>
 			  </tr>
 			  <tr>
-			    <td class="pa_bottom" style=" padding-bottom:20px; ">密   码：</td>
+			    <td class="pa_bottom" style=" padding-bottom:20px; "><fmt:message key='login.password'/>：</td>
 			    <td style=" padding-bottom:20px;" colspan="2"><input id="loginkey" name="loginkey" type="password" class="login_input" /></td>
 			  </tr>
 			    <tr>
-			    <td class="pa_bottom" style=" padding-bottom:20px; ">验证码：</td>
+			    <td class="pa_bottom" style=" padding-bottom:20px; "><fmt:message key='login.checkcode'/>：</td>
 			    <td width="105" style=" padding-bottom:20px;"><input id="checkcode" name="checkcode" type="text" class="login_input" maxlength="4" style="width:84px;" /></td>
 			    <td width="109" style=" padding-bottom:20px;"><img id="checkimage" src="${path}/codeImg.do" onclick="changeCheck()"></td>
 			  </tr>
 			  <tr>
 				<td style=" padding-bottom:20px;" colspan="2"><span id = "error_info" style="color:red">${message_login}</span></td>
-			    <td style=" padding-bottom:20px;" ><input name="" type="submit" value="登录" class="login_botton" ></td>
+			    <td style=" padding-bottom:20px;" ><input name="" type="submit" value="<fmt:message key='login.submit'/>" class="login_botton" ></td>
 			  </tr>
 			</table>
 		</form>

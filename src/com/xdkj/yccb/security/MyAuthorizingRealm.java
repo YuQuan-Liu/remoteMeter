@@ -31,7 +31,6 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
 		Admininfo adInfo = userService.getByLoginName(token.getUsername(), null);
 		if (adInfo != null) {
-			 // this.setSession("currentUser", u);
 			return new SimpleAuthenticationInfo(adInfo.getLoginName(), adInfo.getLoginKey(),getName());
 		} else {
 			return null;
