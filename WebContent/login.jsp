@@ -15,7 +15,7 @@
      <div style="width:277px; float:left; height:255px; overflow:hidden;"><img src="resource/images/login_mid1.jpg" width="277" height="255" /></div>
      <div class="login_midbg">
      	
-     	<form autocomplete="off" onsubmit="return submitInfo()" id = "loginForm">
+     	<form autocomplete="off" onsubmit="return submitInfo()" id = "loginForm" action="${path}/login.do" method="post">
 	     	<table width="285" border="0" cellspacing="0" cellpadding="0" style="margin-left:180px; margin-top:48px; line-height:24px;">
 			  <tr>
 			    <td width="71" class="pa_bottom" style=" padding-bottom:20px; ">用户名：</td>
@@ -31,7 +31,7 @@
 			    <td width="109" style=" padding-bottom:20px;"><img id="checkimage" src="${path}/codeImg.do" onclick="changeCheck()"></td>
 			  </tr>
 			  <tr>
-				<td style=" padding-bottom:20px;" colspan="2"><span id = "error_info" style="color:red"></span></td>
+				<td style=" padding-bottom:20px;" colspan="2"><span id = "error_info" style="color:red">${message_login}</span></td>
 			    <td style=" padding-bottom:20px;" ><input name="" type="submit" value="登录" class="login_botton" ></td>
 			  </tr>
 			</table>
@@ -72,10 +72,11 @@
 			changeCheck();
 			return false;
 		}
+		//$("#loginForm").submit;
 		
-		$.ajax({
+		/* $.ajax({
 			type:"post",
-			url:"${path}/login.do",
+			url:"${path}/admin_login.do",
 			//dataType:"xml",
 			data:$("#loginForm").serialize(),
 			success:function(xml){
@@ -102,8 +103,8 @@
 					}
 				}
 			}
-		});
-		return false;
+		}); */
+		return true;
 	}
 	// 获取输入的更改信息
 	function saveInfo(){
