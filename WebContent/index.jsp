@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>主页</title>
 <%@include file="/commonjsp/top.jsp" %>
+<link href="../resource/css/index.css" rel="stylesheet" type="text/css">
 </head>
 <script type="text/javascript">
 $(function(){

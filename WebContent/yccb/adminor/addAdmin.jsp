@@ -48,8 +48,8 @@ function clearForm(){
 	    		</tr>
 	    		<tr>
 	    			<td>登录名：</td>
-	    			<td><input id="loginName" />
-	    			<!-- <input class="easyui-validatebox" type="text" name="loginName" data-options="required:true"> --></input></td>
+	    			<td><!-- <input id="loginName" /> -->
+	    			 <input class="easyui-validatebox" type="text" name="loginName" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>手机：</td>
