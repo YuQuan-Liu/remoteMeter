@@ -1,9 +1,12 @@
 package com.xdkj.yccb.main.adminor.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.PropertyAccessor;
 import org.springframework.stereotype.Service;
 
 import com.xdkj.yccb.common.PageBase;
@@ -20,21 +23,15 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public List<AdminInfoView> getList(Admininfo adInfo,PageBase pageInfo) {
 		List<Admininfo> list = administratorDAO.getList(adInfo, pageInfo);
 		List<AdminInfoView> listView = new ArrayList<AdminInfoView>() ;
+		
 			for (Admininfo ai : list) {
 				AdminInfoView aiv = new AdminInfoView();
-				aiv.setPid(ai.getPid());
-				//aiv.setWatercompany(ai.getWatercompany());
-				//aiv.setDepartment(ai.getDepartment());
-				aiv.setAdminName(ai.getAdminName());
-				aiv.setLoginName(ai.getLoginName());
-				aiv.setLoginKey(ai.getLoginKey());
-				aiv.setAdminEmail(ai.getAdminEmail());
-				aiv.setAdminAddr(ai.getAdminAddr());
-				aiv.setAdminMobile(ai.getAdminMobile());
-				aiv.setAdminTel(ai.getAdminTel());
-				aiv.setNoWc(ai.getNoWc());
-				aiv.setValid(ai.getValid());
-				aiv.setRemark(ai.getRemark());
+				try {
+					PropertyUtils.copyProperties(aiv, ai);
+				} catch (IllegalAccessException | InvocationTargetException
+						| NoSuchMethodException e) {
+					e.printStackTrace();
+				}
 				listView.add(aiv);
 			}
 		return listView;
