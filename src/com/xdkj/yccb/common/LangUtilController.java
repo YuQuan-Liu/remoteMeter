@@ -20,19 +20,21 @@ public class LangUtilController {
      */
     @RequestMapping(value="/lang", method = {RequestMethod.GET})
     public String changeLang(HttpServletRequest request,Model model, @RequestParam(value="langType", defaultValue="zh") String langType){
-            if(langType.equals("zh")){
-                Locale locale = new Locale("zh", "CN"); 
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale); 
-            }
-            else if(langType.equals("en")){
-                Locale locale = new Locale("en", "US"); 
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);
-            }
-            else {
-                request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,LocaleContextHolder.getLocale());
-            }//从后台代码获取国际化信息
-          //RequestContext requestContext = new RequestContext(request);
-        return "index";
+        if(langType.equals("zh")){
+            Locale locale = new Locale("zh", "CN"); 
+            request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale); 
+        }
+        else if(langType.equals("en")){
+            Locale locale = new Locale("en", "US"); 
+            request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale);
+        }
+        else {
+            request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,LocaleContextHolder.getLocale());
+        }//从后台代码获取国际化信息
+      //RequestContext requestContext = new RequestContext(request);
+        //返回当前页面
+        String uri = request.getHeader("Referer");
+        return "redirect:"+uri;
     }
     /**
      * 登录跳转，国际化处理
