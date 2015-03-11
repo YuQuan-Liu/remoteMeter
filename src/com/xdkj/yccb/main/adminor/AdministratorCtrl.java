@@ -30,6 +30,7 @@ public class AdministratorCtrl {
 	
 	public static final String adminorList = "/yccb/adminor/adminList";//管理员列表页面
 	public static final String addAdminor = "/yccb/adminor/addAdmin";//管理员添加页面
+	public static final String updateAdminor = "/yccb/adminor/updateAdmin";//管理员添加页面
 	
 	@RequestMapping(value="/list",method = RequestMethod.GET)
 	public String adminList(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -56,10 +57,10 @@ public class AdministratorCtrl {
 	}
 	@RequestMapping(value="addAdmin",method = RequestMethod.POST)
 	@ResponseBody
-	public void addAdmin(Admininfo adinfo){
+	public String addAdmin(Admininfo adinfo){
 		Md5PwdEncoder md = new Md5PwdEncoder();
 		adinfo.setLoginKey(md.encodePassword("111111"));
-		adminstratorService.addAdmin(adinfo);
+		return adminstratorService.addAdmin(adinfo);
 	}
 	@RequestMapping(value="check",method = RequestMethod.POST)
 	@ResponseBody
@@ -69,6 +70,12 @@ public class AdministratorCtrl {
 			return "true";
 		}
 		return "false";
+	}
+	@RequestMapping(value="/update",method = RequestMethod.GET)
+	public String updateAdminor(String pid,Model model){
+		Admininfo ad = adminstratorService.getById(pid);
+		model.addAttribute("adInfo", ad);
+		return updateAdminor;
 		
 	}
 }

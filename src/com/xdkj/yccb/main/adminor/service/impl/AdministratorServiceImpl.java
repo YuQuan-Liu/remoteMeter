@@ -38,13 +38,21 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
-	public Admininfo getById(Integer adminId) {
-		return null;
+	public Admininfo getById(String adminId) {
+		Admininfo ad = new Admininfo();
+		if(null!=adminId&&!"".equals(adminId)){
+			ad = administratorDAO.getById(Integer.parseInt(adminId));
+		}
+		return ad;
 	}
 
 	@Override
-	public int addAdmin(Admininfo adminInfo) {
-		return administratorDAO.addAdmin(adminInfo);
+	public String addAdmin(Admininfo adminInfo) {
+		int pid = administratorDAO.addAdmin(adminInfo);
+		if(pid>0){
+			return "succ";
+		}
+		return "fail";
 	}
 
 	@Override

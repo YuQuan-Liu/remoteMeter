@@ -5,6 +5,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>访问提示</title>
 <%@include file="/commonjsp/top.jsp" %>
+<script type="text/javascript">
+</script>
 </head>
 <body>
 权限不足！！

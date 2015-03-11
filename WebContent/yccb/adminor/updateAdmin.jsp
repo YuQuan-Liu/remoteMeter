@@ -9,58 +9,59 @@
 <body>
 <script type="text/javascript">
 $(function(){
-	$('#loginName').validatebox({   
+	/* $('#loginName').validatebox({   
 	    required: true,   
 	    validType: "remote['${path}/admin/check.do','loginName']"  
-	});  
+	});   */
 })
 function submitForm(){
-	if($('#addForm').form('validate')){
-		$('#addForm').form('submit', {   
+	if($('#updateForm').form('validate')){
+		$('#updateForm').form('submit', {   
 		    success: function(data){   
-		       if(data=="succ"){
-		    	   $.messager.alert('添加管理员','添加成功！','info',
+		       // var data = eval('(' + data + ')');  
+		        $.messager.alert('修改管理员','修改成功！','info',
 						function(){
-						 	$('#addWin').window('close');
+						 	$('#updateWin').window('close');
 						 	$('#adminListTab').datagrid('reload');
 						 });
-		       }
+		       /*  if (data.success){ 
+		            alert(data.message)   
+		        }  */  
 		    }   
 		});  
 	}
 }
 function clearForm(){
-	$('#addForm').form('clear');
+	$('#updateForm').form('clear');
 	}
 </script>
 		<div style="padding:10px 0 10px 60px">
-	    <form id="addForm" method="post" action="${path}/admin/addAdmin.do">
+	    <form id="updateForm" method="post" action="${path}/admin/updateAdmin.do">
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table>
 	    		<tr>
 	    			<td>用户名：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminName" data-options="required:true"></input></td>
+	    			<td><input class="easyui-validatebox" type="text" name="adminName" data-options="required:true" value="${adInfo.adminName}"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>登录名：</td>
-	    			<td> <input id="loginName" name="loginName"/>
-	    			 <!-- <input class="easyui-validatebox" type="text" name="loginName" data-options="required:true"></input> --></td>
+	    			<td> <input class="easyui-validatebox" id="loginName" name="loginName" value="${adInfo.loginName }" readonly="readonly"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>手机：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminMobile" data-options="required:true"></input></td>
+	    			<td><input class="easyui-validatebox" type="text" name="adminMobile" data-options="required:true" value="${adInfo.adminMobile }"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>固话：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminTel" data-options="required:true"></input></td>
+	    			<td><input class="easyui-validatebox" type="text" name="adminTel" data-options="required:true" value="${adInfo.adminTel }"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>邮箱：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminEmail" data-options="required:true,validType:'email'"></input></td>
+	    			<td><input class="easyui-validatebox" type="text" name="adminEmail" data-options="required:true,validType:'email'" value="${adInfo.adminEmail }"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>地址：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminAddr" data-options="required:true"></input></td>
+	    			<td><input class="easyui-validatebox" type="text" name="adminAddr" data-options="required:true" value="${adInfo.adminAddr }"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>权限类型:</td>

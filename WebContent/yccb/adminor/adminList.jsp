@@ -45,8 +45,26 @@ $(function(){
 	        iconCls: 'icon-edit', 
 	        handler: function() { 
 	        	var rows = $('#adminListTab').datagrid('getSelections');
-	        	if(rows.length>1){
+	        	var leng = rows.length;
+	        	if(leng==1){
+	        		var pid = rows[0].pid;
+	        		alert(pid);
+	        		$('#updateWin').window({   
+		    		    href:'${path}/admin/update.do?pid='+pid,
+		    		    width:400,   
+		    		    height:350,
+		    		    minimizable:false,
+		    		    maximizable:false,
+		    		    title: '更新管理员', 
+		    		    onLoad:function(){   
+		    		        //alert('loaded successfully'); 
+		    		    }   
+		    		}); 
+	        		
+	        	}else if(leng>1){
 	        		alert("single selected");
+	        	}else{
+	        		alert("unselected");
 	        	}
 	        } 
 	    }, '-',{ 
@@ -74,5 +92,6 @@ function query(){
 <body>
 	<table id="adminListTab"></table>
 	<div id="addWin"></div>
+	<div id="updateWin"></div>
 </body>
 </html>

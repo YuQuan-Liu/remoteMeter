@@ -24,13 +24,13 @@ public interface AdministratorService {
 	 * @param adminId
 	 * @return
 	 */
-	Admininfo getById(Integer adminId);
+	Admininfo getById(String adminId);
 	/**
 	 * 添加管理员
 	 * @param adminInfo
 	 * @return id
 	 */
-	int addAdmin(Admininfo adminInfo);
+	String addAdmin(Admininfo adminInfo);
 	/**
 	 * 通过id删除管理员
 	 * @param adminId
