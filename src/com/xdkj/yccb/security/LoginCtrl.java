@@ -22,7 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
-public class LoginController {
+public class LoginCtrl {
 	@RequestMapping(value="/login",method=RequestMethod.POST)
 	public String login(HttpServletRequest request, HttpServletResponse response,String uname, Model model){
 		
@@ -32,7 +32,6 @@ public class LoginController {
         String checkcode = (String)request.getSession().getAttribute("check");
         //获取用户请求表单中输入的验证码  
         String submitCode = WebUtils.getCleanParam(request, "checkcode");  
-        //System.out.println("用户[" + username + "]登录时输入的验证码为[" + submitCode + "],HttpSession中的验证码为[" + checkcode + "]");  
         if (StringUtils.isEmpty(submitCode) || !StringUtils.equals(checkcode, submitCode.toLowerCase())){  
             request.setAttribute("message_login", "验证码不正确！");  
             return  "login";  

@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class MainCtroller {
-	public static final String homePage = "index";
+	public static final String homePage = "/main";
 	
 	@RequestMapping(value="/index",method = RequestMethod.GET)
 	public String homePage(){
 		
 		return homePage;
 	}
-
+	
 }

@@ -6,6 +6,7 @@
 <title>管理员列表</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
+<body>
 <script type="text/javascript">
 $(function(){
 	$('#adminListTab').datagrid({
@@ -15,6 +16,7 @@ $(function(){
 	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
+	    border:false,
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
 	        {field:'adminName',title:'用户名',width:100},   
@@ -89,7 +91,6 @@ function query(){
 	$('#adminListTab').datagrid('load');
 }
 </script>
-<body>
 	<table id="adminListTab"></table>
 	<div id="addWin"></div>
 	<div id="updateWin"></div>

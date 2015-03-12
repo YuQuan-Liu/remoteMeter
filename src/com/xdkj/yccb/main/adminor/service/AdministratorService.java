@@ -18,7 +18,7 @@ public interface AdministratorService {
 	 * @param adInfo
 	 * @return
 	 */
-	Integer getTotalCount(Admininfo adInfo);
+	int getTotalCount(Admininfo adInfo);
 	/**
 	 * 通过id获取管理员信息
 	 * @param adminId

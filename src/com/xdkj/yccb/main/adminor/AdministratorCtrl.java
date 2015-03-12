@@ -23,16 +23,15 @@ import com.xdkj.yccb.main.entity.Admininfo;
  *
  */
 @Controller
-@RequestMapping(value="/admin")
 public class AdministratorCtrl {
 	@Autowired
 	private AdministratorService adminstratorService;
 	
-	public static final String adminorList = "/yccb/adminor/adminList";//管理员列表页面
-	public static final String addAdminor = "/yccb/adminor/addAdmin";//管理员添加页面
-	public static final String updateAdminor = "/yccb/adminor/updateAdmin";//管理员添加页面
+	public static final String adminorList = "/adminor/adminList";//管理员列表页面
+	public static final String addAdminor = "/adminor/addAdmin";//管理员添加页面
+	public static final String updateAdminor = "/adminor/updateAdmin";//管理员添加页面
 	
-	@RequestMapping(value="/list",method = RequestMethod.GET)
+	@RequestMapping(value="/admin/list",method = RequestMethod.GET)
 	public String adminList(HttpServletRequest request, HttpServletResponse response, Model model){
 		
 		return adminorList;
@@ -40,7 +39,7 @@ public class AdministratorCtrl {
 	/**
 	 * easy-ui获取json数据,指定produces防止中文乱码
 	 */
-	@RequestMapping(value="/adminlistContent",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/admin/adminlistContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String adminListContent(Admininfo adinfo,PageBase pageInfo){
 		List<AdminInfoView> list = adminstratorService.getList(adinfo, pageInfo);
@@ -51,11 +50,11 @@ public class AdministratorCtrl {
 	 * 添加管理员
 	 * @return
 	 */
-	@RequestMapping(value="/add",method = RequestMethod.GET)
+	@RequestMapping(value="/admin/add",method = RequestMethod.GET)
 	public String addAdminor(){
 		return addAdminor;
 	}
-	@RequestMapping(value="addAdmin",method = RequestMethod.POST)
+	@RequestMapping(value="admin/addAdmin",method = RequestMethod.POST)
 	@ResponseBody
 	public String addAdmin(Admininfo adinfo){
 		Md5PwdEncoder md = new Md5PwdEncoder();
@@ -71,7 +70,7 @@ public class AdministratorCtrl {
 		}
 		return "false";
 	}
-	@RequestMapping(value="/update",method = RequestMethod.GET)
+	@RequestMapping(value="admin/update",method = RequestMethod.GET)
 	public String updateAdminor(String pid,Model model){
 		Admininfo ad = adminstratorService.getById(pid);
 		model.addAttribute("adInfo", ad);

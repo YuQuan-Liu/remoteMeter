@@ -66,7 +66,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
-	public Integer getTotalCount(Admininfo adInfo) {
+	public int getTotalCount(Admininfo adInfo) {
 		return administratorDAO.getTotalCount(adInfo);
 	}
 

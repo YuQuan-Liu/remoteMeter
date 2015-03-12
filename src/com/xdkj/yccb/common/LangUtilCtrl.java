@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 @Controller
-public class LangUtilController {
+public class LangUtilCtrl {
 	 /**
      * 语言切换
      */
