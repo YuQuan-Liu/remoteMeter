@@ -17,6 +17,7 @@ import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
 import com.xdkj.yccb.main.adminor.dto.AdminInfoView;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Watercompany;
 /**
  * 管理员controller
  * @author SGR
@@ -70,11 +71,15 @@ public class AdministratorCtrl {
 		}
 		return "false";
 	}
-	@RequestMapping(value="admin/update",method = RequestMethod.GET)
+	@RequestMapping(value="admin/updatePage",method = RequestMethod.GET)
 	public String updatePage(String pid,Model model){
 		Admininfo ad = adminstratorService.getById(pid);
 		model.addAttribute("adInfo", ad);
 		return updateAdminor;
-		
+	}
+	@RequestMapping(value="admin/update",method = RequestMethod.POST)
+	public String update(Admininfo ad){
+		adminstratorService.update(ad);
+		return null;
 	}
 }

@@ -4,10 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.PropertyAccessor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
@@ -59,9 +62,17 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public boolean removeById(Integer adminId) {
 		return false;
 	}
-
+	@Transactional
 	@Override
 	public boolean update(Admininfo adminInfo) {
+		Admininfo ad = administratorDAO.getById(adminInfo.getPid());
+		/*try {
+			PropertyUtils.copyProperties(ad, adminInfo);
+		} catch (IllegalAccessException | InvocationTargetException
+				| NoSuchMethodException e) {
+			e.printStackTrace();
+		}*/
+		administratorDAO.update(ad);
 		return false;
 	}
 

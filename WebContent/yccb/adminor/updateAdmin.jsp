@@ -36,7 +36,8 @@ function clearForm(){
 	}
 </script>
 		<div style="padding:10px 0 10px 60px">
-	    <form id="updateForm" method="post" action="${path}/admin/updateAdmin.do">
+	    <form id="updateForm" method="post" action="${path}/admin/update.do">
+	    	<input type="hidden" name="pid" value="${adInfo.pid }"/>
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table>
 	    		<tr>

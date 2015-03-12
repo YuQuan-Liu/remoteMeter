@@ -52,7 +52,7 @@ $(function(){
 	        		var pid = rows[0].pid;
 	        		alert(pid);
 	        		$('#updateWin').window({   
-		    		    href:'${path}/admin/update.do?pid='+pid,
+		    		    href:'${path}/admin/updatePage.do?pid='+pid,
 		    		    width:400,   
 		    		    height:350,
 		    		    minimizable:false,

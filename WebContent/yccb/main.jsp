@@ -22,17 +22,22 @@
 		});
 	}
 </script>
+<style type="text/css">
+.menuButton{
+float: left;
+width: 100%;
+}
+</style>
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false" style="height:60px;padding:10px">north region</div>
 	<div data-options="region:'west',split:true,title:'West'" style="width:180px;padding:1px;">
 		<div class="easyui-accordion" data-options="fit:false,border:false">
 			<div title="管理员" style="padding:5px;" data-options="selected:true,fit:true">
-				
-				<a onclick="addNewTab(this,'admin/list.do')">test</a>
-				<a>test1</a>
-				<a>test1</a>
-				<a>test3</a>
+				<a onclick="addNewTab(this,'admin/list.do')" class="easyui-linkbutton menuButton" data-options="plain:true">test</a>
+				<a href="#" class="easyui-linkbutton menuButton" data-options="plain:true">Home</a>
+				<a href="#" class="easyui-linkbutton menuButton" data-options="plain:true">Home</a>
+				<a href="#" class="easyui-linkbutton menuButton" data-options="plain:true">Home</a>
 			</div>
 			<div title="Title2" style="padding:5px;" data-options="fit:true">
 				content2
