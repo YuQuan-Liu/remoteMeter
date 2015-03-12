@@ -27,18 +27,17 @@
 	<div data-options="region:'north',border:false" style="height:60px;padding:10px">north region</div>
 	<div data-options="region:'west',split:true,title:'West'" style="width:180px;padding:1px;">
 		<div class="easyui-accordion" data-options="fit:false,border:false">
-			<div title="管理员" style="padding:5px;" data-options="selected:true">
-				<ul>
-					<li onclick="addNewTab(this,'admin/list.do')">test</li>
-					<li>test1</li>
-					<li>test1</li>
-					<li>test3</li>
-				</ul>
+			<div title="管理员" style="padding:5px;" data-options="selected:true,fit:true">
+				
+				<a onclick="addNewTab(this,'admin/list.do')">test</a>
+				<a>test1</a>
+				<a>test1</a>
+				<a>test3</a>
 			</div>
-			<div title="Title2" style="padding:10px;">
+			<div title="Title2" style="padding:5px;" data-options="fit:true">
 				content2
 			</div>
-			<div title="Title3" style="padding:10px">
+			<div title="Title3" style="padding:5px" data-options="fit:true">
 				content3
 			</div>
 		</div>

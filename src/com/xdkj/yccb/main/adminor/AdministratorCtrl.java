@@ -50,13 +50,13 @@ public class AdministratorCtrl {
 	 * 添加管理员
 	 * @return
 	 */
-	@RequestMapping(value="/admin/add",method = RequestMethod.GET)
-	public String addAdminor(){
+	@RequestMapping(value="/admin/addPage",method = RequestMethod.GET)
+	public String addPage(){
 		return addAdminor;
 	}
-	@RequestMapping(value="admin/addAdmin",method = RequestMethod.POST)
+	@RequestMapping(value="admin/add",method = RequestMethod.POST)
 	@ResponseBody
-	public String addAdmin(Admininfo adinfo){
+	public String add(Admininfo adinfo){
 		Md5PwdEncoder md = new Md5PwdEncoder();
 		adinfo.setLoginKey(md.encodePassword("111111"));
 		return adminstratorService.addAdmin(adinfo);
@@ -71,7 +71,7 @@ public class AdministratorCtrl {
 		return "false";
 	}
 	@RequestMapping(value="admin/update",method = RequestMethod.GET)
-	public String updateAdminor(String pid,Model model){
+	public String updatePage(String pid,Model model){
 		Admininfo ad = adminstratorService.getById(pid);
 		model.addAttribute("adInfo", ad);
 		return updateAdminor;

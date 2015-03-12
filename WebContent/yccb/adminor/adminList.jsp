@@ -31,7 +31,7 @@ $(function(){
 	        iconCls: 'icon-add', 
 	        handler: function() { 
 	        	$('#addWin').window({   
-	    		    href:'${path}/admin/add.do',
+	    		    href:'${path}/admin/addPage.do',
 	    		    width:400,   
 	    		    height:350,
 	    		    minimizable:false,

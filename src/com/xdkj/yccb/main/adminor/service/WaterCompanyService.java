@@ -3,6 +3,7 @@ package com.xdkj.yccb.main.adminor.service;
 import java.util.List;
 
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.adminor.dto.WaterCompanyView;
 import com.xdkj.yccb.main.entity.Watercompany;
 
 public interface WaterCompanyService {
@@ -12,7 +13,7 @@ public interface WaterCompanyService {
 	 * @param pageInfo
 	 * @return
 	 */
-	List<Watercompany> getList(Watercompany watcom ,PageBase pageInfo);
+	List<WaterCompanyView> getList(Watercompany watcom ,PageBase pageInfo);
 	/**
 	 * 获取总记录数
 	 * @param watcom
