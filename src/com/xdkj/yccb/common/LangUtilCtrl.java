@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.support.RequestContext;
 @Controller
 public class LangUtilCtrl {
 	 /**
@@ -30,8 +31,7 @@ public class LangUtilCtrl {
         }
         else {
             request.getSession().setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,LocaleContextHolder.getLocale());
-        }//从后台代码获取国际化信息
-      //RequestContext requestContext = new RequestContext(request);
+        }
         //返回当前页面
         String uri = request.getHeader("Referer");
         return "redirect:"+uri;
@@ -44,10 +44,8 @@ public class LangUtilCtrl {
      */
     @RequestMapping(value="login*",method=RequestMethod.GET)
     public String login(HttpServletRequest request,HttpServletResponse response){
-    	
     	HttpSession session = request.getSession();
     	session.removeAttribute("check");
-    	
 		return "login";
     }
 }

@@ -10,7 +10,7 @@
 <script type="text/javascript">
 $(function(){
 	$('#adminListTab').datagrid({
-	    url:'${path}/admin/adminlistContent.do',
+	    url:'${path}/admin/listContent.do',
 	    fit:true,
 	    pagination:true,
 	    pageList:[5,10,15,20],

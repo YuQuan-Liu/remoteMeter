@@ -6,7 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="${path}/resource/jquery-easyui-1.4.1/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="${path}/resource/jquery-easyui-1.4.1/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="${path}/resource/css/common.css">
 
 <script type="text/javascript" src="${path}/resource/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/jquery.easyui.min.js"></script>

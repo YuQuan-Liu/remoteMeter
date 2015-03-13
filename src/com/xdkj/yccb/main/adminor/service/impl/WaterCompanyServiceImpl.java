@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xdkj.yccb.common.PageBase;
@@ -14,6 +15,7 @@ import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
 import com.xdkj.yccb.main.entity.Watercompany;
 @Service
 public class WaterCompanyServiceImpl implements WaterCompanyService {
+	@Autowired
 	private WaterCompanyDAO waterCompanyDAO;
 	@Override
 	public List<WaterCompanyView> getList(Watercompany watcom, PageBase pageInfo) {

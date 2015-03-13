@@ -29,8 +29,8 @@ public class AdministratorCtrl {
 	private AdministratorService adminstratorService;
 	
 	public static final String adminorList = "/adminor/adminList";//管理员列表页面
-	public static final String addAdminor = "/adminor/addAdmin";//管理员添加页面
-	public static final String updateAdminor = "/adminor/updateAdmin";//管理员添加页面
+	public static final String addAdminor = "/adminor/adminAdd";//管理员添加页面
+	public static final String updateAdminor = "/adminor/adminUpdate";//管理员添加页面
 	
 	@RequestMapping(value="/admin/list",method = RequestMethod.GET)
 	public String adminList(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -40,7 +40,7 @@ public class AdministratorCtrl {
 	/**
 	 * easy-ui获取json数据,指定produces防止中文乱码
 	 */
-	@RequestMapping(value="/admin/adminlistContent",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/admin/listContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String adminListContent(Admininfo adinfo,PageBase pageInfo){
 		List<AdminInfoView> list = adminstratorService.getList(adinfo, pageInfo);

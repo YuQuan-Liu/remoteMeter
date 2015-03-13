@@ -68,17 +68,10 @@ public class AdministratorDAOImpl extends HibernateDAO<Admininfo> implements Adm
 	@SuppressWarnings("unchecked")
 	@Override
 	public Admininfo getByLoginName(String loginName, String password) {
-		List<Admininfo> admins = null;
-		try {
-			admins = getHibernateTemplate()
-					.find("from Admininfo a where a.loginName ='"+loginName+"'");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Query q = getSession().createQuery("from Admininfo a where a.loginName=:loginName");
+		q.setString("loginName", loginName);
 		Admininfo adInfo = null;
-		if(null!=admins&&admins.size()>0){
-			adInfo = admins.get(0);
-		}
+		adInfo = (Admininfo) q.uniqueResult();
 		return adInfo;
 	}
 

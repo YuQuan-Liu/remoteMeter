@@ -22,7 +22,8 @@ import com.xdkj.yccb.main.entity.Watercompany;
 public class WaterCompanyCtrl {
 	
 	public static final String waterComList = "/adminor/watComList";
-	public static final String waterAdd = "adminor/addWatCom";
+	public static final String waterAdd = "adminor/watComAdd";
+	public static final String waterComUpdate = "adminor/watComUpdate";
 	@Autowired
 	private WaterCompanyService waterCompanyService;
 	@RequestMapping(value="/admin/watcom/list")
