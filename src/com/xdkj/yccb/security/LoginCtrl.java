@@ -81,7 +81,14 @@ public class LoginCtrl {
 		}
 		// 清除需要验证码cookie
 		//return super.onLoginSuccess(token, subject, request, response);
-		
-		
+	}
+	@RequestMapping(value="logout",method=RequestMethod.GET)
+	public String logout(HttpServletRequest request){
+		Subject subject = SecurityUtils.getSubject();
+		if (subject.isAuthenticated()) {
+			// session销毁
+			subject.logout(); 
+		}
+		return "redirect:/login.do";
 	}
 }

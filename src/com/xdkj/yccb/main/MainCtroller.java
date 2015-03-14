@@ -24,7 +24,9 @@ public class MainCtroller {
 	public String homePage(HttpServletRequest request,HttpServletResponse response,Model model){
 		
 		UserForSession ufs =(UserForSession) request.getSession().getAttribute("curuser") ;
-		//System.out.println(ufs.getAdminName());
+		if(null!=ufs){
+			model.addAttribute("userInfo", ufs);
+		}
 		return homePage;
 	}
 	@RequestMapping(value="/usermenu",method=RequestMethod.GET,produces="application/json;charset=UTF-8")

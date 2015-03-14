@@ -1,6 +1,6 @@
 ﻿*{font-size:12px; font-family:Tahoma,Verdana,微软雅黑,新宋体}
-body{ font-family:verdana,helvetica,arial,sans-serif;padding:20px;font-size:12px;margin:0; }
-a{ color:Black; text-decoration:none;}
+body{background:#D2E0F2; }
+a{ color:Black; text-decoration:none;cursor: pointer;}
 a:hover{ color:Red; text-decoration:underline;}
 .textbox03 {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
 
@@ -8,36 +8,40 @@ a:hover{ color:Red; text-decoration:underline;}
 .txt {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;}
 .footer{text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold;}
 
-.head a{color:green;text-decoration:underline;}
-
-.navlist{list-style-type:none;margin:0px; padding:10px;}
-.navlist li{ padding:0px;}
-.navlist li a{line-height:24px;}
-.navlist li div{margin:2px 0px;padding-left:10px;padding-top:2px; border:1px dashed #ffffff;}
-.navlist li div.hover{border:1px dashed #99BBE8; background:#E0ECFF;cursor:pointer;}
-.navlist li div.hover a{color:#416AA3;}
-.navlist li div.selected{border:1px solid #99BBE8; background:#E0ECFF;cursor:default;}
-.navlist li div.selected a{color:#416AA3; font-weight:bold;}
-
-
-.third_ul{ list-style-type:none;margin:0px; padding:0px; display:none;}
-.third_ul li{ padding-left:20px;}
+.easyui-accordion ul{list-style-type:none;margin:0px; padding:10px;}
+.easyui-accordion ul li{ padding:0px;}
+.easyui-accordion ul li a{line-height:24px;}
+.easyui-accordion ul li div{margin:2px 0px;padding-left:10px;padding-top:2px;}
+.easyui-accordion ul li div.hover{border:1px dashed #99BBE8; background:#E0ECFF;cursor:pointer;}
+.easyui-accordion ul li div.hover a{color:#416AA3;}
+.easyui-accordion ul li div.selected{border:1px solid #99BBE8; background:#E0ECFF;cursor:default;}
+.easyui-accordion ul li div.selected a{color:#416AA3; font-weight:bold;}
 
 .icon{ background:url(../images/tabicons.png) no-repeat;width:18px; line-height:18px; display:inline-block;}
 .icon-sys{ background-position:0px -200px;}
 .icon-set{ background-position:-380px -200px;}
 .icon-add{background-position: -20px 0px;}
-
+.icon-add1{background:url('icon/edit_add.png') no-repeat;}
 .icon-nav{background-position: -100px -20px; }
 .icon-users{background-position: -100px -480px;}
 .icon-role{background-position: -360px -200px;}
 .icon-set{background-position: -380px -200px;}
 .icon-log{background-position: -380px -80px;}
-
+.icon-delete16{background:url('icon/delete.gif') no-repeat;width:18px; line-height:18px; display:inline-block;}
 .icon-delete{ background-position:-140px -120px;}
 .icon-edit{ background-position:-380px -320px;}
 .icon-magic{ background-position:0px -500px;}
 .icon-database{ background-position:-20px -140px;}
+.icon-expand{ background:url('/images/coll2.gif') no-repeat;}
+.icon-collapse{ background:url('/images/coll3.gif') no-repeat;}
+#topmenu{padding:0px; margin:0px;list-type:none; float:right; margin-right: 40px;margin-top: 40px;}
+#topmenu li{ float:left; list-style-type:none;}
+#topmenu li a{	color:#000; padding-right:20px;font-weight: bold;}
+#topmenu li a.active{color:red;}
+#north-head{background:url("../images/nei_topbg.jpg") repeat scroll 0 0 rgba(0, 0, 0, 0)}
+.logo{float: left;}
+#lang-chose{padding-right:20px;position: absolute;right: 40px;top: 10px;}
+#lang-chose a{color:blue;text-decoration:none;}
+#clock{position: absolute;left: 475px;top: 60px;}
+#userInfo{position: absolute;right:60px;top:70px; }
 
-
-.icon-arrow{ background:url('../images/arrow.gif') no-repeat right;}

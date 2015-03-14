@@ -7,7 +7,10 @@ ul {list-style: none;}
 .login_midbg { float:left; background:url(../images/login_mid2.jpg) no-repeat left top; width:465px; height:255px;}
 .pa_bottom {font-size:14px; font-family:"微软雅黑", "黑体"; color:#fff;}
 .login_input{ height:23px; line-height:23px; width:169px;}
-.login_botton { background:url(../images/botton.jpg) no-repeat left top; width:86px; height:37px; line-height:25px; text-align:center; font-size:14px; font-family:"微软雅黑", "黑体"; border:0px; color:#fff;cursor: pointer;}
-.login_copyrightbg { background:url(../images/copyrightbg.jpg) no-repeat left top; height:83px; line-height:45px; text-align:center; font-size:12px; font-family:"宋体"; color:#fff;}
+.login_botton { background:url(../images/botton.jpg) no-repeat left top; width:86px; height:37px;
+	line-height:25px; text-align:center;
+	font-size:14px; font-family:"微软雅黑", "黑体"; border:0px; color:#fff;cursor: pointer;}
+.login_copyrightbg { background:url(../images/copyrightbg.jpg) no-repeat left top; height:83px;
+	line-height:45px; text-align:center; font-size:12px; font-family:"宋体"; color:#fff;}
 .lang_postion{position: relative;left:30px;top:200px;width: 150px;}
 .lang_postion a{width: 70px;cursor: pointer;text-decoration: none;padding-left: 3px;color:#333;}
