@@ -5,12 +5,21 @@ $(function() {
 	clockon();
 	tabClose();
 	tabCloseEven();
-
+	
 	$('#topmenu a').click(function() {
 		$('#topmenu a').removeClass('active');
 		$(this).addClass('active');
+		var name = $(this).attr('name');
+		if(name=='index'){
+			$('body').layout('collapse','west');  
+			return;
+		}else{
+			if($('.layout-panel-west').is(":hidden")){
+				$('body').layout('expand','west');
+			}
+		}
+		var d = _menus[name];
 		
-		var d = _menus[$(this).attr('name')];
 		Clearnav();
 		addNav(d);
 		InitLeftMenu();
@@ -21,9 +30,9 @@ $(function() {
 		animate : false
 	});
 
-	var firstMenuName = $('#topmenu a:first').attr('name');
-	addNav(_menus[firstMenuName]);
-	InitLeftMenu();
+	//var firstMenuName = $('#topmenu a:first').attr('name');
+	//addNav(_menus[firstMenuName]);
+	//InitLeftMenu();
 });
 
 function Clearnav() {
@@ -49,7 +58,7 @@ function addNav(data) {
 		menulist += '<ul>';
 		$.each(sm.menus, function(j, o) {
 			menulist += '<li><div><a ref="' + o.menuid + '" href="javascript:;" rel="'
-					+ o.url + '" ><span class="icon ' + o.icon
+					+ o.url + '" ><span class="micon ' + o.icon
 					+ '" >&nbsp;</span><span class="nav">' + o.menuname
 					+ '</span></a></div></li> ';
 		});
@@ -58,7 +67,7 @@ function addNav(data) {
 		$('#wnav').accordion('add', {
 			title : sm.menuname,
 			content : menulist,
-			iconCls : 'icon ' + sm.icon
+			iconCls : 'micon ' + sm.icon
 		});
 
 	});
@@ -98,7 +107,7 @@ function hoverMenuItem() {
 
 // 获取左侧导航的图标
 function getIcon(menuid) {
-	var icon = 'icon ';
+	var icon = 'micon ';
 	$.each(_menus, function(i, n) {
 		$.each(n, function(j, o) {
 			$.each(o.menus, function(k, m){
@@ -152,69 +161,94 @@ function tabClose() {
 		return false;
 	});
 }
-// 绑定右键菜单事件
+
+//绑定右键菜单事件
 function tabCloseEven() {
-	// 刷新
-	$('#mm-tabupdate').click(function() {
-		var currTab = $('#tabs').tabs('getSelected');
-		var url = $(currTab.panel('options').content).attr('src');
-		$('#tabs').tabs('update', {
-			tab : currTab,
-			options : {
-				content : createFrame(url)
-			}
-		});
-	});
-	// 关闭当前
-	$('#mm-tabclose').click(function() {
-		var currtab_title = $('#mm').data("currtab");
-		$('#tabs').tabs('close', currtab_title);
-	});
-	// 全部关闭
-	$('#mm-tabcloseall').click(function() {
-		$('.tabs-inner span').each(function(i, n) {
-			var t = $(n).text();
-			$('#tabs').tabs('close', t);
-		});
-	});
-	// 关闭除当前之外的TAB
-	$('#mm-tabcloseother').click(function() {
-		$('#mm-tabcloseright').click();
-		$('#mm-tabcloseleft').click();
-	});
-	// 关闭当前右侧的TAB
-	$('#mm-tabcloseright').click(function() {
-		var nextall = $('.tabs-selected').nextAll();
-		if (nextall.length == 0) {
-			// msgShow('系统提示','后边没有啦~~','error');
-			//alert('后边没有啦~~');
-			return false;
-		}
-		nextall.each(function(i, n) {
-			var t = $('a:eq(0) span', $(n)).text();
-			$('#tabs').tabs('close', t);
-		});
-		return false;
-	});
-	// 关闭当前左侧的TAB
-	$('#mm-tabcloseleft').click(function() {
-		var prevall = $('.tabs-selected').prevAll();
-		if (prevall.length == 0) {
-			//alert('到头了，前边没有啦');
-			return false;
-		}
-		prevall.each(function(i, n) {
-			var t = $('a:eq(0) span', $(n)).text();
-			$('#tabs').tabs('close', t);
-		});
-		return false;
+    $('#mm').menu({
+        onClick: function (item) {
+            closeTab(item.id);
+        }
+    });
+
+    return false;
+}
+
+function closeTab(action){
+    var alltabs = $('#tabs').tabs('tabs');
+    var currentTab =$('#tabs').tabs('getSelected');
+	var allTabtitle = [];
+	$.each(alltabs,function(i,n){
+		allTabtitle.push($(n).panel('options').title);
 	});
 
-	// 退出
-	$("#mm-exit").click(function() {
-		$('#mm').menu('hide');
-	});
+    switch (action) {
+        case "refresh":
+            var iframe = $(currentTab.panel('options').content);
+            var src = iframe.attr('src');
+            $('#tabs').tabs('update', {
+                tab: currentTab,
+                options: {
+                    content: createFrame(src)
+                }
+            });
+            break;
+        case "close":
+            var currtab_title = currentTab.panel('options').title;
+            $('#tabs').tabs('close', currtab_title);
+            break;
+        case "closeall":
+            $.each(allTabtitle, function (i, n) {
+                if (i != 0){
+                    $('#tabs').tabs('close', n);
+				}
+            });
+            break;
+        case "closeother":
+            var currtab_title = currentTab.panel('options').title;
+            $.each(allTabtitle, function (i, n) {
+                if (n != currtab_title && i != 0)
+				{
+                    $('#tabs').tabs('close', n);
+				}
+            });
+            break;
+        case "closeright":
+            var tabIndex = $('#tabs').tabs('getTabIndex', currentTab);
+
+            if (tabIndex == alltabs.length - 1){
+               // alert('亲，后边没有啦 ^@^!!');
+                return false;
+            }
+            $.each(allTabtitle, function (i, n) {
+                if (i > tabIndex) {
+                    if (i != 0){
+                        $('#tabs').tabs('close', n);
+					}
+                }
+            });
+
+            break;
+        case "closeleft":
+            var tabIndex = $('#tabs').tabs('getTabIndex', currentTab);
+           /* if (tabIndex == 1) {
+               // alert('亲，前边那个上头有');
+                return false;
+            }*/
+            $.each(allTabtitle, function (i, n) {
+                if (i < tabIndex) {
+                    if (i != 0){
+                        $('#tabs').tabs('close', n);
+					}
+                }
+            });
+
+            break;
+        case "exit":
+            $('#mm').menu('hide');
+            break;
+    }
 }
+
 
 // 弹出信息窗口 title:标题 msgString:提示信息 msgType:信息类型 [error,info,question,warning]
 function msgShow(title, msgString, msgType) {

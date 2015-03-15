@@ -11,134 +11,134 @@
 var _menus = {
 		admin : [ {
 			"menuid" : "10",
-			"icon" : "icon-sys",
+			"icon" : "micon-sys",
 			"menuname" : "管理员",
 			"menus" : [ {
 				"menuid" : "111",
 				"menuname" : "自来水公司",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "admin/watcom/list.do"
 			}, {
 				"menuid" : "113",
 				"menuname" : "管理员",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "admin/list.do"
 			}, {
 				"menuid" : "115",
 				"menuname" : "权限",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "117",
 				"menuname" : "片区",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}]
 		} ],
 		info : [{
 			"menuid" : "20",
-			"icon" : "icon-sys",
+			"icon" : "micon-sys",
 			"menuname" : "信息录入",
 			"menus" : [ {
 				"menuid" : "211",
 				"menuname" : "小区信息",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "213",
 				"menuname" : "用户信息",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			} ]
 
 		}],
 		read : [{
 			"menuid" : "30",
-			"icon" : "icon-sys",
+			"icon" : "micon-sys",
 			"menuname" : "信息录入",
 			"menus" : [ {
 				"menuid" : "311",
 				"menuname" : "抄表",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "313",
 				"menuname" : "非远程录入",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			} ]
 
 		}],
 		charge : [{
 			"menuid" : "40",
-			"icon" : "icon-sys",
+			"icon" : "micon-sys",
 			"menuname" : "收费",
 			"menus" : [ {
 				"menuid" : "411",
 				"menuname" : "收费",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "412",
 				"menuname" : "结算",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			} ,{
 				"menuid" : "413",
 				"menuname" : "后付费",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			},{
 				"menuid" : "414",
 				"menuname" : "关阀控水",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			} ,{
 				"menuid" : "415",
 				"menuname" : "阀控预付费",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}]
 
 		}],
 		statis : [{
 			"menuid" : "50",
-			"icon" : "icon-sys",
+			"icon" : "micon-sys",
 			"menuname" : "统计",
 			"menus" : [ {
 				"menuid" : "511",
 				"menuname" : "收费统计",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "512",
 				"menuname" : "扣费统计",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "513",
 				"menuname" : "楼宇统计",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "514",
 				"menuname" : "结算用水统计",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "515",
 				"menuname" : "重点用户检测",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "516",
 				"menuname" : "水损分析",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}, {
 				"menuid" : "517",
 				"menuname" : "收费率统计",
-				"icon" : "icon-nav",
+				"icon" : "micon-nav",
 				"url" : "#"
 			}]
 
@@ -176,14 +176,16 @@ var _menus = {
         	<a href="${path}/lang.do?langType=en" >English</a>
         </span>
 	</div>
-	<div data-options="region:'west',split:true,title:'<fmt:message key="main.navi" />' " style="width:180px;padding:1px;">
+	<div data-options="region:'west',collapsed:true,split:true,title:'<fmt:message key="main.navi" />' " style="width:180px;padding:1px;" id="west-layout">
 		<div id='wnav' class="easyui-accordion" fit="true" border="false">
 		<!--  导航菜单 -->
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
 		<div id="tabs" class="easyui-tabs" style="width:500px;height:250px;" data-options="fit:true">  
-		     <div title='<fmt:message key="main.welcome"/>' data-options="closable:false,select:true" style="padding:5px;"></div>  
+		     <div id='welcome' title='<fmt:message key="main.welcome"/>' data-options="closable:false,select:true" style="padding:5px;">
+		     <h2><fmt:message key="main.welcome"/></h2>
+		     </div>  
 		</div>  
 	</div>
 	<div data-options="region:'south',border:false" style="height:50px;padding-bottom:10px; background: #D2E0F2;">
@@ -191,13 +193,13 @@ var _menus = {
 	</div>
 	<div id="mm" class="easyui-menu" style="width:150px;">
 		<!-- <div id="mm-tabupdate">刷新</div> -->
-		<div id="mm-tabclose">关闭</div>
-		<div id="mm-tabcloseall">全部关闭</div>
-		<div id="mm-tabcloseother">除此之外全部关闭</div>
+		<div id="close">关闭</div>
+		<div id="closeall">全部关闭</div>
+		<div id="closeother">除此之外全部关闭</div>
 		<div class="menu-sep"></div>
-		<div id="mm-tabcloseright">当前页右侧全部关闭</div>
-		<div id="mm-tabcloseleft">当前页左侧全部关闭</div>
-		<div id="mm-exit">退出</div>
+		<div id="closeright">当前页右侧全部关闭</div>
+		<div id="closeleft">当前页左侧全部关闭</div>
+		<div id="exit">退出</div>
 	</div>
 </body>
 </html>
