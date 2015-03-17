@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加管理员</title>
+<title>添加权限</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
 <body>
@@ -12,14 +12,14 @@ $(function(){
 	
 })
 function submitForm(){
-	if($('#watAddForm').form('validate')){
-		$('#watAddForm').form('submit', {   
+	if($('#addAuthForm').form('validate')){
+		$('#addAuthForm').form('submit', {   
 		    success: function(data){   
 		       if(data=="succ"){
 		    	   $.messager.alert('添加管理员','添加成功！','info',
 						function(){
-						 	$('#watComAddWin').window('close');
-						 	$('#watComListTab').datagrid('reload');
+						 	$('#addAuthWin').window('close');
+						 	$('#authListTab').datagrid('reload');
 						 });
 		       }
 		    }   
@@ -27,28 +27,37 @@ function submitForm(){
 	}
 }
 function clearForm(){
-	$('#watAddForm').form('clear');
+	$('#addAuthForm').form('clear');
 	}
 </script>
 		<div style="padding:10px 0 10px 60px">
-	    <form id="watAddForm" method="post" action="${path}/admin/addAdmin.do">
+	    <form id="addAuthForm" method="post" action="${path}/sys/auth/add.do">
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table>
 	    		<tr>
-	    			<td>自来水公司名：</td>
-	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true"/></td>
+	    			<td>权限编码：</td>
+	    			<td><input class="easyui-textbox" type="text" name="authorityCode" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水公司地址：</td>
-	    			<td> <input class="easyui-textbox" type="text" name="companyAddr" data-options="required:true"/></td>
-	    		</tr>
-	    		<tr>
-	    			<td>自来水公司标识：</td>
-	    			<td><input class="easyui-textbox" type="text" name="mark" data-options="required:true"/></td>
+	    			<td>操作路径：</td>
+	    			<td> <input class="easyui-textbox" type="text" name="actUrl" />
+	    			 </td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
-	    			<td><input class="easyui-textbox" type="text" name="remark" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="remark" /></td>
+	    		</tr>
+	    		
+	    		<tr>
+	    			<td>父级权限:</td>
+	    			<td>
+	    				<select class="easyui-combobox" name="ppid">
+	    					<option value="0">顶级</option>
+	    					<c:forEach items="${auList}" var="au">
+	    						<option value="${au.pid }">${au.remark }</option>
+	    					</c:forEach>
+	    				</select>
+	    			</td>
 	    		</tr>
 	    	</table>
 	    </form>

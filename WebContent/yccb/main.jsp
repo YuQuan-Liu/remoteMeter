@@ -27,7 +27,7 @@ var _menus = {
 				"menuid" : "115",
 				"menuname" : "权限",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "sys/auth/list.do"
 			}, {
 				"menuid" : "117",
 				"menuname" : "片区",
@@ -201,5 +201,8 @@ var _menus = {
 		<div id="closeleft">当前页左侧全部关闭</div>
 		<div id="exit">退出</div>
 	</div>
+	<style type="text/css">
+body{font-size: 13px;}
+</style>
 </body>
 </html>

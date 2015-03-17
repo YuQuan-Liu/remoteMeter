@@ -13,6 +13,7 @@ $(function(){
 	    required: true,   
 	    validType: "remote['${path}/admin/check.do','loginName']"  
 	});  
+	//$("#loginName").addClass('easyui-textbox');
 })
 function submitForm(){
 	if($('#addForm').form('validate')){
@@ -39,28 +40,28 @@ function clearForm(){
 	    	<table>
 	    		<tr>
 	    			<td>用户名：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminName" data-options="required:true"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="adminName" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>登录名：</td>
-	    			<td> <input id="loginName" name="loginName"/>
+	    			<td> <input id="loginName" name="loginName" />
 	    			 <!-- <input class="easyui-validatebox" type="text" name="loginName" data-options="required:true"></input> --></td>
 	    		</tr>
 	    		<tr>
 	    			<td>手机：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminMobile" data-options="required:true"></input></td>
+	    			<td><input class="easyui-numberbox" type="text" name="adminMobile" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>固话：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminTel" data-options="required:true"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="adminTel" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>邮箱：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminEmail" data-options="required:true,validType:'email'"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="adminEmail" data-options="required:true,validType:'email'"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>地址：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminAddr" data-options="required:true"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="adminAddr" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>权限类型:</td>

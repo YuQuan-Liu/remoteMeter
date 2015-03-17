@@ -17,7 +17,6 @@ import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
 import com.xdkj.yccb.main.adminor.dto.AdminInfoView;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.Admininfo;
-import com.xdkj.yccb.main.entity.Watercompany;
 /**
  * 管理员controller
  * @author SGR
@@ -62,7 +61,7 @@ public class AdministratorCtrl {
 		adinfo.setLoginKey(md.encodePassword("111111"));
 		return adminstratorService.addAdmin(adinfo);
 	}
-	@RequestMapping(value="check",method = RequestMethod.POST)
+	@RequestMapping(value="admin/check",method = RequestMethod.POST)
 	@ResponseBody
 	public String checkLoginName(String loginName){
 		Admininfo ad = adminstratorService.getByLoginName(loginName, null);

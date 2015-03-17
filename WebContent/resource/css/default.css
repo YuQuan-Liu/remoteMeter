@@ -3,6 +3,7 @@ body {
     font-family:Tahoma,Verdana,微软雅黑,新宋体;
     padding:20px;
     margin:0;
+    font-size: 12px;
 }
 a{ color:black; text-decoration:none;cursor: pointer;}
 a:hover{ color:Red; text-decoration:underline;}
