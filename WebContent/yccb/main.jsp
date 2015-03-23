@@ -157,7 +157,7 @@ var _menus = {
     <img src="${path}/resource/images/loading.gif" align="absmiddle" /> 正在加载中,请稍候...</div>
 </div>
 	<div data-options="region:'north',border:false" style="height:95px;padding:0px;" id="north-head">
-		<div class="logo"><img width="465" height="95" src="../resource/images/logo.jpg"></div>
+		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
 		<span id="clock">当前时间：<span id="bgclock"></span></span>
 		<ul id="topmenu">
 				<li ><a class="active" name="index" href="javascript:;" title="首页">首页</a></li>
