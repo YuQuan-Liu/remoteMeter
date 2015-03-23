@@ -29,14 +29,14 @@ public class Customerpaylog implements java.io.Serializable {
 	private BigDecimal amount;
 	private Date actionTime;
 	private byte prePaySign;
-	private char valid;
+	private String valid;
 	private String remark;
 
 	public Customerpaylog() {
 	}
 
 	public Customerpaylog(Customer customer, Admininfo admininfo,
-			BigDecimal amount, Date actionTime, byte prePaySign, char valid) {
+			BigDecimal amount, Date actionTime, byte prePaySign, String valid) {
 		this.customer = customer;
 		this.admininfo = admininfo;
 		this.amount = amount;
@@ -46,7 +46,7 @@ public class Customerpaylog implements java.io.Serializable {
 	}
 
 	public Customerpaylog(Customer customer, Admininfo admininfo,
-			BigDecimal amount, Date actionTime, byte prePaySign, char valid,
+			BigDecimal amount, Date actionTime, byte prePaySign, String valid,
 			String remark) {
 		this.customer = customer;
 		this.admininfo = admininfo;
@@ -117,11 +117,11 @@ public class Customerpaylog implements java.io.Serializable {
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 

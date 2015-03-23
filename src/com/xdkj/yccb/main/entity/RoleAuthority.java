@@ -43,7 +43,7 @@ public class RoleAuthority implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "RoleID", nullable = false)
+	@JoinColumn(name = "RoleID")
 	public Roles getRoles() {
 		return this.roles;
 	}

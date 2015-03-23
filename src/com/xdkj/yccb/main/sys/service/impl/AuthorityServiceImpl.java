@@ -94,10 +94,11 @@ public class AuthorityServiceImpl implements AuthorityService {
 				 String menus = requestContext.getMessage(auc.getAuthorityCode());
 				o.put("text", menus);
 				o.put("url", auc.getActUrl());
+				//o.put("state", "closed");
 				jarr.add(o);
 			}
 			String j1 = jarr.toString();
-			json+="{\"id\":\""+au.getPid()+"\",\"text\":\""
+			json+="{\"id\":\""+au.getPid()+"\",\"state\":\"closed\",\"text\":\""
 			+requestContext.getMessage(au.getAuthorityCode())+"\",\"url\":\""+
 					au.getActUrl()+"\",\"children\":"+j1+"},";
 		}

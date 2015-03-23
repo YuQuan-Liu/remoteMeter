@@ -19,25 +19,25 @@ $(function(){
 	    border:false,
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'authorityCode',title:'权限编码',width:100},   
-	        {field:'actUrl',title:'操作路径',width:100},
-	        {field:'remark',title:'备注',width:100},
-	        {field:'pname',title:'父级',width:100}
+	        {field:'roleName',title:'角色名称',width:100},   
+	        {field:'watercompany',title:'自来水公司',width:100},
+	        {field:'systemRole',title:'系统角色',width:100},
+	        {field:'remark',title:'备注',width:100}
 	    ]],
 	    toolbar: [{ 
 	        text: '添加', 
 	        iconCls: 'icon-add', 
 	        handler: function() { 
 	        	$('#addRoleWin').window({   
-	    		    href:'${path}/sys/auth/addPage.do',
-	    		    width:400,   
-	    		    height:250,
+	    		    href:'${path}/sys/role/addPage.do',
+	    		    width:467,   
+	    		    height:300,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加权限', 
+	    		    title: '添加角色'/* , 
 	    		    onLoad:function(){   
 	    		        //alert('loaded successfully'); 
-	    		    }   
+	    		    }    */
 	    		}); 
 	        } 
 	    }, '-', { 
@@ -52,13 +52,13 @@ $(function(){
 	        		$('#updateRoleWin').window({   
 		    		    href:'${path}/sys/role/updatePage.do?pid='+pid,
 		    		    width:400,   
-		    		    height:250,
+		    		    height:650,
 		    		    minimizable:false,
 		    		    maximizable:false,
-		    		    title: '更新管理员', 
+		    		    title: '更新角色'/* , 
 		    		    onLoad:function(){   
 		    		        //alert('loaded successfully'); 
-		    		    }   
+		    		    }    */
 		    		}); 
 	        		
 	        	}else if(leng>1){

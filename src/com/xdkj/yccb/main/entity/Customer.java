@@ -43,7 +43,7 @@ public class Customer implements java.io.Serializable {
 	private int warnSwitch;
 	private int warnStyle;
 	private int warnThre;
-	private char valid;
+	private String valid;
 	private String remark;
 	private Set<Meter> meters = new HashSet<Meter>(0);
 	private Set<Customerpaylog> customerpaylogs = new HashSet<Customerpaylog>(0);
@@ -55,7 +55,7 @@ public class Customer implements java.io.Serializable {
 	public Customer(Neighbor neighbor, Housekind housekind, String customerId,
 			String loginKey, String customerAddr, String louNum, String dynum,
 			String huNum, byte prePaySign, int warnSwitch, int warnStyle,
-			int warnThre, char valid) {
+			int warnThre, String valid) {
 		this.neighbor = neighbor;
 		this.housekind = housekind;
 		this.customerId = customerId;
@@ -77,7 +77,7 @@ public class Customer implements java.io.Serializable {
 			String nationalId, String customerAddr, String louNum,
 			String dynum, String huNum, BigDecimal customerBalance,
 			byte prePaySign, int warnSwitch, int warnStyle, int warnThre,
-			char valid, String remark, Set<Meter> meters,
+			String valid, String remark, Set<Meter> meters,
 			Set<Customerpaylog> customerpaylogs, Set<Warnlog> warnlogs) {
 		this.neighbor = neighbor;
 		this.housekind = housekind;
@@ -290,11 +290,11 @@ public class Customer implements java.io.Serializable {
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 

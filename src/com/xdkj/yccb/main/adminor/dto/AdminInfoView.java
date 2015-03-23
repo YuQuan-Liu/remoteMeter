@@ -15,7 +15,7 @@ public class AdminInfoView {
 	private String adminMobile;
 	private String adminTel;
 	private int noWc;
-	private char valid;
+	private String valid;
 	private String remark;
 	public Integer getPid() {
 		return pid;
@@ -83,10 +83,10 @@ public class AdminInfoView {
 	public void setNoWc(int noWc) {
 		this.noWc = noWc;
 	}
-	public char getValid() {
+	public String getValid() {
 		return valid;
 	}
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 	public String getRemark() {

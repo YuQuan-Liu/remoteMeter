@@ -28,7 +28,7 @@ public class Authority implements java.io.Serializable {
 	private Integer ppid;//父级权限,根权限菜单该值为0
 	private String authorityCode;//权限编码配置国际化
 	private String actUrl;//操作路径 host port之后的路径
-	private char valid;
+	private String valid;
 	private String remark;
 	private Authority au;
 	private Set<Authority> aus;//子集菜单
@@ -53,9 +53,6 @@ public class Authority implements java.io.Serializable {
 		this.au = au;
 	}
 
-	public Authority() {
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)
@@ -67,7 +64,7 @@ public class Authority implements java.io.Serializable {
 		this.pid = pid;
 	}
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 	@Column(name = "PPID")
@@ -95,7 +92,7 @@ public class Authority implements java.io.Serializable {
 		this.actUrl = actUrl;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 
@@ -106,5 +103,11 @@ public class Authority implements java.io.Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	
+	public Authority( Integer pid) {
+		this.pid = pid;
+	}
+	public Authority() {
 	}
 }

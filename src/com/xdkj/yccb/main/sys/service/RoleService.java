@@ -3,7 +3,6 @@ package com.xdkj.yccb.main.sys.service;
 import java.util.List;
 
 import com.xdkj.yccb.common.PageBase;
-import com.xdkj.yccb.main.entity.Roles;
 import com.xdkj.yccb.main.sys.dto.RoleView;
 
 public interface RoleService {
@@ -11,9 +10,9 @@ public interface RoleService {
 	
 	int getCount(RoleView rv,PageBase pb);
 	
-	String addRole(Roles r);
+	String addRole(RoleView r,String chAuth,String pAuth);
 	
-	String delete(Roles r);
+	String delete(RoleView r);
 	
 
 }

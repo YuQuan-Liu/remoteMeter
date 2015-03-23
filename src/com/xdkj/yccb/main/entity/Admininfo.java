@@ -34,7 +34,7 @@ public class Admininfo implements java.io.Serializable {
 	private String adminMobile;
 	private String adminTel;
 	private int noWc;
-	private char valid;
+	private String valid;
 	private String remark;
 	private Set<Valvelog> valvelogs = new HashSet<Valvelog>(0);
 	private Set<Readlog> readlogs = new HashSet<Readlog>(0);
@@ -47,7 +47,7 @@ public class Admininfo implements java.io.Serializable {
 	}
 
 	public Admininfo(Watercompany watercompany, String adminName,
-			String loginName, String loginKey, int noWc, char valid) {
+			String loginName, String loginKey, int noWc, String valid) {
 		this.watercompany = watercompany;
 		this.adminName = adminName;
 		this.loginName = loginName;
@@ -59,7 +59,7 @@ public class Admininfo implements java.io.Serializable {
 	public Admininfo(Watercompany watercompany, Department department,
 			String adminName, String loginName, String loginKey,
 			String adminEmail, String adminAddr, String adminMobile,
-			String adminTel, int noWc, char valid, String remark,
+			String adminTel, int noWc, String valid, String remark,
 			Set<Valvelog> valvelogs, Set<Readlog> readlogs,
 			Set<Customerpaylog> customerpaylogs,
 			Set<Useractionlog> useractionlogs, Set<Settlelog> settlelogs,
@@ -188,11 +188,11 @@ public class Admininfo implements java.io.Serializable {
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 

@@ -34,7 +34,9 @@ public class Watercompany implements java.io.Serializable {
 
 	public Watercompany() {
 	}
-
+	public Watercompany(Integer pid) {
+		this.pid=pid;
+	}
 	public Watercompany(String companyName, String mark, int authority) {
 		this.companyName = companyName;
 		this.mark = mark;

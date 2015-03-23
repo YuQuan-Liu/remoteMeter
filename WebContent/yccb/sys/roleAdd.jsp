@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加权限</title>
+<title>添加角色</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
 <body>
@@ -14,24 +14,6 @@ $(function(){
 	    checkbox:true,
 	    animate:true
 	});
-	function submitForm(){
-		if($('#addAuthForm').form('validate')){
-			$('#addAuthForm').form('submit', {   
-			    success: function(data){   
-			       if(data=="succ"){
-			    	   $.messager.alert('添加管理员','添加成功！','info',
-							function(){
-							 	$('#addAuthWin').window('close');
-							 	$('#authListTab').datagrid('reload');
-							 });
-			       }
-			    }   
-			});  
-		}
-	}
-	function clearForm(){
-		$('#addAuthForm').form('clear');
-		}
 });
 function getChecked(){
 	var nodes = $('#authTree').tree('getChecked');
@@ -39,7 +21,7 @@ function getChecked(){
 	var ps = ''
 	for(var i=0; i<nodes.length; i++){
 		 var node = $('#authTree').tree('getParent', nodes[i].target);//获取父节点
-		 var isleaf = $('#authTree').tree('isLeaf', nodes[i].target)
+		 var isleaf = $('#authTree').tree('isLeaf', nodes[i].target);//是否子节点
 		 if(node!=null){
 			 if(ps.indexOf(node.id) < 0 )
 			 ps += node.id + ",";//父节点集合
@@ -48,47 +30,73 @@ function getChecked(){
 			 s += nodes[i].id + ",";//子节点集合
 		 }
 	}
-	alert("父节点"+ps);
-	alert("子节点"+s);
+	$("#childauth").val(s);
+	$("#parentauth").val(ps);
+}
+function submitForm(){
+	if($('#addRoleForm').form('validate')){
+		getChecked();//获取树节点
+		$('#addRoleForm').form('submit', {   
+		    success: function(data){   
+		       if(data=="succ"){
+		    	   $.messager.alert('添加角色','添加成功！','info',
+						function(){
+						 	$('#addAuthWin').window('close');
+						 	$('#authListTab').datagrid('reload');
+						 });
+		       }
+		    }   
+		});  
+	}
+}
+function clearForm(){
+	$('#addRoleForm').form('clear');
+	$("#childauth").val('');
+	$("#parentauth").val('');
 }
 </script>
-<ul id="authTree"></ul>
-<input type="button" value="获取选中" onclick="getChecked()"/>
-		<%-- <div style="padding:10px 0 10px 60px">
-	    <form id="addAuthForm" method="post" action="${path}/sys/auth/add.do">
-	    	<input type="hidden" name="valid" value="1"/>
-	    	<table>
+<form action="${path}/sys/role/add.do" id="addRoleForm" method="post">
+<input type="hidden" name="childauth" id="childauth">
+<input type="hidden" name="parentauth" id="parentauth">
+ <div class="easyui-layout" style="width:450px;height:250px;">
+		<div data-options="region:'west',split:true" title="角色信息" style="width:300px;">
+			<table>
 	    		<tr>
-	    			<td>权限编码：</td>
-	    			<td><input class="easyui-textbox" type="text" name="authorityCode" data-options="required:true"></input></td>
+	    			<td>角色名称：</td>
+	    			<td><input class="easyui-textbox" type="text" name="roleName" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>操作路径：</td>
-	    			<td> <input class="easyui-textbox" type="text" name="actUrl" />
+	    			<td>自来水公司：</td>
+	    			<td>
+	    			<select class="easyui-combobox" name="wcid" data-options="panelHeight:'auto'">
+	    					<option value="1">测试</option>
+	    			</select>
 	    			 </td>
+	    		</tr>
+	    		<tr>
+	    			<td>系统角色:</td>
+	    			<td>
+	    				<select class="easyui-combobox" name="systemRole" data-options="panelHeight:'auto'">
+	    					<option value="1">是</option>
+	    					<option value="0">否</option>
+	    				</select>
+	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
 	    			<td><input class="easyui-textbox" type="text" name="remark" /></td>
 	    		</tr>
-	    		
-	    		<tr>
-	    			<td>父级权限:</td>
-	    			<td>
-	    				<select class="easyui-combobox" name="ppid">
-	    					<option value="0">顶级</option>
-	    					<c:forEach items="${auList}" var="au">
-	    						<option value="${au.pid }">${au.remark }</option>
-	    					</c:forEach>
-	    				</select>
-	    			</td>
-	    		</tr>
 	    	</table>
-	    </form>
-	    </div>
-	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+		</div>
+		<div data-options="region:'center',split:true" title="选择权限" style="width:200px;">
+			<ul id="authTree"></ul>
+			<!-- <input type="button" value="获取选中" onclick="getChecked()"/> -->
+		</div>
+		<div data-options="region:'south',split:true" style="width:500px;height: 50px;padding: 5px;text-align:center">
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
-	    </div> --%>
+		</div>
+	</div>
+	</form>
 </body>
 </html>
