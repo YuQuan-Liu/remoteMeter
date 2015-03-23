@@ -3,8 +3,14 @@ package com.xdkj.yccb.main.sys.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.RequestContext;
 
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Authority;
@@ -71,6 +77,33 @@ public class AuthorityServiceImpl implements AuthorityService {
 		}
 		return list;
 		
+	}
+
+	@Override
+	public String getAuthTreeJson(HttpServletRequest request) {
+		//一级菜单
+		List<Authority> list = authorityDAO.getList(0);
+		String json = "";
+		for (Authority au : list) {
+			 RequestContext requestContext = new RequestContext(request);
+			JSONArray jarr = new JSONArray();
+			List<Authority> clist = authorityDAO.getList(au.getPid());
+			for (Authority auc : clist) {
+				JSONObject o = new JSONObject();
+				o.put("id", auc.getPid());
+				 String menus = requestContext.getMessage(auc.getAuthorityCode());
+				o.put("text", menus);
+				o.put("url", auc.getActUrl());
+				jarr.add(o);
+			}
+			String j1 = jarr.toString();
+			json+="{\"id\":\""+au.getPid()+"\",\"text\":\""
+			+requestContext.getMessage(au.getAuthorityCode())+"\",\"url\":\""+
+					au.getActUrl()+"\",\"children\":"+j1+"},";
+		}
+		json = json.substring(0, json.lastIndexOf(","));
+		json = "["+json+"]";
+		return json;
 	}
 
 }

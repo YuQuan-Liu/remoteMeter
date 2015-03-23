@@ -2,6 +2,8 @@ package com.xdkj.yccb.main.sys.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Authority;
 import com.xdkj.yccb.main.sys.dto.AuthorityView;
@@ -36,6 +38,8 @@ public interface AuthorityService {
 	 * @return
 	 */
 	String delete(String ids);
+	
+	String getAuthTreeJson(HttpServletRequest request);
 	
 
 }

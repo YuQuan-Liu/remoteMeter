@@ -16,10 +16,10 @@ public class AuthorityDAOImpl extends HibernateDAO<Authority>implements Authorit
 	@Override
 	public List<Authority> getList(int ppid) {
 		Session s = getSession();
-		String hql = "from Authority a where a.valid='1' and a.ppid is not null " ;
-				//" and a.ppid=:ppid";
+		String hql = "from Authority a where a.valid='1' " +
+				" and a.ppid=:ppid ";
 		Query q = s.createQuery(hql);
-		//q.setInteger("ppid", ppid);
+		q.setInteger("ppid", ppid);
 		return q.list();
 	}
 

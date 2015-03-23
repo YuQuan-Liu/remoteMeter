@@ -23,7 +23,31 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public List<AdminInfoView> getList(Admininfo adInfo,PageBase pageInfo) {
 		List<Admininfo> list = administratorDAO.getList(adInfo, pageInfo);
 		List<AdminInfoView> listView = new ArrayList<AdminInfoView>() ;
-		
+		List<AdminInfoView> listView2 = new ArrayList<AdminInfoView>() ;
+		long l1 = System.currentTimeMillis();
+			for (Admininfo ai : list) {
+				AdminInfoView aiv = new AdminInfoView();
+				aiv.setAdminAddr(ai.getAdminAddr());
+				aiv.setAdminEmail(ai.getAdminEmail());
+				aiv.setAdminMobile(ai.getAdminMobile());
+				aiv.setAdminName(ai.getAdminName());
+				aiv.setAdminTel(ai.getAdminTel());
+				aiv.setLoginName(ai.getLoginName());
+				aiv.setNoWc(ai.getNoWc());
+				aiv.setPid(ai.getPid());
+				aiv.setRemark(ai.getRemark());
+				aiv.setValid(ai.getValid());
+				/*try {
+					PropertyUtils.copyProperties(aiv, ai);
+				} catch (IllegalAccessException | InvocationTargetException
+						| NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+				//密码保护
+				aiv.setLoginKey(null);*/
+				listView.add(aiv);
+			}
+			long l2 = System.currentTimeMillis();
 			for (Admininfo ai : list) {
 				AdminInfoView aiv = new AdminInfoView();
 				try {
@@ -32,8 +56,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 						| NoSuchMethodException e) {
 					e.printStackTrace();
 				}
-				listView.add(aiv);
+				//密码保护
+				aiv.setLoginKey(null);
+				listView2.add(aiv);
 			}
+			long l3 = System.currentTimeMillis();
+			System.err.println("==普通花费==="+(l2-l1)+"===util花费==="+(l3-l2));
 		return listView;
 	}
 

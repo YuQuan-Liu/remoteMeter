@@ -2,18 +2,17 @@ package com.xdkj.yccb.main.entity;
 
 // Generated 2015-3-6 17:30:45 by Hibernate Tools 3.4.0.CR1
 
-import java.util.HashSet;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
@@ -32,6 +31,17 @@ public class Authority implements java.io.Serializable {
 	private char valid;
 	private String remark;
 	private Authority au;
+	private Set<Authority> aus;//子集菜单
+	@OneToMany(targetEntity = Authority.class)
+	@JoinColumn(name="PPID",insertable=false,updatable = false)
+	public Set<Authority> getAus() {
+		return aus;
+	}
+
+	public void setAus(Set<Authority> aus) {
+		this.aus = aus;
+	}
+
 	@OneToOne(targetEntity = Authority.class)
 	@JoinColumn(name="PPID",insertable=false,updatable = false,nullable = true)
 	@Where(clause="valid='1' ")
