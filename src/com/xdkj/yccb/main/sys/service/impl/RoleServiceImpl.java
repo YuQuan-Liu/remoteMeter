@@ -1,12 +1,10 @@
 package com.xdkj.yccb.main.sys.service.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +18,7 @@ import com.xdkj.yccb.main.sys.dao.RoleDAO;
 import com.xdkj.yccb.main.sys.dto.RoleView;
 import com.xdkj.yccb.main.sys.service.RoleService;
 @Service
+@Transactional
 public class RoleServiceImpl implements RoleService {
 	@Autowired
 	private RoleDAO roleDAO;
@@ -42,7 +41,6 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	@Transactional
 	public String addRole(RoleView rv,String chAuth,String pAuth) {
 		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
 		String [] ids = (chAuth+pAuth).split(",");
@@ -56,13 +54,14 @@ public class RoleServiceImpl implements RoleService {
 			auset.add(ra);
 		}
 		
-		//r.setRoleAuthorities(auset);
+		r.setRoleAuthorities(auset);
 		r.setRoleName(rv.getRoleName());
 		r.setRemark(rv.getRemark());
 		r.setSystemRole(rv.getSystemRole());
 		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
 		r.setValid("1");
 		int rid = roleDAO.add(r);
+		int a = 1/0;
 		if(rid>0){
 			return "succ";
 		}

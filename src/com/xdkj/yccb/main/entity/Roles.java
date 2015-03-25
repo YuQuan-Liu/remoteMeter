@@ -123,7 +123,8 @@ public class Roles implements java.io.Serializable {
 		this.adminRoles = adminRoles;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="roles",targetEntity=RoleAuthority.class)
+	@OneToMany(fetch = FetchType.LAZY,cascade=CascadeType.ALL,mappedBy="roles")
+	@JoinColumn(name="RoleID",referencedColumnName="pid")
 	public Set<RoleAuthority> getRoleAuthorities() {
 		return this.roleAuthorities;
 	}
