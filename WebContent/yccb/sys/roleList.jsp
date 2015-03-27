@@ -21,7 +21,7 @@ $(function(){
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
 	        {field:'roleName',title:'角色名称',width:100},   
 	        {field:'watercompany',title:'自来水公司',width:100},
-	        {field:'systemRole',title:'系统角色',width:100},
+	        {field:'systemRole',title:'系统角色',width:100,formatter:TFFormatter},
 	        {field:'remark',title:'备注',width:100}
 	    ]],
 	    toolbar: [{ 
@@ -51,8 +51,8 @@ $(function(){
 	        		alert(pid);
 	        		$('#updateRoleWin').window({   
 		    		    href:'${path}/sys/role/updatePage.do?pid='+pid,
-		    		    width:400,   
-		    		    height:650,
+		    		    width:467,   
+		    		    height:300,
 		    		    minimizable:false,
 		    		    maximizable:false,
 		    		    title: '更新角色'/* , 
@@ -75,12 +75,18 @@ $(function(){
 	        	var pids = "";
 	        	rows.forEach(function(obj){  
 	        	    pids += obj.pid+",";
-	        	}) 
+	        	});
 	        	alert(pids);
 	        } 
 	    }]
 	});
-})
+});
+function TFFormatter(val,row){
+	if(val=="1")
+	return "是";
+	if(val=="0")
+	return "否";
+}
 //查询
 function query(){
 	var queryParams = $('#roleListTab').datagrid('options').queryParams;

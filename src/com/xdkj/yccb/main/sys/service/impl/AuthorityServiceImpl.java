@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.sys.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,13 +15,18 @@ import org.springframework.web.servlet.support.RequestContext;
 
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Authority;
+import com.xdkj.yccb.main.entity.RoleAuthority;
+import com.xdkj.yccb.main.entity.Roles;
 import com.xdkj.yccb.main.sys.dao.AuthorityDAO;
+import com.xdkj.yccb.main.sys.dao.RoleDAO;
 import com.xdkj.yccb.main.sys.dto.AuthorityView;
 import com.xdkj.yccb.main.sys.service.AuthorityService;
 @Service
 public class AuthorityServiceImpl implements AuthorityService {
 	@Autowired
 	private AuthorityDAO authorityDAO;
+	@Autowired
+	private RoleDAO roleDAO;
 
 	@Override
 	public List<AuthorityView> getList(Authority au,PageBase pageInfo) {
@@ -80,7 +86,15 @@ public class AuthorityServiceImpl implements AuthorityService {
 	}
 
 	@Override
-	public String getAuthTreeJson(HttpServletRequest request) {
+	public String getAuthTreeJson(HttpServletRequest request,String roleId) {
+		String auids = "";
+		if(null!=roleId&&!"".equals(roleId)){
+			Roles r = roleDAO.getById(Integer.parseInt(roleId));
+			Set<RoleAuthority> ras = r.getRoleAuthorities();
+			for (RoleAuthority ra :ras) {
+				auids += ra.getAuthority().getPid()+",";
+			}
+		}
 		//一级菜单
 		List<Authority> list = authorityDAO.getList(0);
 		String json = "";
@@ -94,6 +108,9 @@ public class AuthorityServiceImpl implements AuthorityService {
 				 String menus = requestContext.getMessage(auc.getAuthorityCode());
 				o.put("text", menus);
 				o.put("url", auc.getActUrl());
+				if(auids.contains(String.valueOf(auc.getPid()))){
+					o.put("checked", "true");
+				}
 				//o.put("state", "closed");
 				jarr.add(o);
 			}

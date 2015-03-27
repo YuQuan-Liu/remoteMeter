@@ -36,6 +36,7 @@ public class RoleServiceImpl implements RoleService {
 			r.setValid(roles.getValid());
 			r.setWatercompany(roles.getWatercompany().getCompanyName());
 			r.setWcid(roles.getWatercompany().getPid()+"");
+			listView.add(r);
 		}
 		return listView;
 	}
@@ -61,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
 		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
 		r.setValid("1");
 		int rid = roleDAO.add(r);
-		int a = 1/0;
+		//int a = 1/0;
 		if(rid>0){
 			return "succ";
 		}
@@ -71,12 +72,42 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public String delete(RoleView rv) {
 		return null;
-		
 	}
 
 	@Override
 	public int getCount(RoleView rv, PageBase pb) {
 		return roleDAO.getTotalCount(rv, pb);
+	}
+
+	@Override
+	public Roles getRoleInfo(String pid) {
+		Roles r = roleDAO.getById(Integer.parseInt(pid));		
+		return r;
+	}
+	
+	@Override
+	@Transactional
+	public String updateRole(RoleView rv, String chAuth, String pAuth) {
+		Roles r = new Roles();
+		r.setPid(rv.getPid());
+		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
+		String [] ids = (chAuth+pAuth).split(",");
+		for (String id : ids) {
+			RoleAuthority ra = new RoleAuthority();
+			if(null!=id&&!"".equals(id)){
+				ra.setAuthority(new Authority(Integer.parseInt(id)));
+			}
+			ra.setRoles(r);
+			auset.add(ra);
+		}
+		r.setSystemRole(rv.getSystemRole());
+		r.setValid(rv.getValid());
+		r.setRoleAuthorities(auset);
+		r.setRoleName(rv.getRoleName());
+		r.setRemark(rv.getRemark());
+		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
+		roleDAO.update(r);
+		return null;
 	}
 
 }

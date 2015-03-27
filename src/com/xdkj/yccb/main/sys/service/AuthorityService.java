@@ -39,7 +39,7 @@ public interface AuthorityService {
 	 */
 	String delete(String ids);
 	
-	String getAuthTreeJson(HttpServletRequest request);
+	String getAuthTreeJson(HttpServletRequest request,String roleId);
 	
 
 }

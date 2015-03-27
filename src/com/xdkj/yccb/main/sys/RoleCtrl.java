@@ -1,7 +1,10 @@
 package com.xdkj.yccb.main.sys;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +19,7 @@ import com.xdkj.yccb.main.sys.service.RoleService;
 public class RoleCtrl {
 	public static final String roleList = "/sys/roleList";
 	public static final String roleAdd = "/sys/roleAdd";
+	public static final String roleUpdate = "/sys/roleUpdate";
 	@Autowired
 	private RoleService roleService;
 	@RequestMapping(value="/sys/role/list")
@@ -33,9 +37,28 @@ public class RoleCtrl {
 	public String roleAdd(){
 		return roleAdd;
 	}
+	/**
+	 * 添加角色
+	 * @param rv 角色dto
+	 * @param chAuth 子集权限
+	 * @param pAuth 父级权限
+	 * @return
+	 */
 	@RequestMapping(value="/sys/role/add",method=RequestMethod.POST)
 	@ResponseBody
 	public String add(RoleView rv,@RequestParam("childauth") String chAuth,@RequestParam("parentauth") String pAuth){
 		return roleService.addRole(rv, chAuth, pAuth);
 	}
+	@RequestMapping(value="/sys/role/updatePage")
+	public String roleUpdate(HttpServletRequest request,@RequestParam("pid") String pid,Model model){
+		model.addAttribute("role",roleService.getRoleInfo(pid));
+		return roleUpdate;
+	}
+	
+	@RequestMapping(value="/sys/role/update",method=RequestMethod.POST)
+	@ResponseBody
+	public String update(RoleView rv,@RequestParam("childauth") String chAuth,@RequestParam("parentauth") String pAuth){
+		return roleService.updateRole(rv, chAuth, pAuth);
+	}
+	
 }

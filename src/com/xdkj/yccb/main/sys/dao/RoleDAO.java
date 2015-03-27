@@ -22,4 +22,6 @@ public interface RoleDAO {
 	void update(Roles r);
 	
 	void delete(Roles r);
+	
+	Roles getById(int pid);
 }

@@ -30,9 +30,10 @@ public class MainCtroller {
 		UserForSession ufs =(UserForSession) request.getSession().getAttribute("curuser") ;
 		if(null!=ufs){
 			model.addAttribute("userInfo", ufs);
+			
 		}
-		String jsons = authorityService.getAuthTreeJson(request);
-		model.addAttribute("menu", jsons);
+		//String jsons = authorityService.getAuthTreeJson(request);
+		//model.addAttribute("menu", jsons);
 		return homePage;
 	}
 	@RequestMapping(value="/usermenu",method=RequestMethod.GET,produces="application/json;charset=UTF-8")

@@ -34,7 +34,7 @@ public class RoleDAOImpl  extends HibernateDAO<Roles>implements RoleDAO {
 
 	@Override
 	public void update(Roles r) {
-
+		this.getHibernateTemplate().update(r);
 	}
 
 	@Override
@@ -51,6 +51,13 @@ public class RoleDAOImpl  extends HibernateDAO<Roles>implements RoleDAO {
 		}*/
 		Query q = getSession().createQuery(sb.toString());
 		return ((Number)q.uniqueResult()).intValue();
+	}
+
+	@Override
+	public Roles getById(int pid) {
+		String hql = "from Roles r where r.pid=  "+pid;
+		Query q = getSession().createQuery(hql);
+		return (Roles) q.uniqueResult();
 	}
 
 }
