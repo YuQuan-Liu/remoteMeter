@@ -7,7 +7,6 @@
 <title><fmt:message key="main.title"></fmt:message></title>
 <script type="text/javascript" src="${path}/resource/js/main.js"></script>
 <script type="text/javascript">
-
 var _menus = {
 		admin : [ {
 			"menuid" : "10",
@@ -153,8 +152,11 @@ var _menus = {
 </div>
 </noscript>
 <div id="loading-mask" style="position:absolute;top:0px; left:0px; width:100%; height:100%; background:#D2E0F2; z-index:20000">
-<div id="pageloading" style="position:absolute; top:50%; left:50%; margin:-120px 0px 0px -120px; text-align:center;  border:2px solid #8DB2E3; width:200px; height:40px;  font-size:14px;padding:10px; font-weight:bold; background:#fff; color:#15428B;"> 
-    <img src="${path}/resource/images/loading.gif" align="absmiddle" /> 正在加载中,请稍候...</div>
+	<div id="pageloading" style="position:absolute; top:50%; left:50%; margin:-120px 0px 0px -120px; text-align:center; 
+	 border:2px solid #8DB2E3; width:200px; height:40px;  font-size:14px;padding:10px; font-weight:bold; background:#fff; color:#15428B;"> 
+	    <img src="${path}/resource/images/loading.gif" align="absmiddle" />
+	    <fmt:message key="main.loading"></fmt:message>
+	</div>
 </div>
 	<div data-options="region:'north',border:false" style="height:95px;padding:0px;" id="north-head">
 		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
@@ -201,8 +203,8 @@ var _menus = {
 		<div id="closeleft">当前页左侧全部关闭</div>
 		<div id="exit">退出</div>
 	</div>
-	<style type="text/css">
+<!-- <style type="text/css">
 body{font-size: 13px;}
-</style>
+</style> -->
 </body>
 </html>

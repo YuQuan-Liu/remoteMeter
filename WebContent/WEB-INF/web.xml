@@ -4,10 +4,10 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-    	/WEB-INF/config/springContext.xml
     	/WEB-INF/config/shiro-context.xml
     </param-value>
   </context-param>
+  
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
@@ -56,9 +56,11 @@
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+ 
   <listener>
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
   </listener>
