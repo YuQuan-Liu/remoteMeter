@@ -1,11 +1,14 @@
 package com.xdkj.yccb.security;
 
+import java.util.Map;
+
 public class UserForSession {
 	private Integer pid;
 	private String adminName;
 	private String loginName;
 	private String adminEmail;
 	private String adminMobile;
+	private Map<String, String> menus;
 	public Integer getPid() {
 		return pid;
 	}
@@ -36,5 +39,10 @@ public class UserForSession {
 	public void setAdminMobile(String adminMobile) {
 		this.adminMobile = adminMobile;
 	}
-	
+	public Map<String, String> getMenus() {
+		return menus;
+	}
+	public void setMenus(Map<String, String> menus) {
+		this.menus = menus;
+	}
 }

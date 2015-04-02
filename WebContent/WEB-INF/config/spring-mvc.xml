@@ -11,7 +11,11 @@
 		http://www.springframework.org/schema/mvc 
 		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
 	<!-- 扫描注解类位置的位置 -->
-<context:component-scan base-package="com.xdkj.yccb" />
+<!-- <context:component-scan base-package="com.xdkj.yccb" /> -->
+<context:component-scan base-package="com.xdkj.yccb">     
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+</context:component-scan> 
 
 <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
     <!-- 国际化信息所在的文件名 -->                     
@@ -45,7 +49,7 @@
 </mvc:annotation-driven>
 
 <!-- 引入springContext.xml -->
-<import resource="../config/springContext.xml"/>
+<!-- <import resource="springContext.xml"/> -->
 	<!-- 异常处理类 -->
 	<!-- <bean id="exceptionResolver"
 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">

@@ -1,10 +1,11 @@
 package com.xdkj.yccb.security;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -21,7 +22,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
+import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.RoleAuthority;
 
 /**
  * 自定义DB Realm
@@ -29,7 +32,7 @@ import com.xdkj.yccb.main.entity.Admininfo;
  */
 public class MyAuthorizingRealm extends AuthorizingRealm {
 	@Autowired
-	private AdministratorService userService;
+	private AdministratorService administratorService;
 
 	/**
 	 * 登录认证
@@ -37,15 +40,26 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(
 			AuthenticationToken authcToken) throws AuthenticationException {
 		UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
-		Admininfo adInfo = userService.getByLoginName(token.getUsername(), null);
+		Admininfo adInfo = null;
+		try {
+			adInfo = administratorService.getByLoginName(token.getUsername(), null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (adInfo != null) {
 			UserForSession ufs = new UserForSession();
-			try {
-				PropertyUtils.copyProperties(ufs, adInfo);
-			} catch (IllegalAccessException | InvocationTargetException
-					| NoSuchMethodException e) {
-				e.printStackTrace();
+			ufs.setLoginName(adInfo.getLoginName());
+			ufs.setAdminName(adInfo.getAdminName());
+			ufs.setAdminEmail(adInfo.getAdminEmail());
+			ufs.setAdminMobile(adInfo.getAdminMobile());
+			
+			List<AdminRole> adminRole = new ArrayList<AdminRole>(adInfo.getAdminRoles());
+			Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
+			Map<String, String> menus = new HashMap<String, String>();
+			for (RoleAuthority roleAuthority : ras) {
+				menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
 			}
+			ufs.setMenus(menus);
 			setSession("curuser", ufs);
 			return new SimpleAuthenticationInfo(adInfo.getLoginName(), adInfo.getLoginKey(),getName());
 		} else {

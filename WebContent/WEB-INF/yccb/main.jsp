@@ -4,6 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@include file="/commonjsp/top.jsp" %>
+<c:set var="menus" scope="session" value="${userInfo.menus}"/>
 <title><fmt:message key="main.title"/></title>
 <script type="text/javascript" src="${path}/resource/js/main.js"></script>
 <script type="text/javascript">
@@ -33,7 +34,7 @@ var _menus = {
 				"icon" : "micon-nav",
 				"url" : "#"
 			}]
-		} ],
+		}],
 		info : [{
 			"menuid" : "20",
 			"icon" : "micon-sys",
@@ -155,19 +156,34 @@ var _menus = {
 	<div id="pageloading" style="position:absolute; top:50%; left:50%; margin:-120px 0px 0px -120px; text-align:center; 
 	 border:2px solid #8DB2E3; width:200px; height:40px;  font-size:14px;padding:10px; font-weight:bold; background:#fff; color:#15428B;"> 
 	    <img src="${path}/resource/images/loading.gif" align="absmiddle" />
-	    <fmt:message key="main.loading"></fmt:message>
+	    <fmt:message key="main.loading"/>
 	</div>
 </div>
 	<div data-options="region:'north',border:false" style="height:95px;padding:0px;" id="north-head">
 		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
 		<span id="clock">当前时间：<span id="bgclock"></span></span>
 		<ul id="topmenu">
-				<li ><a class="active" name="index" href="javascript:;" title="首页">首页</a></li>
-				<li><a name="admin" href="javascript:;" title="管理员">管理员</a></li>
-				<li ><a name="info" href="javascript:;" title="信息录入">信息录入</a></li>
-				<li><a name="read" href="javascript:;" title="抄表">抄表</a></li>
-				<li ><a name="charge" href="javascript:;" title="收费">收费</a></li>
-				<li><a name="statis" href="javascript:;" title="统计">统计</a></li>
+				<li ><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>"><fmt:message key='menu.index'/></a></li>
+			<c:if test="${menus['admin']=='t'}">
+				<li><a name="admin" href="javascript:;" title="<fmt:message key='menu.admin'/>">
+				<fmt:message key="menu.admin"/></a></li>
+			</c:if>
+			<c:if test="${menus['info']=='t'}">
+				<li ><a name="info" href="javascript:;" title="<fmt:message key='menu.info'/>">
+				<fmt:message key='menu.info'/></a></li>
+			</c:if>
+			<c:if test="${menus['read']=='t'}">
+				<li><a name="read" href="javascript:;" title="<fmt:message key='menu.read'/>">
+				<fmt:message key='menu.read'/></a></li>
+			</c:if>
+			<c:if test="${menus['charge']=='t'}">
+				<li ><a name="charge" href="javascript:;" title="<fmt:message key='menu.charge'/>">
+				<fmt:message key='menu.charge'/></a></li>
+			</c:if>
+			<c:if test="${menus['statis']=='t'}">
+				<li><a name="statis" href="javascript:;" title="<fmt:message key='menu.statis'/>">
+				<fmt:message key='menu.statis'/></a></li>
+			</c:if>
 		</ul>
 		<span id="userInfo">
 			欢迎您，${userInfo.adminName }
@@ -195,13 +211,13 @@ var _menus = {
 	</div>
 	<div id="mm" class="easyui-menu" style="width:150px;">
 		<!-- <div id="mm-tabupdate">刷新</div> -->
-		<div id="close">关闭</div>
-		<div id="closeall">全部关闭</div>
-		<div id="closeother">除此之外全部关闭</div>
+		<div id="close"><fmt:message key="main.mm.close"/></div>
+		<div id="closeall"><fmt:message key="main.mm.closeall"/></div>
+		<div id="closeother"><fmt:message key="main.mm.closeother"/></div>
 		<div class="menu-sep"></div>
-		<div id="closeright">当前页右侧全部关闭</div>
-		<div id="closeleft">当前页左侧全部关闭</div>
-		<div id="exit">退出</div>
+		<div id="closeright"><fmt:message key="main.mm.closeright"/></div>
+		<div id="closeleft"><fmt:message key="main.mm.closeleft"/></div>
+		<div id="exit"><fmt:message key="main.mm.exit"/></div>
 	</div>
 <!-- <style type="text/css">
 body{font-size: 13px;}

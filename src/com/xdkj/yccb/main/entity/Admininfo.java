@@ -36,11 +36,11 @@ public class Admininfo implements java.io.Serializable {
 	private int noWc;
 	private String valid;
 	private String remark;
-	private Set<Valvelog> valvelogs = new HashSet<Valvelog>(0);
+	/*private Set<Valvelog> valvelogs = new HashSet<Valvelog>(0);
 	private Set<Readlog> readlogs = new HashSet<Readlog>(0);
 	private Set<Customerpaylog> customerpaylogs = new HashSet<Customerpaylog>(0);
 	private Set<Useractionlog> useractionlogs = new HashSet<Useractionlog>(0);
-	private Set<Settlelog> settlelogs = new HashSet<Settlelog>(0);
+	private Set<Settlelog> settlelogs = new HashSet<Settlelog>(0);*/
 	private Set<AdminRole> adminRoles = new HashSet<AdminRole>(0);
 
 	public Admininfo() {
@@ -56,7 +56,7 @@ public class Admininfo implements java.io.Serializable {
 		this.valid = valid;
 	}
 
-	public Admininfo(Watercompany watercompany, Department department,
+/*	public Admininfo(Watercompany watercompany, Department department,
 			String adminName, String loginName, String loginKey,
 			String adminEmail, String adminAddr, String adminMobile,
 			String adminTel, int noWc, String valid, String remark,
@@ -82,7 +82,7 @@ public class Admininfo implements java.io.Serializable {
 		this.useractionlogs = useractionlogs;
 		this.settlelogs = settlelogs;
 		this.adminRoles = adminRoles;
-	}
+	}*/
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -205,7 +205,7 @@ public class Admininfo implements java.io.Serializable {
 		this.remark = remark;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
 	public Set<Valvelog> getValvelogs() {
 		return this.valvelogs;
 	}
@@ -221,34 +221,34 @@ public class Admininfo implements java.io.Serializable {
 
 	public void setReadlogs(Set<Readlog> readlogs) {
 		this.readlogs = readlogs;
-	}
+	}*/
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
 	public Set<Customerpaylog> getCustomerpaylogs() {
 		return this.customerpaylogs;
-	}
+	}*/
 
-	public void setCustomerpaylogs(Set<Customerpaylog> customerpaylogs) {
+	/*public void setCustomerpaylogs(Set<Customerpaylog> customerpaylogs) {
 		this.customerpaylogs = customerpaylogs;
-	}
+	}*/
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
 	public Set<Useractionlog> getUseractionlogs() {
 		return this.useractionlogs;
 	}
-
-	public void setUseractionlogs(Set<Useractionlog> useractionlogs) {
+*/
+/*	public void setUseractionlogs(Set<Useractionlog> useractionlogs) {
 		this.useractionlogs = useractionlogs;
-	}
+	}*/
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
 	public Set<Settlelog> getSettlelogs() {
 		return this.settlelogs;
 	}
 
 	public void setSettlelogs(Set<Settlelog> settlelogs) {
 		this.settlelogs = settlelogs;
-	}
+	}*/
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "admininfo")
 	public Set<AdminRole> getAdminRoles() {

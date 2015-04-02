@@ -65,7 +65,6 @@ public class AdministratorDAOImpl extends HibernateDAO<Admininfo> implements Adm
 		return ((Number)q.uniqueResult()).intValue();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Admininfo getByLoginName(String loginName, String password) {
 		Query q = getSession().createQuery("from Admininfo a where a.loginName=:loginName");

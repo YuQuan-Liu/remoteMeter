@@ -50,8 +50,8 @@
             <value>  
                 /login=anon
                 /**codeImg.do=anon
-                /**.do=authc
-              /more**=authc,perms[admin:manage]
+                #/**.do=authc
+              #/more**=authc,perms[admin:manage]
             </value>  
         </property>  
     </bean>  

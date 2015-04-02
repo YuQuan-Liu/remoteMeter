@@ -169,7 +169,6 @@ function tabCloseEven() {
             closeTab(item.id);
         }
     });
-
     return false;
 }
 
@@ -280,7 +279,7 @@ function clockon() {
 	var arr_week = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
 	week = arr_week[day];
 	var time = "";
-	time = year + "年" + month + "月" + date + "日" + " " + hour + ":" + minu
+	time = year + "-" + month + "-" + date + "-" + " " + hour + ":" + minu
 			+ ":" + sec + " " + week;
 
 	$("#bgclock").html(time);

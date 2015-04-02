@@ -113,6 +113,7 @@ public class RoleServiceImpl implements RoleService {
 		r.setRoleName(rv.getRoleName());
 		r.setRemark(rv.getRemark());
 		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
+		int i = 1/0;
 		roleDAO.update(r);
 		return info;
 	}
