@@ -2,26 +2,28 @@ package com.xdkj.yccb.main.sys.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Authority;
 import com.xdkj.yccb.main.entity.RoleAuthority;
 import com.xdkj.yccb.main.entity.Roles;
 import com.xdkj.yccb.main.entity.Watercompany;
+import com.xdkj.yccb.main.sys.dao.RoleAuthorityDAO;
 import com.xdkj.yccb.main.sys.dao.RoleDAO;
 import com.xdkj.yccb.main.sys.dto.RoleView;
 import com.xdkj.yccb.main.sys.service.RoleService;
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 	@Autowired
 	private RoleDAO roleDAO;
+	@Autowired
+	private RoleAuthorityDAO roleAuthorityDAO;
 
 	@Override
 	public List<RoleView> getList(RoleView rv, PageBase pb) {
@@ -62,7 +64,6 @@ public class RoleServiceImpl implements RoleService {
 		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
 		r.setValid("1");
 		int rid = roleDAO.add(r);
-		//int a = 1/0;
 		if(rid>0){
 			return "succ";
 		}
@@ -86,10 +87,17 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	@Override
-	@Transactional
 	public String updateRole(RoleView rv, String chAuth, String pAuth) {
-		Roles r = new Roles();
-		r.setPid(rv.getPid());
+		String info = "succ";
+		Roles r = roleDAO.getById(rv.getPid());
+		Set<RoleAuthority> set = r.getRoleAuthorities();
+		List<Integer> roleAuthIds = new ArrayList<Integer>();
+		for (RoleAuthority ra : set) {
+			roleAuthIds.add(ra.getPid());
+		}
+		if(roleAuthIds.size()>0){
+			roleAuthorityDAO.delete(roleAuthIds);
+		}
 		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
 		String [] ids = (chAuth+pAuth).split(",");
 		for (String id : ids) {
@@ -101,13 +109,12 @@ public class RoleServiceImpl implements RoleService {
 			auset.add(ra);
 		}
 		r.setSystemRole(rv.getSystemRole());
-		r.setValid(rv.getValid());
 		r.setRoleAuthorities(auset);
 		r.setRoleName(rv.getRoleName());
 		r.setRemark(rv.getRemark());
 		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
 		roleDAO.update(r);
-		return null;
+		return info;
 	}
 
 }

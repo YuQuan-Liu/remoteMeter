@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@include file="/commonjsp/top.jsp" %>
-<title><fmt:message key="main.title"></fmt:message></title>
+<title><fmt:message key="main.title"/></title>
 <script type="text/javascript" src="${path}/resource/js/main.js"></script>
 <script type="text/javascript">
 var _menus = {

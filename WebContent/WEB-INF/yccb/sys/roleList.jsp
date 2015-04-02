@@ -16,6 +16,7 @@ $(function(){
 	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
+	    singleSelect:true,
 	    border:false,
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
@@ -25,7 +26,7 @@ $(function(){
 	        {field:'remark',title:'备注',width:100}
 	    ]],
 	    toolbar: [{ 
-	        text: '添加', 
+	        text: '<fmt:message key="common.add"/>', 
 	        iconCls: 'icon-add', 
 	        handler: function() { 
 	        	$('#addRoleWin').window({   
@@ -41,7 +42,7 @@ $(function(){
 	    		}); 
 	        } 
 	    }, '-', { 
-	        text: '修改', 
+	        text: '<fmt:message key="common.update"/>', 
 	        iconCls: 'icon-edit', 
 	        handler: function() { 
 	        	var rows = $('#roleListTab').datagrid('getSelections');
@@ -68,7 +69,7 @@ $(function(){
 	        	}
 	        } 
 	    }, '-',{ 
-	        text: '删除', 
+	        text: '<fmt:message key="common.delete"/>', 
 	        iconCls: 'icon-remove', 
 	        handler: function(){ 
 	        	var rows = $('#roleListTab').datagrid('getSelections');
@@ -83,9 +84,9 @@ $(function(){
 });
 function TFFormatter(val,row){
 	if(val=="1")
-	return "是";
+	return "<fmt:message key='common.yes'/>";
 	if(val=="0")
-	return "否";
+	return "<fmt:message key='common.no'/>";
 }
 //查询
 function query(){

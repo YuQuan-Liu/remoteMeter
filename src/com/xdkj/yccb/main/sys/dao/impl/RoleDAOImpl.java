@@ -11,7 +11,7 @@ import com.xdkj.yccb.main.entity.Roles;
 import com.xdkj.yccb.main.sys.dao.RoleDAO;
 import com.xdkj.yccb.main.sys.dto.RoleView;
 @Repository
-public class RoleDAOImpl  extends HibernateDAO<Roles>implements RoleDAO {
+public class RoleDAOImpl extends HibernateDAO<Roles>implements RoleDAO {
 
 	@Override
 	public List<Roles> getList(RoleView r, PageBase pageInfo) {
@@ -39,7 +39,7 @@ public class RoleDAOImpl  extends HibernateDAO<Roles>implements RoleDAO {
 
 	@Override
 	public void delete(Roles r) {
-
+		
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class RoleDAOImpl  extends HibernateDAO<Roles>implements RoleDAO {
 
 	@Override
 	public Roles getById(int pid) {
-		String hql = "from Roles r where r.pid=  "+pid;
+		String hql = "from Roles r where r.pid= "+pid;
 		Query q = getSession().createQuery(hql);
 		return (Roles) q.uniqueResult();
 	}

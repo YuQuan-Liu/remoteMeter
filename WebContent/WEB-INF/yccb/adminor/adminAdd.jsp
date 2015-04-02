@@ -13,7 +13,6 @@ $(function(){
 	    required: true,   
 	    validType: "remote['${path}/admin/check.do','loginName']"  
 	});  
-	//$("#loginName").addClass('easyui-textbox');
 })
 function submitForm(){
 	if($('#addForm').form('validate')){

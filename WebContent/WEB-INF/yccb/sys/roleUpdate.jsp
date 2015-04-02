@@ -13,6 +13,7 @@ $(function(){
 	    url:'${path}/sys/auth/tree.do?roleId=${role.pid}',
 	    checkbox:true,
 	    animate:true,
+	    //loadMsg:'Loading...',
 	    onLoadSuccess:function(node, data){
 	    	getChecked();
 	    }
