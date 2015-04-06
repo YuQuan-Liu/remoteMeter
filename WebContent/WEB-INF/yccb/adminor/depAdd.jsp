@@ -12,54 +12,43 @@ $(function(){
 	
 })
 function submitForm(){
-	if($('#watUpdateForm').form('validate')){
-		$('#watUpdateForm').form('submit', {   
+	if($('#depAddForm').form('validate')){
+		$('#depAddForm').form('submit', {   
 		    success: function(data){   
 		       if(data=="succ"){
-		    	   $('#watComUpdateWin').window('close');
-		    	   $.messager.show({
-						title:'添加自来水公司',
-						msg:'添加成功',
-						showType:'slide',
-						timeout:3000
-					});
-				 	$('#watComListTab').datagrid('reload');
-		    	  /*  $.messager.alert('添加管理员','添加成功！','info',
+		    	   $.messager.alert('添加管理员','添加成功！','info',
 						function(){
 						 	$('#watComAddWin').window('close');
 						 	$('#watComListTab').datagrid('reload');
-						 }); */
+						 });
 		       }
 		    }   
 		});  
 	}
 }
 function clearForm(){
-	$('#watUpdateForm').form('clear');
+	$('#depAddForm').form('clear');
 	}
 </script>
 		<div style="padding:10px 0 10px 60px">
-	    <form id="watUpdateForm" method="post" action="${path}/admin/watcom/add.do">
+	    <form id="depAddForm" method="post" action="${path}/admin/addAdmin.do">
 	    	<input type="hidden" name="valid" value="1"/>
-	    	<input type="hidden" name="pid" value="${watcom.pid }"/>
 	    	<table>
 	    		<tr>
 	    			<td>自来水公司名：</td>
-	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true" value="${watcom.companyName }"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>自来水公司地址：</td>
-	    			<td> <input class="easyui-textbox" type="text" name="companyAddr" data-options="required:true" value="${watcom.companyAddr }"/></td>
+	    			<td> <input class="easyui-textbox" type="text" name="companyAddr" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>自来水公司标识：</td>
-	    			<td><input class="easyui-textbox" type="text" name="mark" data-options="required:true" value="${watcom.mark }"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="mark" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
-	    			<td>
-	    			<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px" value="${watcom.remark }">
-	    			</td>
+	    			<td><input class="easyui-textbox" type="text" name="remark" data-options="required:true"/></td>
 	    		</tr>
 	    	</table>
 	    </form>

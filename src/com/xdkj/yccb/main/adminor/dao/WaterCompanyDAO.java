@@ -11,4 +11,6 @@ public interface WaterCompanyDAO {
 	Integer getTotalCount(Watercompany watcom);
 	
 	Integer addWatcom(Watercompany watcom);
+	
+	Watercompany getById(Integer pid);
 }

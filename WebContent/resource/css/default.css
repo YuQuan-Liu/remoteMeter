@@ -18,7 +18,11 @@ a:hover{ color:Red; text-decoration:underline;}
 .easyui-accordion ul li div.selected a{color:#416AA3; font-weight:bold;}
 
 .micon{ background:url(../images/tabicons.png) no-repeat;width:18px; line-height:18px; display:inline-block;}
-.micon-sys{ background-position:0px -200px;}
+.micon-sys{ background-position:-100px -480px;}
+.micon-inf{ background-position:-0px -200px;}
+.micon-read{ background-position:-0px -100px;}
+.micon-charge{ background-position:-40px -100px;}
+.micon-stat{ background-position:-240px -80px;}
 .micon-set{ background-position:-380px -200px;}
 .micon-add{background-position: -20px 0px;}
 

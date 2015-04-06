@@ -3,12 +3,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>自来水公司列表</title>
+<title>片区列表</title>
 <%@include file="/commonjsp/top.jsp" %>
 <script type="text/javascript">
 $(function(){
-	$('#watComListTab').datagrid({
-	    url:'${path}/admin/watcom/listContent.do',
+	$('#depListTab').datagrid({
+	    url:'${path}/admin/dep/listContent.do',
 	    fit:true,
 	    pagination:true,
 	    pageList:[5,10,15,20],
@@ -19,47 +19,35 @@ $(function(){
 	        {field:'pid',title:'ID',width:100},   
 	        {field:'companyName',title:'公司名',width:100},   
 	        {field:'companyAddr',title:'公司地址',width:100},
-	        {field:'mark',title:'公司标识',width:100},
-	        {field:'remark',title:'备注',width:100}
-	       /*  {field:'null',title:'操作',width:100,formatter:
-	        	function operFmt(value, rec, index){
-		        	if (!rec.pid) {
-		        		return '';
-		        	}
-		        	var href = '';
-		        	href += "[<a href='"+rec.pid+"' >";
-		        	href += "删除</a>]";
-		        	return href;
-	        	}	
-	        } */
+	        {field:'mark',title:'公司标识',width:100}
 	    ]],
 	    toolbar: [{ 
-	        text: '<fmt:message key="common.add"/>', 
+	        text: '添加', 
 	        iconCls: 'icon-add', 
 	        handler: function() { 
-	        	$('#watComAddWin').window({   
-	    		    href:'${path}/admin/watcom/addPage.do',
+	        	$('#depAddWin').window({   
+	    		    href:'${path}/admin/dep/addPage.do',
 	    		    width:400,   
 	    		    height:350,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加自来水公司', 
+	    		    title: '添加片区', 
 	    		    onLoad:function(){   
 	    		        //alert('loaded successfully'); 
 	    		    }   
 	    		}); 
 	        } 
 	    }, '-', { 
-	        text: '<fmt:message key="common.update"/>', 
+	        text: '修改', 
 	        iconCls: 'icon-edit', 
 	        handler: function() { 
-	        	var rows = $('#watComListTab').datagrid('getSelections');
+	        	var rows = $('#depListTab').datagrid('getSelections');
 	        	var leng = rows.length;
 	        	if(leng==1){
 	        		var pid = rows[0].pid;
 	        		alert(pid);
-	        		$('#watComUpdateWin').window({   
-		    		    href:'${path}/admin/watcom/updatePage.do?pid='+pid,
+	        		$('#depUpdateWin').window({   
+		    		    href:'${path}/admin/dep/updatePage.do?pid='+pid,
 		    		    width:400,   
 		    		    height:350,
 		    		    minimizable:false,
@@ -77,10 +65,10 @@ $(function(){
 	        	}
 	        } 
 	    }, '-',{ 
-	        text: '<fmt:message key="common.delete"/>', 
+	        text: '删除', 
 	        iconCls: 'icon-remove', 
 	        handler: function(){ 
-	        	var rows = $('#adminListTab').datagrid('getSelections');
+	        	var rows = $('#depListTab').datagrid('getSelections');
 	        	var pids = "";
 	        	rows.forEach(function(obj){  
 	        	    pids += obj.pid+",";
@@ -93,8 +81,8 @@ $(function(){
 </script>
 </head>
 <body>
-<table id="watComListTab"></table>
-<div id="watComAddWin"></div>
-<div id="watComUpdateWin"></div>
+<table id="depListTab"></table>
+<div id="depAddWin"></div>
+<div id="depUpdateWin"></div>
 </body>
 </html>

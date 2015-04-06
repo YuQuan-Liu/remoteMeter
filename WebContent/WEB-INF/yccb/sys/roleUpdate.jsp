@@ -89,9 +89,8 @@ function clearForm(){
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
-	    			<td><!-- <input class="easyui-textbox" type="text" name="remark" /> -->
-	    			<textarea name="remark" style="height:60px;">${role.remark}</textarea>
-	    			
+	    			<td>
+	    			<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px">
 	    			</td>
 	    		</tr>
 	    	</table>

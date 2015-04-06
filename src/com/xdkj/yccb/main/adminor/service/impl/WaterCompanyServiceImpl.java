@@ -48,4 +48,12 @@ public class WaterCompanyServiceImpl implements WaterCompanyService {
 		return "fail";
 	}
 
+	@Override
+	public Watercompany getById(String pid) {
+		if(null!=pid&&!"".equals(pid)){
+			return waterCompanyDAO.getById(Integer.parseInt(pid));
+		}
+		return null;
+	}
+
 }

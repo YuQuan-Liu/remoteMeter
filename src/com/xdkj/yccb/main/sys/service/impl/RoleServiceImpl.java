@@ -2,7 +2,6 @@ package com.xdkj.yccb.main.sys.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -56,7 +55,6 @@ public class RoleServiceImpl implements RoleService {
 			ra.setRoles(r);
 			auset.add(ra);
 		}
-		
 		r.setRoleAuthorities(auset);
 		r.setRoleName(rv.getRoleName());
 		r.setRemark(rv.getRemark());
@@ -113,7 +111,6 @@ public class RoleServiceImpl implements RoleService {
 		r.setRoleName(rv.getRoleName());
 		r.setRemark(rv.getRemark());
 		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
-		int i = 1/0;
 		roleDAO.update(r);
 		return info;
 	}

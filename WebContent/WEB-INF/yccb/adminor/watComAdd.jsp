@@ -16,11 +16,19 @@ function submitForm(){
 		$('#watAddForm').form('submit', {   
 		    success: function(data){   
 		       if(data=="succ"){
-		    	   $.messager.alert('添加管理员','添加成功！','info',
+		    	   $('#watComAddWin').window('close');
+		    	   $.messager.show({
+						title:'添加自来水公司',
+						msg:'添加成功',
+						showType:'slide',
+						timeout:3000
+					});
+				 	$('#watComListTab').datagrid('reload');
+		    	  /*  $.messager.alert('添加管理员','添加成功！','info',
 						function(){
 						 	$('#watComAddWin').window('close');
 						 	$('#watComListTab').datagrid('reload');
-						 });
+						 }); */
 		       }
 		    }   
 		});  
@@ -31,7 +39,7 @@ function clearForm(){
 	}
 </script>
 		<div style="padding:10px 0 10px 60px">
-	    <form id="watAddForm" method="post" action="${path}/admin/addAdmin.do">
+	    <form id="watAddForm" method="post" action="${path}/admin/watcom/add.do">
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table>
 	    		<tr>
@@ -48,7 +56,9 @@ function clearForm(){
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
-	    			<td><input class="easyui-textbox" type="text" name="remark" data-options="required:true"/></td>
+	    			<td>
+	    			<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px">
+	    			</td>
 	    		</tr>
 	    	</table>
 	    </form>

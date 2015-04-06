@@ -13,31 +13,51 @@ var _menus = {
 			"menuid" : "10",
 			"icon" : "micon-sys",
 			"menuname" : "管理员",
-			"menus" : [ {
-				"menuid" : "111",
-				"menuname" : "自来水公司",
-				"icon" : "micon-nav",
-				"url" : "admin/watcom/list.do"
-			}, {
-				"menuid" : "113",
-				"menuname" : "管理员",
-				"icon" : "micon-nav",
-				"url" : "admin/list.do"
-			}, {
-				"menuid" : "115",
-				"menuname" : "权限",
-				"icon" : "micon-nav",
-				"url" : "sys/auth/list.do"
-			}, {
-				"menuid" : "117",
-				"menuname" : "片区",
-				"icon" : "micon-nav",
-				"url" : "#"
-			}]
+			"menus" : [ 
+			<c:if test="${menus['watcom']=='t'}">
+				 {
+					"menuid" : "111",
+					"menuname" : "自来水公司",
+					"icon" : "micon-nav",
+					"url" : "admin/watcom/list.do"
+				}, 
+			</c:if>
+			<c:if test="${menus['watcom']=='t'}">
+				{
+					"menuid" : "113",
+					"menuname" : "管理员",
+					"icon" : "micon-nav",
+					"url" : "admin/list.do"
+				},
+			</c:if>
+			<c:if test="${menus['auth']=='t'}">
+				{
+					"menuid" : "115",
+					"menuname" : "权限",
+					"icon" : "micon-nav",
+					"url" : "sys/auth/list.do"
+				},
+			</c:if>	
+			<c:if test="${menus['role']=='t'}">
+				{
+					"menuid" : "115",
+					"menuname" : "角色",
+					"icon" : "micon-nav",
+					"url" : "sys/role/list.do"
+				},
+			</c:if>
+			<c:if test="${menus['areas']=='t'}">
+				{
+					"menuid" : "117",
+					"menuname" : "片区",
+					"icon" : "micon-nav",
+					"url" : "#"
+				},
+			</c:if>]
 		}],
 		info : [{
 			"menuid" : "20",
-			"icon" : "micon-sys",
+			"icon" : "micon-inf",
 			"menuname" : "信息录入",
 			"menus" : [ {
 				"menuid" : "211",
@@ -49,13 +69,13 @@ var _menus = {
 				"menuname" : "用户信息",
 				"icon" : "micon-nav",
 				"url" : "#"
-			} ]
+			} ,]
 
 		}],
 		read : [{
 			"menuid" : "30",
-			"icon" : "micon-sys",
-			"menuname" : "信息录入",
+			"icon" : "micon-read",
+			"menuname" : "抄表",
 			"menus" : [ {
 				"menuid" : "311",
 				"menuname" : "抄表",
@@ -66,12 +86,12 @@ var _menus = {
 				"menuname" : "非远程录入",
 				"icon" : "micon-nav",
 				"url" : "#"
-			} ]
+			}, ]
 
 		}],
 		charge : [{
 			"menuid" : "40",
-			"icon" : "micon-sys",
+			"icon" : "micon-charge",
 			"menuname" : "收费",
 			"menus" : [ {
 				"menuid" : "411",
@@ -98,12 +118,12 @@ var _menus = {
 				"menuname" : "阀控预付费",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}]
+			},]
 
 		}],
 		statis : [{
 			"menuid" : "50",
-			"icon" : "micon-sys",
+			"icon" : "micon-stat",
 			"menuname" : "统计",
 			"menus" : [ {
 				"menuid" : "511",
@@ -140,7 +160,7 @@ var _menus = {
 				"menuname" : "收费率统计",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}]
+			},]
 
 		}]
 	};
@@ -159,7 +179,7 @@ var _menus = {
 	    <fmt:message key="main.loading"/>
 	</div>
 </div>
-	<div data-options="region:'north',border:false" style="height:95px;padding:0px;" id="north-head">
+	<div data-options="region:'north',border:false,expand:true" style="height:95px;padding:0px;" id="north-head">
 		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
 		<span id="clock">当前时间：<span id="bgclock"></span></span>
 		<ul id="topmenu">
@@ -200,13 +220,13 @@ var _menus = {
 		</div>
 	</div>
 	<div data-options="region:'center',border:false">
-		<div id="tabs" class="easyui-tabs" style="width:500px;height:250px;" data-options="fit:true">  
+		<div id="tabs" class="easyui-tabs" data-options="fit:true">  
 		     <div id='welcome' title='<fmt:message key="main.welcome"/>' data-options="closable:false,select:true" style="padding:5px;">
 		     <h2><fmt:message key="main.welcome"/></h2>
 		     </div>  
 		</div>  
 	</div>
-	<div data-options="region:'south',border:false" style="height:50px;padding-bottom:10px; background: #D2E0F2;">
+	<div data-options="region:'south',border:false" style="background: #D2E0F2;overflow: hidden;">
 		<p align="center">copryright 2014 版权所有 淅川西岛光电仪表科技有限公司</p>
 	</div>
 	<div id="mm" class="easyui-menu" style="width:150px;">

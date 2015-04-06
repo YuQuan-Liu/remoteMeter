@@ -84,13 +84,14 @@ function clearForm(){
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
-	    			<td><input class="easyui-textbox" type="text" name="remark" /></td>
+	    			<td>
+	    			<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px">
+	    			</td>
 	    		</tr>
 	    	</table>
 		</div>
 		<div data-options="region:'center',split:true" title="选择权限" style="width:200px;">
 			<ul id="authTree"></ul>
-			<!-- <input type="button" value="获取选中" onclick="getChecked()"/> -->
 		</div>
 		<div data-options="region:'south',split:true" style="width:500px;height: 50px;padding: 5px;text-align:center">
 			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>

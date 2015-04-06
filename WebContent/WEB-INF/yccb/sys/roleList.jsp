@@ -16,7 +16,6 @@ $(function(){
 	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
-	    singleSelect:true,
 	    border:false,
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   

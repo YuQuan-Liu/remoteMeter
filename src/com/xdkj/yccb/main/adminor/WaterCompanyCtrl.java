@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xdkj.yccb.common.JsonDataUtil;
@@ -47,5 +49,10 @@ public class WaterCompanyCtrl {
 	public String add(Watercompany watcom){
 		return waterCompanyService.addWatcom(watcom);
 		
+	}
+	@RequestMapping(value="admin/watcom/updatePage",method=RequestMethod.GET)
+	public String updatePage(@RequestParam("pid") String pid,Model model){
+		model.addAttribute("watcom", waterCompanyService.getById(pid));
+		return waterComUpdate;
 	}
 }

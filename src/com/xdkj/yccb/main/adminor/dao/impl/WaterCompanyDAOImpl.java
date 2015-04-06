@@ -38,4 +38,9 @@ public class WaterCompanyDAOImpl extends HibernateDAO<Watercompany> implements W
 		return watcom.getPid();
 	}
 
+	@Override
+	public Watercompany getById(Integer pid) {
+		return getHibernateTemplate().get(Watercompany.class, pid);
+	}
+
 }

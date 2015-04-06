@@ -27,6 +27,8 @@ public interface WaterCompanyService {
 	 */
 	String addWatcom( Watercompany watcom);
 	
+	Watercompany getById(String pid);
+	
 	
 	
 
