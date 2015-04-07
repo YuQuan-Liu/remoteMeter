@@ -43,4 +43,9 @@ public class WaterCompanyDAOImpl extends HibernateDAO<Watercompany> implements W
 		return getHibernateTemplate().get(Watercompany.class, pid);
 	}
 
+	@Override
+	public void deleteByIds(Integer[] pids) {
+		
+	}
+
 }

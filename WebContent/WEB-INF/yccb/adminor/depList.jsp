@@ -15,6 +15,9 @@ $(function(){
 	    queryParams:{},
 	    rownumbers:true,
 	    border:false,
+	    rowStyler: function(index,row){
+			return 'height:30px;';
+		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100},   
 	        {field:'companyName',title:'公司名',width:100},   

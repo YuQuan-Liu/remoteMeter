@@ -55,4 +55,10 @@ public class WaterCompanyCtrl {
 		model.addAttribute("watcom", waterCompanyService.getById(pid));
 		return waterComUpdate;
 	}
+	@RequestMapping(value="admin/watcom/delete",method=RequestMethod.POST)
+	@ResponseBody
+	public String delete(@RequestParam("pids")String pids){
+		
+		return pids;
+	}
 }

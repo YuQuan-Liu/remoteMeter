@@ -56,4 +56,10 @@ public class WaterCompanyServiceImpl implements WaterCompanyService {
 		return null;
 	}
 
+	@Override
+	public String delete(String pids) {
+		
+		return "succ";
+	}
+
 }

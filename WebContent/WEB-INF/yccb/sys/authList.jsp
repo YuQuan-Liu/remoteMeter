@@ -17,6 +17,10 @@ $(function(){
 	    queryParams:{},
 	    rownumbers:true,
 	    border:false,
+	    autoRowHeight:false,
+	    rowStyler: function(index,row){
+			return 'height:30px;';
+		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
 	        {field:'authorityCode',title:'权限编码',width:100},   

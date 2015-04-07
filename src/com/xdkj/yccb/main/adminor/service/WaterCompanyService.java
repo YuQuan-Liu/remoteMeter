@@ -28,8 +28,10 @@ public interface WaterCompanyService {
 	String addWatcom( Watercompany watcom);
 	
 	Watercompany getById(String pid);
-	
-	
-	
-
+	/**
+	 * 逻辑删除自来水公司
+	 * @param pids 自来水公司id集合
+	 * @return succ或fail
+	 */
+	String delete(String pids);
 }

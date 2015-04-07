@@ -15,8 +15,12 @@ $(function(){
 	    queryParams:{},
 	    rownumbers:true,
 	    border:false,
+	    autoRowHeight:false,
+	    rowStyler: function(index,row){
+			return 'height:30px;';
+		},
 	    columns:[[
-	        {field:'pid',title:'ID',width:100},   
+	        {field:'pid',title:'ID',width:100,checkbox:true},   
 	        {field:'companyName',title:'公司名',width:100},   
 	        {field:'companyAddr',title:'公司地址',width:100},
 	        {field:'mark',title:'公司标识',width:100},
@@ -40,7 +44,7 @@ $(function(){
 	        	$('#watComAddWin').window({   
 	    		    href:'${path}/admin/watcom/addPage.do',
 	    		    width:400,   
-	    		    height:350,
+	    		    height:250,
 	    		    minimizable:false,
 	    		    maximizable:false,
 	    		    title: '添加自来水公司', 
@@ -57,11 +61,10 @@ $(function(){
 	        	var leng = rows.length;
 	        	if(leng==1){
 	        		var pid = rows[0].pid;
-	        		alert(pid);
 	        		$('#watComUpdateWin').window({   
 		    		    href:'${path}/admin/watcom/updatePage.do?pid='+pid,
 		    		    width:400,   
-		    		    height:350,
+		    		    height:250,
 		    		    minimizable:false,
 		    		    maximizable:false,
 		    		    title: '更新自来水公司', 
@@ -71,21 +74,37 @@ $(function(){
 		    		}); 
 	        		
 	        	}else if(leng>1){
-	        		alert("single selected");
+	        		$.messager.alert('更新自来水公司','Single selected!','info');
 	        	}else{
-	        		alert("unselected");
+	        		$.messager.alert('更新自来水公司','Select needed!','info');
 	        	}
 	        } 
 	    }, '-',{ 
 	        text: '<fmt:message key="common.delete"/>', 
 	        iconCls: 'icon-remove', 
 	        handler: function(){ 
-	        	var rows = $('#adminListTab').datagrid('getSelections');
+	        	var rows = $('#watComListTab').datagrid('getSelections');
 	        	var pids = "";
-	        	rows.forEach(function(obj){  
-	        	    pids += obj.pid+",";
-	        	}) 
-	        	alert(pids);
+	        	if(rows.length > 0){
+	        		$.messager.confirm('删除自来水公司', 'Are you confirm this?', function(r){
+	    				if (r){
+	    					rows.forEach(function(obj){  
+	    		        	    pids += obj.pid+",";
+	    		        	});
+	    					$.ajax({
+	    						   type: "POST",
+	    						   url: "some.php",
+	    						   data: "name=John&location=Boston",
+	    						   success: function(msg){
+	    						     alert( "Data Saved: " + msg );
+	    						   }
+	    						});
+	    					//alert('confirmed: '+pids);
+	    				}
+	    			});
+	        	}else{
+	        		$.messager.alert('删除自来水公司','Select needed!','info');
+	        	}
 	        } 
 	    }]
 	});

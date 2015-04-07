@@ -18,8 +18,8 @@ function submitForm(){
 		       if(data=="succ"){
 		    	   $('#watComUpdateWin').window('close');
 		    	   $.messager.show({
-						title:'添加自来水公司',
-						msg:'添加成功',
+						title:'更新自来水公司',
+						msg:'更新成功！',
 						showType:'slide',
 						timeout:3000
 					});

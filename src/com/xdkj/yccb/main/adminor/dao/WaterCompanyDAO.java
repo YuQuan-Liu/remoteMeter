@@ -13,4 +13,6 @@ public interface WaterCompanyDAO {
 	Integer addWatcom(Watercompany watcom);
 	
 	Watercompany getById(Integer pid);
+	
+	void deleteByIds(Integer [] pids);
 }
