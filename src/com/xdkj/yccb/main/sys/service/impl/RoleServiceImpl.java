@@ -87,24 +87,53 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public String updateRole(RoleView rv, String chAuth, String pAuth) {
 		String info = "succ";
+		String [] ids = (chAuth+pAuth).split(",");
 		Roles r = roleDAO.getById(rv.getPid());
 		Set<RoleAuthority> set = r.getRoleAuthorities();
+		//需要新增的权限集合
+		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
 		List<Integer> roleAuthIds = new ArrayList<Integer>();
 		for (RoleAuthority ra : set) {
 			roleAuthIds.add(ra.getPid());
 		}
-		if(roleAuthIds.size()>0){
-			roleAuthorityDAO.delete(roleAuthIds);
-		}
-		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
-		String [] ids = (chAuth+pAuth).split(",");
+		List<Integer> DelIds = new ArrayList<Integer>();
+		//对比选出需要新增的权限
 		for (String id : ids) {
-			RoleAuthority ra = new RoleAuthority();
 			if(null!=id&&!"".equals(id)){
-				ra.setAuthority(new Authority(Integer.parseInt(id)));
+				boolean isNew = true;
+				
+					for (Integer rid : roleAuthIds) {
+						if(Integer.parseInt(id)==rid){
+							isNew=false;
+							break;
+						}
+					}
+				if(isNew){
+					RoleAuthority ra = new RoleAuthority();
+					ra.setAuthority(new Authority(Integer.parseInt(id)));
+					ra.setRoles(r);
+					auset.add(ra);
+				}
 			}
-			ra.setRoles(r);
-			auset.add(ra);
+		}
+		//对比筛选出需要删除的权限
+		for (Integer rid : roleAuthIds) {
+			boolean del = true;
+			for (String id : ids) {
+				if(null!=id&&!"".equals(id)){
+					if(Integer.parseInt(id)==rid){
+						del = false;
+						break;
+					}
+				}
+			}
+			if(del){
+				DelIds.add(rid);
+			}
+		}
+		
+		if(DelIds.size()>0){
+			roleAuthorityDAO.delete(DelIds);
 		}
 		r.setSystemRole(rv.getSystemRole());
 		r.setRoleAuthorities(auset);
