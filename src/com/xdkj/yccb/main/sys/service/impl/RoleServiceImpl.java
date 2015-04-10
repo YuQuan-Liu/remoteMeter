@@ -92,18 +92,18 @@ public class RoleServiceImpl implements RoleService {
 		Set<RoleAuthority> set = r.getRoleAuthorities();
 		//需要新增的权限集合
 		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
-		List<Integer> roleAuthIds = new ArrayList<Integer>();
-		for (RoleAuthority ra : set) {
+		//List<Integer> roleAuthIds = new ArrayList<Integer>();
+		/*for (RoleAuthority ra : set) {
 			roleAuthIds.add(ra.getPid());
-		}
+		}*/
 		List<Integer> DelIds = new ArrayList<Integer>();
 		//对比选出需要新增的权限
 		for (String id : ids) {
 			if(null!=id&&!"".equals(id)){
 				boolean isNew = true;
 				
-					for (Integer rid : roleAuthIds) {
-						if(Integer.parseInt(id)==rid){
+					for (RoleAuthority rid : set) {
+						if(Integer.parseInt(id)==rid.getAuthority().getPid()){
 							isNew=false;
 							break;
 						}
@@ -117,18 +117,18 @@ public class RoleServiceImpl implements RoleService {
 			}
 		}
 		//对比筛选出需要删除的权限
-		for (Integer rid : roleAuthIds) {
+		for (RoleAuthority rid : set) {
 			boolean del = true;
 			for (String id : ids) {
 				if(null!=id&&!"".equals(id)){
-					if(Integer.parseInt(id)==rid){
+					if(Integer.parseInt(id)==rid.getAuthority().getPid()){
 						del = false;
 						break;
 					}
 				}
 			}
 			if(del){
-				DelIds.add(rid);
+				DelIds.add(rid.getPid());
 			}
 		}
 		
