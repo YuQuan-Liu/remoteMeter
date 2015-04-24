@@ -12,12 +12,12 @@ var _menus = {
 		admin : [ {
 			"menuid" : "10",
 			"icon" : "micon-sys",
-			"menuname" : "管理员",
+			"menuname" :"<fmt:message key='menu.admin'/>",
 			"menus" : [ 
 			<c:if test="${menus['watcom']=='t'}">
 				 {
 					"menuid" : "111",
-					"menuname" : "自来水公司",
+					"menuname" : "<fmt:message key='menu.watcom'/>",
 					"icon" : "micon-nav",
 					"url" : "admin/watcom/list.do"
 				}, 
@@ -25,7 +25,7 @@ var _menus = {
 			<c:if test="${menus['watcom']=='t'}">
 				{
 					"menuid" : "113",
-					"menuname" : "管理员",
+					"menuname" : "<fmt:message key='menu.admin'/>",
 					"icon" : "micon-nav",
 					"url" : "admin/list.do"
 				},
@@ -33,7 +33,7 @@ var _menus = {
 			<c:if test="${menus['auth']=='t'}">
 				{
 					"menuid" : "115",
-					"menuname" : "权限",
+					"menuname" : "<fmt:message key='menu.auth'/>",
 					"icon" : "micon-nav",
 					"url" : "sys/auth/list.do"
 				},
@@ -41,7 +41,7 @@ var _menus = {
 			<c:if test="${menus['role']=='t'}">
 				{
 					"menuid" : "115",
-					"menuname" : "角色",
+					"menuname" : "<fmt:message key='menu.role'/>",
 					"icon" : "micon-nav",
 					"url" : "sys/role/list.do"
 				},
@@ -49,7 +49,7 @@ var _menus = {
 			<c:if test="${menus['areas']=='t'}">
 				{
 					"menuid" : "117",
-					"menuname" : "片区",
+					"menuname" : "<fmt:message key='menu.areas'/>",
 					"icon" : "micon-nav",
 					"url" : "#"
 				},
@@ -58,109 +58,154 @@ var _menus = {
 		info : [{
 			"menuid" : "20",
 			"icon" : "micon-inf",
-			"menuname" : "信息录入",
-			"menus" : [ {
+			"menuname" : "<fmt:message key='menu.info'/>",
+			"menus" : [ 
+			<c:if test="${menus['community']=='t'}">
+			 {
 				"menuid" : "211",
-				"menuname" : "小区信息",
+				"menuname" : "<fmt:message key='menu.community'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			},
+			</c:if>
+			<c:if test="${menus['userinfo']=='t'}">
+			{
 				"menuid" : "213",
-				"menuname" : "用户信息",
+				"menuname" : "<fmt:message key='menu.user'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			} ,]
+			} ,
+			</c:if>]
 
 		}],
 		read : [{
 			"menuid" : "30",
 			"icon" : "micon-read",
-			"menuname" : "抄表",
-			"menus" : [ {
+			"menuname" : "<fmt:message key='menu.read'/>",
+			"menus" : [ 
+			<c:if test="${menus['readmeter']=='t'}"> 
+			  {
 				"menuid" : "311",
-				"menuname" : "抄表",
+				"menuname" : "<fmt:message key='menu.readmeter'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			}, 
+			</c:if>
+			<c:if test="${menus['unremote']=='t'}">
+			{
 				"menuid" : "313",
-				"menuname" : "非远程录入",
+				"menuname" : "<fmt:message key='menu.unremote'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, ]
+			}, </c:if>]
 
 		}],
-		charge : [{
+		charge : [
+			<c:if test="${menus['chargech']=='t'}">
+		   {
 			"menuid" : "40",
 			"icon" : "micon-charge",
-			"menuname" : "收费",
+			"menuname" : "<fmt:message key='menu.charge'/>",
 			"menus" : [ {
 				"menuid" : "411",
-				"menuname" : "收费",
+				"menuname" : "<fmt:message key='menu.charge'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			}, 
+			</c:if>
+			<c:if test="${menus['calcost']=='t'}">
+			{
 				"menuid" : "412",
-				"menuname" : "结算",
+				"menuname" : "<fmt:message key='menu.calcost'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			} ,{
+			} ,
+			</c:if>
+			<c:if test="${menus['chargelat']=='t'}">
+			{
 				"menuid" : "413",
-				"menuname" : "后付费",
+				"menuname" : "<fmt:message key='menu.chargelat'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			},{
+			},
+			</c:if>
+			<c:if test="${menus['closetap']=='t'}">
+			{
 				"menuid" : "414",
-				"menuname" : "关阀控水",
+				"menuname" : "<fmt:message key='menu.closetap'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			} ,{
+			} ,
+			</c:if>
+			<c:if test="${menus['domaintap']=='t'}">
+			{
 				"menuid" : "415",
-				"menuname" : "阀控预付费",
+				"menuname" : "<fmt:message key='menu.domaintap'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			},]
+			},</c:if>]
 
 		}],
 		statis : [{
 			"menuid" : "50",
 			"icon" : "micon-stat",
-			"menuname" : "统计",
-			"menus" : [ {
+			"menuname" : "<fmt:message key='menu.statis'/>",
+			"menus" : [ 
+			<c:if test="${menus['chargestat']=='t'}">
+			 {
 				"menuid" : "511",
-				"menuname" : "收费统计",
+				"menuname" : "<fmt:message key='menu.chargestat'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			},
+			</c:if>
+			<c:if test="${menus['chargedstat']=='t'}">
+			{
 				"menuid" : "512",
-				"menuname" : "扣费统计",
+				"menuname" : "<fmt:message key='menu.chargedstat'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			},
+			</c:if>
+			<c:if test="${menus['chargewaterstat']=='t'}">
+			{
 				"menuid" : "513",
-				"menuname" : "楼宇统计",
+				"menuname" : "<fmt:message key='menu.chargewaterstat'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			}, 
+			</c:if>
+			<c:if test="${menus['buildingstat']=='t'}">
+			{
 				"menuid" : "514",
-				"menuname" : "结算用水统计",
+				"menuname" : "<fmt:message key='menu.buildingstat'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			},
+			</c:if>
+			<c:if test="${menus['chargewaterstat']=='t'}">
+			{
 				"menuid" : "515",
-				"menuname" : "重点用户检测",
+				"menuname" : "<fmt:message key='menu.chargewaterstat'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			},
+			</c:if>
+			<c:if test="${menus['maincustmonitor']=='t'}">
+			{
 				"menuid" : "516",
-				"menuname" : "水损分析",
+				"menuname" : "<fmt:message key='menu.maincustmonitor'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			}, {
+			}, 
+			</c:if>
+			<c:if test="${menus['waterlossanaly']=='t'}">
+			{
 				"menuid" : "517",
-				"menuname" : "收费率统计",
+				"menuname" : "<fmt:message key='menu.waterlossanaly'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			},]
+			},</c:if>]
 
 		}]
 	};
@@ -181,7 +226,7 @@ var _menus = {
 </div>
 	<div data-options="region:'north',border:false,expand:true" style="height:95px;padding:0px;" id="north-head">
 		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
-		<span id="clock">当前时间：<span id="bgclock"></span></span>
+		<span id="clock"><fmt:message key="currenttime"/>：<span id="bgclock"></span></span>
 		<ul id="topmenu">
 				<li ><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>"><fmt:message key='menu.index'/></a></li>
 			<c:if test="${menus['admin']=='t'}">
@@ -206,8 +251,8 @@ var _menus = {
 			</c:if>
 		</ul>
 		<span id="userInfo">
-			欢迎您，${userInfo.adminName }
-			<a href="${path}/logout.do">安全退出</a>
+			<fmt:message key="main.welcome"/>，${userInfo.adminName }
+			<a href="${path}/logout.do"><fmt:message key="logout"/></a>
 		</span>
 		 <span id="lang-chose" style="float:right; padding-right:20px;" class="head">
         	<a href="${path}/lang.do?langType=zh" >中文</a> 

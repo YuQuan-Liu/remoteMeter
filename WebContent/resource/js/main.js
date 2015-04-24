@@ -276,10 +276,10 @@ function clockon() {
 		minu = "0" + minu;
 	if (sec < 10)
 		sec = "0" + sec;
-	var arr_week = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+	var arr_week = new Array("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT");
 	week = arr_week[day];
 	var time = "";
-	time = year + "-" + month + "-" + date + "-" + " " + hour + ":" + minu
+	time = year + "-" + month + "-" + date + " " + hour + ":" + minu
 			+ ":" + sec + " " + week;
 
 	$("#bgclock").html(time);
