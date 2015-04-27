@@ -42,7 +42,6 @@ public class WaterCompanyCtrl {
 	@RequestMapping(value="admin/watcom/addPage",method=RequestMethod.GET)
 	public String addPage(){
 		return waterAdd;
-		
 	}
 	@RequestMapping(value="admin/watcom/add",method=RequestMethod.POST)
 	@ResponseBody
@@ -58,7 +57,6 @@ public class WaterCompanyCtrl {
 	@RequestMapping(value="admin/watcom/delete",method=RequestMethod.POST)
 	@ResponseBody
 	public String delete(@RequestParam("pids")String pids){
-		
-		return pids;
+		return waterCompanyService.delete(pids);
 	}
 }

@@ -35,41 +35,13 @@ public class Gprs implements java.io.Serializable {
 	private int gprsprotocol;
 	private String ip;
 	private int port;
-	private char valid;
+	private String valid;
 	private String remark;
 	private Set<Meter> meters = new HashSet<Meter>(0);
 
 	public Gprs() {
 	}
 
-	public Gprs(Neighbor neighbor, String gprstel, String gprsaddr,
-			int gprsprotocol, String ip, int port, char valid) {
-		this.neighbor = neighbor;
-		this.gprstel = gprstel;
-		this.gprsaddr = gprsaddr;
-		this.gprsprotocol = gprsprotocol;
-		this.ip = ip;
-		this.port = port;
-		this.valid = valid;
-	}
-
-	public Gprs(Neighbor neighbor, String gprstel, String gprsaddr,
-			String installAddr, Date installTime, String installPerson,
-			int gprsprotocol, String ip, int port, char valid, String remark,
-			Set<Meter> meters) {
-		this.neighbor = neighbor;
-		this.gprstel = gprstel;
-		this.gprsaddr = gprsaddr;
-		this.installAddr = installAddr;
-		this.installTime = installTime;
-		this.installPerson = installPerson;
-		this.gprsprotocol = gprsprotocol;
-		this.ip = ip;
-		this.port = port;
-		this.valid = valid;
-		this.remark = remark;
-		this.meters = meters;
-	}
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -166,11 +138,11 @@ public class Gprs implements java.io.Serializable {
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 

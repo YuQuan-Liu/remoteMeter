@@ -45,6 +45,7 @@ public class WaterCompanyDAOImpl extends HibernateDAO<Watercompany> implements W
 
 	@Override
 	public void deleteByIds(Integer[] pids) {
+		String hql = "update Watercompany w set w.";
 		
 	}
 

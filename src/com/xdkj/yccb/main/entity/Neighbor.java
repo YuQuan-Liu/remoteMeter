@@ -30,7 +30,7 @@ public class Neighbor implements java.io.Serializable {
 	private Integer timerSwitch;
 	private String timer;
 	private String ip;
-	private char valid;
+	private String valid;
 	private String remark;
 	private Set<Gprs> gprses = new HashSet<Gprs>(0);
 	private Set<Customer> customers = new HashSet<Customer>(0);
@@ -40,37 +40,6 @@ public class Neighbor implements java.io.Serializable {
 
 	public Neighbor() {
 	}
-
-	public Neighbor(Watercompany watercompany, String neighborName,
-			int mainMeter, char valid) {
-		this.watercompany = watercompany;
-		this.neighborName = neighborName;
-		this.mainMeter = mainMeter;
-		this.valid = valid;
-	}
-
-	public Neighbor(Watercompany watercompany, String neighborName,
-			String neighborAddr, int mainMeter, Integer timerSwitch,
-			String timer, String ip, char valid, String remark,
-			Set<Gprs> gprses, Set<Customer> customers,
-			Set<Propertyresp> propertyresps, Set<Detaildepart> detaildeparts,
-			Set<Wastelog> wastelogs) {
-		this.watercompany = watercompany;
-		this.neighborName = neighborName;
-		this.neighborAddr = neighborAddr;
-		this.mainMeter = mainMeter;
-		this.timerSwitch = timerSwitch;
-		this.timer = timer;
-		this.ip = ip;
-		this.valid = valid;
-		this.remark = remark;
-		this.gprses = gprses;
-		this.customers = customers;
-		this.propertyresps = propertyresps;
-		this.detaildeparts = detaildeparts;
-		this.wastelogs = wastelogs;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)
@@ -147,11 +116,11 @@ public class Neighbor implements java.io.Serializable {
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 
