@@ -1,7 +1,6 @@
 package com.xdkj.yccb.main.infoin.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
+import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dao.GprsDAO;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
@@ -23,7 +23,7 @@ public class NeighborServiceImpl implements NeighborService {
 	private GprsDAO gprsDAO;
 
 	@Override
-	public List<NeighborView> getList(Neighbor nbr, PageBase pb) {
+	public List<NeighborView> getList(NeighborView nbr, PageBase pb) {
 		List<Neighbor> list = neighborDAO.getList(nbr, pb);
 		List<NeighborView> listView = new ArrayList<NeighborView>();
 		for (Neighbor ngbr : list) {
@@ -45,6 +45,11 @@ public class NeighborServiceImpl implements NeighborService {
 
 	@Override
 	public String addNeighbor(Neighbor nbr) {
+		//此处暂时默认自来水公司（待定）
+		Watercompany wc = new Watercompany();
+		wc.setPid(1);
+		nbr.setWatercompany(wc);
+		nbr.setValid("1");
 		int pid = neighborDAO.addNeighbor(nbr);
 		if(pid>0){
 			return "succ";
@@ -68,7 +73,12 @@ public class NeighborServiceImpl implements NeighborService {
 	public Neighbor getNbrById(int nbrId) {
 		return neighborDAO.getById(nbrId);
 	}
-
+	
+	@Override
+	public int getCount(Neighbor nv, PageBase pb) {
+		return neighborDAO.getTotalCount(nv, pb);
+	}
+	
 	@Override
 	public String addGprs(Gprs gprs) {
 		int pid = gprsDAO.addGprs(gprs);

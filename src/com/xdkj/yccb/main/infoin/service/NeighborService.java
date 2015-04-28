@@ -9,12 +9,13 @@ import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 
 public interface NeighborService {
-	List<NeighborView> getList(Neighbor nbr,PageBase pb);
+	List<NeighborView> getList(NeighborView nv,PageBase pb);
 	
 	String addNeighbor(Neighbor nbr);
 	
-	String updateNeighbor(Neighbor nbr);
+	String updateNeighbor(Neighbor nv);
 	String deleteNbrById(int nbrId);
+	int getCount(Neighbor nv, PageBase pb);
 	
 	Neighbor getNbrById(int nbrId);
 	String addGprs(Gprs gprs);
@@ -23,5 +24,7 @@ public interface NeighborService {
 	String deleteGprsById(int gprsId);
 	
 	List<GprsView> getGprsByNbrId(int nbrId);
+
+	
 
 }

@@ -11,6 +11,7 @@ import com.xdkj.yccb.main.infoin.dao.GprsDAO;
 @Repository
 public class GprsDAOImpl extends HibernateDAO<Gprs> implements GprsDAO {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Gprs> getListByNeighborId(int nbrid) {
 		String hql = "from Gprs g where g.neighbor.pid=:pid and g.valid='1' ";
