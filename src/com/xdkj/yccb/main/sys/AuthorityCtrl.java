@@ -17,13 +17,18 @@ import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Authority;
 import com.xdkj.yccb.main.sys.dto.AuthorityView;
 import com.xdkj.yccb.main.sys.service.AuthorityService;
-
+/**
+ * 权限菜单类
+ * @author sgr
+ *
+ */
 @Controller
 public class AuthorityCtrl {
 	@Autowired
 	private AuthorityService authorityService;
 	public static final String authList = "/sys/authList";
 	public static final String authAdd = "/sys/authAdd";
+	public static final String authUpdate = "/sys/authUpdate";
 	@RequestMapping(value = "/sys/auth/list",method = RequestMethod.GET)
 	public String authList(){
 		return authList;
@@ -47,6 +52,19 @@ public class AuthorityCtrl {
 	@ResponseBody
 	public String add (Authority au){
 		return authorityService.add(au);
+	}
+	@RequestMapping(value = "/sys/auth/updatePage")
+	public String updatePage(@RequestParam("auId") String auId,Model model){
+		Authority au = authorityService.getById(auId);
+		List<AuthorityView > list = authorityService.getParentAuth();
+		model.addAttribute("auList", list);
+		model.addAttribute("auth", au);
+		return authUpdate;
+	}
+	@RequestMapping(value = "/sys/auth/update")
+	@ResponseBody
+	public String update(Authority au){
+		return authorityService.update(au);
 	}
 	/**
 	 * 获取权限菜单树

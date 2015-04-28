@@ -67,11 +67,16 @@ public class AuthorityDAOImpl extends HibernateDAO<Authority>implements Authorit
 
 	@Override
 	public List<Authority> getAuthByPpid(Integer ppId) {
-		Session session = getSession();
 		String hql = "from Authority a where a.ppid=:ppid";
-		Query q = session.createQuery(hql);
+		Query q = getSession().createQuery(hql);
 		q.setInteger("ppid", ppId);
 		return q.list();
+	}
+
+	@Override
+	public Authority getById(int auId) {
+		String hql = "from Authority a where a.pid=:pid";
+		return (Authority) getSession().createQuery(hql).setParameter("pid", auId).uniqueResult();
 	} 
 
 }

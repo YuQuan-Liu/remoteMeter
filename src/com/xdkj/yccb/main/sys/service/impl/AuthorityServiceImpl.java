@@ -56,7 +56,8 @@ public class AuthorityServiceImpl implements AuthorityService {
 
 	@Override
 	public String update(Authority au) {
-		return null;
+		authorityDAO.update(au);
+		return "succ";
 	}
 
 	@Override
@@ -122,6 +123,14 @@ public class AuthorityServiceImpl implements AuthorityService {
 		json = json.substring(0, json.lastIndexOf(","));
 		json = "["+json+"]";
 		return json;
+	}
+
+	@Override
+	public Authority getById(String auId) {
+		if(null!=auId&&!"".equals(auId)){
+			return authorityDAO.getById(Integer.parseInt(auId));
+		}
+		return null;
 	}
 
 }

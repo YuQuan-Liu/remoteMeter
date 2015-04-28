@@ -39,6 +39,7 @@ public interface AuthorityDAO {
 	 * @param ids
 	 */
 	void delete( Integer [] ids);
+	Authority getById(int auId);
 	
 
 }

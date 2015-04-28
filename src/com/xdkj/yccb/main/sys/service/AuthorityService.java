@@ -21,6 +21,12 @@ public interface AuthorityService {
 	 */
 	List<AuthorityView> getParentAuth();
 	/**
+	 * 获取权限信息
+	 * @param auId
+	 * @return
+	 */
+	Authority getById(String auId);
+	/**
 	 * 添加权限
 	 * @param au
 	 * @return succ 或 fail
@@ -38,7 +44,12 @@ public interface AuthorityService {
 	 * @return
 	 */
 	String delete(String ids);
-	
+	/**
+	 * 获取权限树
+	 * @param request
+	 * @param roleId
+	 * @return
+	 */
 	String getAuthTreeJson(HttpServletRequest request,String roleId);
 	
 

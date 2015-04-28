@@ -39,6 +39,7 @@ $(function(){
 	    		    minimizable:false,
 	    		    maximizable:false,
 	    		    title: '添加权限', 
+	    		    zIndex:999999,
 	    		    onLoad:function(){   
 	    		        //alert('loaded successfully'); 
 	    		    }   
@@ -48,18 +49,18 @@ $(function(){
 	        text: '修改', 
 	        iconCls: 'icon-edit', 
 	        handler: function() { 
-	        	var rows = $('#adminListTab').datagrid('getSelections');
+	        	var rows = $('#authListTab').datagrid('getSelections');
 	        	var leng = rows.length;
 	        	if(leng==1){
 	        		var pid = rows[0].pid;
 	        		alert(pid);
 	        		$('#updateAuthWin').window({   
-		    		    href:'${path}/admin/updatePage.do?pid='+pid,
+		    		    href:'${path}/sys/auth/updatePage.do?auId='+pid,
 		    		    width:400,   
 		    		    height:250,
 		    		    minimizable:false,
 		    		    maximizable:false,
-		    		    title: '更新管理员', 
+		    		    title: '更新权限', 
 		    		    onLoad:function(){   
 		    		        //alert('loaded successfully'); 
 		    		    }   
@@ -75,7 +76,7 @@ $(function(){
 	        text: '删除', 
 	        iconCls: 'icon-remove', 
 	        handler: function(){ 
-	        	var rows = $('#adminListTab').datagrid('getSelections');
+	        	var rows = $('#authListTab').datagrid('getSelections');
 	        	var pids = "";
 	        	rows.forEach(function(obj){  
 	        	    pids += obj.pid+",";
@@ -87,7 +88,7 @@ $(function(){
 })
 //查询
 function query(){
-	var queryParams = $('#adminListTab').datagrid('options').queryParams;
+	var queryParams = $('#authListTab').datagrid('options').queryParams;
 	queryParams.uid = 111;
 	queryParams.uname = "fdasf";
 	$('#authListTab').datagrid('load');

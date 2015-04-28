@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加权限</title>
+<title>修改权限</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
 <body>
@@ -12,14 +12,14 @@ $(function(){
 	
 })
 function submitForm(){
-	if($('#addAuthForm').form('validate')){
-		$('#addAuthForm').form('submit', {   
+	if($('#updateAuthForm').form('validate')){
+		$('#updateAuthForm').form('submit', {   
 		    success: function(data){   
 		       if(data=="succ"){
-		    	   $('#addAuthWin').window('close');
+		    	   $('#updateAuthWin').window('close');
 		    	   $.messager.show({
-						title:'添加权限',
-						msg:'添加成功！',
+						title:'修改权限',
+						msg:'修改成功！',
 						showType:'slide',
 						timeout:3000
 					});
@@ -30,25 +30,26 @@ function submitForm(){
 	}
 }
 function clearForm(){
-	$('#addAuthForm').form('clear');
+	$('#updateAuthForm').form('clear');
 	}
 </script>
 		<div style="padding:10px 0 10px 60px">
-	    <form id="addAuthForm" method="post" action="${path}/sys/auth/add.do">
-	    	<input type="hidden" name="valid" value="1"/>
+	    <form id="updateAuthForm" method="post" action="${path}/sys/auth/update.do">
+	    	<input type="hidden" name="valid" value="${auth.valid}"/>
+	    	<input type="hidden" name="pid" value="${auth.pid}"/>
 	    	<table>
 	    		<tr>
 	    			<td>权限编码：</td>
-	    			<td><input class="easyui-textbox" type="text" name="authorityCode" data-options="required:true"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="authorityCode" data-options="required:true" value="${auth.authorityCode}"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>操作路径：</td>
-	    			<td> <input class="easyui-textbox" type="text" name="actUrl" />
+	    			<td> <input class="easyui-textbox" type="text" name="actUrl" value="${auth.actUrl}"/>
 	    			 </td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
-	    			<td><input class="easyui-textbox" type="text" name="remark" /></td>
+	    			<td><input class="easyui-textbox" type="text" name="remark" value="${auth.remark}"/></td>
 	    		</tr>
 	    		
 	    		<tr>
@@ -57,7 +58,8 @@ function clearForm(){
 	    				<select class="easyui-combobox" name="ppid" data-options="panelHeight:'auto'">
 	    					<option value="0">顶级</option>
 	    					<c:forEach items="${auList}" var="au">
-	    						<option value="${au.pid }">${au.remark }</option>
+	    						<option value="${au.pid}" 
+	    						<c:if test="${au.pid==auth.ppid}">selected="selected"</c:if> >${au.remark }</option>
 	    					</c:forEach>
 	    				</select>
 	    			</td>
