@@ -65,7 +65,7 @@ var _menus = {
 				"menuid" : "211",
 				"menuname" : "<fmt:message key='menu.community'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "infoin/neighbor/list.do",
 			},
 			</c:if>
 			<c:if test="${menus['userinfo']=='t'}">
