@@ -31,7 +31,7 @@ public class Gprs implements java.io.Serializable {
 	private String gprstel;
 	private String gprsaddr;
 	private String installAddr;
-	/*private Date installTime;页面400错误，不走后台，测试用，暂时屏蔽*/
+	private Date installTime;
 	private String installPerson;
 	private int gprsprotocol;
 	private String ip;
@@ -92,7 +92,7 @@ public class Gprs implements java.io.Serializable {
 		this.installAddr = installAddr;
 	}
 
-	/*@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "InstallTime", length = 19)
 	public Date getInstallTime() {
 		return this.installTime;
@@ -100,7 +100,7 @@ public class Gprs implements java.io.Serializable {
 
 	public void setInstallTime(Date installTime) {
 		this.installTime = installTime;
-	}*/
+	}
 
 	@Column(name = "InstallPerson", length = 20)
 	public String getInstallPerson() {
