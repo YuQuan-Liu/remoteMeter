@@ -51,7 +51,7 @@ public class NeighborServiceImpl implements NeighborService {
 		nbr.setWatercompany(wc);
 		nbr.setValid("1");
 		int pid = neighborDAO.addNeighbor(nbr);
-		if(pid>0){
+		if(pid > 0){
 			return "succ";
 		}
 		return "fail";
@@ -64,9 +64,9 @@ public class NeighborServiceImpl implements NeighborService {
 	}
 
 	@Override
-	public String deleteNbrById(int nbrId) {
-		//neighborDAO.
-		return null;
+	public String deleteNbrById(String nbrId) {
+		neighborDAO.delete(nbrId);
+		return "succ";
 	}
 
 	@Override
@@ -81,6 +81,7 @@ public class NeighborServiceImpl implements NeighborService {
 	
 	@Override
 	public String addGprs(Gprs gprs) {
+		gprs.setValid("1");
 		int pid = gprsDAO.addGprs(gprs);
 		if(pid>0){
 			return "succ";
@@ -100,8 +101,8 @@ public class NeighborServiceImpl implements NeighborService {
 	}
 
 	@Override
-	public String deleteGprsById(int gprsId) {
-		gprsDAO.deleteGprs(gprsId);
+	public String deleteGprsById(String gprsId) {
+		gprsDAO.deleteGprs(Integer.parseInt(gprsId));
 		return "succ";
 	}
 
@@ -111,12 +112,13 @@ public class NeighborServiceImpl implements NeighborService {
 		List<GprsView> listView = new ArrayList<GprsView>();
 		for (Gprs g : list) {
 			GprsView gv = new GprsView();
+			gv.setPid(g.getPid());
 			gv.setGprsaddr(g.getGprsaddr());
 			gv.setGprsprotocol(g.getGprsprotocol());
 			gv.setGprstel(g.getGprstel());
 			gv.setInstallAddr(g.getInstallAddr());
 			gv.setInstallPerson(g.getInstallPerson());
-			gv.setInstallTime(g.getInstallTime());
+			//gv.setInstallTime(g.getInstallTime());
 			gv.setIp(g.getIp());
 			gv.setPort(g.getPort());
 			gv.setRemark(g.getRemark());

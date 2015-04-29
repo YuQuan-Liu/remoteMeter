@@ -14,14 +14,14 @@ public interface NeighborService {
 	String addNeighbor(Neighbor nbr);
 	
 	String updateNeighbor(Neighbor nv);
-	String deleteNbrById(int nbrId);
+	String deleteNbrById(String nbrId);
 	int getCount(Neighbor nv, PageBase pb);
 	
 	Neighbor getNbrById(int nbrId);
 	String addGprs(Gprs gprs);
 	String updateGprs(Gprs gprs);
 	Gprs getGprsById(int gprsId);
-	String deleteGprsById(int gprsId);
+	String deleteGprsById(String gprsId);
 	
 	List<GprsView> getGprsByNbrId(int nbrId);
 

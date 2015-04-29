@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
@@ -21,6 +23,8 @@ public class NeighborCtrl {
 	public static final String neighborList = "/infoin/neighborList";
 	public static final String neighborAdd = "/infoin/neighborAdd";
 	public static final String neighborUpdate = "/infoin/neighborUpdate";
+	public static final String gprsAdd = "/infoin/gprsAdd";
+	public static final String gprsUpdate = "/infoin/gprsUpdate";
 	
 	@Autowired
 	private NeighborService neighborService;
@@ -47,6 +51,7 @@ public class NeighborCtrl {
 	public String add(Neighbor nv){
 		return neighborService.addNeighbor(nv);
 	}
+	
 	@RequestMapping(value="/infoin/neighbor/updatePage")
 	public String roleUpdate(HttpServletRequest request,@RequestParam("pid") String pid,Model model){
 		model.addAttribute("role",neighborService.getNbrById(Integer.parseInt(pid)));
@@ -57,5 +62,39 @@ public class NeighborCtrl {
 	@ResponseBody
 	public String update(Neighbor nv){
 		return neighborService.updateNeighbor(nv);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/delete",method=RequestMethod.POST)
+	@ResponseBody
+	public String delete(@RequestParam("pids") String pids){
+		return neighborService.deleteNbrById(pids);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/gprsListContent",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String gprsListContent(@RequestParam("pid") String pid){
+		return JSON.toJSONString(neighborService.getGprsByNbrId(Integer.parseInt(pid)));
+	}
+	
+	
+	@RequestMapping(value="/infoin/neighbor/deleteGprsById",method=RequestMethod.POST)
+	@ResponseBody
+	public String deleteGprsById(@RequestParam("pid") String pid){
+		return neighborService.deleteGprsById(pid);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/addPageGprs")
+	public String addPageGprs(@RequestParam("neighborid") String neighborid,Model model){
+		model.addAttribute("neighborid",neighborid);
+		return gprsAdd;
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/addGprs",method=RequestMethod.POST)
+	@ResponseBody
+	public String addGprs(@RequestParam("neighborid") String neighborid,Gprs gs){
+		Neighbor nbr = new Neighbor();
+		nbr.setPid(Integer.parseInt(neighborid));
+		gs.setNeighbor(nbr);
+		return neighborService.addGprs(gs);
 	}
 }

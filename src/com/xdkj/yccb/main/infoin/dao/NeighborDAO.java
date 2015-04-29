@@ -17,6 +17,8 @@ public interface NeighborDAO {
 	Neighbor getById(int pid);
 	
 	void update (Neighbor nbr);
+	
+	void delete(String ids);
 
 	
 }
