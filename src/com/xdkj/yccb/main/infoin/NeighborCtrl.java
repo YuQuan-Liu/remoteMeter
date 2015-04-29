@@ -97,4 +97,19 @@ public class NeighborCtrl {
 		gs.setNeighbor(nbr);
 		return neighborService.addGprs(gs);
 	}
+	
+	@RequestMapping(value="/infoin/neighbor/updatePageGprs")
+	public String updatePageGprs(HttpServletRequest request,@RequestParam("pid") String pid,Model model){
+		model.addAttribute("gprs",neighborService.getGprsById(Integer.parseInt(pid)));
+		return gprsUpdate;
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/updateGprs",method=RequestMethod.POST)
+	@ResponseBody
+	public String updateGprs(@RequestParam("neighborid") String neighborid,Gprs gs){
+		Neighbor nbr = new Neighbor();
+		nbr.setPid(Integer.parseInt(neighborid));
+		gs.setNeighbor(nbr);
+		return neighborService.updateGprs(gs);
+	}
 }

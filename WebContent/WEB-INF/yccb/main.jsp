@@ -272,7 +272,7 @@ var _menus = {
 		</div>  
 	</div>
 	<div data-options="region:'south',border:false" style="background: #D2E0F2;overflow: hidden;">
-		<p align="center">copryright 2014 版权所有 淅川西岛光电仪表科技有限公司</p>
+		<p align="center">copyright 2014 版权所有 淅川西岛光电仪表科技有限公司</p>
 	</div>
 	<div id="mm" class="easyui-menu" style="width:150px;">
 		<!-- <div id="mm-tabupdate">刷新</div> -->
@@ -284,8 +284,5 @@ var _menus = {
 		<div id="closeleft"><fmt:message key="main.mm.closeleft"/></div>
 		<div id="exit"><fmt:message key="main.mm.exit"/></div>
 	</div>
-<!-- <style type="text/css">
-body{font-size: 13px;}
-</style> -->
 </body>
 </html>

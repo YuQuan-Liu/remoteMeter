@@ -27,6 +27,11 @@ function submitForm(){
 		});  
 	}
 }
+//检查本自来水公司下此小区是否已经存在
+function checkNbrName(){
+alert(111);
+}
+
 function clearForm(){
 	$('#addNeighborForm').form('clear');
 }
@@ -36,7 +41,7 @@ function clearForm(){
 			<table>
 				<tr>
 					<td>小区名：</td>
-					<td><input class="easyui-textbox" type="text" name="neighborName" data-options="required:true"/></td>
+					<td><input class="easyui-textbox" type="text" name="neighborName" data-options="required:true" onblur="checkNbrName()"/></td>
 				</tr>
 				<tr>
 					<td>地址：</td>

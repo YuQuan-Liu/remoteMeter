@@ -133,7 +133,7 @@ $(function(){
 						formatter: function(value,row,index){
 							console.log(row);
 							var id = row.pid;
-							return "<a href='#' class='operateHref' onclick='showRole("+id+")'>修改</a> | <a href='#' class='operateHref' onclick='delGprsById("+id+")'>删除</a>";
+							return "<a href='#' class='operateHref' onclick='updatePageGprs("+id+")'>修改</a> | <a href='#' class='operateHref' onclick='deleteGprsById("+id+")'>删除</a>";
 						}
 					}
 				]],
@@ -172,6 +172,21 @@ function addGprs(pid){
 		minimizable:false,
 		maximizable:false,
 		title: '添加集中器'/* , 
+		onLoad:function(){	
+			//alert('loaded successfully'); 
+		}	*/
+	}); 
+}
+
+//修改集中器信息
+function updatePageGprs(pid){
+	$('#addGprsWin').window({	
+		href:'updatePageGprs.do?pid='+pid,
+		width:467,	
+		height:300,
+		minimizable:false,
+		maximizable:false,
+		title: '修改集中器'/* , 
 		onLoad:function(){	
 			//alert('loaded successfully'); 
 		}	*/

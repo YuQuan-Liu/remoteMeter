@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.infoin.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,9 @@ public class NeighborServiceImpl implements NeighborService {
 	@Override
 	public String addGprs(Gprs gprs) {
 		gprs.setValid("1");
+		gprs.setInstallTime(new Date());
+		//此处还应设置安装人为默认当前用户--待完善
+		//……
 		int pid = gprsDAO.addGprs(gprs);
 		if(pid>0){
 			return "succ";
@@ -118,7 +122,7 @@ public class NeighborServiceImpl implements NeighborService {
 			gv.setGprstel(g.getGprstel());
 			gv.setInstallAddr(g.getInstallAddr());
 			gv.setInstallPerson(g.getInstallPerson());
-			//gv.setInstallTime(g.getInstallTime());
+			gv.setInstallTime(g.getInstallTime());
 			gv.setIp(g.getIp());
 			gv.setPort(g.getPort());
 			gv.setRemark(g.getRemark());

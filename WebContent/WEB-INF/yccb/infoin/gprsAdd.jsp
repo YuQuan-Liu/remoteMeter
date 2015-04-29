@@ -12,17 +12,23 @@ $(function(){
 });
 function submitForm(){
 	if($('#addGprsForm').form('validate')){
-		$('#addGprsForm').form('submit', {   
-		    success: function(data){   
-		       if(data=="succ"){
-		    	   $.messager.alert('添加集中器','添加成功！','info',
-						function(){
-		    		   		$('#addGprsWin').window('close');
-						 	$('#neighborListTab').datagrid('reload');
-						 });
-		       }
-		    }   
-		});  
+		//一个小区下的集中器的IP和端口必须相同
+		if($("#ip").val() == $("#port").val()){
+			$('#addGprsForm').form('submit', {   
+			    success: function(data){   
+			       if(data=="succ"){
+			    	   $.messager.alert('添加集中器','添加成功！','info',
+							function(){
+			    		   		$('#addGprsWin').window('close');
+							 	$('#neighborListTab').datagrid('reload');
+							 });
+			       }
+			    }   
+			});  
+		}else{
+			$.messager.alert('提示','集中器的IP和端口必须相同');   
+		}
+		
 	}
 }
 function clearForm(){
@@ -51,15 +57,15 @@ function clearForm(){
 	    		</tr>
 	    		<tr>
 	    			<td>抄表IP：</td>
-	    			<td><input class="easyui-textbox" type="text" name="ip" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" id="ip" name="ip" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>抄表端口：</td>
-	    			<td><input class="easyui-textbox" type="text" name="port" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" id="port" name="port" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
-	    			<td><input class="easyui-textbox" type="text" name="remark" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="remark"/></td>
 	    		</tr>
 	    	</table>
 		</div>
