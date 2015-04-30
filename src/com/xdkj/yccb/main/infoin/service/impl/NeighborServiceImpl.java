@@ -66,7 +66,10 @@ public class NeighborServiceImpl implements NeighborService {
 
 	@Override
 	public String deleteNbrById(String nbrId) {
+		//这边“删除”小区后，集中器级联“删除”，事务能不鞥你回滚有待验证？
+		//……
 		neighborDAO.delete(nbrId);
+		gprsDAO.deleteByNbrId(nbrId);
 		return "succ";
 	}
 

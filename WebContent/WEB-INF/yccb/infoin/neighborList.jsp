@@ -61,7 +61,6 @@ $(function(){
 				var leng = rows.length;
 				if(leng==1){
 					var pid = rows[0].pid;
-					alert(pid);
 					$('#updateNeighborWin').window({	
 						href:'${path}/infoin/neighbor/updatePage.do?pid='+pid,
 						width:467,	
@@ -75,9 +74,9 @@ $(function(){
 					}); 
 					
 				}else if(leng>1){
-					alert("single selected");
+					$.messager.alert('提示','请选择一条记录！');
 				}else{
-					alert("unselected");
+					$.messager.alert('提示','未选中任何记录！');
 				}
 			} 
 		}, '-',{ 
@@ -85,27 +84,32 @@ $(function(){
 			iconCls: 'icon-remove', 
 			handler: function(){ 
 				var rows = $('#neighborListTab').datagrid('getSelections');
-				var pids = "";
-				rows.forEach(function(obj){  
-					pids += obj.pid+",";
-				});
-				$.messager.confirm('提示','确定要删除选中记录吗？',function(r){	
-					if (r){	
-						$.ajax({
-							url:'delete.do',
-							type:'post',
-							data:{'pids':pids},
-							success:function(typ){
-								if(typ=="succ"){
-									$.messager.alert('提示','删除成功！','info',
-											function(){
-											 	$('#neighborListTab').datagrid('reload');
-											 });
+				if(rows.length==0){
+					$.messager.alert('提示','请选择记录！');
+				}else{
+					var pids = "";
+					rows.forEach(function(obj){  
+						pids += obj.pid+",";
+					});
+					$.messager.confirm('提示','确定要删除选中记录吗？',function(r){	
+						if (r){	
+							$.ajax({
+								url:'delete.do',
+								type:'post',
+								data:{'pids':pids},
+								success:function(typ){
+									if(typ=="succ"){
+										$.messager.alert('提示','删除成功！','info',
+												function(){
+												 	$('#neighborListTab').datagrid('reload');
+												 });
+									}
 								}
-							}
-						});	
-					}	
-				});  
+							});	
+						}	
+					}); 
+				}
+				 
 			} 
 		}]
 	});
@@ -131,7 +135,6 @@ $(function(){
 					{field:'remark',title:'备注',width:100,halign:'center'},
 					{field:'aa',title:'操作',width:100,halign:'center',align:'center',
 						formatter: function(value,row,index){
-							console.log(row);
 							var id = row.pid;
 							return "<a href='#' class='operateHref' onclick='updatePageGprs("+id+")'>修改</a> | <a href='#' class='operateHref' onclick='deleteGprsById("+id+")'>删除</a>";
 						}
@@ -180,7 +183,7 @@ function addGprs(pid){
 
 //修改集中器信息
 function updatePageGprs(pid){
-	$('#addGprsWin').window({	
+	$('#updateGprsWin').window({	
 		href:'updatePageGprs.do?pid='+pid,
 		width:467,	
 		height:300,

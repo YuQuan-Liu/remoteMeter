@@ -15,6 +15,7 @@ import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
+import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 
@@ -54,13 +55,16 @@ public class NeighborCtrl {
 	
 	@RequestMapping(value="/infoin/neighbor/updatePage")
 	public String roleUpdate(HttpServletRequest request,@RequestParam("pid") String pid,Model model){
-		model.addAttribute("role",neighborService.getNbrById(Integer.parseInt(pid)));
+		model.addAttribute("neighbor",neighborService.getNbrById(Integer.parseInt(pid)));
 		return neighborUpdate;
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/update",method=RequestMethod.POST)
 	@ResponseBody
-	public String update(Neighbor nv){
+	public String update(Neighbor nv,@RequestParam("wcid") String wcid){
+		Watercompany wc = new Watercompany();
+		wc.setPid(Integer.parseInt(wcid));
+		nv.setWatercompany(wc);
 		return neighborService.updateNeighbor(nv);
 	}
 	

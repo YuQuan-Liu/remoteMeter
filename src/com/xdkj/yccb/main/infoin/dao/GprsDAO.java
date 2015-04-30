@@ -19,4 +19,6 @@ public interface GprsDAO {
 	void deleteGprs (int gprsId);
 	
 	void update (Gprs gprs);
+	
+	void deleteByNbrId(String nbrId);
 }
