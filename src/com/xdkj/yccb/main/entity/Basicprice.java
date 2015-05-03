@@ -34,35 +34,6 @@ public class Basicprice implements java.io.Serializable {
 	public Basicprice() {
 	}
 
-	public Basicprice(Pricekind pricekind, String basicPriceName,
-			BigDecimal basicPriceFirst, int basicFirstOver,
-			BigDecimal basicPriceSecond, int basicSecondOver,
-			BigDecimal basicPriceThird, String valid) {
-		this.pricekind = pricekind;
-		this.basicPriceName = basicPriceName;
-		this.basicPriceFirst = basicPriceFirst;
-		this.basicFirstOver = basicFirstOver;
-		this.basicPriceSecond = basicPriceSecond;
-		this.basicSecondOver = basicSecondOver;
-		this.basicPriceThird = basicPriceThird;
-		this.valid = valid;
-	}
-
-	public Basicprice(Pricekind pricekind, String basicPriceName,
-			BigDecimal basicPriceFirst, int basicFirstOver,
-			BigDecimal basicPriceSecond, int basicSecondOver,
-			BigDecimal basicPriceThird, String valid, String remark) {
-		this.pricekind = pricekind;
-		this.basicPriceName = basicPriceName;
-		this.basicPriceFirst = basicPriceFirst;
-		this.basicFirstOver = basicFirstOver;
-		this.basicPriceSecond = basicPriceSecond;
-		this.basicSecondOver = basicSecondOver;
-		this.basicPriceThird = basicPriceThird;
-		this.valid = valid;
-		this.remark = remark;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

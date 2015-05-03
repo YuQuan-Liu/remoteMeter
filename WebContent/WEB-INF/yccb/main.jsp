@@ -53,6 +53,14 @@ var _menus = {
 					"icon" : "micon-nav",
 					"url" : "#"
 				},
+			</c:if>
+			<c:if test="${menus['basicprice']=='t'}">
+				{
+					"menuid" : "118",
+					"menuname" : "<fmt:message key='menu.basicprice'/>",
+					"icon" : "micon-nav",
+					"url" : "#"
+				},
 			</c:if>]
 		}],
 		info : [{

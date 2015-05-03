@@ -9,7 +9,7 @@ import com.xdkj.yccb.main.entity.Department;
 public interface DepartmentDAO {
 	
 	/**
-	 * 获取管理员列表
+	 * 获取片区列表
 	 * @return
 	 */
 	List<Department> getList(DepartmentView depv,PageBase pageInfo);
@@ -20,25 +20,25 @@ public interface DepartmentDAO {
 	 */
 	Integer getTotalCount(DepartmentView depv);
 	/**
-	 * 通过id获取管理员信息
+	 * 通过id获取片区信息
 	 * @param adminId
 	 * @return
 	 */
 	Department getById(Integer depId);
 	/**
-	 * 添加管理员
+	 * 添加片区
 	 * @param adminInfo
 	 * @return id
 	 */
 	int add(Department dep);
 	/**
-	 * 通过id删除管理员
+	 * 通过id删除片区
 	 * @param adminId
 	 * @return
 	 */
 	boolean deleteById(Integer depId);
 	/**
-	 * 更新管理员信息
+	 * 更新片区信息
 	 * @param adminInfo
 	 * @return
 	 */
