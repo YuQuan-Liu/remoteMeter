@@ -7,8 +7,8 @@
 <%@include file="/commonjsp/top.jsp" %>
 <script type="text/javascript">
 $(function(){
-	$('#watComListTab').datagrid({
-	    url:'${path}/admin/watcom/listContent.do',
+	$('#priceListTab').datagrid({
+	    url:'${path}/admin/price/listContent.do',
 	    fit:true,
 	    pagination:true,
 	    pageList:[5,10,15,20],
@@ -25,26 +25,15 @@ $(function(){
 	        {field:'companyAddr',title:'公司地址',width:100},
 	        {field:'mark',title:'公司标识',width:100},
 	        {field:'remark',title:'备注',width:100}
-	       /*  {field:'null',title:'操作',width:100,formatter:
-	        	function operFmt(value, rec, index){
-		        	if (!rec.pid) {
-		        		return '';
-		        	}
-		        	var href = '';
-		        	href += "[<a href='"+rec.pid+"' >";
-		        	href += "删除</a>]";
-		        	return href;
-	        	}	
-	        } */
 	    ]],
 	    toolbar: [{ 
 	        text: '<fmt:message key="common.add"/>', 
 	        iconCls: 'icon-add', 
 	        handler: function() { 
 	        	$('#priceAddWin').window({   
-	    		    href:'${path}/admin/watcom/addPage.do',
-	    		    width:400,   
-	    		    height:250,
+	    		    href:'${path}/admin/price/priceAddPage.do',
+	    		    width:600,   
+	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
 	    		    title: '添加自来水公司', 
@@ -62,7 +51,7 @@ $(function(){
 	        	if(leng==1){
 	        		var pid = rows[0].pid;
 	        		$('#priceUpdateWin').window({   
-		    		    href:'${path}/admin/watcom/updatePage.do?pid='+pid,
+		    		    href:'${path}/admin/price/updatePage.do?pid='+pid,
 		    		    width:400,   
 		    		    height:250,
 		    		    minimizable:false,
@@ -99,7 +88,6 @@ $(function(){
 	    						     alert( "Data Saved: " + msg );
 	    						   }
 	    						});
-	    					//alert('confirmed: '+pids);
 	    				}
 	    			});
 	        	}else{

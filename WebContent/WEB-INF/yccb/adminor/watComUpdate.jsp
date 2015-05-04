@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加管理员</title>
+<title>更新自来水公司</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
 <body>

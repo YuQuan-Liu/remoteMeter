@@ -59,7 +59,7 @@ var _menus = {
 					"menuid" : "118",
 					"menuname" : "<fmt:message key='menu.basicprice'/>",
 					"icon" : "micon-nav",
-					"url" : "#"
+					"url" : "admin/price/list.do"
 				},
 			</c:if>]
 		}],

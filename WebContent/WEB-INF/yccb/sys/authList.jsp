@@ -38,8 +38,7 @@ $(function(){
 	    		    height:250,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加权限', 
-	    		    zIndex:999999,
+	    		    title: '添加权限',
 	    		    onLoad:function(){   
 	    		        //alert('loaded successfully'); 
 	    		    }   
