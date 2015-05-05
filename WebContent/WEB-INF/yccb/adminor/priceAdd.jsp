@@ -52,11 +52,12 @@ $(function(){
 	        		basicPriceSecond: '',
 	        		basicSecondOver: '',
 	        		basicPriceThird: '',
-	        		operate:'<a onclick="deleteRow()">删除</a>'
+	        		operate:'<a onclick="deleteRow(this)">删除</a>'
 	        	});
 	        } 
 	    }]
 	});
+	
 	/**
 	编辑列
 	*/
@@ -103,6 +104,14 @@ function submitForm(){
 function clearForm(){
 	$('#priceAddForm').form('clear');
 	}
+function deleteRow(obj){
+	var tr = $(obj).parent().parent().parent();
+	//obj.parent().parent().parent().remove();
+	var rowIndex = tr.attr("datagrid-row-index");
+	if(rowIndex){
+		$('#basicPriceTab').datagrid('deleteRow', rowIndex);  
+	}
+}
 </script>
 
 		<div style="padding:10px 0 10px 60px">
@@ -123,7 +132,7 @@ function clearForm(){
 	  
 	   <div style="padding:10px 10px 0 10px">
 		<table id="basicPriceTab"></table>
-		</div>
+	  </div>
 	    <div style="text-align:center;padding:5px;margin-bottom: 20px;">
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()"><fmt:message key='common.reset'/></a>
