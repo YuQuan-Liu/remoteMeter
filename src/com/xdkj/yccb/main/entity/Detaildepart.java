@@ -22,15 +22,9 @@ public class Detaildepart implements java.io.Serializable {
 	private Integer pid;
 	private Department department;
 	private Neighbor neighbor;
-	private char valid;
+	private String valid;
 
 	public Detaildepart() {
-	}
-
-	public Detaildepart(Department department, Neighbor neighbor, char valid) {
-		this.department = department;
-		this.neighbor = neighbor;
-		this.valid = valid;
 	}
 
 	@Id
@@ -65,11 +59,11 @@ public class Detaildepart implements java.io.Serializable {
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 

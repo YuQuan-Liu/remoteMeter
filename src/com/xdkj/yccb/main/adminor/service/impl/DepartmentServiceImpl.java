@@ -1,20 +1,23 @@
 package com.xdkj.yccb.main.adminor.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.adminor.dao.DepartmentDAO;
+import com.xdkj.yccb.main.adminor.dao.DetaildepartDAO;
 import com.xdkj.yccb.main.adminor.dto.DepartmentView;
 import com.xdkj.yccb.main.adminor.service.DepartmentService;
 import com.xdkj.yccb.main.entity.Department;
+import com.xdkj.yccb.main.entity.Detaildepart;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
-import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.security.UserForSession;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
@@ -22,6 +25,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 	private DepartmentDAO departmentDAO;
 	@Autowired
 	private NeighborDAO neighborDAO;
+	@Autowired
+	private DetaildepartDAO detaildepartDAO;
 
 	@Override
 	public List<DepartmentView> getList(DepartmentView depview,
@@ -60,19 +65,32 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public List<NeighborView> getNbrByCurrUser(UserForSession u) {
-		List<NeighborView> listView = new ArrayList<NeighborView>();
+	public String getNbrByCurrUser(UserForSession u,String depId) {
+		JSONArray nbrs = new JSONArray();
+		List<Detaildepart> dpts = null;
 		if(null!=u){
+			if(null!=depId&&!"".equals(depId)){
+				//获取指定片区下的小区
+				dpts = detaildepartDAO.getListByDepId(Integer.parseInt(depId));
+			}
 			int watComId = u.getWaterComId();
 			List<Neighbor> list = neighborDAO.getNbrByWatcomId(watComId);
 			for (Neighbor nbr : list) {
-				NeighborView nbrv = new NeighborView();
-				nbrv.setPid(nbr.getPid());
-				nbrv.setNeighborName(nbr.getNeighborName());
-				listView.add(nbrv);
+				JSONObject n = new JSONObject();
+				n.put("id", nbr.getPid());
+				n.put("text", nbr.getNeighborName());
+				if(null!=dpts&&dpts.size()>0){
+					for (Detaildepart dpt : dpts) {
+						if(dpt.getNeighbor().getPid()==nbr.getPid()){
+							//回填选中
+							n.put("selected", true);
+						}
+					}
+				}
+				nbrs.add(n);
 			}
 		}
-		return listView;
+		return nbrs.toString();
 	}
 
 }

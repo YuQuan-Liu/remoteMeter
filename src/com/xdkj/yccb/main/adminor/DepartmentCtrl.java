@@ -10,13 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dto.DepartmentView;
 import com.xdkj.yccb.main.adminor.service.DepartmentService;
 import com.xdkj.yccb.main.entity.Department;
+import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.security.UserForSession;
 /**
  * 片区
@@ -45,8 +48,23 @@ public class DepartmentCtrl {
 	@RequestMapping(value="/admin/dep/addPage",method=RequestMethod.GET)
 	public String addPage(HttpServletRequest request, HttpServletResponse response, Model model){
 		return depAdd;
-		
 	}
+	/**
+	 * 获取用户所在自来水公司下的小区
+	 * <p>Description: depId非空表示修改片区回填小区数据</p> 
+	 * @param depId 片区
+	 * @param request
+	 * @return
+	 * @author SongW
+	 * @date 2015-5-6
+	 * @version 1.0
+	 */
+	@RequestMapping(value="/admin/dep/nbrlistContent",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String depNbrListContent(@RequestParam("depId") String depId,HttpServletRequest request){
+		return departmentService.getNbrByCurrUser(WebUtil.getCurrUser(request), depId);
+	}
+	
 	@RequestMapping(value="/admin/dep/add",method=RequestMethod.POST)
 	@ResponseBody
 	public String add(Department dep){

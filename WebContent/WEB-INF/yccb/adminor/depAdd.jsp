@@ -11,8 +11,8 @@
 $(function(){
 	$('#neighborCombo').combo({   
 	    required:true,   
-	    url:'combobox_data1.json',
-		method:'get',
+	    url:'/admin/dep/nbrlistContent.do',
+		method:'post',
 		valueField:'id',
 		textField:'text',
 		multiple:true,

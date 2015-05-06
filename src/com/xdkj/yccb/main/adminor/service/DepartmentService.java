@@ -19,6 +19,6 @@ public interface DepartmentService {
 	
 	String delete(String ids);
 	
-	List<NeighborView> getNbrByCurrUser(UserForSession u);
+	String getNbrByCurrUser(UserForSession u,String depId);
 
 }
