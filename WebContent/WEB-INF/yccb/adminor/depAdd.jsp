@@ -3,13 +3,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加管理员</title>
+<title>添加片区</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
 <body>
 <script type="text/javascript">
 $(function(){
-	
+	$('#neighborCombo').combo({   
+	    required:true,   
+	    url:'combobox_data1.json',
+		method:'get',
+		valueField:'id',
+		textField:'text',
+		multiple:true,
+		panelHeight:'auto'
+	});  
 })
 function submitForm(){
 	if($('#depAddForm').form('validate')){
@@ -30,29 +38,25 @@ function clearForm(){
 	$('#depAddForm').form('clear');
 	}
 </script>
+<form id="depAddForm" method="post" action="${path}/admin/dep/add.do">
 		<div style="padding:10px 0 10px 60px">
-	    <form id="depAddForm" method="post" action="${path}/admin/addAdmin.do">
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table>
 	    		<tr>
-	    			<td>自来水公司名：</td>
-	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true"/></td>
-	    		</tr>
-	    		<tr>
-	    			<td>自来水公司地址：</td>
-	    			<td> <input class="easyui-textbox" type="text" name="companyAddr" data-options="required:true"/></td>
-	    		</tr>
-	    		<tr>
-	    			<td>自来水公司标识：</td>
-	    			<td><input class="easyui-textbox" type="text" name="mark" data-options="required:true"/></td>
-	    		</tr>
-	    		<tr>
+	    			<td>片区名：</td>
+	    			<td><input class="easyui-textbox" type="text" name="priceKindName" data-options="required:true"/></td>
 	    			<td>备注：</td>
-	    			<td><input class="easyui-textbox" type="text" name="remark" data-options="required:true"/></td>
+	    			<td>
+	    			<input class="easyui-textbox" name="remark" type="text"/>
+	    			</td>
+	    		</tr>
+	    		<tr>
+	    			<td>自来水小的小区：</td>
+	    			<td><input id="neighborCombo"></td>
 	    		</tr>
 	    	</table>
-	    </form>
 	    </div>
+ </form>	    
 	    <div style="text-align:center;padding:5px">
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>

@@ -68,4 +68,11 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Neighbor> getNbrByWatcomId(int wcId) {
+		String hql = "from Neighbor nbr where nbr.valid='1' and nbr.watercompany.pid=:pid";
+		return getSession().createQuery(hql).setParameter("pid", wcId).list();
+	}
+
 }

@@ -9,6 +9,8 @@
 <body>
 <script type="text/javascript">
 var editIndex = undefined;
+var isChecked = undefined;
+var bpTab = $('#basicPriceTab');
 function endEditing(){
 	if (editIndex == undefined){return true}
 	if ($('#basicPriceTab').datagrid('validateRow', editIndex)){
@@ -19,42 +21,65 @@ function endEditing(){
 		return false;
 	}
 }
-
 $(function(){
-	$('#basicPriceTab').datagrid({
+	bpTab.datagrid({
 	    fit:false,
 	    border:false,
+	    singleSelect:true,
 	    autoRowHeight:false,
-	    onClickCell: function(index, field){
+	    onClickCell: function(index){
+	    	bpTab.datagrid('endEdit', index);
+		},
+		onDblClickCell: function(index, field){
 			if (endEditing()){
-				$('#basicPriceTab').datagrid('selectRow', index)
+				bpTab.datagrid('selectRow', index)
 						.datagrid('editCell', {index:index,field:field});
 				editIndex = index;
 			}
 		},
 	    columns:[[
+	        {field:'pid',title:'',width:80,checkbox:true},
 	        {field:'basicPriceName',title:'基本单价名',width:80,editor:'text'},   
-	        {field:'basicPriceFirst',title:'一阶单价',width:80,editor:'text'},   
-	        {field:'basicFirstOver',title:'一阶超量',width:80,editor:'text'},
-	        {field:'basicPriceSecond',title:'二阶单价',width:80,editor:'text'},
-	        {field:'basicSecondOver',title:'二阶超量',width:80,editor:'text'},
-	        {field:'basicPriceThird',title:'三阶单价',width:80,editor:'text'},
-	        {field:'operate',title:'操作',width:80}
+	        {field:'basicPriceFirst',title:'一阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},   
+	        {field:'basicFirstOver',title:'一阶超量',width:80,editor:{type:'numberbox',options:{precision:2}}},
+	        {field:'basicPriceSecond',title:'二阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},
+	        {field:'basicSecondOver',title:'二阶超量',width:80,editor:{type:'numberbox',options:{precision:2}}},
+	        {field:'basicPriceThird',title:'三阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}}
 	    ]],
 	    toolbar: [{ 
-	        text: '添加基本单价', 
+	        text: '添加', 
 	        iconCls: 'icon-add', 
-	        handler: function() { 
-	        	$('#basicPriceTab').datagrid('appendRow',{
-	        		basicPriceName: '',
-	        		basicPriceFirst: '',
-	        		basicFirstOver: '',
-	        		basicPriceSecond: '',
-	        		basicSecondOver: '',
-	        		basicPriceThird: '',
-	        		operate:'<a onclick="deleteRow(this)">删除</a>'
-	        	});
+	        handler: function() {
+	        	var row = bpTab.datagrid('getSelected');
+	        	var rowIndex = bpTab.datagrid('getRowIndex',row);
+	        	if(bpTab.datagrid('validateRow',rowIndex)){
+	        		$('#basicPriceTab').datagrid('insertRow',{
+		        		row: {}
+		        	});
+	        	}else{
+	        		alert("先完成上次编辑");
+	        	}
 	        } 
+	    },
+	    '-',{ 
+	        text: '删除', 
+	        iconCls: 'icon-remove', 
+	        handler: function(){
+	        	var row = bpTab.datagrid('getSelected');
+	        	if(row){
+	        		var rowIndex = bpTab.datagrid('getRowIndex',row);
+		        	bpTab.datagrid('deleteRow', rowIndex);  
+	        	}else{
+	        		$.messager.show({
+						title:'删除单价',
+						msg:'请选择一条记录！',
+						showType:'slide',
+						timeout:3000
+					});
+	        	}
+	        	//var rows = $('#t1').datagrid("getRows");
+	        	//bpTab.datagrid("loadData", rows);
+	        	} 
 	    }]
 	});
 	
@@ -104,14 +129,14 @@ function submitForm(){
 function clearForm(){
 	$('#priceAddForm').form('clear');
 	}
-function deleteRow(obj){
+/* function deleteRow(obj){
 	var tr = $(obj).parent().parent().parent();
 	//obj.parent().parent().parent().remove();
 	var rowIndex = tr.attr("datagrid-row-index");
 	if(rowIndex){
 		$('#basicPriceTab').datagrid('deleteRow', rowIndex);  
 	}
-}
+} */
 </script>
 
 		<div style="padding:10px 0 10px 60px">

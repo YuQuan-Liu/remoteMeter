@@ -52,6 +52,7 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 			ufs.setAdminName(adInfo.getAdminName());
 			ufs.setAdminEmail(adInfo.getAdminEmail());
 			ufs.setAdminMobile(adInfo.getAdminMobile());
+			ufs.setWaterComId(adInfo.getWatercompany().getPid());
 			
 			List<AdminRole> adminRole = new ArrayList<AdminRole>(adInfo.getAdminRoles());
 			Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();

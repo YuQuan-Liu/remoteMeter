@@ -52,6 +52,7 @@ public class AdministratorCtrl {
 	 */
 	@RequestMapping(value="/admin/addPage",method = RequestMethod.GET)
 	public String addPage(){
+		
 		return addAdminor;
 	}
 	@RequestMapping(value="admin/add",method = RequestMethod.POST)

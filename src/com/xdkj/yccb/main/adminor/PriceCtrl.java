@@ -14,7 +14,11 @@ import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.PriceService;
 import com.xdkj.yccb.main.entity.Pricekind;
-
+/**
+ * 单价
+ * @author SGR
+ *
+ */
 @Controller
 public class PriceCtrl {
 	@Autowired

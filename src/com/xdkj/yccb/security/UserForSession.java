@@ -8,6 +8,10 @@ public class UserForSession {
 	private String loginName;
 	private String adminEmail;
 	private String adminMobile;
+	/**
+	 * 自来水公司id
+	 */
+	private int waterComId;
 	private Map<String, String> menus;
 	public Integer getPid() {
 		return pid;
@@ -44,5 +48,11 @@ public class UserForSession {
 	}
 	public void setMenus(Map<String, String> menus) {
 		this.menus = menus;
+	}
+	public int getWaterComId() {
+		return waterComId;
+	}
+	public void setWaterComId(int waterComId) {
+		this.waterComId = waterComId;
 	}
 }

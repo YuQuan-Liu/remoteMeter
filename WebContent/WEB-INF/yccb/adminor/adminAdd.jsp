@@ -63,7 +63,7 @@ function clearForm(){
 	    			<td><input class="easyui-textbox" type="text" name="adminAddr" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>权限类型:</td>
+	    			<td>权限角色:</td>
 	    			<td>
 	    				<select class="easyui-combobox" name="language" data-options="panelHeight:'auto'">
 	    					<option value="1">Arabic</option>

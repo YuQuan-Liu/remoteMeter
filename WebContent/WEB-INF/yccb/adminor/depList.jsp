@@ -20,9 +20,12 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100},   
-	        {field:'companyName',title:'公司名',width:100},   
-	        {field:'companyAddr',title:'公司地址',width:100},
-	        {field:'mark',title:'公司标识',width:100}
+	        {field:'companyName',title:'片区名',width:100},   
+	        {field:'companyAddr',title:'管理员',width:100},
+	        {field:'mark',title:'自来水公司',width:100},
+	        {field:'mark',title:'操作',width:100,formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='addGprs("+row.pid+")'>查看</a> ";
+			}}
 	    ]],
 	    toolbar: [{ 
 	        text: '添加', 
@@ -30,8 +33,8 @@ $(function(){
 	        handler: function() { 
 	        	$('#depAddWin').window({   
 	    		    href:'${path}/admin/dep/addPage.do',
-	    		    width:400,   
-	    		    height:350,
+	    		    width:550,   
+	    		    height:250,
 	    		    minimizable:false,
 	    		    maximizable:false,
 	    		    title: '添加片区', 
@@ -51,8 +54,8 @@ $(function(){
 	        		alert(pid);
 	        		$('#depUpdateWin').window({   
 		    		    href:'${path}/admin/dep/updatePage.do?pid='+pid,
-		    		    width:400,   
-		    		    height:350,
+		    		    width:550,   
+		    		    height:250,
 		    		    minimizable:false,
 		    		    maximizable:false,
 		    		    title: '更新自来水公司', 

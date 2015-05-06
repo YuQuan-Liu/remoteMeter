@@ -19,6 +19,12 @@ public interface NeighborDAO {
 	void update (Neighbor nbr);
 	
 	void delete(String ids);
+	/**
+	 * 通过自来水公司id获取小区集合
+	 * @param wcId 自来水公司id
+	 * @return
+	 */
+	List<Neighbor> getNbrByWatcomId(int wcId);
 
 	
 }

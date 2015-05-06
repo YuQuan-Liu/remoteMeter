@@ -51,7 +51,7 @@ var _menus = {
 					"menuid" : "117",
 					"menuname" : "<fmt:message key='menu.areas'/>",
 					"icon" : "micon-nav",
-					"url" : "#"
+					"url" : "admin/dep/list.do"
 				},
 			</c:if>
 			<c:if test="${menus['basicprice']=='t'}">
