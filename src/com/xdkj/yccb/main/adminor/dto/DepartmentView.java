@@ -4,7 +4,7 @@ public class DepartmentView {
 	private Integer pid;
 	private String watercompany;
 	private String departmentName;
-	private char valid;
+	private String valid;
 	private String remark;
 	public Integer getPid() {
 		return pid;
@@ -24,10 +24,10 @@ public class DepartmentView {
 	public void setDepartmentName(String departmentName) {
 		this.departmentName = departmentName;
 	}
-	public char getValid() {
+	public String getValid() {
 		return valid;
 	}
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 	public String getRemark() {

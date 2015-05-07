@@ -39,24 +39,6 @@ public class Roles implements java.io.Serializable {
 	public Roles() {
 	}
 
-	public Roles(String roleName, String systemRole, String valid) {
-		this.roleName = roleName;
-		this.systemRole = systemRole;
-		this.valid = valid;
-	}
-
-	public Roles(Watercompany watercompany, String roleName, String systemRole,
-			String valid, String remark, Set<AdminRole> adminRoles,
-			Set<RoleAuthority> roleAuthorities) {
-		this.watercompany = watercompany;
-		this.roleName = roleName;
-		this.systemRole = systemRole;
-		this.valid = valid;
-		this.remark = remark;
-		this.adminRoles = adminRoles;
-		this.roleAuthorities = roleAuthorities;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

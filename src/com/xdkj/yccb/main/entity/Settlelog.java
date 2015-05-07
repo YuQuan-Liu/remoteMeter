@@ -38,30 +38,7 @@ public class Settlelog implements java.io.Serializable {
 
 	public Settlelog() {
 	}
-
-	public Settlelog(Admininfo admininfo, Readlog readlog, int objectId,
-			int objectType, int settleStatus, Date startTime) {
-		this.admininfo = admininfo;
-		this.readlog = readlog;
-		this.objectId = objectId;
-		this.objectType = objectType;
-		this.settleStatus = settleStatus;
-		this.startTime = startTime;
-	}
-
-	public Settlelog(Admininfo admininfo, Readlog readlog, int objectId,
-			int objectType, int settleStatus, Date startTime, String remark,
-			Set<Meterdeductionlog> meterdeductionlogs) {
-		this.admininfo = admininfo;
-		this.readlog = readlog;
-		this.objectId = objectId;
-		this.objectType = objectType;
-		this.settleStatus = settleStatus;
-		this.startTime = startTime;
-		this.remark = remark;
-		this.meterdeductionlogs = meterdeductionlogs;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

@@ -26,16 +26,7 @@ public class Actiontype implements java.io.Serializable {
 
 	public Actiontype() {
 	}
-
-	public Actiontype(String actionName) {
-		this.actionName = actionName;
-	}
-
-	public Actiontype(String actionName, Set<Useractionlog> useractionlogs) {
-		this.actionName = actionName;
-		this.useractionlogs = useractionlogs;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

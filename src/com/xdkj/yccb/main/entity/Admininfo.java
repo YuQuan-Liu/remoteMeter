@@ -46,44 +46,6 @@ public class Admininfo implements java.io.Serializable {
 	public Admininfo() {
 	}
 
-	public Admininfo(Watercompany watercompany, String adminName,
-			String loginName, String loginKey, int noWc, String valid) {
-		this.watercompany = watercompany;
-		this.adminName = adminName;
-		this.loginName = loginName;
-		this.loginKey = loginKey;
-		this.noWc = noWc;
-		this.valid = valid;
-	}
-
-/*	public Admininfo(Watercompany watercompany, Department department,
-			String adminName, String loginName, String loginKey,
-			String adminEmail, String adminAddr, String adminMobile,
-			String adminTel, int noWc, String valid, String remark,
-			Set<Valvelog> valvelogs, Set<Readlog> readlogs,
-			Set<Customerpaylog> customerpaylogs,
-			Set<Useractionlog> useractionlogs, Set<Settlelog> settlelogs,
-			Set<AdminRole> adminRoles) {
-		this.watercompany = watercompany;
-		this.department = department;
-		this.adminName = adminName;
-		this.loginName = loginName;
-		this.loginKey = loginKey;
-		this.adminEmail = adminEmail;
-		this.adminAddr = adminAddr;
-		this.adminMobile = adminMobile;
-		this.adminTel = adminTel;
-		this.noWc = noWc;
-		this.valid = valid;
-		this.remark = remark;
-		this.valvelogs = valvelogs;
-		this.readlogs = readlogs;
-		this.customerpaylogs = customerpaylogs;
-		this.useractionlogs = useractionlogs;
-		this.settlelogs = settlelogs;
-		this.adminRoles = adminRoles;
-	}*/
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

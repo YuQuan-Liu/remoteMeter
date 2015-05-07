@@ -41,6 +41,7 @@ public class NeighborServiceImpl implements NeighborService {
 			nv.setWatercompany(ngbr.getWatercompany().getCompanyName());
 			listView.add(nv);
 		}
+		list = null;
 		return listView;
 	}
 
@@ -132,6 +133,7 @@ public class NeighborServiceImpl implements NeighborService {
 			gv.setValid(g.getValid());
 			listView.add(gv);
 		}
+		list = null;
 		return listView;
 	}
 

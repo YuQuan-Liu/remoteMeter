@@ -29,25 +29,6 @@ public class Useractionlog implements java.io.Serializable {
 	private Date actionTime;
 	private String remark;
 
-	public Useractionlog() {
-	}
-
-	public Useractionlog(Actiontype actiontype, Admininfo admininfo,
-			Date actionTime) {
-		this.actiontype = actiontype;
-		this.admininfo = admininfo;
-		this.actionTime = actionTime;
-	}
-
-	public Useractionlog(Actiontype actiontype, Admininfo admininfo,
-			Integer targerId, Date actionTime, String remark) {
-		this.actiontype = actiontype;
-		this.admininfo = admininfo;
-		this.targerId = targerId;
-		this.actionTime = actionTime;
-		this.remark = remark;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

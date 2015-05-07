@@ -39,34 +39,6 @@ public class Warnlog implements java.io.Serializable {
 	public Warnlog() {
 	}
 
-	public Warnlog(Customer customer, int warnStyle, Date actionTime,
-			int warnCount, char valid, int warn) {
-		this.customer = customer;
-		this.warnStyle = warnStyle;
-		this.actionTime = actionTime;
-		this.warnCount = warnCount;
-		this.valid = valid;
-		this.warn = warn;
-	}
-
-	public Warnlog(Customer customer, int warnStyle, String mobile,
-			String email, String warnContent, String warnReason,
-			Date actionTime, int warnCount, Integer successCount,
-			Integer failCount, char valid, int warn) {
-		this.customer = customer;
-		this.warnStyle = warnStyle;
-		this.mobile = mobile;
-		this.email = email;
-		this.warnContent = warnContent;
-		this.warnReason = warnReason;
-		this.actionTime = actionTime;
-		this.warnCount = warnCount;
-		this.successCount = successCount;
-		this.failCount = failCount;
-		this.valid = valid;
-		this.warn = warn;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

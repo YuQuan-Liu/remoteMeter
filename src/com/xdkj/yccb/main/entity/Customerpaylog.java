@@ -35,28 +35,6 @@ public class Customerpaylog implements java.io.Serializable {
 	public Customerpaylog() {
 	}
 
-	public Customerpaylog(Customer customer, Admininfo admininfo,
-			BigDecimal amount, Date actionTime, byte prePaySign, String valid) {
-		this.customer = customer;
-		this.admininfo = admininfo;
-		this.amount = amount;
-		this.actionTime = actionTime;
-		this.prePaySign = prePaySign;
-		this.valid = valid;
-	}
-
-	public Customerpaylog(Customer customer, Admininfo admininfo,
-			BigDecimal amount, Date actionTime, byte prePaySign, String valid,
-			String remark) {
-		this.customer = customer;
-		this.admininfo = admininfo;
-		this.amount = amount;
-		this.actionTime = actionTime;
-		this.prePaySign = prePaySign;
-		this.valid = valid;
-		this.remark = remark;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

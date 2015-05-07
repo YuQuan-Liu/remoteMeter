@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.adminor.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.sf.json.JSONArray;
@@ -41,6 +42,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 			dv.setValid(department.getValid());
 			listView.add(dv);
 		}
+		list=null;
 		return listView;
 	}
 
@@ -50,8 +52,22 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public String add(Department dep) {
-		if(departmentDAO.add(dep)>0){
+	public String add(Department dep,String nbrIds) {
+		int depId = departmentDAO.add(dep);
+		if(depId>0){
+			//保存 片区-小区 关系表
+			if(null!=nbrIds&&!"".equals(nbrIds)){
+				String [] ids = nbrIds.split(",");
+				for (int i = 0; i < ids.length; i++) {
+					Detaildepart dd = new Detaildepart();
+					Neighbor nbr = new Neighbor();
+					nbr.setPid(Integer.parseInt(ids[i]));
+					dd.setDepartment(dep);
+					dd.setNeighbor(nbr);
+					dd.setValid("1");
+					detaildepartDAO.addDetaildepart(dd);
+				}
+			}
 			return "succ";
 		}else{
 			return "fail";

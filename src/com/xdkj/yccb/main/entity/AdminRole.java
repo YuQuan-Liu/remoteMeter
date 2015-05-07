@@ -25,12 +25,7 @@ public class AdminRole implements java.io.Serializable {
 
 	public AdminRole() {
 	}
-
-	public AdminRole(Roles roles, Admininfo admininfo) {
-		this.roles = roles;
-		this.admininfo = admininfo;
-	}
-
+	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

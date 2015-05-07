@@ -59,65 +59,6 @@ public class Meter implements java.io.Serializable {
 	public Meter() {
 	}
 
-	public Meter(Pricekind pricekind, Customer customer, Meterkind meterkind,
-			String steelNum, String collectorAddr, String meterAddr,
-			byte meterSolid, char lihu, int mainMeter, int suppleMode,
-			int isValve, int timerSwitch, char valid) {
-		this.pricekind = pricekind;
-		this.customer = customer;
-		this.meterkind = meterkind;
-		this.steelNum = steelNum;
-		this.collectorAddr = collectorAddr;
-		this.meterAddr = meterAddr;
-		this.meterSolid = meterSolid;
-		this.lihu = lihu;
-		this.mainMeter = mainMeter;
-		this.suppleMode = suppleMode;
-		this.isValve = isValve;
-		this.timerSwitch = timerSwitch;
-		this.valid = valid;
-	}
-
-	public Meter(Pricekind pricekind, Customer customer, Gprs gprs,
-			Meterkind meterkind, String apid, String steelNum, String qfh,
-			String collectorAddr, String meterAddr, byte meterSolid, char lihu,
-			int mainMeter, int suppleMode, int isValve, Byte valveState,
-			Integer deductionStyle, Integer valveOffthre, Byte meterState,
-			Integer deRead, Date deTime, int timerSwitch, String timer,
-			Integer overflow, char valid, String remark,
-			Set<Readmeterlog> readmeterlogs,
-			Set<Meterdeductionlog> meterdeductionlogs,
-			Set<Valveconflog> valveconflogs) {
-		this.pricekind = pricekind;
-		this.customer = customer;
-		this.gprs = gprs;
-		this.meterkind = meterkind;
-		this.apid = apid;
-		this.steelNum = steelNum;
-		this.qfh = qfh;
-		this.collectorAddr = collectorAddr;
-		this.meterAddr = meterAddr;
-		this.meterSolid = meterSolid;
-		this.lihu = lihu;
-		this.mainMeter = mainMeter;
-		this.suppleMode = suppleMode;
-		this.isValve = isValve;
-		this.valveState = valveState;
-		this.deductionStyle = deductionStyle;
-		this.valveOffthre = valveOffthre;
-		this.meterState = meterState;
-		this.deRead = deRead;
-		this.deTime = deTime;
-		this.timerSwitch = timerSwitch;
-		this.timer = timer;
-		this.overflow = overflow;
-		this.valid = valid;
-		this.remark = remark;
-		this.readmeterlogs = readmeterlogs;
-		this.meterdeductionlogs = meterdeductionlogs;
-		this.valveconflogs = valveconflogs;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

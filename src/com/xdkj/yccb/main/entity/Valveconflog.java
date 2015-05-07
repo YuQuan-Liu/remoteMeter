@@ -35,25 +35,6 @@ public class Valveconflog implements java.io.Serializable {
 	public Valveconflog() {
 	}
 
-	public Valveconflog(Valvelog valvelog, int switch_, int result) {
-		this.valvelog = valvelog;
-		this.switch_ = switch_;
-		this.result = result;
-	}
-
-	public Valveconflog(Meter meter, Valvelog valvelog, int switch_,
-			int result, String errorReason, Integer errorStatus,
-			String removeReason, Date completeTime) {
-		this.meter = meter;
-		this.valvelog = valvelog;
-		this.switch_ = switch_;
-		this.result = result;
-		this.errorReason = errorReason;
-		this.errorStatus = errorStatus;
-		this.removeReason = removeReason;
-		this.completeTime = completeTime;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

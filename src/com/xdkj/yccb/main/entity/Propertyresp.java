@@ -32,24 +32,6 @@ public class Propertyresp implements java.io.Serializable {
 	public Propertyresp() {
 	}
 
-	public Propertyresp(Neighbor neighbor, char valid) {
-		this.neighbor = neighbor;
-		this.valid = valid;
-	}
-
-	public Propertyresp(Neighbor neighbor, String respName, String respTel,
-			String respMobile, String respEmail, String respAddr, char valid,
-			String remark) {
-		this.neighbor = neighbor;
-		this.respName = respName;
-		this.respTel = respTel;
-		this.respMobile = respMobile;
-		this.respEmail = respEmail;
-		this.respAddr = respAddr;
-		this.valid = valid;
-		this.remark = remark;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

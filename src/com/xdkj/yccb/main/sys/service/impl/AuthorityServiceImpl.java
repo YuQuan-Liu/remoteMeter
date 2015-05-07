@@ -42,6 +42,7 @@ public class AuthorityServiceImpl implements AuthorityService {
 			av.setRemark(auy.getRemark());
 			listView.add(av);
 		}
+		list=null;
 		return listView;
 	}
 

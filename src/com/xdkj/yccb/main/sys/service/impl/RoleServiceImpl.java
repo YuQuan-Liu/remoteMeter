@@ -39,6 +39,7 @@ public class RoleServiceImpl implements RoleService {
 			r.setWcid(roles.getWatercompany().getPid()+"");
 			listView.add(r);
 		}
+		list = null;
 		return listView;
 	}
 
@@ -92,16 +93,11 @@ public class RoleServiceImpl implements RoleService {
 		Set<RoleAuthority> set = r.getRoleAuthorities();
 		//需要新增的权限集合
 		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
-		//List<Integer> roleAuthIds = new ArrayList<Integer>();
-		/*for (RoleAuthority ra : set) {
-			roleAuthIds.add(ra.getPid());
-		}*/
 		List<Integer> DelIds = new ArrayList<Integer>();
 		//对比选出需要新增的权限
 		for (String id : ids) {
 			if(null!=id&&!"".equals(id)){
 				boolean isNew = true;
-				
 					for (RoleAuthority rid : set) {
 						if(Integer.parseInt(id)==rid.getAuthority().getPid()){
 							isNew=false;
@@ -131,7 +127,6 @@ public class RoleServiceImpl implements RoleService {
 				DelIds.add(rid.getPid());
 			}
 		}
-		
 		if(DelIds.size()>0){
 			roleAuthorityDAO.delete(DelIds);
 		}

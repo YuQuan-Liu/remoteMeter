@@ -34,26 +34,6 @@ public class Wastelog implements java.io.Serializable {
 	public Wastelog() {
 	}
 
-	public Wastelog(Neighbor neighbor, int readLogId, int meterid, int waste,
-			char valid) {
-		this.neighbor = neighbor;
-		this.readLogId = readLogId;
-		this.meterid = meterid;
-		this.waste = waste;
-		this.valid = valid;
-	}
-
-	public Wastelog(Neighbor neighbor, int readLogId, int meterid,
-			Date actionTime, int waste, char valid, String remark) {
-		this.neighbor = neighbor;
-		this.readLogId = readLogId;
-		this.meterid = meterid;
-		this.actionTime = actionTime;
-		this.waste = waste;
-		this.valid = valid;
-		this.remark = remark;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

@@ -25,30 +25,12 @@ public class Department implements java.io.Serializable {
 	private Integer pid;
 	private Watercompany watercompany;
 	private String departmentName;
-	private char valid;
+	private String valid;
 	private String remark;
 	private Set<Detaildepart> detaildeparts = new HashSet<Detaildepart>(0);
 	private Set<Admininfo> admininfos = new HashSet<Admininfo>(0);
 
 	public Department() {
-	}
-
-	public Department(Watercompany watercompany, String departmentName,
-			char valid) {
-		this.watercompany = watercompany;
-		this.departmentName = departmentName;
-		this.valid = valid;
-	}
-
-	public Department(Watercompany watercompany, String departmentName,
-			char valid, String remark, Set<Detaildepart> detaildeparts,
-			Set<Admininfo> admininfos) {
-		this.watercompany = watercompany;
-		this.departmentName = departmentName;
-		this.valid = valid;
-		this.remark = remark;
-		this.detaildeparts = detaildeparts;
-		this.admininfos = admininfos;
 	}
 
 	@Id
@@ -82,11 +64,11 @@ public class Department implements java.io.Serializable {
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)
-	public char getValid() {
+	public String getValid() {
 		return this.valid;
 	}
 
-	public void setValid(char valid) {
+	public void setValid(String valid) {
 		this.valid = valid;
 	}
 

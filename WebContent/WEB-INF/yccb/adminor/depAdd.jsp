@@ -9,9 +9,9 @@
 <body>
 <script type="text/javascript">
 $(function(){
-	$('#neighborCombo').combo({   
+	$('#neighborCombo').combobox({   
 	    required:true,   
-	    url:'/admin/dep/nbrlistContent.do',
+	    url:'${path}/admin/dep/nbrlistContent.do',
 		method:'post',
 		valueField:'id',
 		textField:'text',
@@ -51,8 +51,8 @@ function clearForm(){
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水小的小区：</td>
-	    			<td><input id="neighborCombo"></td>
+	    			<td>自来水下的小区：</td>
+	    			<td><input id="neighborCombo" name="neighbors"></td>
 	    		</tr>
 	    	</table>
 	    </div>

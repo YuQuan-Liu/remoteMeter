@@ -34,31 +34,10 @@ public class Watercompany implements java.io.Serializable {
 
 	public Watercompany() {
 	}
+	
 	public Watercompany(Integer pid) {
 		this.pid=pid;
 	}
-	public Watercompany(String companyName, String mark, int authority) {
-		this.companyName = companyName;
-		this.mark = mark;
-		this.authority = authority;
-	}
-
-	public Watercompany(String companyName, String companyAddr, String mark,
-			int authority, String remark, Set<Roles> roleses,
-			Set<Neighbor> neighbors, Set<Pricekind> pricekinds,
-			Set<Admininfo> admininfos, Set<Department> departments) {
-		this.companyName = companyName;
-		this.companyAddr = companyAddr;
-		this.mark = mark;
-		this.authority = authority;
-		this.remark = remark;
-		this.roleses = roleses;
-		this.neighbors = neighbors;
-		this.pricekinds = pricekinds;
-		this.admininfos = admininfos;
-		this.departments = departments;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

@@ -44,40 +44,6 @@ public class Readlog implements java.io.Serializable {
 	public Readlog() {
 	}
 
-	public Readlog(Admininfo admininfo, int readType, int remote,
-			int readObject, String ip, int readStatus, Date startTime,
-			int settle) {
-		this.admininfo = admininfo;
-		this.readType = readType;
-		this.remote = remote;
-		this.readObject = readObject;
-		this.ip = ip;
-		this.readStatus = readStatus;
-		this.startTime = startTime;
-		this.settle = settle;
-	}
-
-	public Readlog(Admininfo admininfo, Integer objectId, int readType,
-			int remote, int readObject, String ip, int readStatus,
-			String failReason, Date startTime, Date completeTime, int settle,
-			String result, Set<Readmeterlog> readmeterlogs,
-			Set<Settlelog> settlelogs) {
-		this.admininfo = admininfo;
-		this.objectId = objectId;
-		this.readType = readType;
-		this.remote = remote;
-		this.readObject = readObject;
-		this.ip = ip;
-		this.readStatus = readStatus;
-		this.failReason = failReason;
-		this.startTime = startTime;
-		this.completeTime = completeTime;
-		this.settle = settle;
-		this.result = result;
-		this.readmeterlogs = readmeterlogs;
-		this.settlelogs = settlelogs;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

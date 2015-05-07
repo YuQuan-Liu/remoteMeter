@@ -33,25 +33,6 @@ public class Readmeterlog implements java.io.Serializable {
 	public Readmeterlog() {
 	}
 
-	public Readmeterlog(Meter meter, Readlog readlog, byte actionType,
-			Date actionTime, int actionResult) {
-		this.meter = meter;
-		this.readlog = readlog;
-		this.actionType = actionType;
-		this.actionTime = actionTime;
-		this.actionResult = actionResult;
-	}
-
-	public Readmeterlog(Meter meter, Readlog readlog, byte actionType,
-			Date actionTime, int actionResult, String remark) {
-		this.meter = meter;
-		this.readlog = readlog;
-		this.actionType = actionType;
-		this.actionTime = actionTime;
-		this.actionResult = actionResult;
-		this.remark = remark;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

@@ -31,6 +31,7 @@ public class WaterCompanyServiceImpl implements WaterCompanyService {
 			}
 			listView.add(wc);
 		}
+		list=null;
 		return listView;
 	}
 

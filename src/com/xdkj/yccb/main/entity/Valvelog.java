@@ -40,31 +40,6 @@ public class Valvelog implements java.io.Serializable {
 	public Valvelog() {
 	}
 
-	public Valvelog(Admininfo admininfo, int auto, int actionCount,
-			int completeCount, int errorCount, int status) {
-		this.admininfo = admininfo;
-		this.auto = auto;
-		this.actionCount = actionCount;
-		this.completeCount = completeCount;
-		this.errorCount = errorCount;
-		this.status = status;
-	}
-
-	public Valvelog(Admininfo admininfo, Date actionTime, int auto,
-			int actionCount, int completeCount, int errorCount, int status,
-			String failReason, String remark, Set<Valveconflog> valveconflogs) {
-		this.admininfo = admininfo;
-		this.actionTime = actionTime;
-		this.auto = auto;
-		this.actionCount = actionCount;
-		this.completeCount = completeCount;
-		this.errorCount = errorCount;
-		this.status = status;
-		this.failReason = failReason;
-		this.remark = remark;
-		this.valveconflogs = valveconflogs;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

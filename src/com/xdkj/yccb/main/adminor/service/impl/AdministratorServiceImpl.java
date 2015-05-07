@@ -34,6 +34,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			aiv.setValid(ai.getValid());
 			listView.add(aiv);
 		}
+		list=null;
 		return listView;
 	}
 

@@ -40,39 +40,6 @@ public class Meterdeductionlog implements java.io.Serializable {
 	public Meterdeductionlog() {
 	}
 
-	public Meterdeductionlog(Settlelog settlelog, Pricekind pricekind,
-			Meter meter, int meterRead, Date meterReadTime, int lastDeRead,
-			Date lastDeTime, BigDecimal deMoney, Date actionTime, char valid) {
-		this.settlelog = settlelog;
-		this.pricekind = pricekind;
-		this.meter = meter;
-		this.meterRead = meterRead;
-		this.meterReadTime = meterReadTime;
-		this.lastDeRead = lastDeRead;
-		this.lastDeTime = lastDeTime;
-		this.deMoney = deMoney;
-		this.actionTime = actionTime;
-		this.valid = valid;
-	}
-
-	public Meterdeductionlog(Settlelog settlelog, Pricekind pricekind,
-			Meter meter, int meterRead, Date meterReadTime, int lastDeRead,
-			Date lastDeTime, BigDecimal deMoney, Integer settleSingleId,
-			Date actionTime, char valid, String remark) {
-		this.settlelog = settlelog;
-		this.pricekind = pricekind;
-		this.meter = meter;
-		this.meterRead = meterRead;
-		this.meterReadTime = meterReadTime;
-		this.lastDeRead = lastDeRead;
-		this.lastDeTime = lastDeTime;
-		this.deMoney = deMoney;
-		this.settleSingleId = settleSingleId;
-		this.actionTime = actionTime;
-		this.valid = valid;
-		this.remark = remark;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

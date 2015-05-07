@@ -35,6 +35,7 @@ public class PriceServiceImpl implements PriceService {
 			pkv0.setWatercompany(pk0.getWatercompany().getCompanyName());
 			listView.add(pkv0);
 		}
+		list=null;
 		return listView;
 	}
 

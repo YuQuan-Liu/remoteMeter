@@ -32,23 +32,6 @@ public class Meterkind implements java.io.Serializable {
 	public Meterkind() {
 	}
 
-	public Meterkind(String meterMm, int remote, char valid) {
-		this.meterMm = meterMm;
-		this.remote = remote;
-		this.valid = valid;
-	}
-
-	public Meterkind(String meterTypeName, String meterMm, int remote,
-			Integer handStyle, char valid, String remark, Set<Meter> meters) {
-		this.meterTypeName = meterTypeName;
-		this.meterMm = meterMm;
-		this.remote = remote;
-		this.handStyle = handStyle;
-		this.valid = valid;
-		this.remark = remark;
-		this.meters = meters;
-	}
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "PID", unique = true, nullable = false)

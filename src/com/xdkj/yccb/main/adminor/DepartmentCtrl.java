@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xdkj.yccb.common.JsonDataUtil;
@@ -19,8 +18,7 @@ import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dto.DepartmentView;
 import com.xdkj.yccb.main.adminor.service.DepartmentService;
 import com.xdkj.yccb.main.entity.Department;
-import com.xdkj.yccb.main.infoin.dto.NeighborView;
-import com.xdkj.yccb.security.UserForSession;
+import com.xdkj.yccb.main.entity.Watercompany;
 /**
  * 片区
  * @author SGR
@@ -61,15 +59,20 @@ public class DepartmentCtrl {
 	 */
 	@RequestMapping(value="/admin/dep/nbrlistContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String depNbrListContent(@RequestParam("depId") String depId,HttpServletRequest request){
+	public String depNbrListContent(HttpServletRequest request){
+		String depId = request.getParameter("depId");
 		return departmentService.getNbrByCurrUser(WebUtil.getCurrUser(request), depId);
 	}
 	
 	@RequestMapping(value="/admin/dep/add",method=RequestMethod.POST)
 	@ResponseBody
-	public String add(Department dep){
-		return departmentService.add(dep);
-		
+	public String add(Department dep,HttpServletRequest request){
+		//小区
+		String neighbors = request.getParameter("neighbors");
+		//自来水公司id
+		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		dep.setWatercompany(new Watercompany(wcid));
+		return departmentService.add(dep,neighbors);
 	}
 
 }
