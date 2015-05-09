@@ -32,6 +32,7 @@
 	<table id="customerTab" style="width:100%;height:400px;"></table>
 	<div id="addCustomerWin"></div>
 	<div id="addCustomerWins"></div>
+	<div id="updateCustomerWin"></div>
 </body>
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/datagrid-detailview.js"></script>
 <script>
@@ -91,9 +92,9 @@ $(function(){
 		          }},
 		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
-							var id = row.c_pid;
-							return "<a href='#' class='operateHref' onclick='updateCustomer("+id+")'> 修改 </a>"
-							+"<a href='#' class='operateHref' onclick='deleteCustomer("+id+")'> 删除 </a>";
+							var id = row.pid;
+							return "<a href='#' class='operateHref' onclick='updateCustomer("+id+","+index+")'> 修改 </a>"
+							+"<a href='#' class='operateHref' onclick='deleteCustomer("+id+","+index+")'> 删除 </a>";
 				  }}
 		      ]],
 		      toolbar:[{
@@ -140,8 +141,8 @@ $(function(){
 				          	{field:'overflow',title:'用量阀值',width:50},
 				          	{field:'changend',title:'换表读数',width:50},
 				          	{field:'changestart',title:'起始读数',width:50},
-				          	{field:'action',title:'操作',width:90,formatter: function(value,row,index){
-								var id = row.m_pid;
+				          	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
+								var id = row.pid;
 								return "<a href='#' class='operateHref' onclick='updateMeter("+id+")'> 修改 </a>"
 								+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")'> 删除 </a>"
 								+"<a href='#' class='operateHref' onclick='changemeter("+id+")'> 换表 </a>";
@@ -192,9 +193,6 @@ function searchCustomer(){
 		});
 	}
 }
-function updateCustomer(){
-	alert("haha");
-}
 function addCustomer(){
 	$('#addCustomerWin').window({	
 		href:'${path}/infoin/customer/addPage.do',
@@ -217,17 +215,63 @@ function addCustomers(){
 		title: '批量添加用户'
 	});
 }
-function deleteCustomer(){
-	
+
+var update_index;
+var updata_cid;
+function updateCustomer(cid,index){
+	update_index = index;
+	updata_cid = cid;
+	$('#updateCustomerWin').window({	
+		href:'${path}/infoin/customer/updatePage.do?cid='+cid+"&index="+index,
+		width:800,	
+		height:500,
+		minimizable:false,
+		maximizable:false,
+		collapsible:false,
+		title: '修改用户',
+		onClose:refreshRow
+	}); 
 }
-function updateMeter(){
-	
+function refreshRow(index){
+	//去服务器获取index这行对应的值  更新这一行
+	$.ajax({
+		url:'${path}/infoin/customer/refresh.do',
+		type:'post',
+		data:{
+			'cid':updata_cid
+		},
+		dataType:"json",
+		success : function(data) {
+			$("#customerTab").datagrid('updateRow', {index:update_index,row:data});
+		}
+	});	
 }
-function deleteMeter(){
-	
-}
-function changemeter(){
-	
-}
+	function deleteCustomer(cid, index) {
+		$.messager.confirm('提示', '确定要删除选中记录吗？', function(r) {
+			if (r) {
+				$.ajax({
+					url : '${path}/infoin/customer/delete.do',
+					type : 'post',
+					data : {
+						'cid' : cid
+					},
+					success : function() {
+						$("#customerTab").datagrid('deleteRow', index);
+					}
+				});
+			}
+		});
+
+		$("#customerTab").datagrid('deleteRow', index);
+	}
+	function updateMeter(mid) {
+		alert(mid);
+	}
+	function deleteMeter(mid) {
+		alert(mid);
+	}
+	function changemeter(mid) {
+		alert(mid);
+	}
 </script>
 </html>

@@ -31,8 +31,8 @@ public class CustomerView {
 	private int warnSwitch;
 	private int warnStyle;
 	private int warnThre;
-	private String valid;
-	private String remark;
+//	private String valid;
+//	private String remark;
 	
 	private String louNum;
 	private String dyNum;
@@ -165,24 +165,24 @@ public class CustomerView {
 	public void setWarnThre(int warnThre) {
 		this.warnThre = warnThre;
 	}
-	public String getValid() {
-		return valid;
-	}
-	public void setValid(String valid) {
-		this.valid = valid;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+//	public String getValid() {
+//		return valid;
+//	}
+//	public void setValid(String valid) {
+//		this.valid = valid;
+//	}
+//	public String getRemark() {
+//		return remark;
+//	}
+//	public void setRemark(String remark) {
+//		this.remark = remark;
+//	}
 	public CustomerView() {
 		super();
 	}
 	@Override
 	public String toString() {
-		return "CustomerView [pid=" + pid + ", n_name=" + n_name + ", n_id="
+		return "[pid=" + pid + ", n_name=" + n_name + ", n_id="
 				+ n_id + ", hk=" + hk + ", hk_id=" + hk_id + ", apid=" + apid
 				+ ", customerId=" + customerId + ", customerName="
 				+ customerName + ", customerMobile=" + customerMobile
@@ -190,8 +190,7 @@ public class CustomerView {
 				+ nationalId + ", customerAddr=" + customerAddr + ", c_num="
 				+ c_num + ", customerBalance=" + customerBalance
 				+ ", prePaySign=" + prePaySign + ", warnSwitch=" + warnSwitch
-				+ ", warnStyle=" + warnStyle + ", warnThre=" + warnThre
-				+ ", valid=" + valid + ", remark=" + remark + "]";
+				+ ", warnStyle=" + warnStyle + ", warnThre=" + warnThre+ "]";
 	}
 	
 	public Map<String,String> check_view(){

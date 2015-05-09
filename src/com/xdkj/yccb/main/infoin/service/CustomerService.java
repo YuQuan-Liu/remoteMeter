@@ -34,5 +34,16 @@ public interface CustomerService {
 	 * @return
 	 */
 	public Map<String, String> addMeter(MeterView mv);
+	
+	/**
+	 * 根据用户cid 删除用户
+	 * @param cid
+	 * @return
+	 */
+	public String deleteCustomer(int cid);
+	
+	public CustomerView getCustomerViewbyCid(int cid);
+
+	public Map<String, String> updateCustomer(CustomerView cv);
 
 }

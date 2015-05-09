@@ -30,12 +30,16 @@ public interface CustomerDao {
 	 * @return
 	 */
 	public int addCustomer(Customer c);
-	
+	public Customer getCustomerByPid(int cid);
+	public int deleteCustomer(int cid);
 	/**
 	 * 添加表
 	 * @param c
 	 * @return
 	 */
 	public int addMeter(Meter m);
+	public void deleteMeter(int cid);
+	public int updateCustomer(Customer c);
+	
 
 }

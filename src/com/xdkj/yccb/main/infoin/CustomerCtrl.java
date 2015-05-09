@@ -87,10 +87,35 @@ public class CustomerCtrl {
 		return JSON.toJSONString(customerService.addCustomer(cv));
 	}
 	
+	@RequestMapping(value="/infoin/customer/delete")
+	@ResponseBody
+	public String deleteCustomer(int cid){
+		return customerService.deleteCustomer(cid);
+	}
+	
+	@RequestMapping(value="/infoin/customer/updatePage")
+	public String updateCustomerPage(int cid,Model model){
+		
+		CustomerView cv = customerService.getCustomerViewbyCid(cid);
+		model.addAttribute("cv", cv);
+		return "/infoin/customerUpdate";
+	}
+	@RequestMapping(value="/infoin/customer/update")
+	@ResponseBody
+	public String updateCustomer(CustomerView cv){
+		return JSON.toJSONString(customerService.updateCustomer(cv));
+	}
+	
+	//更新某一行用户信息
+	@RequestMapping(value="/infoin/customer/refresh",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String refreshCustomer(int cid){
+		return JSON.toJSONString(customerService.getCustomerViewbyCid(cid));
+	}
+	
 	@RequestMapping(value="/infoin/meter/add")
 	@ResponseBody
 	public String addMeter(MeterView mv){
-		System.out.println(mv);
 		return JSON.toJSONString(customerService.addMeter(mv));
 	}
 	

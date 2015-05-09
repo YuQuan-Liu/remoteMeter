@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Gprs;
@@ -180,6 +181,62 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 		
 		
+		return map;
+	}
+	@Override
+	public String deleteCustomer(int cid) {
+		if(customerDao.deleteCustomer(cid) > 0){
+			return "true";
+		}else{
+			return "false";
+		}
+	}
+	@Override
+	public CustomerView getCustomerViewbyCid(int cid) {
+		
+		Customer c = customerDao.getCustomerByPid(cid);
+		CustomerView cv = new CustomerView();
+		try {
+			BeanUtils.copyProperties(cv, c);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		cv.setN_name(c.getNeighbor().getNeighborName());
+		cv.setHk(c.getHousekind().getHkname());
+		cv.setHk_id(c.getHousekind().getPid()+"");
+		cv.setC_num(c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+		
+		return cv;
+	}
+	@Override
+	public Map<String, String> updateCustomer(CustomerView cv) {
+		// check CustomerView
+		Map<String, String> map = cv.check_view();
+		if (map.get("success").equals("true")) {
+			Customer c = customerDao.getCustomerByPid(cv.getPid());
+			try {
+				ConvertUtils.register(new BigDecimalConverter(),
+						BigDecimal.class);
+				BeanUtils.copyProperties(c, cv);
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//住宅類型不更改
+			//金額不允許更改
+			if (customerDao.updateCustomer(c) > 0) {
+				map.put("update", c.getPid() + "");
+//				map.put("cv", JSON.toJSONString(cv));
+			} else {
+				map.put("update", "0");
+			}
+		}
+
 		return map;
 	}
 

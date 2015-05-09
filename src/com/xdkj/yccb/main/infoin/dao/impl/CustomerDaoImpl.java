@@ -53,4 +53,36 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		return m.getPid();
 	}
 
+	@Override
+	public void deleteMeter(int cid) {
+		
+	}
+
+	@Override
+	public Customer getCustomerByPid(int cid) {
+		String hql = "from Customer c where c.valid='1' and c.pid = "+cid;
+		Query q = getSession().createQuery(hql);
+		return (Customer) q.uniqueResult();
+	}
+
+	@Override
+	public int deleteCustomer(int cid) {
+		
+		
+		String hql = "update Customer c set c.valid = 0 where c.pid = "+cid;
+		Query q = getSession().createQuery(hql);
+		
+		return q.executeUpdate();
+	}
+
+	@Override
+	public int updateCustomer(Customer c) {
+		try{
+			this.getHibernateTemplate().update(c);
+			return 1;
+		}catch(Exception e){
+			return 0;
+		}
+	}
+
 }

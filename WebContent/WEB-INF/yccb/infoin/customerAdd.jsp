@@ -6,7 +6,7 @@
 <%@include file="/commonjsp/top.jsp" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>添加用户信息</title>
 </head>
 <body>
 	<form id="customer" method="post">
