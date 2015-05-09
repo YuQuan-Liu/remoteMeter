@@ -2,12 +2,15 @@ package com.xdkj.yccb.security;
 
 import java.util.Map;
 
+import com.xdkj.yccb.main.entity.Department;
+
 public class UserForSession {
 	private Integer pid;
 	private String adminName;
 	private String loginName;
 	private String adminEmail;
 	private String adminMobile;
+	private int depart_id;
 	/**
 	 * 自来水公司id
 	 */
@@ -42,6 +45,12 @@ public class UserForSession {
 	}
 	public void setAdminMobile(String adminMobile) {
 		this.adminMobile = adminMobile;
+	}
+	public int getDepart_id() {
+		return depart_id;
+	}
+	public void setDepart_id(int depart_id) {
+		this.depart_id = depart_id;
 	}
 	public Map<String, String> getMenus() {
 		return menus;

@@ -9,7 +9,13 @@ import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 
 public interface NeighborService {
+	
 	List<NeighborView> getList(NeighborView nv,PageBase pb);
+	/*
+	 * 根据片区id获取所有的小区的信息  
+	 * 片区id==0  返回自来水公司下的所有的小区
+	 */
+	public List<NeighborView> getList(int depart_id,int wcid);
 	
 	String addNeighbor(Neighbor nbr);
 	
@@ -24,7 +30,5 @@ public interface NeighborService {
 	String deleteGprsById(String gprsId);
 	
 	List<GprsView> getGprsByNbrId(int nbrId);
-
 	
-
 }

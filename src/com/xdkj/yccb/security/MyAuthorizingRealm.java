@@ -54,6 +54,13 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 			ufs.setAdminMobile(adInfo.getAdminMobile());
 			ufs.setWaterComId(adInfo.getWatercompany().getPid());
 			
+			//管理员没有片区   将0存到Session中
+			if(null == adInfo.getDepartment()){
+				ufs.setDepart_id(0);
+			}else{
+				ufs.setDepart_id(adInfo.getDepartment().getPid());
+			}
+			
 			List<AdminRole> adminRole = new ArrayList<AdminRole>(adInfo.getAdminRoles());
 			Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
 			Map<String, String> menus = new HashMap<String, String>();

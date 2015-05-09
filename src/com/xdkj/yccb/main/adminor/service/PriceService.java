@@ -15,6 +15,13 @@ public interface PriceService {
 	 * @return
 	 */
 	List<PriceKindView> getList(PriceKindView pkv,PageBase pb);
+
+	/**
+	 * 根据自来水公司的pid  获取自来水公司下的全部单价  显示
+	 * @param wcid
+	 * @return
+	 */
+	public List<PriceKindView> getList(int wcid) ;
 	/**
 	 * 单价总条数
 	 * @param pkv

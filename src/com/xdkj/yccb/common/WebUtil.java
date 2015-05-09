@@ -10,13 +10,15 @@ import com.xdkj.yccb.security.UserForSession;
  */
 public class WebUtil {
 	/**
-	 * 获取当前登录用户的信息
+	 * 获取当前登录用户的信息   
 	 * @param request
 	 * @return
 	 */
 	public static UserForSession getCurrUser(HttpServletRequest request){
-		
-		return (UserForSession) request.getSession().getAttribute("curuser");
+		if(null == request.getSession(false)){
+			return null;
+		}
+		return (UserForSession) request.getSession(false).getAttribute("curuser");
 	}
 
 }

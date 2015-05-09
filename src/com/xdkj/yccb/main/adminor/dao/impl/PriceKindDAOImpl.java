@@ -25,6 +25,13 @@ public class PriceKindDAOImpl extends HibernateDAO<Pricekind> implements PriceKi
 		q.setMaxResults(pb.getRows());
 		return q.list();
 	}
+	
+	@Override
+	public List<Pricekind> getList(int wcid) {
+		String hql = "from Pricekind pk where Valid = 1 and wcid = "+wcid;
+		Query q = getSession().createQuery(hql);
+		return q.list();
+	}
 
 	@Override
 	public Integer getTotalCount(PriceKindView pkv) {
@@ -45,5 +52,7 @@ public class PriceKindDAOImpl extends HibernateDAO<Pricekind> implements PriceKi
 		getHibernateTemplate().update(pk);
 		return false;
 	}
+
+	
 
 }

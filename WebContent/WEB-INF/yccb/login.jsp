@@ -43,7 +43,7 @@
      <div style="width:262px; float:left; height:255px; overflow:hidden;"><img src="resource/images/login_mid3.jpg" width="262" height="255" /></div>
   </div>
   <div><img src="resource/images/login_03.jpg" width="1004" height="94" /></div>
-  <div class="login_copyrightbg">copryright 2013 淅川西岛光电仪表科技有限公司</div>
+  <div class="login_copyrightbg">copryright 2015 淅川西岛光电仪表科技有限公司</div>
 </div>
 <script type="text/javascript">
 $("#loginname").focus();

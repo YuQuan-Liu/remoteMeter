@@ -12,7 +12,7 @@
 $(function(){
 	$('#neighborListTab').datagrid({
 		url:'${path}/infoin/neighbor/listContent.do',
-		fit:true,
+		fitColumns:true,
 		pagination:true,
 		pageList:[5,10,15,20],
 		queryParams:{},

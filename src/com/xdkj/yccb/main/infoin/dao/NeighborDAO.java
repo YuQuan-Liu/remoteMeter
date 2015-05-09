@@ -10,6 +10,12 @@ public interface NeighborDAO {
 	
 	List<Neighbor> getList(NeighborView nbr,PageBase pb);
 	
+	/*
+	 * 根据片区id获取所有的小区的信息  
+	 * 片区id==0  返回自来水公司下的所有的小区
+	 */
+	public List<Neighbor> getList(int depart_id,int wcid);
+	
 	int addNeighbor(Neighbor nbr);
 	
 	int getTotalCount(Neighbor nv, PageBase pb);

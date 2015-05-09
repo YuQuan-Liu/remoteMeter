@@ -80,6 +80,11 @@ public class NeighborCtrl {
 		return JSON.toJSONString(neighborService.getGprsByNbrId(Integer.parseInt(pid)));
 	}
 	
+//	@RequestMapping(value="/infoin/neighbor/gprscombo",produces="application/json;charset=UTF-8")
+//	@ResponseBody
+//	public String gprsComboListContent(@RequestParam("n_id") String n_id){
+//		return JSON.toJSONString(neighborService.getGprsComboByNbrId(Integer.parseInt(n_id)));
+//	}
 	
 	@RequestMapping(value="/infoin/neighbor/deleteGprsById",method=RequestMethod.POST)
 	@ResponseBody
