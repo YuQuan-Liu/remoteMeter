@@ -49,6 +49,8 @@ public class Meter implements java.io.Serializable {
 	private int timerSwitch;
 	private String timer;
 	private Integer overflow;
+	private Integer changend;
+	private Integer changestart;
 	private char valid;
 	private String remark;
 	private Set<Readmeterlog> readmeterlogs = new HashSet<Readmeterlog>(0);
@@ -280,6 +282,24 @@ public class Meter implements java.io.Serializable {
 
 	public void setOverflow(Integer overflow) {
 		this.overflow = overflow;
+	}
+	
+	@Column(name = "changend")
+	public Integer getChangend() {
+		return changend;
+	}
+
+	public void setChangend(Integer changend) {
+		this.changend = changend;
+	}
+	
+	@Column(name = "changestart")
+	public Integer getChangestart() {
+		return changestart;
+	}
+
+	public void setChangestart(Integer changestart) {
+		this.changestart = changestart;
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)

@@ -1,9 +1,11 @@
 package com.xdkj.yccb.main.infoin.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +45,44 @@ public class NeighborServiceImpl implements NeighborService {
 		}
 		list = null;
 		return listView;
+	}
+	
+	public List<NeighborView> getList(int depart_id,int wcid){
+		List<Neighbor> list = neighborDAO.getList(depart_id, wcid);
+		
+		if(list == null){
+			return null;
+		}
+		List<NeighborView> listView = new ArrayList<NeighborView>();
+		NeighborView nv = null;
+		
+		for(Neighbor n:list){
+			nv = new NeighborView();
+			try {
+				BeanUtils.copyProperties(nv, n);
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			listView.add(nv);
+		}
+		
+		return listView;
+//		if(depart_id == 0){
+//			return neighborDAO.getList(depart_id, wcid);
+//		}else{
+//			List<Neighbor> list = new ArrayList<>();
+//			for (Object detail : neighborDAO.getList(depart_id, wcid)) {
+//				list.add(((Detaildepart)detail).getNeighbor());
+//			}
+//			return list;
+//		}
+		
+		
 	}
 
 	@Override

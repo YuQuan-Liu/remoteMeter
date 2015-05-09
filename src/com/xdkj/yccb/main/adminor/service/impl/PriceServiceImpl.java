@@ -1,9 +1,11 @@
 package com.xdkj.yccb.main.adminor.service.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,27 @@ public class PriceServiceImpl implements PriceService {
 		list=null;
 		return listView;
 	}
+	
+	public List<PriceKindView> getList(int wcid) {
+		List<Pricekind> list = priceKindDAO.getList(wcid);
+		List<PriceKindView> listView = new ArrayList<PriceKindView>();
 
+		PriceKindView pkv = null;
+		for (Pricekind pk : list) {
+			pkv = new PriceKindView();
+			
+			try {
+				BeanUtils.copyProperties(pkv, pk);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			listView.add(pkv);
+		}
+		return listView;
+	}
+	
 	@Override
 	public int getTotalCount(PriceKindView pkv) {
 		return priceKindDAO.getTotalCount(pkv);

@@ -36,7 +36,7 @@ public class Customer implements java.io.Serializable {
 	private String nationalId;
 	private String customerAddr;
 	private String louNum;
-	private String dynum;
+	private String dyNum;
 	private String huNum;
 	private BigDecimal customerBalance;
 	private byte prePaySign;
@@ -50,6 +50,59 @@ public class Customer implements java.io.Serializable {
 	private Set<Warnlog> warnlogs = new HashSet<Warnlog>(0);
 
 	public Customer() {
+	}
+
+	public Customer(Neighbor neighbor, Housekind housekind, String customerId,
+			String loginKey, String customerAddr, String louNum, String dynum,
+			String huNum, byte prePaySign, int warnSwitch, int warnStyle,
+			int warnThre, String valid) {
+		this.neighbor = neighbor;
+		this.housekind = housekind;
+		this.customerId = customerId;
+		this.loginKey = loginKey;
+		this.customerAddr = customerAddr;
+		this.louNum = louNum;
+		this.dyNum = dynum;
+		this.huNum = huNum;
+		this.prePaySign = prePaySign;
+		this.warnSwitch = warnSwitch;
+		this.warnStyle = warnStyle;
+		this.warnThre = warnThre;
+		this.valid = valid;
+	}
+
+	public Customer(Neighbor neighbor, Housekind housekind, String apid,
+			String customerId, String customerName, String loginName,
+			String loginKey, String customerMobile, String customerEmail,
+			String nationalId, String customerAddr, String louNum,
+			String dynum, String huNum, BigDecimal customerBalance,
+			byte prePaySign, int warnSwitch, int warnStyle, int warnThre,
+			String valid, String remark, Set<Meter> meters,
+			Set<Customerpaylog> customerpaylogs, Set<Warnlog> warnlogs) {
+		this.neighbor = neighbor;
+		this.housekind = housekind;
+		this.apid = apid;
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.loginName = loginName;
+		this.loginKey = loginKey;
+		this.customerMobile = customerMobile;
+		this.customerEmail = customerEmail;
+		this.nationalId = nationalId;
+		this.customerAddr = customerAddr;
+		this.louNum = louNum;
+		this.dyNum = dynum;
+		this.huNum = huNum;
+		this.customerBalance = customerBalance;
+		this.prePaySign = prePaySign;
+		this.warnSwitch = warnSwitch;
+		this.warnStyle = warnStyle;
+		this.warnThre = warnThre;
+		this.valid = valid;
+		this.remark = remark;
+		this.meters = meters;
+		this.customerpaylogs = customerpaylogs;
+		this.warnlogs = warnlogs;
 	}
 
 	@Id
@@ -174,12 +227,12 @@ public class Customer implements java.io.Serializable {
 	}
 
 	@Column(name = "DYNum", nullable = false, length = 10)
-	public String getDynum() {
-		return this.dynum;
+	public String getDyNum() {
+		return this.dyNum;
 	}
 
-	public void setDynum(String dynum) {
-		this.dynum = dynum;
+	public void setDyNum(String dynum) {
+		this.dyNum = dynum;
 	}
 
 	@Column(name = "HuNum", nullable = false, length = 10)
