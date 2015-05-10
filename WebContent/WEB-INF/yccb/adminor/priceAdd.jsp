@@ -127,16 +127,29 @@ function submitForm(){
 	}
 }
 function clearForm(){
+	getBasicData();
 	$('#priceAddForm').form('clear');
 	}
-/* function deleteRow(obj){
-	var tr = $(obj).parent().parent().parent();
-	//obj.parent().parent().parent().remove();
-	var rowIndex = tr.attr("datagrid-row-index");
-	if(rowIndex){
-		$('#basicPriceTab').datagrid('deleteRow', rowIndex);  
+//获取添加基本单价的数据
+function getBasicData(){
+	var rows = bpTab.datagrid('getRows');
+	//alert(rows.length);
+	if(rows.length>0){
+		var pid,basicPriceName,basicPriceFirst,basicFirstOver,
+		basicPriceSecond,basicSecondOver,basicPriceThird;
+		for(var i=0;i<rows.length;i++){
+			var row = rows[i];
+			//pid+=row.pid+",";
+			basicPriceName += row.basicPriceName+",";
+			basicPriceFirst += row.basicPriceFirst+",";
+			basicFirstOver += row.basicFirstOver+",";
+			basicPriceSecond += row.basicPriceSecond+",";
+			basicSecondOver +=row.basicSecondOver+",";
+			basicPriceThird+=row.basicPriceThird+",";
+		}
+		alert(basicPriceName,basicPriceFirst);
 	}
-} */
+}
 </script>
 
 		<div style="padding:10px 0 10px 60px">

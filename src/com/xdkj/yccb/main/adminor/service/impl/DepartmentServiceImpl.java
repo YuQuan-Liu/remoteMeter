@@ -38,6 +38,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 			DepartmentView dv = new DepartmentView();
 			dv.setPid(department.getPid());
 			dv.setDepartmentName(department.getDepartmentName());
+			dv.setWatercompany(department.getWatercompany().getCompanyName());
 			dv.setRemark(department.getRemark());
 			dv.setValid(department.getValid());
 			listView.add(dv);
@@ -52,16 +53,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 
 	@Override
-	public String add(Department dep,String nbrIds) {
+	public String add(Department dep,String[] nbrIds) {
 		int depId = departmentDAO.add(dep);
 		if(depId>0){
 			//保存 片区-小区 关系表
-			if(null!=nbrIds&&!"".equals(nbrIds)){
-				String [] ids = nbrIds.split(",");
-				for (int i = 0; i < ids.length; i++) {
+			if(null!=nbrIds&&nbrIds.length>0){
+				//String [] ids = nbrIds.split(",");
+				for (int i = 0; i < nbrIds.length; i++) {
 					Detaildepart dd = new Detaildepart();
 					Neighbor nbr = new Neighbor();
-					nbr.setPid(Integer.parseInt(ids[i]));
+					nbr.setPid(Integer.parseInt(nbrIds[i]));
 					dd.setDepartment(dep);
 					dd.setNeighbor(nbr);
 					dd.setValid("1");
@@ -107,6 +108,22 @@ public class DepartmentServiceImpl implements DepartmentService {
 			}
 		}
 		return nbrs.toString();
+	}
+
+	@Override
+	public Department getById(String depId) {
+		return departmentDAO.getById(Integer.parseInt(depId));
+	}
+
+	@Override
+	public String update(Department dep, String[] nbrIds) {
+		Department oldDep = departmentDAO.getById(dep.getPid());
+		List<Detaildepart> old = new ArrayList<Detaildepart>(oldDep.getDetaildeparts());
+		if(old.size()>0){
+			//对比新旧片区执行新增或删除
+		}
+		
+		return null;
 	}
 
 }

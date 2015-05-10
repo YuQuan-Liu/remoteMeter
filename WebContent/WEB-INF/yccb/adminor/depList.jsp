@@ -15,16 +15,17 @@ $(function(){
 	    queryParams:{},
 	    rownumbers:true,
 	    border:false,
+	    autoRowHeight:false,
 	    rowStyler: function(index,row){
 			return 'height:30px;';
 		},
 	    columns:[[
-	        {field:'pid',title:'ID',width:100},   
-	        {field:'companyName',title:'片区名',width:100},   
-	        {field:'companyAddr',title:'管理员',width:100},
-	        {field:'mark',title:'自来水公司',width:100},
+	        {field:'pid',title:'ID',width:100,checkbox:true},   
+	        {field:'departmentName',title:'片区名',width:100},   
+	       /*  {field:'companyAddr',title:'管理员',width:100}, */
+	        {field:'watercompany',title:'自来水公司',width:100},
 	        {field:'mark',title:'操作',width:100,formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='addGprs("+row.pid+")'>查看</a> ";
+				return "<a href='#' class='operateHref' onclick='depDetail("+row.pid+")'>查看</a> ";
 			}}
 	    ]],
 	    toolbar: [{ 
@@ -53,15 +54,12 @@ $(function(){
 	        		var pid = rows[0].pid;
 	        		alert(pid);
 	        		$('#depUpdateWin').window({   
-		    		    href:'${path}/admin/dep/updatePage.do?pid='+pid,
+		    		    href:'${path}/admin/dep/updatePage.do?depId='+pid,
 		    		    width:550,   
 		    		    height:250,
 		    		    minimizable:false,
 		    		    maximizable:false,
-		    		    title: '更新自来水公司', 
-		    		    onLoad:function(){   
-		    		        //alert('loaded successfully'); 
-		    		    }   
+		    		    title: '更新片区'
 		    		}); 
 	        		
 	        	}else if(leng>1){
@@ -84,11 +82,23 @@ $(function(){
 	    }]
 	});
 })
+
+function depDetail(depId){
+	$('#depDetailWin').window({   
+	    href:'${path}/admin/dep/detail.do?depId='+depId,
+	    width:520,   
+	    height:250,
+	    minimizable:false,
+	    maximizable:false,
+	    title: '片区详情' 
+	}); 
+}
 </script>
 </head>
 <body>
 <table id="depListTab"></table>
 <div id="depAddWin"></div>
 <div id="depUpdateWin"></div>
+<div id="depDetailWin"></div>
 </body>
 </html>

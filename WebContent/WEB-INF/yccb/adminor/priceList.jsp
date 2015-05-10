@@ -36,10 +36,7 @@ $(function(){
 	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加自来水公司', 
-	    		    onLoad:function(){   
-	    		        //alert('loaded successfully'); 
-	    		    }   
+	    		    title: '添加单价'
 	    		}); 
 	        } 
 	    }, '-', { 
@@ -56,10 +53,7 @@ $(function(){
 		    		    height:250,
 		    		    minimizable:false,
 		    		    maximizable:false,
-		    		    title: '更新自来水公司', 
-		    		    onLoad:function(){   
-		    		        //alert('loaded successfully'); 
-		    		    }   
+		    		    title: '更新单价'
 		    		}); 
 	        		
 	        	}else if(leng>1){

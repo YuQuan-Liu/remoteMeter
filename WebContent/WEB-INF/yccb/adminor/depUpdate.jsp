@@ -3,94 +3,65 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>添加管理员</title>
+<title>修改片区</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
 <body>
 <script type="text/javascript">
 $(function(){
-	/* $('#loginName').validatebox({   
-	    required: true,   
-	    validType: "remote['${path}/admin/check.do','loginName']"  
-	});   */
+	$('#neighborCombo').combobox({   
+	    required:true,   
+	    url:'${path}/admin/dep/nbrlistContent.do?depId=${dep.pid}',
+		method:'post',
+		valueField:'id',
+		textField:'text',
+		multiple:true,
+		panelHeight:'auto'
+	});  
 })
 function submitForm(){
-	if($('#updateForm').form('validate')){
-		$('#updateForm').form('submit', {   
+	if($('#depAddForm').form('validate')){
+		$('#depAddForm').form('submit', {   
 		    success: function(data){   
-		       // var data = eval('(' + data + ')');  
-		        $.messager.alert('修改管理员','修改成功！','info',
-						function(){
-						 	$('#updateWin').window('close');
-						 	$('#adminListTab').datagrid('reload');
-						 });
-		       /*  if (data.success){ 
-		            alert(data.message)   
-		        }  */  
+		       if(data=="succ"){
+		    	   $('#depUpdateWin').window('close');
+		    	   $.messager.show({
+						title:'修改片区',
+						msg:'修改成功！',
+						showType:'slide',
+						timeout:3000
+					});
+		    	   $('#depListTab').datagrid('reload');
+		       }
 		    }   
 		});  
 	}
 }
 function clearForm(){
-	$('#updateForm').form('clear');
+	$('#depAddForm').form('clear');
 	}
 </script>
+<form id="depAddForm" method="post" action="${path}/admin/dep/update.do">
 		<div style="padding:10px 0 10px 60px">
-	    <form id="updateForm" method="post" action="${path}/admin/update.do">
-	    	<input type="hidden" name="pid" value="${adInfo.pid }"/>
 	    	<input type="hidden" name="valid" value="1"/>
+	    	<input type="hidden" name="pid" value="${dep.pid }"/>
+	    	<%-- <input type="hidden" name="watercompany.pid" value="${dep.watercompany.pid }"/> --%>
 	    	<table>
 	    		<tr>
-	    			<td>用户名：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminName" data-options="required:true" value="${adInfo.adminName}"></input></td>
-	    		</tr>
-	    		<tr>
-	    			<td>登录名：</td>
-	    			<td> <input class="easyui-validatebox" id="loginName" name="loginName" value="${adInfo.loginName }" readonly="readonly"/></td>
-	    		</tr>
-	    		<tr>
-	    			<td>手机：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminMobile" data-options="required:true" value="${adInfo.adminMobile }"></input></td>
-	    		</tr>
-	    		<tr>
-	    			<td>固话：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminTel" data-options="required:true" value="${adInfo.adminTel }"></input></td>
-	    		</tr>
-	    		<tr>
-	    			<td>邮箱：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminEmail" data-options="required:true,validType:'email'" value="${adInfo.adminEmail }"></input></td>
-	    		</tr>
-	    		<tr>
-	    			<td>地址：</td>
-	    			<td><input class="easyui-validatebox" type="text" name="adminAddr" data-options="required:true" value="${adInfo.adminAddr }"></input></td>
-	    		</tr>
-	    		<tr>
-	    			<td>权限类型:</td>
+	    			<td>片区名：</td>
+	    			<td><input class="easyui-textbox" type="text" name="departmentName" value="${dep.departmentName }" data-options="required:true"/></td>
+	    			<td>备注：</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="language">
-	    					<option value="1">Arabic</option>
-	    				</select>
+	    			<input class="easyui-textbox" name="remark" type="text" value="${dep.remark }"/>
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>管辖片区:</td>
-	    			<td>
-	    				<select class="easyui-combobox" name="department.pid">
-	    					<option value="1">测试</option>
-	    				</select>
-	    			</td>
-	    		</tr>
-	    		<tr>
-	    			<td>自来水公司:</td>
-	    			<td>
-	    				<select class="easyui-combobox" name="watercompany.pid">
-	    					<option value="1">测试</option>
-	    				</select>
-	    			</td>
+	    			<td>自来水下的小区：</td>
+	    			<td><input id="neighborCombo" name="neighbors"></td>
 	    		</tr>
 	    	</table>
-	    </form>
 	    </div>
+ </form>	    
 	    <div style="text-align:center;padding:5px">
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>

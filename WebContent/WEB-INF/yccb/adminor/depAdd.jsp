@@ -24,11 +24,14 @@ function submitForm(){
 		$('#depAddForm').form('submit', {   
 		    success: function(data){   
 		       if(data=="succ"){
-		    	   $.messager.alert('添加管理员','添加成功！','info',
-						function(){
-						 	$('#watComAddWin').window('close');
-						 	$('#watComListTab').datagrid('reload');
-						 });
+		    	   $('#depAddWin').window('close');
+		    	   $.messager.show({
+						title:'添加片区',
+						msg:'添加成功',
+						showType:'slide',
+						timeout:3000
+					});
+		    	   $('#depListTab').datagrid('reload');
 		       }
 		    }   
 		});  
@@ -44,7 +47,7 @@ function clearForm(){
 	    	<table>
 	    		<tr>
 	    			<td>片区名：</td>
-	    			<td><input class="easyui-textbox" type="text" name="priceKindName" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="departmentName" data-options="required:true"/></td>
 	    			<td>备注：</td>
 	    			<td>
 	    			<input class="easyui-textbox" name="remark" type="text"/>

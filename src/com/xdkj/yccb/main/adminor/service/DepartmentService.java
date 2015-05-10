@@ -18,10 +18,14 @@ public interface DepartmentService {
 	 * @param nbrIds 小区ids
 	 * @return succ or fail
 	 */
-	String add( Department dep,String nbrIds);
+	String add( Department dep,String [] nbrIds);
 	
 	String delete(String ids);
 	
 	String getNbrByCurrUser(UserForSession u,String depId);
+	
+	Department getById(String depId);
+	
+	String update(Department dep,String [] nbrIds);
 
 }
