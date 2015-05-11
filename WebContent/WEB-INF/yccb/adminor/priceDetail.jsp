@@ -35,7 +35,7 @@ function numFormatter(val,row){
 	return val.toFixed(2);;
 }
 function closeWin(){
-	$('#depDetailWin').window('close');
+	$('#priceDetailWin').window('close');
 }
 </script>
 		<div style="padding:10px 0 10px 60px">
