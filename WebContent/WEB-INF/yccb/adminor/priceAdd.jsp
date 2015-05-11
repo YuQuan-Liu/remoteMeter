@@ -39,12 +39,12 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'',width:80,checkbox:true},
-	        {field:'basicPriceName',title:'基本单价名',width:80,editor:'text'},   
-	        {field:'basicPriceFirst',title:'一阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},   
-	        {field:'basicFirstOver',title:'一阶超量',width:80,editor:{type:'numberbox',options:{precision:2}}},
-	        {field:'basicPriceSecond',title:'二阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},
-	        {field:'basicSecondOver',title:'二阶超量',width:80,editor:{type:'numberbox',options:{precision:2}}},
-	        {field:'basicPriceThird',title:'三阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}}
+	        {field:'basicPriceName',title:'基本单价名',width:80,editor:{type:'validatebox',options:{required:true,missingMessage:'请输入基本单价名！'}}},   
+	        {field:'basicPriceFirst',title:'一阶单价',width:80,editor:{type:'numberbox',options:{precision:2,required:true,missingMessage:'请输入一阶单价!'}}},   
+	        {field:'basicFirstOver',title:'一阶超量',width:80,editor:{type:'numberbox',options:{precision:0,required:true,missingMessage:'请输入一阶超量!'}}},
+	        {field:'basicPriceSecond',title:'二阶单价',width:80,editor:{type:'numberbox',options:{precision:2,required:true,missingMessage:'请输入二阶单价!'}}},
+	        {field:'basicSecondOver',title:'二阶超量',width:80,editor:{type:'numberbox',options:{precision:0,required:true,missingMessage:'请输入二阶超量!'}}},
+	        {field:'basicPriceThird',title:'三阶单价',width:80,editor:{type:'numberbox',options:{precision:2,required:true,missingMessage:'请输入三阶单价!'}}}
 	    ]],
 	    toolbar: [{ 
 	        text: '添加', 
@@ -57,7 +57,12 @@ $(function(){
 		        		row: {}
 		        	});
 	        	}else{
-	        		alert("先完成上次编辑");
+	        		 $.messager.show({
+							title:'添加基本单价',
+							msg:'请先完成上条编辑！',
+							showType:'slide',
+							timeout:3000
+						});
 	        	}
 	        } 
 	    },
@@ -77,8 +82,6 @@ $(function(){
 						timeout:3000
 					});
 	        	}
-	        	//var rows = $('#t1').datagrid("getRows");
-	        	//bpTab.datagrid("loadData", rows);
 	        	} 
 	    }]
 	});
@@ -110,13 +113,14 @@ $(function(){
 
 function submitForm(){
 	if($('#priceAddForm').form('validate')){
+		getBasicData();
 		$('#priceAddForm').form('submit', {   
 		    success: function(data){   
 		       if(data=="succ"){
 		    	   $('#priceAddWin').window('close');
 		    	   $.messager.show({
-						title:'添加自来水公司',
-						msg:'添加成功',
+						title:'添加单价',
+						msg:'添加成功！',
 						showType:'slide',
 						timeout:3000
 					});
@@ -133,10 +137,10 @@ function clearForm(){
 //获取添加基本单价的数据
 function getBasicData(){
 	var rows = bpTab.datagrid('getRows');
-	//alert(rows.length);
+	alert(rows.length);
 	if(rows.length>0){
-		var pid,basicPriceName,basicPriceFirst,basicFirstOver,
-		basicPriceSecond,basicSecondOver,basicPriceThird;
+		var basicPriceName='',basicPriceFirst='',basicFirstOver='',
+		basicPriceSecond='',basicSecondOver='',basicPriceThird='';
 		for(var i=0;i<rows.length;i++){
 			var row = rows[i];
 			//pid+=row.pid+",";
@@ -147,14 +151,26 @@ function getBasicData(){
 			basicSecondOver +=row.basicSecondOver+",";
 			basicPriceThird+=row.basicPriceThird+",";
 		}
-		alert(basicPriceName,basicPriceFirst);
+		$('#basicPriceName').val(basicPriceName);
+		$('#basicPriceFirst').val(basicPriceFirst);
+		$('#basicFirstOver').val(basicFirstOver);
+		$('#basicPriceSecond').val(basicPriceSecond);
+		$('#basicSecondOver').val(basicSecondOver);
+		$('#basicPriceThird').val(basicPriceThird);
 	}
 }
 </script>
 
 		<div style="padding:10px 0 10px 60px">
-	    <form id="priceAddForm" method="post" action="${path}/admin/watcom/add.do">
+	    <form id="priceAddForm" method="post" action="${path}/admin/price/addprice.do">
 	    	<input type="hidden" name="valid" value="1"/>
+	    	<!-- 添加基本单价 -->
+	    	<input type="hidden" name="basicPriceName" value="" id="basicPriceName"/>
+	    	<input type="hidden" name="basicPriceFirst" value="" id="basicPriceFirst"/>
+	    	<input type="hidden" name="basicFirstOver" value="" id="basicFirstOver"/>
+	    	<input type="hidden" name="basicPriceSecond" value="" id="basicPriceSecond"/>
+	    	<input type="hidden" name="basicSecondOver" value="" id="basicSecondOver"/>
+	    	<input type="hidden" name="basicPriceThird" value="" id="basicPriceThird"/>
 	    	<table>
 	    		<tr>
 	    			<td>单价名：</td>

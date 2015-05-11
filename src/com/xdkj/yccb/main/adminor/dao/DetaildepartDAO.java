@@ -10,4 +10,6 @@ public interface DetaildepartDAO {
 	int addDetaildepart(Detaildepart dpt);
 	
 	void deleteDetaildepart(int dptId);
+	
+	void deleteBatch(List<Integer> dpIds);
 }

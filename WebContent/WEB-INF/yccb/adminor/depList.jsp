@@ -52,7 +52,6 @@ $(function(){
 	        	var leng = rows.length;
 	        	if(leng==1){
 	        		var pid = rows[0].pid;
-	        		alert(pid);
 	        		$('#depUpdateWin').window({   
 		    		    href:'${path}/admin/dep/updatePage.do?depId='+pid,
 		    		    width:550,   
@@ -63,9 +62,19 @@ $(function(){
 		    		}); 
 	        		
 	        	}else if(leng>1){
-	        		alert("single selected");
+	        		 $.messager.show({
+							title:'更新片区',
+							msg:'请选择一条记录！！',
+							showType:'slide',
+							timeout:3000
+						});
 	        	}else{
-	        		alert("unselected");
+	        		 $.messager.show({
+							title:'更新片区',
+							msg:'未选中片区！',
+							showType:'slide',
+							timeout:3000
+						});
 	        	}
 	        } 
 	    }, '-',{ 

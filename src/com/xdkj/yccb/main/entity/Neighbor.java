@@ -38,8 +38,11 @@ public class Neighbor implements java.io.Serializable {
 	private Set<Propertyresp> propertyresps = new HashSet<Propertyresp>(0);
 	private Set<Detaildepart> detaildeparts = new HashSet<Detaildepart>(0);
 	private Set<Wastelog> wastelogs = new HashSet<Wastelog>(0);
-
 	public Neighbor() {
+	}
+	
+	public Neighbor(Integer pid) {
+		this.pid = pid;
 	}
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

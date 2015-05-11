@@ -28,4 +28,10 @@ public class DetaildepartDAOImpl extends HibernateDAO<Detaildepart> implements
 
 	}
 
+	@Override
+	public void deleteBatch(List<Integer> dpIds) {
+		String hql = "update Detaildepart dpt set dpt.valid='0' where dpt.pid in (:pids)";
+		getSession().createQuery(hql).setParameterList("pids", dpIds).executeUpdate();
+	}
+
 }

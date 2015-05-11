@@ -19,4 +19,5 @@ public interface PriceKindDAO {
 	Integer getTotalCount(PriceKindView pkv);
 	Integer addPriceKind(Pricekind pk);
 	boolean update(Pricekind pk);
+	Pricekind getById(int pid);
 }

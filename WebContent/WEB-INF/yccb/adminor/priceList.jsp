@@ -21,10 +21,12 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'companyName',title:'公司名',width:100},   
-	        {field:'companyAddr',title:'公司地址',width:100},
-	        {field:'mark',title:'公司标识',width:100},
-	        {field:'remark',title:'备注',width:100}
+	        {field:'priceKindName',title:'单价名',width:100},
+	        {field:'watercompany',title:'自来水公司',width:100},
+	        {field:'remark',title:'备注',width:100},
+	        {field:'mark',title:'操作',width:100,formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'>查看</a> ";
+			}}
 	    ]],
 	    toolbar: [{ 
 	        text: '<fmt:message key="common.add"/>', 
@@ -57,9 +59,19 @@ $(function(){
 		    		}); 
 	        		
 	        	}else if(leng>1){
-	        		$.messager.alert('更新自来水公司','Single selected!','info');
+	        		 $.messager.show({
+							title:'更新单价',
+							msg:'请选择一条记录！',
+							showType:'slide',
+							timeout:3000
+						});
 	        	}else{
-	        		$.messager.alert('更新自来水公司','Select needed!','info');
+	        		 $.messager.show({
+							title:'更新单价',
+							msg:'未选中单价！',
+							showType:'slide',
+							timeout:3000
+						});
 	        	}
 	        } 
 	    }, '-',{ 
@@ -85,17 +97,34 @@ $(function(){
 	    				}
 	    			});
 	        	}else{
-	        		$.messager.alert('删除自来水公司','Select needed!','info');
+	        		 $.messager.show({
+							title:'删除单价',
+							msg:'请选择单价！',
+							showType:'slide',
+							timeout:3000
+						});
 	        	}
 	        } 
 	    }]
 	});
 })
+
+function priceDetail(priceId){
+	$('#priceDetailWin').window({   
+	    href:'${path}/admin/price/priceDetailPage.do?priceId='+priceId,
+	    width:600,   
+	    height:350,
+	    minimizable:false,
+	    maximizable:false,
+	    title: '片区详情' 
+	}); 
+}
 </script>
 </head>
 <body>
 <table id="priceListTab"></table>
 <div id="priceAddWin"></div>
 <div id="priceUpdateWin"></div>
+<div id="priceDetailWin"></div>
 </body>
 </html>

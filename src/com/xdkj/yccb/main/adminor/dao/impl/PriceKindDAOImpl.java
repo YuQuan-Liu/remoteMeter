@@ -53,6 +53,12 @@ public class PriceKindDAOImpl extends HibernateDAO<Pricekind> implements PriceKi
 		return false;
 	}
 
+	@Override
+	public Pricekind getById(int pid) {
+		return (Pricekind) getSession().createQuery("from Pricekind pk where pk.pid=:pid ")
+				.setParameter("pid", pid).uniqueResult();
+	}
+
 	
 
 }

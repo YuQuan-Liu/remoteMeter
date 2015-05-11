@@ -28,10 +28,10 @@ public class Pricekind implements java.io.Serializable {
 	private double priceKindFine;
 	private String valid;
 	private String remark;
-	private Set<Meterdeductionlog> meterdeductionlogs = new HashSet<Meterdeductionlog>(
-			0);
+	//private Set<Meterdeductionlog> meterdeductionlogs = new HashSet<Meterdeductionlog>(
+	//		0);
 	private Set<Basicprice> basicprices = new HashSet<Basicprice>(0);
-	private Set<Meter> meters = new HashSet<Meter>(0);
+	//private Set<Meter> meters = new HashSet<Meter>(0);
 
 	public Pricekind() {
 	}
@@ -93,14 +93,14 @@ public class Pricekind implements java.io.Serializable {
 		this.remark = remark;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pricekind")
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "pricekind")
 	public Set<Meterdeductionlog> getMeterdeductionlogs() {
 		return this.meterdeductionlogs;
 	}
 
 	public void setMeterdeductionlogs(Set<Meterdeductionlog> meterdeductionlogs) {
 		this.meterdeductionlogs = meterdeductionlogs;
-	}
+	}*/
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pricekind")
 	public Set<Basicprice> getBasicprices() {
@@ -111,13 +111,13 @@ public class Pricekind implements java.io.Serializable {
 		this.basicprices = basicprices;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pricekind")
+/*	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pricekind")
 	public Set<Meter> getMeters() {
 		return this.meters;
 	}
 
 	public void setMeters(Set<Meter> meters) {
 		this.meters = meters;
-	}
+	}*/
 
 }

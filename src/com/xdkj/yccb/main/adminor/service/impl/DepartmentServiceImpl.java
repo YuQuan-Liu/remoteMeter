@@ -1,7 +1,6 @@
 package com.xdkj.yccb.main.adminor.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import net.sf.json.JSONArray;
@@ -119,11 +118,44 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public String update(Department dep, String[] nbrIds) {
 		Department oldDep = departmentDAO.getById(dep.getPid());
 		List<Detaildepart> old = new ArrayList<Detaildepart>(oldDep.getDetaildeparts());
+		List<Integer> delNbrsIds = new ArrayList<Integer>();
 		if(old.size()>0){
-			//对比新旧片区执行新增或删除
+			//对比新旧片区执行删除
+			for (Detaildepart oldDD : old) {
+				int nId = oldDD.getNeighbor().getPid();
+				boolean del = true;
+				for (int i = 0; i < nbrIds.length; i++) {
+					 if(nId==Integer.parseInt(nbrIds[i])){
+						 del=false;
+						 break;
+					 }
+				}
+				if(del){
+					delNbrsIds.add(nId);
+				}
+			}
 		}
-		
-		return null;
+		if(delNbrsIds.size()>0){
+			detaildepartDAO.deleteBatch(delNbrsIds);
+		}
+		//对比新旧片区执行添加
+		for (int i = 0; i < nbrIds.length; i++) {
+			boolean isNew = true;
+			for (Detaildepart oldDD : old) {
+				if(Integer.parseInt(nbrIds[i])==oldDD.getNeighbor().getPid()){
+					isNew=false;
+					 break;
+				 }
+			}
+			if(isNew){
+				Detaildepart dd = new Detaildepart();
+				dd.setDepartment(dep);
+				dd.setNeighbor(new Neighbor(Integer.parseInt(nbrIds[i])));
+				dd.setValid("1");
+				detaildepartDAO.addDetaildepart(dd);
+			}
+		}
+		return "succ";
 	}
 
 }

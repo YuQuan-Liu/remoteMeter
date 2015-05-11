@@ -38,6 +38,7 @@ public class DepartmentCtrl {
 	private DepartmentService departmentService;
 	@Autowired
 	private NeighborService neighborService;
+	
 	@RequestMapping(value="/admin/dep/list")
 	public String depList(){
 		return depList;
