@@ -40,6 +40,13 @@ public interface CustomerDao {
 	public int addMeter(Meter m);
 	public void deleteMeter(int cid);
 	public int updateCustomer(Customer c);
+	/**
+	 * 通过小区id 用户id或用户号查询用户信息
+	 * @param nbrId 小区id
+	 * @param cust 用户号或用户id
+	 * @return
+	 */
+	Customer getCustByNborOrCust(int nbrId,String cust);
 	
 
 }

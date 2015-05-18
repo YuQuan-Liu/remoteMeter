@@ -85,4 +85,17 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		}
 	}
 
+	@Override
+	public Customer getCustByNborOrCust(int nbrId, String cust) {
+		String hql = "from Customer c where c.valid='1' and c.neighbor.pid=:pid "
+				+ "and (c.customerId=:cust0 or c.customerName=:cust1 )";
+		@SuppressWarnings("unchecked")
+		List<Customer> list = getSession().createQuery(hql).setParameter("pid", nbrId)
+		.setParameter("cust0", cust).setParameter("cust1", cust).list();
+		if(null!=list&&list.size()==1){
+			return list.get(0);
+		}
+		return null;
+	}
+
 }

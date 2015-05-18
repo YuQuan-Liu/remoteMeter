@@ -2,15 +2,7 @@ package com.xdkj.yccb.main.infoin.dto;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-
-import com.xdkj.yccb.main.entity.Customerpaylog;
-import com.xdkj.yccb.main.entity.Housekind;
-import com.xdkj.yccb.main.entity.Meter;
-import com.xdkj.yccb.main.entity.Neighbor;
-import com.xdkj.yccb.main.entity.Warnlog;
 
 public class CustomerView {
 	private Integer pid;

@@ -8,12 +8,6 @@
 </head>
 <body>
 <script type="text/javascript">
-$(function(){
-	/* $('#loginName').validatebox({   
-	    required: true,   
-	    validType: "remote['${path}/admin/check.do','loginName']"  
-	});   */
-})
 function submitForm(){
 	if($('#updateForm').form('validate')){
 		$('#updateForm').form('submit', {   
@@ -67,7 +61,7 @@ function clearForm(){
 	    		<tr>
 	    			<td>权限类型:</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="language" data-options="panelHeight:'auto'>
+	    				<select class="easyui-combobox" name="language" data-options="panelHeight:'auto'">
 	    					<option value="1">Arabic</option>
 	    				</select>
 	    			</td>
@@ -75,7 +69,7 @@ function clearForm(){
 	    		<tr>
 	    			<td>管辖片区:</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="department.pid" data-options="panelHeight:'auto'>
+	    				<select class="easyui-combobox" name="department.pid" data-options="panelHeight:'auto'">
 	    					<option value="1">测试</option>
 	    				</select>
 	    			</td>
@@ -83,7 +77,7 @@ function clearForm(){
 	    		<tr>
 	    			<td>自来水公司:</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="watercompany.pid" data-options="panelHeight:'auto'>
+	    				<select class="easyui-combobox" name="watercompany.pid" data-options="panelHeight:'auto'">
 	    					<option value="1">测试</option>
 	    				</select>
 	    			</td>
