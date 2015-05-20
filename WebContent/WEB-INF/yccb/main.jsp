@@ -96,7 +96,7 @@ var _menus = {
 				"menuid" : "311",
 				"menuname" : "<fmt:message key='menu.readmeter'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "readme/read/remotelist.do"
 			}, 
 			</c:if>
 			<c:if test="${menus['unremote']=='t'}">
@@ -104,7 +104,7 @@ var _menus = {
 				"menuid" : "313",
 				"menuname" : "<fmt:message key='menu.unremote'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "readme/read/unremotelist.do"
 			}, </c:if>]
 
 		}],
