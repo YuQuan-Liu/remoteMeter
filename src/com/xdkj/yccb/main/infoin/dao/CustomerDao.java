@@ -32,14 +32,16 @@ public interface CustomerDao {
 	public int addCustomer(Customer c);
 	public Customer getCustomerByPid(int cid);
 	public int deleteCustomer(int cid);
+	public int updateCustomer(Customer c);
 	/**
 	 * 添加表
 	 * @param c
 	 * @return
 	 */
 	public int addMeter(Meter m);
-	public void deleteMeter(int cid);
-	public int updateCustomer(Customer c);
+	public Meter getMeterByPid(int mid);
+	public int deleteMeter(int cid);
+	public int updateMeter(Meter m);
 	/**
 	 * 通过小区id 用户id或用户号查询用户信息
 	 * @param nbrId 小区id
