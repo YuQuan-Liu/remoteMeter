@@ -17,7 +17,7 @@ public class DepartmentDAOImpl extends HibernateDAO<Department> implements Depar
 	public List<Department> getList(DepartmentView depv, PageBase pageInfo) {
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("from Department d where 1=1 and d.valid='1' ");
+		sb.append("from Department d where 1=1 ");
 		/*if(null!=adInfo.getAdminName()){
 			sb.append(" and ai.adminName like %"+adInfo.getAdminName()+"%");
 		}*/
@@ -31,7 +31,7 @@ public class DepartmentDAOImpl extends HibernateDAO<Department> implements Depar
 	public Integer getTotalCount(DepartmentView depv) {
 		
 		StringBuffer sb = new StringBuffer();
-		sb.append("select count(*) from Department d where 1=1 and d.valid='1' ");
+		sb.append("select count(*) from Department d where 1=1 ");
 		/*if(null!=adInfo.getAdminName()){
 			sb.append(" and ai.adminName like %"+adInfo.getAdminName()+"%");
 		}*/
@@ -41,7 +41,7 @@ public class DepartmentDAOImpl extends HibernateDAO<Department> implements Depar
 
 	@Override
 	public Department getById(Integer depId) {
-		String hql = "from Department d where d.pid=:pid ";
+		String hql = "from Admininfo a where a.pid=:pid ";
 		Query q = getSession().createQuery(hql);
 		q.setInteger("pid", depId);
 		return (Department) q.uniqueResult();
@@ -55,8 +55,7 @@ public class DepartmentDAOImpl extends HibernateDAO<Department> implements Depar
 
 	@Override
 	public boolean deleteById(Integer depId) {
-		String hql = "update Department d set d.valid='0' where d.pid=:pid";
-		return getSession().createQuery(hql).setParameter("pid", depId).executeUpdate()>0;
+		return false;
 	}
 
 	@Override

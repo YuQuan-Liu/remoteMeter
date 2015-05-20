@@ -27,6 +27,7 @@ public class Meter implements java.io.Serializable {
 
 	private Integer pid;
 	private Pricekind pricekind;
+	private Neighbor neighbor;
 	private Customer customer;
 	private Gprs gprs;
 	private Meterkind meterkind;
@@ -90,6 +91,16 @@ public class Meter implements java.io.Serializable {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "NeighborID", nullable = false)
+	public Neighbor getNeighbor() {
+		return neighbor;
+	}
+
+	public void setNeighbor(Neighbor neighbor) {
+		this.neighbor = neighbor;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)

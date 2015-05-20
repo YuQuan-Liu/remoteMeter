@@ -114,10 +114,8 @@ public class CustomerServiceImpl implements CustomerService {
 				ConvertUtils.register(new BigDecimalConverter(), BigDecimal.class);
 				BeanUtils.copyProperties(c, cv);
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -148,10 +146,8 @@ public class CustomerServiceImpl implements CustomerService {
 			try {
 				BeanUtils.copyProperties(m, mv);
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			Pricekind pk = new Pricekind();
@@ -170,6 +166,7 @@ public class CustomerServiceImpl implements CustomerService {
 			mk.setPid(Integer.parseInt(mv.getMk_id()));
 			m.setMeterkind(mk);
 			
+			m.setNeighbor(c.getNeighbor());
 			m.setValid('1');
 			m.setDeTime(new Date());
 			
@@ -221,10 +218,8 @@ public class CustomerServiceImpl implements CustomerService {
 						BigDecimal.class);
 				BeanUtils.copyProperties(c, cv);
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			//住宅類型不更改
@@ -232,6 +227,62 @@ public class CustomerServiceImpl implements CustomerService {
 			if (customerDao.updateCustomer(c) > 0) {
 				map.put("update", c.getPid() + "");
 //				map.put("cv", JSON.toJSONString(cv));
+			} else {
+				map.put("update", "0");
+			}
+		}
+
+		return map;
+	}
+	@Override
+	public String deleteMeter(int mid) {
+		if(customerDao.deleteMeter(mid) > 0){
+			return "true";
+		}else{
+			return "false";
+		}
+	}
+	@Override
+	public MeterView getMeterViewbyMid(int mid) {
+		
+		Meter m = customerDao.getMeterByPid(mid);
+		MeterView mv = new MeterView();
+		try {
+			BeanUtils.copyProperties(mv, m);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		mv.setGprs(m.getGprs().getGprsaddr());
+		mv.setGprs_id(m.getGprs().getPid()+"");
+		mv.setPk(m.getPricekind().getPriceKindName());
+		mv.setPk_id(m.getPricekind().getPid()+"");
+		mv.setMk(m.getMeterkind().getMeterTypeName());
+		mv.setMk_id(m.getMeterkind().getPid()+"");
+//		System.out.println(m.getCustomer().getPid());
+		mv.setC_id(m.getCustomer().getPid());
+		return mv;
+	}
+	@Override
+	public Map<String, String> updateMeter(MeterView mv) {
+		// check CustomerView
+		Map<String, String> map = mv.check_view();
+		if (map.get("success").equals("true")) {
+			Meter m = customerDao.getMeterByPid(mv.getPid());
+			try {
+				BeanUtils.copyProperties(m, mv);
+				//可以更新那些程序  就copy那些 属性  //TODO
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			// 住宅類型不更改
+			// 金額不允許更改
+			if (customerDao.updateMeter(m) > 0) {
+				map.put("update", m.getPid() + "");
+				// map.put("cv", JSON.toJSONString(cv));
 			} else {
 				map.put("update", "0");
 			}

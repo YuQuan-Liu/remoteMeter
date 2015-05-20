@@ -118,5 +118,31 @@ public class CustomerCtrl {
 	public String addMeter(MeterView mv){
 		return JSON.toJSONString(customerService.addMeter(mv));
 	}
-	
+	@RequestMapping(value="/infoin/meter/delete")
+	@ResponseBody
+	public String deleteMeter(int mid){
+		return customerService.deleteMeter(mid);
+	}
+	@RequestMapping(value="/infoin/meter/updatePage")
+	public String updateMeterPage(HttpServletRequest request,int mid,Model model){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		
+		MeterView mv = customerService.getMeterViewbyMid(mid);
+		model.addAttribute("mv", mv);
+		
+		//单价
+		List<PriceKindView> pk_list = priceService.getList(admin.getWaterComId());
+		model.addAttribute("pk_list", pk_list);
+		
+		//水表类型
+		List<MeterkindView> mk_list = meterKindService.getList();
+		model.addAttribute("mk_list", mk_list);
+		
+		return "/infoin/meterUpdate";
+	}
+	@RequestMapping(value="/infoin/meter/update")
+	@ResponseBody
+	public String updateMeter(MeterView mv){
+		return JSON.toJSONString(customerService.updateMeter(mv));
+	}
 }

@@ -48,6 +48,7 @@ public class MyAuthorizingRealm extends AuthorizingRealm {
 		}
 		if (adInfo != null) {
 			UserForSession ufs = new UserForSession();
+			ufs.setPid(adInfo.getPid());
 			ufs.setLoginName(adInfo.getLoginName());
 			ufs.setAdminName(adInfo.getAdminName());
 			ufs.setAdminEmail(adInfo.getAdminEmail());

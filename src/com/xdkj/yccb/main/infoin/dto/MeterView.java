@@ -39,8 +39,8 @@ public class MeterView {
 	private Integer overflow;
 	private Integer changend;
 	private Integer changestart;
-	private char valid;
-	private String remark;
+//	private char valid;
+//	private String remark;
 	public Integer getPid() {
 		return pid;
 	}
@@ -215,18 +215,18 @@ public class MeterView {
 	public void setChangestart(Integer changestart) {
 		this.changestart = changestart;
 	}
-	public char getValid() {
-		return valid;
-	}
-	public void setValid(char valid) {
-		this.valid = valid;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+//	public char getValid() {
+//		return valid;
+//	}
+//	public void setValid(char valid) {
+//		this.valid = valid;
+//	}
+//	public String getRemark() {
+//		return remark;
+//	}
+//	public void setRemark(String remark) {
+//		this.remark = remark;
+//	}
 	public MeterView() {
 		super();
 	}
@@ -244,8 +244,7 @@ public class MeterView {
 				+ ", meterState=" + meterState + ", deRead=" + deRead
 				+ ", deTime=" + deTime + ", timerSwitch=" + timerSwitch
 				+ ", timer=" + timer + ", overflow=" + overflow + ", changend="
-				+ changend + ", changestart=" + changestart + ", valid="
-				+ valid + ", remark=" + remark + "]";
+				+ changend + ", changestart=" + changestart + "]";
 	}
 	public Map<String, String> check_view() {
 		HashMap<String, String> result = new HashMap<>();

@@ -43,6 +43,7 @@ public class MainCtroller {
 		
 		Admininfo adInfo = administratorService.getByLoginName("admin", "96e79218965eb72c92a549dd5a330112");
 		UserForSession ufs = new UserForSession();
+		ufs.setPid(adInfo.getPid());
 		ufs.setLoginName(adInfo.getLoginName());
 		ufs.setAdminName(adInfo.getAdminName());
 		ufs.setAdminEmail(adInfo.getAdminEmail());

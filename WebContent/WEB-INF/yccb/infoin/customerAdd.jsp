@@ -37,7 +37,7 @@
 					</tr>
 					<tr>
 						<td><label>用户号</label></td>
-						<td><input type="text" id="c_num" name="c_num" class="easyui-validate" onblur="check_cnum()"/></td>
+						<td><input type="text" id="c_num_" name="c_num" class="easyui-validate" onblur="check_cnum()"/></td>
 <!-- 						<td><input type="text" id="c_num" name="c_num" onblur="check_cnum()"/></td> -->
 						<td><label>用户名</label></td>
 						<td><input type="text" name="customerName" class="easyui-textbox"/></td>
@@ -211,6 +211,7 @@
 	<script>
 	function submitMeter(){
 		var c_id = $("#c_id").val();
+		alert(c_id);
 		$("#meter").form('submit',{
 			url:"${path}/infoin/meter/add.do",
 			onSubmit:function(){
@@ -264,7 +265,9 @@
 	}
 	function check_cnum(){
 		var n_id = $("#n_id").combobox("getValue");
-		var c_num = $("#c_num").val();
+		var c_num = $("#c_num_").val();
+		
+		//我操  这个c_num  和母页面中的c_num 冲突。。。   实在一个页面里面   如果在不同的iframe中就没事了
 		
 		if(n_id == ''){
 			$.messager.alert('提示','请选择小区！');

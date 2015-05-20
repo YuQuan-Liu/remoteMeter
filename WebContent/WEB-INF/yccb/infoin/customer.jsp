@@ -33,6 +33,7 @@
 	<div id="addCustomerWin"></div>
 	<div id="addCustomerWins"></div>
 	<div id="updateCustomerWin"></div>
+	<div id="updateMeterWin"></div>
 </body>
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/datagrid-detailview.js"></script>
 <script>
@@ -141,11 +142,12 @@ $(function(){
 				          	{field:'overflow',title:'用量阀值',width:50},
 				          	{field:'changend',title:'换表读数',width:50},
 				          	{field:'changestart',title:'起始读数',width:50},
-				          	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
-								var id = row.pid;
-								return "<a href='#' class='operateHref' onclick='updateMeter("+id+")'> 修改 </a>"
-								+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")'> 删除 </a>"
-								+"<a href='#' class='operateHref' onclick='changemeter("+id+")'> 换表 </a>";
+				          	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row_,index_){
+								var c_id = row.pid;
+								var m_id = row_.pid;
+								return "<a href='#' class='operateHref' onclick='updateMeter("+c_id+","+index+","+m_id+")'> 修改 </a>"
+								+"<a href='#' class='operateHref' onclick='deleteMeter("+m_id+","+index+","+index_+")'> 删除 </a>"
+								+"<a href='#' class='operateHref' onclick='changemeter("+m_id+","+index+","+index_+")'> 换表 </a>";
 					  		}}
 				          	
 	                  ]],
@@ -261,14 +263,36 @@ function refreshRow(index){
 				});
 			}
 		});
-
-		$("#customerTab").datagrid('deleteRow', index);
 	}
-	function updateMeter(mid) {
-		alert(mid);
+	function updateMeter(cid,index,mid) {
+		update_index = index;
+// 		updata_cid = cid;
+		$('#updateMeterWin').window({	
+			href:'${path}/infoin/meter/updatePage.do?mid='+mid+"&cid="+cid,
+			width:800,	
+			height:500,
+			minimizable:false,
+			maximizable:false,
+			collapsible:false,
+			title: '修改表',
+		});
 	}
-	function deleteMeter(mid) {
-		alert(mid);
+	function deleteMeter(mid,index,index_) {
+// 		$("#customerTab").datagrid('getRowDetail',0).find('table.ddv').datagrid('deleteRow', 0);
+		$.messager.confirm('提示', '确定要删除选中记录吗？', function(r){
+			if(r){
+				$.ajax({
+					url:'${path}/infoin/meter/delete.do',
+					type:"post",
+					data:{
+						mid:mid
+					},
+					success:function(){
+						$("#customerTab").datagrid('getRowDetail',index).find('table.ddv').datagrid('deleteRow', index_);
+					}
+				});
+			}
+		});
 	}
 	function changemeter(mid) {
 		alert(mid);

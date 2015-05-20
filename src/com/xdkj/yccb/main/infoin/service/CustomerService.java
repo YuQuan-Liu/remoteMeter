@@ -46,4 +46,10 @@ public interface CustomerService {
 
 	public Map<String, String> updateCustomer(CustomerView cv);
 
+	public String deleteMeter(int mid);
+
+	public MeterView getMeterViewbyMid(int mid);
+
+	public Map<String, String> updateMeter(MeterView mv);
+
 }
