@@ -54,8 +54,11 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 	}
 
 	@Override
-	public void deleteMeter(int cid) {
+	public int deleteMeter(int mid) {
+		String hql = "update Meter m set m.valid = 0 where m.pid = "+mid;
+		Query q = getSession().createQuery(hql);
 		
+		return q.executeUpdate();
 	}
 
 	@Override
@@ -97,5 +100,22 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		}
 		return null;
 	}
+	@Override
+	public Meter getMeterByPid(int mid) {
+		String hql = "from Meter m where m.valid='1' and m.pid = "+mid;
+		Query q = getSession().createQuery(hql);
+		return (Meter) q.uniqueResult();
+	}
 
+	@Override
+	public int updateMeter(Meter m) {
+		try{
+			this.getHibernateTemplate().update(m);
+			return 1;
+		}catch(Exception e){
+			return 0;
+		}
+	}
+
+	
 }
