@@ -50,4 +50,18 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 		return readlog.getPid();
 	}
 
+	@Override
+	public Readlog getReadLogByID(int readlogid) {
+		Query q = getSession().createQuery("from Readlog log where log.pid = "+readlogid);
+		
+		return (Readlog) q.uniqueResult();
+	}
+
+	@Override
+	public List<Readlog> getReadLogNeighbors(int readlogid, int adminid) {
+		Query q = getSession().createQuery("from Readlog log where log.pid >= "+readlogid +" and log.admininfo.pid = "+adminid);
+		
+		return q.list();
+	}
+
 }

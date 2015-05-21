@@ -8,7 +8,8 @@ public interface ReadService {
 
 	public List<ReadView> getMeters(String n_id);
 
-	public String addNeighbor(String n_id,int adminid);
+	public String checkReading(int readlogid, int adminid);
 
+	public String checkControling(int valvelogid, int adminid);
 	
 }

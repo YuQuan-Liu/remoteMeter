@@ -52,6 +52,8 @@ public class Meter implements java.io.Serializable {
 	private Integer overflow;
 	private Integer changend;
 	private Integer changestart;
+	private Integer readdata;
+	private Date readtime;
 	private char valid;
 	private String remark;
 	private Set<Readmeterlog> readmeterlogs = new HashSet<Readmeterlog>(0);
@@ -311,6 +313,22 @@ public class Meter implements java.io.Serializable {
 
 	public void setChangestart(Integer changestart) {
 		this.changestart = changestart;
+	}
+	@Column(name = "readdata")
+	public Integer getReaddata() {
+		return readdata;
+	}
+
+	public void setReaddata(Integer readdata) {
+		this.readdata = readdata;
+	}
+	@Column(name = "readtime")
+	public Date getReadtime() {
+		return readtime;
+	}
+
+	public void setReadtime(Date readtime) {
+		this.readtime = readtime;
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)

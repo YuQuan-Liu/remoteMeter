@@ -76,4 +76,20 @@ public class ReadCtrl {
 		return readMeter.readNeighbors(adminDao.getById(admin.getPid()));
 		
 	}
+	
+	@RequestMapping(value="/readme/read/changeread",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String ChangeRead(int m_id,int m_read){
+		
+		return meterService.addMeterRead(m_id, m_read);
+		
+	}
+	
+	@RequestMapping(value="/readme/read/checkreading",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String ChangeRead(HttpServletRequest request,int readlogid){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return readService.checkReading(readlogid, admin.getPid());
+		
+	}
 }

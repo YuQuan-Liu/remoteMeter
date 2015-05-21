@@ -11,6 +11,9 @@ public interface ReadLogDao {
 	List<Readlog> findadminReading(int adminid);
 
 	public int addReadLogs(List<Readlog> readlogs);
+
+	public Readlog getReadLogByID(int readlogid);
 	
+	public List<Readlog> getReadLogNeighbors(int readlogid,int adminid);
 
 }

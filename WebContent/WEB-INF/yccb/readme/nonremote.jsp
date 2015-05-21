@@ -37,8 +37,10 @@
 <script>
 var intervalbar;
 var interval;
+var progressoptions;
 $(function(){
 	$("#readprogress").hide();
+	progressoptions= $('#readprogress').progressbar("options");
 	$("#readmeterTab").datagrid({
 		striped:true,
 		fitColumns:true,
@@ -151,6 +153,7 @@ function readNeighbor(){
 			success:function(data){
 				if(data.result == "success"){
 					$("#readprogress").show();
+					progressoptions.text = "抄表中...";
 					intervalbar = setInterval(updateprogress,100);
 					interval = setInterval(function(){checkreading(data.pid,-1);},1000);
 					//小区统计TODO
@@ -169,6 +172,7 @@ function readNeighbors(){
 		success:function(data){
 			if(data.result == "success"){
 				$("#readprogress").show();
+				progressoptions.text = "抄表中...";
 				intervalbar = setInterval(updateprogress,100);
 				interval = setInterval(function(){checkreading(data.pid,-1);},1000);
 			}else{
@@ -188,6 +192,7 @@ function readMeter(mid,index){
 		success:function(data){
 			if(data.result == "success"){
 				$("#readprogress").show();
+				progressoptions.text = "抄表中...";
 				intervalbar = setInterval(updateprogress,100);
 				interval = setInterval(function(){checkreading(data.pid,index);},1000);
 			}else{
@@ -235,6 +240,7 @@ function checkreading(readlogid,index){
 				clearInterval(intervalbar);
 				clearInterval(interval);
 				$('#readprogress').progressbar('setValue', 100);
+				progressoptions.text = "抄表完成";
 				$.messager.alert('抄表结果',"结果:"+data.result+"\r\n失败原因:"+data.failReason,'info');  
 				if(data.readobject == 1){
 					//单个小区  
@@ -247,7 +253,23 @@ function checkreading(readlogid,index){
 				}else{
 					if(data.readobject == 3){
 						//单个表
-						$("#readmeterTab").datagrid('updateRow', {index:index,row:{readdata:data.read,readtime:data.time,meterState:data.status}});
+						var mstates = "正常";;
+						if(data.status == 1){
+							mstates = "正常";
+						}
+						if(data.status == 2){
+							mstates = "数据错误";
+						}
+						if(data.status == 3){
+							mstates = "线路故障";
+						}
+						if(data.status == 4){
+							mstates = "超时";
+						}
+						if(data.status == 5){
+							mstates = "人工修改";
+						}
+						$("#readmeterTab").datagrid('updateRow', {index:index,row:{readdata:data.read,readtime:data.time,meterState:mstates}});
 					}else{
 						//全部小区  donothing
 					}
@@ -270,6 +292,7 @@ function openValve(mid,index){
 		success:function(data){
 			if(data.result == "success"){
 				$("#readprogress").show();
+				progressoptions.text = "操作中...";
 				intervalbar = setInterval(updateprogress,100);
 				interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
 			}else{
@@ -287,15 +310,23 @@ function checkcontroling(valvelogid,index){
 			valvelogid:valvelogid
 		},
 		success:function(data){
-			if(data.status == 100){
+			if(data.readStatus == 100){
 				clearInterval(intervalbar);
 				clearInterval(interval);
 				$('#readprogress').progressbar('setValue', 100);
+				progressoptions.text = "操作完成";
 				$.messager.alert('操作结果',"完成个数:"+data.completecount+"\r\n异常个数:"+data.errorcount,'info'); 
 				
 				if(data.completecount+data.errorcount == 1){
 					//单个表
-					$("#readmeterTab").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
+					var vstates = "开";;
+					if(data.switch_ == 1){
+						vstates = "开";
+					}
+					if(data.switch_ == 0){
+						vstates = "关";
+					}
+					$("#readmeterTab").datagrid('updateRow', {index:index,row:{valveState:vstates}});
 				}
 			}
 		}
