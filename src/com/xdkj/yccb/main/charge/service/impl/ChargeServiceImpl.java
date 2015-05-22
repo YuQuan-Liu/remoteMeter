@@ -46,7 +46,11 @@ public class ChargeServiceImpl implements ChargeService {
 	public String updatePayment(String cstId, String prePaySign) {
 		JSONObject j = new JSONObject();
 		try {
-			custDAO.updatePrePaySign(Integer.parseInt(cstId), Byte.parseByte(prePaySign));
+			byte p = 0;
+			if("0".equals(prePaySign)){
+				p = 1;
+			}
+			custDAO.updatePrePaySign(Integer.parseInt(cstId), p);
 			j.put("update", 1);
 		} catch (Exception e) {
 			j.put("update", 0);
