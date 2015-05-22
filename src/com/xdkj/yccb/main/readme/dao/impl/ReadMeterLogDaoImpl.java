@@ -20,9 +20,9 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 	}
 
 	@Override
-	public int addReadMeterLog(Readmeterlog newlog) {
+	public Readmeterlog addReadMeterLog(Readmeterlog newlog) {
 		this.getHibernateTemplate().save(newlog);
-		return newlog.getPid();
+		return newlog;
 		
 	}
 

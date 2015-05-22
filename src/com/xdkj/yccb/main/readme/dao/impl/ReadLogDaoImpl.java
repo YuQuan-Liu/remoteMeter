@@ -8,6 +8,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.entity.Readlog;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
@@ -62,6 +64,30 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 		Query q = getSession().createQuery("from Readlog log where log.pid >= "+readlogid +" and log.admininfo.pid = "+adminid);
 		
 		return q.list();
+	}
+
+	@Override
+	public String getReadLogNeighborsNonSettle(String n_id) {
+		Query q = getSession().createQuery("select max(log.pid) from Readlog log " +
+				"where log.readObject <> 3 and log.objectId = "+n_id+" and log.settle = 1");
+		int maxpid = 0;
+		if(q.uniqueResult() != null){
+			maxpid = (int) q.uniqueResult();
+		}
+		q = getSession().createQuery("from Readlog log order by log.pid desc " +
+				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.pid > "+maxpid+" and log.readStatus = 100 ");
+		List<Readlog> list = q.list();
+		JSONArray ja = new JSONArray();
+		JSONObject jo = null;
+		Readlog readlog = null;
+		for(int i = 0;list != null && i < list.size();i++){
+			readlog = list.get(i);
+			jo = new JSONObject();
+			jo.put("pid", readlog.getPid());
+			jo.put("completetime", readlog.getCompleteTime().toLocaleString());
+			ja.add(jo);
+		}
+		return ja.toJSONString();
 	}
 
 }

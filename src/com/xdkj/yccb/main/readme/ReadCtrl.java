@@ -36,7 +36,6 @@ public class ReadCtrl {
 	@RequestMapping(value="/readme/read/remotelist")
 	public String readMeter(HttpServletRequest request,Model model){
 		UserForSession admin = WebUtil.getCurrUser(request);
-		System.out.println(admin.getPid());
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 		model.addAttribute("neighbor_list", neighbor_list);
 		
@@ -47,7 +46,7 @@ public class ReadCtrl {
 	@ResponseBody
 	public String ListReadMeter(String n_id){
 		
-		return JSON.toJSONString(readService.getMeters(n_id));
+		return JSON.toJSONString(readService.getRemoteMeters(n_id));
 	}
 	
 	@RequestMapping(value="/readme/read/readneighbor",produces="application/json;charset=UTF-8")

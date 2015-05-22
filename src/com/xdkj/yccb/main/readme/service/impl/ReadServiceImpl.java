@@ -18,6 +18,7 @@ import com.xdkj.yccb.main.entity.Readmeterlog;
 import com.xdkj.yccb.main.entity.Valveconflog;
 import com.xdkj.yccb.main.entity.Valvelog;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
+import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.readme.dao.ReadDao;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
@@ -42,10 +43,20 @@ public class ReadServiceImpl implements ReadService {
 	private ValveLogDao valveLogDao;
 	@Autowired
 	private ValveConfLogDao valveConfLogDao;
+	@Autowired
+	private MeterDao meterDao;
+	
+	
 	@Override
-	public List<ReadView> getMeters(String n_id) {
+	public List<ReadView> getRemoteMeters(String n_id) {
 		
-		List<ReadView> list = readDao.getMeters(n_id);
+		List<ReadView> list = readDao.getRemoteMeters(n_id);
+		return list;
+	}
+	
+	@Override
+	public List<ReadView> getNonRemoteMeters(String n_id) {
+		List<ReadView> list = readDao.getNonRemoteMeters(n_id);
 		return list;
 	}
 	
@@ -99,7 +110,7 @@ public class ReadServiceImpl implements ReadService {
 				jo.put("result", readlog.getResult());
 				Readmeterlog readmeterlog = readMeterLogDao.getMaxReadMeterLog(readlog.getObjectId());
 				jo.put("read", readmeterlog.getActionResult());
-				jo.put("time", readmeterlog.getActionTime());
+				jo.put("time", readmeterlog.getActionTime().toLocaleString());
 				jo.put("status", readmeterlog.getActionType());
 			}
 			
@@ -124,5 +135,26 @@ public class ReadServiceImpl implements ReadService {
 		jo.put("failreason", valvelog.getFailReason());
 		return jo.toJSONString();
 	}
+
+	@Override
+	public String addNonRemoteRead(int m_id, int newread, int readlogid) {
+		Readmeterlog newlog = new Readmeterlog();
+		newlog.setActionResult(newread);
+		newlog.setActionTime(new Date());
+		newlog.setActionType((byte) 5);
+		newlog.setMeter(meterDao.getMeterByID(m_id));
+		newlog.setReadlog(readLogDao.getReadLogByID(readlogid));
+		newlog.setRemark("");
+		
+		meterDao.updateMeterRead(m_id, 5, newread);
+		
+		readMeterLogDao.addReadMeterLog(newlog);
+		JSONObject jo = new JSONObject();
+		jo.put("actionResult", newlog.getActionResult());
+		jo.put("actionTime", newlog.getActionTime().toLocaleString());
+		return jo.toJSONString();
+	}
+
+	
 	
 }

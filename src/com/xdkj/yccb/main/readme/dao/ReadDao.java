@@ -7,7 +7,9 @@ import com.xdkj.yccb.main.readme.dto.ReadView;
 
 public interface ReadDao {
 
-	List<ReadView> getMeters(String n_id);
+	List<ReadView> getRemoteMeters(String n_id);
+
+	List<ReadView> getNonRemoteMeters(String n_id);
 	
 
 }

@@ -102,7 +102,6 @@
 						<td>
 							<select class="easyui-combobox" id="gprs_id" name="gprs_id" data-options="panelHeight:'auto',valueField:'pid',textField:'gprsaddr'" style="width:148px;">
 								<option value="" >请选择集中器</option>
-								<option value="1" >请选集中器</option>
 							</select>
 						</td>
 						<td><label>钢印号</label></td>

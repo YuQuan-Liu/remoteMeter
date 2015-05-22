@@ -6,6 +6,6 @@ public interface ReadMeterLogDao {
 
 	Readmeterlog getMaxReadMeterLog(int m_id);
 
-	int addReadMeterLog(Readmeterlog newlog);
+	Readmeterlog addReadMeterLog(Readmeterlog newlog);
 
 }

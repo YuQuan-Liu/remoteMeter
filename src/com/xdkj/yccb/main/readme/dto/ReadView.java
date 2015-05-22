@@ -26,6 +26,11 @@ public class ReadView {
 	private int deread;
 	private int readdata;
 	private String readtime;
+	
+	private Byte prePaySign;
+	private String meterTypeName;
+	private int remote;
+	
 	public int getC_id() {
 		return c_id;
 	}
@@ -128,9 +133,26 @@ public class ReadView {
 	public void setReadtime(String readtime) {
 		this.readtime = readtime;
 	}
+	public Byte getPrePaySign() {
+		return prePaySign;
+	}
+	public void setPrePaySign(Byte prePaySign) {
+		this.prePaySign = prePaySign;
+	}
+	public String getMeterTypeName() {
+		return meterTypeName;
+	}
+	public void setMeterTypeName(String meterTypeName) {
+		this.meterTypeName = meterTypeName;
+	}
+	public int getRemote() {
+		return remote;
+	}
+	public void setRemote(int remote) {
+		this.remote = remote;
+	}
 	public ReadView() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	

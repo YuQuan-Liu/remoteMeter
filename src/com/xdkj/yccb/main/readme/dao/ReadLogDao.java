@@ -16,4 +16,11 @@ public interface ReadLogDao {
 	
 	public List<Readlog> getReadLogNeighbors(int readlogid,int adminid);
 
+	/**
+	 * 选出所有小区上次结算之后的所有成功的非抄单个表的readlog
+	 * @param n_id
+	 * @return
+	 */
+	public String getReadLogNeighborsNonSettle(String n_id);
+
 }
