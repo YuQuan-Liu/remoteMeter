@@ -10,5 +10,12 @@ public interface ChargeService {
 	 * @return 用户bean
 	 */
 	CustomerView getCustByNeibourAndCustId(String nbrId,String custId);
+	/**
+	 * 预后付费转换
+	 * @param cstId
+	 * @param prePaySign
+	 * @return
+	 */
+	String updatePayment(String cstId,String prePaySign);
 
 }

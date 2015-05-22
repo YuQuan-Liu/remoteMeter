@@ -23,6 +23,12 @@ public interface CustomerDao {
 	 * 根据用户pid获取用户下的表具
 	 */
 	List<Meter> getMeterListByCid(String cpid);
+	/**
+	 * 预后付费转换单独更新方法
+	 * @param custId
+	 * @param prepaySign
+	 */
+	void updatePrePaySign(int custId,byte prepaySign);
 	
 	/**
 	 * 添加用户

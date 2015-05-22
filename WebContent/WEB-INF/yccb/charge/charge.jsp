@@ -22,6 +22,7 @@ function loadCust(){
 			pid = data.pid;
       }});
 	//获取表信息
+	$("#meterFd").show();
 	$('#custMeters').datagrid({
 	    url:'${path}/charge/custMeters.do?custId='+pid,
 	   	fitColumns:true,
@@ -52,14 +53,63 @@ function loadCust(){
 	      	{field:'changestart',title:'起始读数',width:50},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
 				var id = row.pid;
-				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")'> 开阀 </a>"
-				+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")'> 更新单价 </a>"
-				+"<a href='#' class='operateHref' onclick='changemeter("+id+")'> 水表曲线</a>";
+				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' title='开阀'> 开阀 </a>"
+				+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")' title='更新单价'> 更新单价 </a>"
+				+"<a href='#' class='operateHref' onclick='changemeter("+id+")' title='水表曲线'> 水表曲线</a>";
 	  		}}
 	    ]],
 	});
 }
+function updateCust(){
+	//更新用户资料
+	$('#customer').form('submit', {   
+	    success: function(data){
+	    	var data = eval('(' + data + ')'); 
+	       if(data.update>0){
+	    	   $.messager.show({
+					title:'更新用户资料',
+					msg:'更新 成功！',
+					showType:'slide',
+					timeout:3000
+				});	
+	       }else{
+				 $.messager.show({
+						title:'更新用户资料',
+						msg:'更新失败！',
+						showType:'slide',
+						timeout:0
+					});
+			}
+	    }   
+	});  
+}
+function changePre(){
+	var prePaySign = $('#prePaySign').combobox('getValue');
+	//预后付费转换
+	$.messager.confirm('确认操作','确认转换预后付费状态?',function(r){   
+	    if (r){
+	    	$.ajax({ url: "${path}/charge/updatePrepaySign.do",
+	    		data:{ custId: $('#hid_pid').val(), prePaySign:prePaySign},
+	    		dataType:"json",
+	    		success: function(data){
+	    			var data = eval('(' + data + ')'); 
+	    			if(data.change>0){
+	    				$.messager.show({
+	    					title:'预后付费转换',
+	    					msg:'转换成功！',
+	    					showType:'slide',
+	    					timeout:3000
+	    				});	
+	    				loadCust();
+	    			}
+	          }});
+	    }   
+	});  
 
+}
+function payFor(){
+	//缴费
+}
 </script>
  <div id="tb" style="padding:2px 5px;">小区：
         <select class="easyui-combobox" panelHeight="auto" style="width:100px" id="sel_neibours">
@@ -71,16 +121,16 @@ function loadCust(){
          用户号/用户ID: <input class="easyui-textbox" id="cust_info">
         <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loadCust()">Search</a>
   </div>
-<form id="customer" method="post">
+<form id="customer" method="post" action="${path }/charge/updateCustInfo.do">
 <input type="hidden" name="pid" id="hid_pid"/>
-		<div style="padding:0px 10px;">
+		<div>
 			 <fieldset style="padding-left: 10px;">
 				<legend>用户信息</legend>
 				<table style="margin:0px auto" >
 					<tr>
 						<td><lable>小区：</lable></td>
 						<td>
-							<input type="text" name="neighbor" class="easyui-textbox" readonly="readonly"/>
+							<input type="text" name="n_name" class="easyui-textbox" readonly="readonly"/>
 						</td>
 						<td><label>住宅类型：</label></td>
 						<td>
@@ -114,7 +164,7 @@ function loadCust(){
 						<td><label>预后付费：</label></td>
 						<td>
 							<select class="easyui-combobox" name="prePaySign" data-options="panelHeight:'auto'" style="width:132px;">
-								<option value="1" selected="selected">预付费</option>
+								<option value="1">预付费</option>
 								<option value="0" >后付费</option>
 							</select>
 						</td>
@@ -129,14 +179,14 @@ function loadCust(){
 						<td>
 							<select class="easyui-combobox" name="warnSwitch" data-options="panelHeight:'auto'" style="width:132px;">
 								<option value="1" >开</option>
-								<option value="0" selected="selected">关</option>
+								<option value="0">关</option>
 							</select>
 						</td>
 						<td><label>提醒方式：</label></td>
 						<td>
 							<select class="easyui-combobox" name="warnStyle" data-options="panelHeight:'auto'" style="width:132px;">
+								<option value="0">邮件</option>
 								<option value="1" >短信</option>
-								<option value="0" selected="selected">邮件</option>
 							</select>
 						</td>
 						<td><label>新单价：</label></td>
@@ -154,14 +204,14 @@ function loadCust(){
 			</fieldset>
 		</div>
 	</form>
-	 <fieldset style="padding-left: 10px;margin-top: 10px;">
+	 <fieldset style="padding-left: 10px;margin-top: 10px;display: none;" id="meterFd">
 	 	<legend>表信息</legend>
 		<table id="custMeters"></table>
 	</fieldset>
 	<div style="text-align:center;padding-top:10px;">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitCustomer()">更新用户资料</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitCustomer()">预后付费转换</a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitCustomer()">缴费</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateCust()">更新用户资料</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePre()">预后付费转换</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="payFor()">缴费</a>
 	</div>
 </body>
 </html>

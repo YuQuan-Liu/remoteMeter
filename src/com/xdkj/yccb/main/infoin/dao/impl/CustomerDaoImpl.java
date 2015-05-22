@@ -117,5 +117,12 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		}
 	}
 
+	@Override
+	public void updatePrePaySign(int custId, byte prepaySign) {
+		String hql = "update Customer c set c.prePaySign = :pps where c.pid=:pid";
+		getSession().createQuery(hql).setParameter("pps", prepaySign)
+			.setParameter("pid", custId).executeUpdate();
+	}
+
 	
 }

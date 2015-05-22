@@ -35,7 +35,12 @@ public class ChargeCtrl {
 	private CustomerService custService;
 	@Autowired
 	private NeighborService neighborService;
-	
+	/**
+	 * 跳转收费页面
+	 * @param request
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/charge/charge",method = RequestMethod.GET)
 	public String toCharge(HttpServletRequest request, Model model){
 		//获取当前用户下的小区
@@ -44,6 +49,11 @@ public class ChargeCtrl {
 		model.addAttribute("neighbor_list", neighbor_list);
 		return charge;
 	}
+	/**
+	 * 获取用户信息
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/charge/custinfo",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String getCustInfo(HttpServletRequest request){
@@ -52,12 +62,39 @@ public class ChargeCtrl {
 		CustomerView cust = chargeService.getCustByNeibourAndCustId(nbrId, custId);
 		return JSON.toJSONString(cust);
 	}
+	/**
+	 * 根据用户信息获取表信息
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/charge/custMeters",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String getMeters(HttpServletRequest request){
 		String custId = request.getParameter("custId");
 		List<MeterView> list = custService.getMeterbyCid(custId); 
 		return JSON.toJSONString(list);
+	}
+	/**
+	 * 更新用户信息
+	 * @param cv
+	 * @return
+	 */
+	@RequestMapping(value="/charge/updateCustInfo",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String updateCustInfo(CustomerView cv){
+		return JSON.toJSONString(custService.updateCustomer(cv));
+	}
+	/**
+	 * 预后付费转换
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/charge/updatePrepaySign")
+	@ResponseBody
+	public String changePay(HttpServletRequest request){
+		String prePaySign = request.getParameter("prePaySign");
+		String custId = request.getParameter("custId");
+		return chargeService.updatePayment(custId, prePaySign);
 		
 	}
 }

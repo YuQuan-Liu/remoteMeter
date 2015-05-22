@@ -3,6 +3,7 @@ package com.xdkj.yccb.main.charge.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.charge.service.ChargeService;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
@@ -27,13 +28,30 @@ public class ChargeServiceImpl implements ChargeService {
 				cv.setCustomerName(c.getCustomerName());
 				cv.setHk_id(c.getHousekind().getPid()+"");
 				cv.setPid(c.getPid());
-				//cv.setC_num(c.get);
-				//cv.set
+				cv.setNationalId(c.getNationalId());
+				cv.setC_num(c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+				cv.setN_name(c.getNeighbor().getNeighborName());
+				cv.setWarnThre(c.getWarnThre());
+				cv.setPrePaySign(c.getPrePaySign());
+				cv.setWarnStyle(c.getWarnStyle());
+				cv.setWarnSwitch(c.getWarnSwitch());
 				return cv;
 			}
 		}
 		return null;
 		
+	}
+
+	@Override
+	public String updatePayment(String cstId, String prePaySign) {
+		JSONObject j = new JSONObject();
+		try {
+			custDAO.updatePrePaySign(Integer.parseInt(cstId), Byte.parseByte(prePaySign));
+			j.put("update", 1);
+		} catch (Exception e) {
+			j.put("update", 0);
+		}
+		return j.toJSONString();
 	}
 
 }
