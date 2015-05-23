@@ -29,6 +29,13 @@ public class ValveControl {
 	public String valveControl(Meter meter, Admininfo admin) {
 
 		JSONObject jo = new JSONObject();
+		if(meter.getIsValve() == 0){
+			jo.put("function", "valve");
+			jo.put("pid", "0");
+			jo.put("result", "fail");
+			jo.put("reason", "no valve");
+			return jo.toJSONString();
+		}
 		//查看当前用户是否有抄表在进行
 //		ReadLogDao readLogDao = new ReadLogDaoImpl();
 		List<Valvelog> valvelogs = valveLogDao.findadminValveing(admin.getPid());

@@ -25,4 +25,22 @@ public class ValveConfLogDaoImpl extends HibernateDAO implements ValveConfLogDao
 		return (Valveconflog) q.uniqueResult();
 	}
 
+	@Override
+	public Valveconflog getConfLogByID(int conf_id) {
+		Query q = getSession().createQuery("from Valveconflog log where log.pid = "+conf_id);
+		
+		return (Valveconflog) q.uniqueResult();
+	}
+
+	@Override
+	public Valveconflog updateError(int conf_id, String reason) {
+		Valveconflog conflog = getConfLogByID(conf_id);
+		conflog.setErrorStatus(1);
+		conflog.setErrorReason(reason);
+		this.getHibernateTemplate().update(conflog);
+//		this.getHibernateTemplate().merge(conflog);
+		return conflog;
+	}
+
+	
 }

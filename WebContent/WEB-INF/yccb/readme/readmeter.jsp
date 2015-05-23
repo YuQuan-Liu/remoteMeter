@@ -273,7 +273,7 @@ function openValve(mid,index){
 				intervalbar = setInterval(updateprogress,100);
 				interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
 			}else{
-				$.messager.alert('Error','抄表失败,请稍后再试');
+				$.messager.alert('Error','操作失败,请稍后再试');
 			}
 		}
 	});

@@ -13,4 +13,7 @@ public interface ValveConfLogDao {
 	 */
 	Valveconflog getConfLogByLogID(int valvelogid);
 
+	Valveconflog updateError(int conf_id, String reason);
+
+	Valveconflog getConfLogByID(int conf_id);
 }

@@ -25,6 +25,9 @@ public class Watercompany implements java.io.Serializable {
 	private String companyAddr;
 	private String mark;
 	private int authority;
+	private String emailHost;
+	private String emailUser;
+	private String emailPassword;
 	private String remark;
 	private Set<Roles> roleses = new HashSet<Roles>(0);
 	private Set<Neighbor> neighbors = new HashSet<Neighbor>(0);
@@ -83,6 +86,33 @@ public class Watercompany implements java.io.Serializable {
 
 	public void setAuthority(int authority) {
 		this.authority = authority;
+	}
+
+	@Column(name = "emailHost", length = 45)
+	public String getEmailHost() {
+		return emailHost;
+	}
+
+	public void setEmailHost(String emailHost) {
+		this.emailHost = emailHost;
+	}
+
+	@Column(name = "emailUser", length = 45)
+	public String getEmailUser() {
+		return emailUser;
+	}
+
+	public void setEmailUser(String emailUser) {
+		this.emailUser = emailUser;
+	}
+
+	@Column(name = "emailPassword", length = 45)
+	public String getEmailPassword() {
+		return emailPassword;
+	}
+
+	public void setEmailPassword(String emailPassword) {
+		this.emailPassword = emailPassword;
 	}
 
 	@Column(name = "Remark", length = 100)

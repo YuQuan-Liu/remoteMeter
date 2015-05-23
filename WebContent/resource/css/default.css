@@ -46,5 +46,5 @@ a:hover{ color:Red; text-decoration:none;}
 #lang-chose a{color:blue;text-decoration:none;}
 #clock{position: absolute;left: 475px;top: 60px;}
 #userInfo{position: absolute;right:60px;top:70px; }
-.operateHref{ color:#416AA3;font-weight:bold}
+.operateHref{ color:#416AA3;font-weight:bold;margin-left:5px;}
 
