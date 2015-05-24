@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.charge;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
@@ -29,6 +31,8 @@ import com.xdkj.yccb.security.UserForSession;
 @Controller
 public class ChargeCtrl {
 	public static final String charge = "/charge/charge";
+	//public static final String chargePay = "/charge/payInfo";
+	public static final int logCount = 10;//显示收费记录条数
 	@Autowired
 	private ChargeService chargeService;
 	@Autowired
@@ -53,12 +57,13 @@ public class ChargeCtrl {
 	 * 获取用户信息
 	 * @param request
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
 	@RequestMapping(value="/charge/custinfo",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String getCustInfo(HttpServletRequest request){
+	public String getCustInfo(HttpServletRequest request) throws UnsupportedEncodingException{
 		String nbrId = request.getParameter("nbrId");
-		String custId = request.getParameter("custId");
+		String custId = new String( request.getParameter("custId").getBytes("ISO-8859-1") , "UTF-8");
 		CustomerView cust = chargeService.getCustByNeibourAndCustId(nbrId, custId);
 		return JSON.toJSONString(cust);
 	}
@@ -95,6 +100,46 @@ public class ChargeCtrl {
 		String prePaySign = request.getParameter("prePaySign");
 		String custId = request.getParameter("custId");
 		return chargeService.updatePayment(custId, prePaySign);
+	}
+	/**
+	 * Description: 收费弹窗 显示缴费信息 扣费信息
+	 * @param custId
+	 * @return 页面
+	 * @author SongWei
+	 * @date 2015-5-24
+	 * @version 1.0
+	 */
+	/*@RequestMapping(value="/charge/chargePay")
+	public String payInfoPage(@RequestParam("custId")String custId,Model model){
+		model.addAttribute("custId", custId);
+		return chargePay;
+	}*/
+	/**
+	 * Description: 收费记录
+	 * @param custId
+	 * @return
+	 * @author SongWei
+	 * @date 2015-5-24
+	 * @version 1.0
+	 */
+	@RequestMapping(value="/charge/payInfoContent",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String payInfo(@RequestParam("custId") String custId){
 		
+		return null;
+	}
+	/**
+	 * Description: 扣费记录
+	 * @param custId
+	 * @return
+	 * @author SongWei
+	 * @date 2015-5-24
+	 * @version 1.0
+	 */
+	@RequestMapping(value="/charge/costInfoContent",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String costInfo(@RequestParam("custId") String custId){
+		
+		return null;
 	}
 }

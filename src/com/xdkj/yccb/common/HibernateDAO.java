@@ -31,4 +31,12 @@ public class HibernateDAO<T> extends HibernateDaoSupport {
 	public final void setHibernateSessionFactory(final SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
+	
+	public void saveBase(T t){
+		getHibernateTemplate().save(t);
+	}
+	
+	public void updateBase(T t){
+		getHibernateTemplate().update(t);
+	}
 }

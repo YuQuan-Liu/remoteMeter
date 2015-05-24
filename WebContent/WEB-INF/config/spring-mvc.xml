@@ -51,16 +51,16 @@
 <!-- 引入springContext.xml -->
 <!-- <import resource="springContext.xml"/> -->
 	<!-- 异常处理类 -->
-	<!-- <bean id="exceptionResolver"
+	<bean id="exceptionResolver"
 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="defaultErrorView">
-			<value>/commonjsp/error</value>
+			<value>/error</value>
 		</property>
 		<property name="exceptionMappings">
 			<props>
-				<prop key="java.sql.SQLException">/commonjsp/error</prop>
-				<prop key="java.lang.RuntimeException">/commonjsp/error</prop>
+				<prop key="java.sql.SQLException">/error</prop>
+				<prop key="java.lang.RuntimeException">/error</prop>
 			</props>
 		</property>
-	</bean> -->
+	</bean>
 </beans>

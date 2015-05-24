@@ -12,3 +12,5 @@
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/locale/<fmt:message key='easyui.lang'/>"></script>
 <script type="text/javascript" src="${path}/resource/js/msghelper.js"></script>
+<!-- echarts -->
+<script src="${path}/resource/echarts/echarts.js" type="text/javascript"></script>
