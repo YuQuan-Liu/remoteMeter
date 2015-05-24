@@ -8,11 +8,14 @@
 </head>
 <body>
 <script type="text/javascript">
+//客户id
+var pid="";
 function loadCust(){
 	var custId = $('#cust_info').val();
 	var nbrId = $('#sel_neibours').combobox('getValue');
-	var pid="";
-	$.ajax({ url: "${path}/charge/custinfo.do",
+	$.ajax({
+		url: "${path}/charge/custinfo.do",
+		contentType: "application/x-www-form-urlencoded; charset=utf-8", 
 		async:false,
 		data:{ nbrId: nbrId, custId: custId},
 		dataType:"json",
@@ -20,6 +23,7 @@ function loadCust(){
 			//加载form数据
 			$('#customer').form('load',data);
 			pid = data.pid;
+			//$('#hid_id').val(pid);
       }});
 	//获取表信息
 	$("#meterFd").show();
@@ -88,12 +92,13 @@ function changePre(){
 	//预后付费转换
 	$.messager.confirm('确认操作','确认转换预后付费状态?',function(r){   
 	    if (r){
-	    	$.ajax({ url: "${path}/charge/updatePrepaySign.do",
-	    		data:{ custId: $('#hid_pid').val(), prePaySign:prePaySign},
+	    	$.ajax({ 
+	    		url: "${path}/charge/updatePrepaySign.do",
+	    		data:{custId: pid,prePaySign:prePaySign},
 	    		dataType:"json",
 	    		success: function(data){
-	    			var data = eval('(' + data + ')'); 
-	    			if(data.change>0){
+	    			//var data = eval('(' + data + ')'); 
+	    			if(data.update>0){
 	    				$.messager.show({
 	    					title:'预后付费转换',
 	    					msg:'转换成功！',
@@ -109,6 +114,23 @@ function changePre(){
 }
 function payFor(){
 	//缴费
+	if(pid!=""){
+		$('#payInfoWin').window({   
+		    href:'${path}/charge/chargePay.do?custId='+pid,
+		    width:'80%',   
+		    height:350,
+		    minimizable:false,
+		    maximizable:false,
+		    title: '缴费扣费信息'
+		}); 
+	}else{
+		$.messager.show({
+			title:'缴费提示',
+			msg:'尚未选择用户！',
+			showType:'slide',
+			timeout:3000
+		});	
+	}
 }
 </script>
  <div id="tb" style="padding:2px 5px;">小区：
@@ -163,7 +185,7 @@ function payFor(){
 					<tr>
 						<td><label>预后付费：</label></td>
 						<td>
-							<select class="easyui-combobox" name="prePaySign" data-options="panelHeight:'auto'" style="width:132px;">
+							<select class="easyui-combobox" id="prePaySign" name="prePaySign" data-options="panelHeight:'auto'" style="width:132px;">
 								<option value="1">预付费</option>
 								<option value="0" >后付费</option>
 							</select>
@@ -213,5 +235,6 @@ function payFor(){
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePre()">预后付费转换</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="payFor()">缴费</a>
 	</div>
+	<div id="payInfoWin"></div>
 </body>
 </html>
