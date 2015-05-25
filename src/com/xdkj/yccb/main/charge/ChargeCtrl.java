@@ -125,8 +125,7 @@ public class ChargeCtrl {
 	@RequestMapping(value="/charge/payInfoContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String payInfo(@RequestParam("custId") String custId){
-		
-		return null;
+		return JSON.toJSONString(chargeService.getCList(custId, logCount));
 	}
 	/**
 	 * Description: 扣费记录
@@ -139,7 +138,6 @@ public class ChargeCtrl {
 	@RequestMapping(value="/charge/costInfoContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String costInfo(@RequestParam("custId") String custId){
-		
-		return null;
+		return JSON.toJSONString(chargeService.getMList(custId, logCount));
 	}
 }

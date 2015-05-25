@@ -83,6 +83,7 @@ public class ChargeServiceImpl implements ChargeService {
 			cplv.setAmount(cpl.getAmount());
 			cplv.setCustId(c.getCustomerId());
 			cplv.setCustName(c.getCustomerName());
+			cplv.setCustAddr(c.getCustomerAddr());
 			cplv.setCustNo(c.getPid()+"");//这个取。。。
 			cplv.setPid(cpl.getPid());
 			cplv.setPrePaySign(cpl.getPrePaySign());

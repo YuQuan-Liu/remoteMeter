@@ -26,7 +26,8 @@ function loadCust(){
 			//$('#hid_id').val(pid);
       }});
 	//获取表信息
-	$("#meterFd").show();
+	//$("#meterFd").show();
+	$("#searchDiv").show();
 	$('#custMeters').datagrid({
 	    url:'${path}/charge/custMeters.do?custId='+pid,
 	   	fitColumns:true,
@@ -60,6 +61,60 @@ function loadCust(){
 				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' title='开阀'> 开阀 </a>"
 				+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")' title='更新单价'> 更新单价 </a>"
 				+"<a href='#' class='operateHref' onclick='changemeter("+id+")' title='水表曲线'> 水表曲线</a>";
+	  		}}
+	    ]],
+	});
+	// 缴费信息
+	$('#payInfoTab').datagrid({
+	    url:'${path}/charge/payInfoContent.do?custId='+pid,
+	   	fitColumns:true,
+	    fit:false,
+	    border:false,
+	    autoRowHeight:false,
+	    rowStyler: function(index,row){
+				return 'height:30px;';
+			},
+	    columns:[[
+	        {field:'pid',title:'ID',hidden:true},
+			{field:'custNo',title:'用户号',width:60},
+	        {field:'CustId',title:'用户ID',width:60},
+	      	{field:'custName',title:'用户名',width:60},
+	      	{field:'custAddr',title:'地址',width:60},
+	      	{field:'amount',title:'缴费金额',width:60},
+	      	{field:'actionTime',title:'缴费时间',width:60},
+	      	{field:'adminName',title:'收费员',width:60},
+	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
+				var id = row.pid;
+				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' > 撤销 </a>"
+				+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")' >收费打印</a>"
+				+"<a href='#' class='operateHref' onclick='changemeter("+id+")'> 详单打印</a>";
+	  		}}
+	    ]],
+	});
+	//扣费信息
+	$('#costInfoTab').datagrid({
+	    url:'${path}/charge/costInfoContent.do?custId='+pid,
+	   	fitColumns:true,
+	    fit:false,
+	    border:false,
+	    autoRowHeight:false,
+	    rowStyler: function(index,row){
+				return 'height:30px;';
+			},
+	    columns:[[
+	        {field:'pid',title:'ID',hidden:true},
+			{field:'gprs',title:'集中器地址',width:60},
+	        {field:'qfh',title:'采集器地址',width:60},
+	      	{field:'steelNum',title:'表地址',width:60},
+	      	{field:'suppleMode',title:'扣费读数',width:60},
+	      	{field:'collectorAddr',title:'扣费抄表时间',width:60},
+	      	{field:'meterAddr',title:'上次扣费读数',width:60},
+	      	{field:'meterSolid',title:'上次扣费抄表时间',width:60},
+	      	{field:'mk',title:'扣钱数',width:60},
+	      	{field:'mk',title:'扣费时间',width:60},
+	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
+				var id = row.pid;
+				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' >撤销</a>";
 	  		}}
 	    ]],
 	});
@@ -97,7 +152,6 @@ function changePre(){
 	    		data:{custId: pid,prePaySign:prePaySign},
 	    		dataType:"json",
 	    		success: function(data){
-	    			//var data = eval('(' + data + ')'); 
 	    			if(data.update>0){
 	    				$.messager.show({
 	    					title:'预后付费转换',
@@ -115,14 +169,14 @@ function changePre(){
 function payFor(){
 	//缴费
 	if(pid!=""){
-		$('#payInfoWin').window({   
+		/* $('#payInfoWin').window({   
 		    href:'${path}/charge/chargePay.do?custId='+pid,
 		    width:'80%',   
 		    height:350,
 		    minimizable:false,
 		    maximizable:false,
 		    title: '缴费扣费信息'
-		}); 
+		});  */
 	}else{
 		$.messager.show({
 			title:'缴费提示',
@@ -226,10 +280,21 @@ function payFor(){
 			</fieldset>
 		</div>
 	</form>
-	 <fieldset style="padding-left: 10px;margin-top: 10px;display: none;" id="meterFd">
-	 	<legend>表信息</legend>
-		<table id="custMeters"></table>
-	</fieldset>
+	<div id="searchDiv" style="display: none;">
+		<fieldset style="padding-left: 10px;margin-top: 10px;">
+	 		<legend>表信息</legend>
+			<table id="custMeters"></table>
+		</fieldset>
+		<fieldset style="padding-left: 10px;margin-top: 10px;" >
+	 		<legend>缴费信息</legend>
+			<table id="payInfoTab"></table>
+		</fieldset>
+		<fieldset style="padding-left: 10px;margin-top: 10px;">
+	 		<legend>扣费信息</legend>
+			<table id="costInfoTab"></table>
+		</fieldset>
+	</div>
+	 
 	<div style="text-align:center;padding-top:10px;">
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateCust()">更新用户资料</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePre()">预后付费转换</a>

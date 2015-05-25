@@ -7,6 +7,7 @@ public class CustompaylogView {
 	private String custNo;//用户号
 	private String CustId;//用户id
 	private String custName;//用户名
+	private String custAddr;//地址
 	private String adminName;//操作员
 	private BigDecimal amount;
 	private Date actionTime;
@@ -75,6 +76,11 @@ public class CustompaylogView {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+	public String getCustAddr() {
+		return custAddr;
+	}
+	public void setCustAddr(String custAddr) {
+		this.custAddr = custAddr;
+	}
 	
 }
