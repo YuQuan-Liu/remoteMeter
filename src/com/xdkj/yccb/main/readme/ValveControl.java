@@ -15,6 +15,7 @@ import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Valveconflog;
 import com.xdkj.yccb.main.entity.Valvelog;
+import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.readme.dao.ValveConfLogDao;
 import com.xdkj.yccb.main.readme.dao.ValveLogDao;
 
@@ -25,6 +26,8 @@ public class ValveControl {
 	private ValveLogDao valveLogDao;
 	@Autowired
 	private ValveConfLogDao valveConfLogDao;
+	@Autowired
+	private MeterDao meterDao;
 	
 	public String valveControl(Meter meter, Admininfo admin) {
 
@@ -72,6 +75,46 @@ public class ValveControl {
 		
 		valveConfLogDao.addConfLog(conflog);
 		
+		return sendToReadMeter(meter, valvelog);
+	}
+
+	public String valveControlAll(Object[] ids, Admininfo admin) {
+		
+		JSONObject jo = new JSONObject();
+		//查看当前用户是否有抄表在进行
+//		ReadLogDao readLogDao = new ReadLogDaoImpl();
+		List<Valvelog> valvelogs = valveLogDao.findadminValveing(admin.getPid());
+		if(null != valvelogs && valvelogs.size() > 0){
+			//有抄表任务在进行
+			jo.put("function", "valve");
+			jo.put("pid", valvelogs.get(0).getPid());
+			jo.put("result", "fail");
+			jo.put("reason", "controling");
+			return jo.toJSONString();
+		}
+		
+		Valvelog valvelog = new Valvelog();
+		valvelog.setActionCount(ids.length);
+		valvelog.setActionTime(new Date());
+		valvelog.setAdmininfo(admin);
+		valvelog.setAuto(0);
+		valvelog.setCompleteCount(0);
+		valvelog.setErrorCount(0);
+		valvelog.setStatus(0);
+		valvelog.setFailReason("");
+		valvelog.setRemark("");
+		
+		valveLogDao.addValveLog(valvelog);
+		valveConfLogDao.addConfLogs(ids,valvelog);
+		
+		Meter meter = meterDao.getMeterByID(Integer.parseInt(ids[0].toString()));
+
+		
+		return sendToReadMeter(meter, valvelog);
+	}
+
+	private String sendToReadMeter(Meter meter,Valvelog valvelog){
+		JSONObject jo = new JSONObject();
 		jo.put("function", "valve");
 		jo.put("pid", valvelog.getPid());
 		
@@ -93,6 +136,7 @@ public class ValveControl {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			valveLogDao.updateControlException(valvelog, e);
 			jo.put("function", "valve");
 			jo.put("pid", valvelog.getPid());
 			jo.put("result", "fail");
@@ -112,7 +156,7 @@ public class ValveControl {
 				e.printStackTrace();
 			}
 		}
-		return jo.toJSONString();
+		
+		return null;
 	}
-
 }

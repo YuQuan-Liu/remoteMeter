@@ -1,6 +1,9 @@
 package com.xdkj.yccb.main.charge;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,15 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.WebUtil;
-import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.WaterCompanyDAO;
 import com.xdkj.yccb.main.charge.service.ControlErrorService;
 import com.xdkj.yccb.main.charge.service.WarnService;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
-import com.xdkj.yccb.main.readme.service.MeterService;
-import com.xdkj.yccb.main.readme.service.ReadService;
 import com.xdkj.yccb.security.UserForSession;
 
 @Controller
@@ -66,8 +67,26 @@ public class CloseValveCtrl {
 	@ResponseBody
 	public String sendWarnSingle(HttpServletRequest request,int c_id){
 		UserForSession admin = WebUtil.getCurrUser(request);
-		warnSender.sendWarnSingle(waterCompanyDAO.getById(admin.getWaterComId()),c_id);
-		return "";
+		boolean done = warnSender.sendWarnSingle(waterCompanyDAO.getById(admin.getWaterComId()),c_id);
+		JSONObject jo = new JSONObject();
+		jo.put("done", done);
+		return jo.toJSONString();
+	}
+	
+	@RequestMapping(value="/charge/valve/warnall",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String sendWarnAll(HttpServletRequest request,String[] c_ids){
+		JSONObject jo = new JSONObject();
+		if(c_ids == null){
+			jo.put("done", false);
+			jo.put("reason", "无记录");
+			return jo.toJSONString();
+		}
+		UserForSession admin = WebUtil.getCurrUser(request);
+		Object[] ids = new HashSet<>(Arrays.asList(c_ids)).toArray();
+		warnSender.sendWarnAll(waterCompanyDAO.getById(admin.getWaterComId()),ids);
+		jo.put("done", true);
+		return jo.toJSONString();
 	}
 	
 	@RequestMapping(value="/charge/valve/resolveError",produces="application/json;charset=UTF-8")

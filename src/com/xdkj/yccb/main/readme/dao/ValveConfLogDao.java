@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.readme.dao;
 
 import com.xdkj.yccb.main.entity.Valveconflog;
+import com.xdkj.yccb.main.entity.Valvelog;
 
 public interface ValveConfLogDao {
 
@@ -16,4 +17,8 @@ public interface ValveConfLogDao {
 	Valveconflog updateError(int conf_id, String reason);
 
 	Valveconflog getConfLogByID(int conf_id);
+
+	void addConfLogs(Object[] ids, Valvelog valvelog);
+
+	int updateException(Valvelog valvelog);
 }

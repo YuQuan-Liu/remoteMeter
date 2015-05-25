@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.readme.dao;
 
 import java.util.List;
 
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Readlog;
 
 public interface ReadLogDao {
@@ -22,5 +23,7 @@ public interface ReadLogDao {
 	 * @return
 	 */
 	public String getReadLogNeighborsNonSettle(String n_id);
+
+	public void updateException(Readlog readlog, Admininfo admin, Exception e);
 
 }

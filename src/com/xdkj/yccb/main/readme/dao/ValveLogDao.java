@@ -12,4 +12,12 @@ public interface ValveLogDao {
 
 	public Valvelog getValveLogByID(int valvelogid);
 
+	/**
+	 * 返回异常影响的阀门操作的数目
+	 * @param valvelog
+	 * @param e
+	 * @return
+	 */
+	public int updateControlException(Valvelog valvelog, Exception e);
+
 }

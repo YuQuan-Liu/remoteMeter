@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.HibernateDAO;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Readlog;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 
@@ -88,6 +89,14 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 			ja.add(jo);
 		}
 		return ja.toJSONString();
+	}
+
+	@Override
+	public void updateException(Readlog readlog, Admininfo admin, Exception e) {
+		Query q = getSession().createQuery("update ReadLog " +
+				"set ReadStatus = 100,FailReason = "+e.getMessage()+",completeTime = now(),Result = '抄表异常' " +
+				"where pid >= "+readlog.getPid()+" and adminid = "+admin.getPid());
+		q.executeUpdate();
 	}
 
 }

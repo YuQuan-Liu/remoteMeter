@@ -195,7 +195,33 @@ function showMeterdata(){
 }
 
 function warnAll(){
+	var c_ids = [];
+	var rows = $('#controlTab').datagrid('getSelections');
 	
+	for(var i=0; i<rows.length; i++){
+		var row = rows[i];
+		c_ids.push(row.c_id);
+	}
+	if(c_ids.length != 0){
+		$.ajax({
+			type:"POST",
+			url:"${path}/charge/valve/warnall.do",
+			dataType:"json",  
+	        traditional :true,
+			data:{
+				'c_ids':c_ids
+			},
+			success:function(data){
+				if(data.done == true){
+					$.messager.alert('Info','后台正在处理中...');
+				}else{
+					$.messager.alert('Info','请选择用户');
+				}
+			}
+		});
+	}else{
+		$.messager.alert('Info','请选择用户');
+	}
 }
 
 function warnSingle(cid,index){
@@ -207,13 +233,45 @@ function warnSingle(cid,index){
 			c_id:cid
 		},
 		success:function(data){
-			
+			if(data.done == true){
+				$.messager.alert('Info','信息已发送');
+			}else{
+				$.messager.alert('Error','信息发送失败');
+			}
 		}
 	});
 }
 
 function closeValveAll(){
+	var m_ids = [];
+	var rows = $('#controlTab').datagrid('getSelections');
 	
+	for(var i=0; i<rows.length; i++){
+		var row = rows[i];
+		m_ids.push(row.m_id);
+	}
+	if(m_ids.length != 0){
+		$.ajax({
+			type:"POST",
+			url:"${path}/readme/valve/valvecontrolall.do",
+			dataType:"json",  
+	        traditional :true,
+			data:{
+				'm_ids':m_ids
+			},
+			success:function(data){
+				if(data.result == "success"){
+					$("#controlprogress").show();
+					intervalbar = setInterval(updateprogress,100);
+					interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
+				}else{
+					$.messager.alert('Error','操作失败,请稍后再试');
+				}
+			}
+		});
+	}else{
+		$.messager.alert('Info','请选择用户');
+	}
 }
 
 function resolveError(conf_id,index_){

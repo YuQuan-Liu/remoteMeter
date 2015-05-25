@@ -62,54 +62,7 @@ public class ReadMeter {
 		readlog.setResult("");
 		int readlogid = readLogDao.addReadLog(readlog);
 		
-		
-		jo.put("function", "read");
-		jo.put("pid", readlogid);
-		
-		//建立socket 连接  IP 为小区对应的抄表IP  端口 5555
-		//发送json {"function":"read","pid":"12031"} 
-
-		//等待返回     并往上反
-		//{"function":"read","pid":"12031","result":"success"}  开始抄表
-		//{"function":"read","pid":"12031","result":"fail"}  抄表失败
-		Socket socket = null;
-		OutputStream out = null;
-		InputStream in = null;
-		try {
-			socket = new Socket(n.getIp().trim(), 5555);
-			socket.setSoTimeout(3000);
-			out = socket.getOutputStream();
-			in = socket.getInputStream();
-			
-			out.write((jo.toJSONString()+"\r\n").getBytes());
-			
-			byte[] result = new byte[256];
-			int count = 0;
-			while((count = in.read(result)) > 0){
-				return new String(result, 0, count);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			jo.put("function", "read");
-			jo.put("pid", readlog.getPid());
-			jo.put("result", "fail");
-			jo.put("reason", "error");
-		} finally{
-			try {
-				if(in != null){
-					in.close();
-				}
-				if(null != out){
-					out.close();
-				}
-				if(null != socket){
-					socket.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return jo.toJSONString();
+		return sendToReadMeter(readlog,n,admin);
 	}
 
 	/**
@@ -146,56 +99,9 @@ public class ReadMeter {
 		readlog.setFailReason("");
 		readlog.setSettle(0);
 		readlog.setResult("");
-		int readlogid = readLogDao.addReadLog(readlog);
+		readLogDao.addReadLog(readlog);
 		
-		
-		jo.put("function", "read");
-		jo.put("pid", readlogid);
-		
-		//建立socket 连接  IP 为小区对应的抄表IP  端口 5555
-		//发送json {"function":"read","pid":"12031"} 
-
-		//等待返回     并往上反
-		//{"function":"read","pid":"12031","result":"success"}  开始抄表
-		//{"function":"read","pid":"12031","result":"fail"}  抄表失败
-		Socket socket = null;
-		OutputStream out = null;
-		InputStream in = null;
-		try {
-			socket = new Socket(meter.getNeighbor().getIp(), 5555);
-			socket.setSoTimeout(3000);
-			out = socket.getOutputStream();
-			in = socket.getInputStream();
-			
-			out.write((jo.toJSONString()+"\r\n").getBytes());
-			
-			byte[] result = new byte[256];
-			int count = 0;
-			while((count = in.read(result)) > 0){
-				return new String(result, 0, count);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			jo.put("function", "read");
-			jo.put("pid", readlog.getPid());
-			jo.put("result", "fail");
-			jo.put("reason", "error");
-		} finally{
-			try {
-				if(in != null){
-					in.close();
-				}
-				if(null != out){
-					out.close();
-				}
-				if(null != socket){
-					socket.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return jo.toJSONString();
+		return sendToReadMeter(readlog,meter.getNeighbor(),admin);
 	}
 
 	/**
@@ -204,7 +110,7 @@ public class ReadMeter {
 	 * @return
 	 */
 	public String readNeighbors(Admininfo admin) {
-		//TODO
+		
 		JSONObject jo = new JSONObject();
 		//查看当前用户是否有抄表在进行
 		List<Readlog> readlogs = readLogDao.findadminReading(admin.getPid());
@@ -257,10 +163,15 @@ public class ReadMeter {
 		}
 		
 		//返回第一条记录的pi
-		int readlogid = readLogDao.addReadLogs(readLogs);
-		
+		readLogDao.addReadLogs(readLogs);
+		//下面n 的组要作用是获得抄表IP地址   现在只限有一个抄表监听的情况  如果是多个抄表监听的时候 需要更改此处的代码。
+		return sendToReadMeter(readLogs.get(0),n,admin);
+	}
+	
+	private String sendToReadMeter(Readlog readlog,Neighbor n, Admininfo admin){
+		JSONObject jo = new JSONObject();
 		jo.put("function", "read");
-		jo.put("pid", readlogid);
+		jo.put("pid", readlog.getPid());
 		
 		//建立socket 连接  IP 为小区对应的抄表IP  端口 5555
 		//发送json {"function":"read","pid":"12031"} 
@@ -272,7 +183,7 @@ public class ReadMeter {
 		OutputStream out = null;
 		InputStream in = null;
 		try {
-			socket = new Socket(n.getIp(), 5555);
+			socket = new Socket(n.getIp().trim(), 5555);
 			socket.setSoTimeout(3000);
 			out = socket.getOutputStream();
 			in = socket.getInputStream();
@@ -286,6 +197,7 @@ public class ReadMeter {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			readLogDao.updateException(readlog,admin,e);
 			jo.put("function", "read");
 			jo.put("pid", readlog.getPid());
 			jo.put("result", "fail");

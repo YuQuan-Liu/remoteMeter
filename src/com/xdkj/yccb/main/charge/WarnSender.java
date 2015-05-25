@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.encoder.Base64Pwd;
+import com.xdkj.yccb.main.charge.service.WarnService;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
@@ -36,8 +37,10 @@ public class WarnSender {
 	private JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 	@Autowired
 	private CustomerDao customerDao;
+	@Autowired
+	private WarnService warnService;
 	
-	public void sendWarnSingle(Watercompany wc,int cid){
+	public boolean sendWarnSingle(Watercompany wc,int cid){
 		
 		Customer c = customerDao.getCustomerByPid(cid);
 		boolean done = false;
@@ -49,9 +52,21 @@ public class WarnSender {
 			done = sendMail(wc,c);
 			break;
 		}
+		//将提醒信息保存到数据库
 		if(done){
+			warnService.addWarnSingle(c);
+		}
+		return done;
+	}
+	
+
+	public void sendWarnAll(Watercompany wc, Object[] ids) {
+		for(int i = 0;i < ids.length;i++){
+			sendWarnSingle(wc, Integer.parseInt(ids[i].toString()));
+			System.out.println(Integer.parseInt(ids[i].toString()));
 			
 		}
+		
 	}
 	
 	
@@ -146,4 +161,6 @@ public class WarnSender {
 		c.setCustomerName("haha");
 		new WarnSender().sendMail(wc, c);
 	}
+
+
 }
