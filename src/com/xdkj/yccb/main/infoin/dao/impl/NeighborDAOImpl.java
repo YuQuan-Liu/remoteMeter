@@ -89,4 +89,11 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		return getSession().createQuery(hql).setParameter("pid", wcId).list();
 	}
 
+	@Override
+	public Neighbor getNbrByWcIdName(String wcid, String n_name) {
+		String hql = "from Neighbor nbr where nbr.watercompany.pid= "+wcid+" and nbr.neighborName = '"+ n_name+"' and nbr.valid = 1";
+		Query q = getSession().createQuery(hql);
+		return (Neighbor) q.uniqueResult();
+	}
+
 }

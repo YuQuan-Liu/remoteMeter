@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><fmt:message key="info.customer"/></title>
+<script type="text/javascript" src="${path}/resource/js/jquery.form.min.js"></script>
 </head>
 <body>
 	<div style="margin:10px;">

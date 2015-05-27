@@ -62,5 +62,11 @@ public class GprsDAOImpl extends HibernateDAO<Gprs> implements GprsDAO {
 	public void update(Gprs gprs) {
 		getHibernateTemplate().update(gprs);
 	}
+	@Override
+	public Gprs getByAddr(String g_addr) {
+		String hql = "from Gprs g where g.gprsaddr = '"+g_addr+"' and g.valid='1' ";
+		Query q = getSession().createQuery(hql);
+		return (Gprs) q.uniqueResult();
+	}
 
 }

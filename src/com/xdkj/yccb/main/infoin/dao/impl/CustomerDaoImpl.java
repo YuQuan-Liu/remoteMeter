@@ -1,14 +1,18 @@
 package com.xdkj.yccb.main.infoin.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.entity.Customer;
+import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
+import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
+import com.xdkj.yccb.main.infoin.dto.CustomerMeter;
 
 @Repository
 public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
@@ -29,21 +33,30 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 
 	@Override
 	public List<Customer> getCustomerListByNLDH(String n_id, String lou, String dy,	String hu) {
-		String hql = "from Customer c where c.valid='1' and c.neighbor.pid = "+n_id+" and c.louNum = "+lou+" and c.dyNum = "+dy+" and c.huNum = "+hu;
+		String hql = "from Customer c where c.valid='1' and c.neighbor.pid = :n_id and c.louNum = :lou and c.dyNum = :dy and c.huNum = :hu";
 		Query q = getSession().createQuery(hql);
+		q.setString("n_id", n_id);
+		q.setString("lou", lou);
+		q.setString("dy", dy);
+		q.setString("hu", hu);
 		return q.list();
 	}
-
+	
 	@Override
 	public List<Meter> getMeterListByCid(String cpid) {
-		String hql = "from Meter m where m.valid='1' and m.customer.pid = "+cpid;
-		Query q = getSession().createQuery(hql);
+		String hql = "from Meter m where m.valid='1' and m.customer.pid = :cpid";
+		Query q = getSession().createQuery(hql).setString("cpid", cpid);
 		return q.list();
 	}
 
 	@Override
 	public int addCustomer(Customer c) {
 		this.getHibernateTemplate().save(c);
+		
+//		String hql = "update Meter m set m.valid = 0 where m.pid = "+mid;
+//		Query q = getSession().createQuery(hql);
+//		q.executeUpdate();
+		
 		return c.getPid();
 	}
 
@@ -124,5 +137,24 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 			.setParameter("pid", custId).executeUpdate();
 	}
 
+	@Override
+	public Meter getMeterByGCM(int gid, String collectorAddr,
+			String meterAddr) {
+		String hql = "from Meter m " +
+				"where m.valid='1' and m.gprs.pid = :gid and m.collectorAddr = :collectorAddr and m.meterAddr = :meterAddr";
+		Query q = getSession().createQuery(hql);
+		q.setInteger("gid", gid);
+		q.setString("collectorAddr", collectorAddr);
+		q.setString("meterAddr", meterAddr);
+		return (Meter) q.uniqueResult();
+	}
+
+	@Override
+	public Meter getMeterByMAddr(String meterAddr) {
+		String hql = "from Meter m " +
+				"where m.valid='1' and m.meterAddr = :meterAddr";
+		Query q = getSession().createQuery(hql).setString("meterAddr", meterAddr);
+		return (Meter) q.uniqueResult();
+	}
 	
 }

@@ -52,4 +52,10 @@ public interface CustomerService {
 
 	public Map<String, String> updateMeter(MeterView mv);
 
+	/**
+	 * map 中包含上传excel的所有的数据
+	 * @param map
+	 */
+	public Map addCustomers(Map map);
+
 }

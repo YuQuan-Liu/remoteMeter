@@ -1,9 +1,13 @@
 package com.xdkj.yccb.main.infoin.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xdkj.yccb.main.entity.Customer;
+import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
+import com.xdkj.yccb.main.entity.Neighbor;
+import com.xdkj.yccb.main.infoin.dto.CustomerMeter;
 
 public interface CustomerDao {
 	
@@ -55,6 +59,21 @@ public interface CustomerDao {
 	 * @return
 	 */
 	Customer getCustByNborOrCust(int nbrId,String cust);
+	/**
+	 * eg协议  根据集中器  采集器 表地址 获取表
+	 * @param pid
+	 * @param collectorAddr
+	 * @param meterAddr
+	 * @return
+	 */
+	Meter getMeterByGCM(int pid, String collectorAddr, String meterAddr);
+	/**
+	 * 188协议表  根据表地址获取表
+	 * @param meterAddr
+	 * @return
+	 */
+	Meter getMeterByMAddr(String meterAddr);
+	
 	
 
 }

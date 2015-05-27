@@ -28,11 +28,16 @@
     <!-- 国际化操作拦截器 如果采用基于（请求/Session/Cookie）则必需配置 --> 
     <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" />  
 </mvc:interceptors>
+
 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
-<bean id="viewResolver"
-	class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-	<property name="viewClass"
-		value="org.springframework.web.servlet.view.JstlView" />
+
+<!-- the ResourceBundleViewResolver -->
+<bean id="resourceViewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+	<property name="basename" value="views"/>
+</bean>
+
+<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+	<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 	<property name="prefix" value="/WEB-INF/yccb/" />
 	<property name="suffix" value=".jsp" />
 </bean>
@@ -51,16 +56,16 @@
 <!-- 引入springContext.xml -->
 <!-- <import resource="springContext.xml"/> -->
 	<!-- 异常处理类 -->
-	<bean id="exceptionResolver"
-		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="defaultErrorView">
-			<value>/error</value>
-		</property>
-		<property name="exceptionMappings">
-			<props>
-				<prop key="java.sql.SQLException">/error</prop>
-				<prop key="java.lang.RuntimeException">/error</prop>
-			</props>
-		</property>
-	</bean>
+<!-- 	<bean id="exceptionResolver" -->
+<!-- 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> -->
+<!-- 		<property name="defaultErrorView"> -->
+<!-- 			<value>/error</value> -->
+<!-- 		</property> -->
+<!-- 		<property name="exceptionMappings"> -->
+<!-- 			<props> -->
+<!-- 				<prop key="java.sql.SQLException">/error</prop> -->
+<!-- 				<prop key="java.lang.RuntimeException">/error</prop> -->
+<!-- 			</props> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 </beans>

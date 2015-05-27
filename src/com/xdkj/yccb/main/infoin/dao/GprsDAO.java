@@ -21,4 +21,6 @@ public interface GprsDAO {
 	void update (Gprs gprs);
 	
 	void deleteByNbrId(String nbrId);
+
+	Gprs getByAddr(String g_addr);
 }

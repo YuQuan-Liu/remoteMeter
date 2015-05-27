@@ -141,7 +141,7 @@ public class WarnSender {
 				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
 						para), "UTF-8"));
 		
-		if(jo.get("code").toString().equals("1")){
+		if(jo.get("code").toString().equals("0")){
 			done = true;
 		}
 		return done;

@@ -1,22 +1,28 @@
 package com.xdkj.yccb.main.infoin;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dto.MeterkindView;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.MeterkindService;
 import com.xdkj.yccb.main.adminor.service.PriceService;
-import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
@@ -76,9 +82,50 @@ public class CustomerCtrl {
 		return "/infoin/customerAdd";
 	}
 	
-	@RequestMapping(value="/infoin/customer/addsPage")
+	@RequestMapping(value="/infoin/customer/addPages")
 	public String addCustomerPages(){
 		return "/infoin/customerAdds";
+	}
+	
+	@RequestMapping(value="/infoin/customer/upload")
+	@ResponseBody
+	public String uploadExcel(HttpServletRequest request, String name,MultipartFile file){
+		JSONObject jo = new JSONObject();
+		String realPath = request.getServletContext().getRealPath("/remoteMeter/WEB-INF/yccb/infoin/Excels");
+//		System.out.println(name.substring(name.lastIndexOf("\\") + 1));
+		if(!file.isEmpty()){
+			try {
+				byte[] bytes = file.getBytes();
+				long time = Calendar.getInstance().getTimeInMillis();
+				String excelPath = "D:/Excels/"+name.substring(name.lastIndexOf("\\")+1)+time;
+				System.out.println(excelPath);
+				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
+				
+				
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f));
+                stream.write(bytes);
+                stream.close();
+                
+                //read excel;
+                Map map = UploadCustomer.readExcel(excelPath);
+                if(map == null){
+            		jo.put("done", false);
+            		jo.put("reason", "读取数据异常");
+                }else{
+                	UserForSession admin = WebUtil.getCurrUser(request);
+                	map.put("wcid", admin.getWaterComId());
+                	Map result = customerService.addCustomers(map);
+                	jo.put("done", true);
+                	jo.put("success", result.get("success"));
+                	jo.put("reason", result.get("reason"));
+                }
+			} catch (IOException e) {
+				e.printStackTrace();
+				jo.put("done", false);
+        		jo.put("reason", e.getMessage());
+			}
+		}
+		return jo.toJSONString();
 	}
 	
 	@RequestMapping(value="/infoin/customer/add")

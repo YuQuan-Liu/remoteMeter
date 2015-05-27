@@ -32,5 +32,7 @@ public interface NeighborDAO {
 	 */
 	List<Neighbor> getNbrByWatcomId(int wcId);
 
+	Neighbor getNbrByWcIdName(String wcid, String n_name);
+
 	
 }

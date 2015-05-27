@@ -1,6 +1,8 @@
 package com.xdkj.yccb.main.readme;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.WebUtil;
@@ -65,5 +68,14 @@ public class NonRemoteCtrl {
 	public String AddNonRemote(int m_id,int newread,int readlogid){
 		
 		return readService.addNonRemoteRead(m_id, newread, readlogid);
+	}
+	
+	@RequestMapping(value="/readme/read/download")
+	public ModelAndView download(int n_id, String n_name){
+		Map map = new HashMap();
+		map.put("n_id", n_id);
+		map.put("n_name", n_name);
+		map.put("list", readService.getNonRemoteMeters(n_id+""));
+		return new ModelAndView("export_default", map);
 	}
 }

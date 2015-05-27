@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
@@ -44,6 +45,12 @@ public class MeterKindDaoImpl extends HibernateDAO implements MeterKindDao {
 		return lv;
 		
 		
+	}
+
+	@Override
+	public Meterkind getByID(int mkid) {
+		Query q = getSession().createQuery("from Meterkind mk where mk.pid = "+mkid+" and valid = 1 ");
+		return (Meterkind) q.uniqueResult();
 	}
 
 }

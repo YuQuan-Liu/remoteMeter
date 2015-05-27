@@ -20,8 +20,13 @@
 					</c:forEach>
 	    		</select>
 	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="upload()" >Excel上传</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="download()" >手持导出</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="download_()" >手持导出</a>
+				
 			</div>
+		</form>
+		<form id="exportform" method="post">
+			<input type="hidden" name="n_id" id="n_id"/> 
+			<input type="hidden" name="n_name" id="n_name"/>
 		</form>
 	</div>
 	<div style="margin:10px;">
@@ -176,6 +181,22 @@ function readManual(id,index){
     }
 	
 
+}
+function download_(){
+	var n_id = $("#neighbor").combobox("getValue");
+	var n_name = $("#neighbor").combobox("getText");
+	
+	if(n_id != ""){
+		$("#n_id").val(n_id);
+		$("#n_name").val(n_name);
+		
+		$("#exportform").form('submit',{
+			url:"${path}/readme/read/download.do",
+		});
+	}else{
+		$.messager.alert('Info','请选择小区');
+	}
+	
 }
 </script>
 </body>

@@ -218,13 +218,13 @@
 				if(c_id > 0){
 					
 				}else{
-					$.message.alert("提示","请选择用户");
+					$.messager.alert("提示","请选择用户");
 					return false;
 				}
 			},
 			success:function(data){
 				if(data.add == 'true'){
-					$.message.alert("提示","添加成功");
+					$.messager.alert("提示","添加成功");
 				}
 			}
 		})
@@ -238,7 +238,7 @@
 			success:function(){
 				if(data.add > 0){
 					$("#c_id").val(data.add);
-					$.message.alert("提示","添加成功");
+					$.messager.alert("提示","添加成功");
 				}
 			}
 		})
