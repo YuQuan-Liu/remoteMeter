@@ -6,7 +6,7 @@
 <%@include file="/commonjsp/top.jsp" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>抄表</title>
 </head>
 <body>
 	<div style="margin:10px;">
