@@ -1,5 +1,10 @@
 package com.xdkj.yccb.main.readme;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +16,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
+import com.xdkj.yccb.main.entity.Readmeterlog;
+import com.xdkj.yccb.main.infoin.UploadCustomer;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
@@ -78,4 +87,43 @@ public class NonRemoteCtrl {
 		map.put("list", readService.getNonRemoteMeters(n_id+""));
 		return new ModelAndView("export_default", map);
 	}
+	
+	@RequestMapping(value="/readme/read/uploadPage")
+	public String addCustomerPages(){
+		return "/readme/uploadnonremote";
+	}
+	
+	@RequestMapping(value="/readme/nonremote/upload")
+	@ResponseBody
+	public String uploadExcel(HttpServletRequest request, String name,MultipartFile file, int readlogid){
+		JSONObject jo = new JSONObject();
+		String realPath = request.getServletContext().getRealPath("/WEB-INF/yccb/readme/Excels");
+		if(!file.isEmpty()){
+			try {
+				byte[] bytes = file.getBytes();
+				String excelPath = "D:/Excels/"+name.substring(name.lastIndexOf("\\")+1)+Calendar.getInstance().getTimeInMillis();
+				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
+				
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f));
+                stream.write(bytes);
+                stream.close();
+                
+                //read excel;
+                List<Readmeterlog> list = UploadNonRemoteRead.readExcel(excelPath, readlogid);
+                
+                UserForSession admin = WebUtil.getCurrUser(request);
+                Map result = meterService.addMeterReads(list);
+                jo.put("done", true);
+                jo.put("success", result.get("success"));
+                jo.put("reason", result.get("reason"));
+                
+			} catch (IOException e) {
+				e.printStackTrace();
+				jo.put("done", false);
+        		jo.put("reason", e.getMessage());
+			}
+		}
+		return jo.toJSONString();
+	}
+	
 }

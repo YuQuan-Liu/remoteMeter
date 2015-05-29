@@ -58,7 +58,8 @@ public class ValveConfLogDaoImpl extends HibernateDAO implements ValveConfLogDao
 		Valveconflog conflog = null;
 		Meter meter = null;
 		Session session = getSession();
-		Transaction tr = session.beginTransaction();
+		//事务交由spring管理   再开事务的话  Hibernate 会报事务启动不成功异常
+//		Transaction tr = session.beginTransaction();
 		for(int i = 0;i < ids.length;i++){
 			meter = meterDao.getMeterByID(Integer.parseInt(ids[i].toString()));
 			conflog = new Valveconflog();
@@ -76,8 +77,7 @@ public class ValveConfLogDaoImpl extends HibernateDAO implements ValveConfLogDao
 				session.clear();
 			}
 		}
-		
-		tr.commit();
+//		tr.commit();
 	}
 
 

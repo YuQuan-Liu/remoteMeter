@@ -19,7 +19,7 @@
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
-	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="upload()" >Excel上传</a>
+	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="upload_()" >Excel上传</a>
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="download_()" >手持导出</a>
 				
 			</div>
@@ -29,6 +29,7 @@
 			<input type="hidden" name="n_name" id="n_name"/>
 		</form>
 	</div>
+	<div id="uploadWin"></div>
 	<div style="margin:10px;">
 		<label>抄表批次</label>
 		<select class="easyui-combobox" id="readlog" name="readlog" style="width:200px" data-options="panelHeight:'auto',valueField:'pid',textField:'completetime'">
@@ -197,6 +198,24 @@ function download_(){
 		$.messager.alert('Info','请选择小区');
 	}
 	
+}
+
+function upload_(){
+	var readlog = $("#readlog").combobox("getValue");
+	if(readlog == ""){
+		$.messager.alert('Info','请选择抄表批次');
+		return;
+	}
+	
+	$('#uploadWin').window({	
+		href:'${path}/readme/read/uploadPage.do',
+		width:467,	
+		height:300,
+		minimizable:false,
+		maximizable:false,
+		collapsible:false,
+		title: '上传非远传表具'
+	});
 }
 </script>
 </body>

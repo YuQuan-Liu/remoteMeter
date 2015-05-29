@@ -91,7 +91,7 @@ public class CustomerCtrl {
 	@ResponseBody
 	public String uploadExcel(HttpServletRequest request, String name,MultipartFile file){
 		JSONObject jo = new JSONObject();
-		String realPath = request.getServletContext().getRealPath("/remoteMeter/WEB-INF/yccb/infoin/Excels");
+		String realPath = request.getServletContext().getRealPath("/WEB-INF/yccb/infoin/Excels");
 //		System.out.println(name.substring(name.lastIndexOf("\\") + 1));
 		if(!file.isEmpty()){
 			try {

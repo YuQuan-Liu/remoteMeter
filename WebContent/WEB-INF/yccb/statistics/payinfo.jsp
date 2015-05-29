@@ -58,7 +58,9 @@
 				$.messager.alert('Info','请选择截止时间！');
 				return;
 			}
-			window.open("${path}/statistics/payinfo/print.do?n_id="+encodeURI(n_id)+"&start="+encodeURI(start)+"&end="+encodeURI(end)+"&n_name="+encodeURI(n_name)+"&pre="+encodeURI(pre)+"","_blank");
+// 			var url = encodeURI();
+// 			alert(url);
+			window.open("${path}/statistics/payinfo/print.do?n_id="+n_id+"&start="+start+"&end="+end+"&n_name="+n_name+"&pre="+pre,"_blank");
 		}
 	</script>
 </body>

@@ -44,8 +44,7 @@ public class UploadCustomer {
 		String n_name = getCellString(row,0);
 		String g_addr = getCellString(row, 1);
 		int count = Integer.parseInt(getCellString(row, 2));
-		System.out.println(count);
-//		String g_count = getCellString(row, 2);
+		
 		List<CustomerMeter> list = new ArrayList<>();
 		for(int i = 2;i < count+2;i++){
 			row = sheet.getRow(i);
