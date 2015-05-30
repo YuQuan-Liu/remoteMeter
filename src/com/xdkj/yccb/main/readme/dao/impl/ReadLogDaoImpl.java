@@ -77,6 +77,8 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 		}
 		q = getSession().createQuery("from Readlog log order by log.pid desc " +
 				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.pid > "+maxpid+" and log.readStatus = 100 ");
+		q.setFirstResult(0);
+		q.setMaxResults(20);
 		List<Readlog> list = q.list();
 		JSONArray ja = new JSONArray();
 		JSONObject jo = null;
@@ -96,6 +98,26 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 		Query q = getSession().createQuery("update ReadLog " +
 				"set ReadStatus = 100,FailReason = "+e.getMessage()+",completeTime = now(),Result = '抄表异常' " +
 				"where pid >= "+readlog.getPid()+" and adminid = "+admin.getPid());
+		q.executeUpdate();
+	}
+
+	@Override
+	public Readlog getMaxReadlogNonSettle(int n_id) {
+		
+		Query q = getSession().createQuery("from Readlog log order by log.pid desc " +
+				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.readStatus = 100 ");
+		q.setFirstResult(0);
+		q.setMaxResults(1);
+		return (Readlog) q.uniqueResult();
+	}
+
+	@Override
+	public void settleAll(int n_id, int adminid, int readlogid) {
+		
+		Query q = getSession().createSQLQuery("{call calculate_neighbor(?,?,?)}");
+		q.setInteger(0, n_id);
+		q.setInteger(1, adminid);
+		q.setInteger(2, readlogid);
 		q.executeUpdate();
 	}
 

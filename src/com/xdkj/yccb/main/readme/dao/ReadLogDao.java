@@ -26,4 +26,8 @@ public interface ReadLogDao {
 
 	public void updateException(Readlog readlog, Admininfo admin, Exception e);
 
+	public Readlog getMaxReadlogNonSettle(int n_id);
+
+	public void settleAll(int n_id, int adminid, int readlogid);
+
 }

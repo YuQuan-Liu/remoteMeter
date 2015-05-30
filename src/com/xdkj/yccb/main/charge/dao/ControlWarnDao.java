@@ -9,6 +9,6 @@ public interface ControlWarnDao {
 
 	List<ControlWarnView> getControlWarns(int n_id);
 
-	void addWarnLog(Customer c);
+	void addWarnLog(Customer c, boolean done);
 
 }

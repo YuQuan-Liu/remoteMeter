@@ -62,15 +62,20 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 	}
 
 	@Override
-	public void addWarnLog(Customer c) {
+	public void addWarnLog(Customer c, boolean done) {
 		
 		Warnlog warnlog = new Warnlog();
 		warnlog.setActionTime(new Date());
 		warnlog.setCustomer(c);
 		warnlog.setEmail(c.getCustomerEmail());
-		warnlog.setFailCount(0);
 		warnlog.setMobile(c.getCustomerMobile());
-		warnlog.setSuccessCount(1);
+		if(done){
+			warnlog.setFailCount(0);
+			warnlog.setSuccessCount(1);
+		}else{
+			warnlog.setFailCount(1);
+			warnlog.setSuccessCount(0);
+		}
 		warnlog.setValid('1');
 		warnlog.setWarn(0);
 		warnlog.setWarnContent(c.getCustomerName()+c.getCustomerBalance());

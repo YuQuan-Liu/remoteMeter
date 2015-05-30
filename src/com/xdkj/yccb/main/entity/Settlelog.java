@@ -32,6 +32,7 @@ public class Settlelog implements java.io.Serializable {
 	private int objectType;
 	private int settleStatus;
 	private Date startTime;
+	private int auto;
 	private String remark;
 	private Set<Meterdeductionlog> meterdeductionlogs = new HashSet<Meterdeductionlog>(
 			0);
@@ -105,6 +106,15 @@ public class Settlelog implements java.io.Serializable {
 
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
+	}
+	
+	@Column(name = "auto", nullable = false)
+	public int getAuto() {
+		return auto;
+	}
+
+	public void setAuto(int auto) {
+		this.auto = auto;
 	}
 
 	@Column(name = "Remark", length = 65535)

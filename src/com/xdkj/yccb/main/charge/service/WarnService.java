@@ -9,6 +9,6 @@ public interface WarnService {
 
 	List<ControlWarnView> getControlWarns(int n_id);
 
-	void addWarnSingle(Customer c);
+	void addWarnSingle(Customer c, boolean done);
 
 }

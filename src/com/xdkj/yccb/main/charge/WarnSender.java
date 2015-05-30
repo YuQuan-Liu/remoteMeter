@@ -53,9 +53,8 @@ public class WarnSender {
 			break;
 		}
 		//将提醒信息保存到数据库
-		if(done){
-			warnService.addWarnSingle(c);
-		}
+		warnService.addWarnSingle(c,done);
+		
 		return done;
 	}
 	
@@ -92,7 +91,7 @@ public class WarnSender {
 			SimpleMailMessage msg = new SimpleMailMessage();
 			msg.setTo(c.getCustomerEmail());
 			msg.setSubject(wc.getCompanyName()+" 交费提醒");
-			msg.setText("尊敬的"+c.getCustomerName()+"用戶：\r\n    您好，您的水费余额为"+c.getCustomerBalance()+"，请您及时交费。谢谢合作。");
+			msg.setText("尊敬的"+c.getCustomerName()+"用戶：\r\n    您好，您的水费余额为"+c.getCustomerBalance().doubleValue()+"，请您及时交费。谢谢合作。");
 			msg.setFrom(wc.getEmailUser());
 			
 			mailSender.send(msg);
