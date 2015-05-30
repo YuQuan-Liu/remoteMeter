@@ -36,7 +36,11 @@ public class Meterdeductionlog implements java.io.Serializable {
 	private Date actionTime;
 	private char valid;
 	private String remark;
-
+	
+	private char paytype;
+	private char payed;
+	private char printed;
+	
 	public Meterdeductionlog() {
 	}
 
@@ -154,6 +158,33 @@ public class Meterdeductionlog implements java.io.Serializable {
 
 	public void setValid(char valid) {
 		this.valid = valid;
+	}
+
+	@Column(name = "paytype", length = 1)
+	public char getPaytype() {
+		return paytype;
+	}
+
+	public void setPaytype(char paytype) {
+		this.paytype = paytype;
+	}
+
+	@Column(name = "payed", length = 1)
+	public char getPayed() {
+		return payed;
+	}
+
+	public void setPayed(char payed) {
+		this.payed = payed;
+	}
+
+	@Column(name = "printed", length = 1)
+	public char getPrinted() {
+		return printed;
+	}
+
+	public void setPrinted(char printed) {
+		this.printed = printed;
 	}
 
 	@Column(name = "Remark", length = 100)

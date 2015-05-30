@@ -111,7 +111,7 @@ public class WarnSender {
 		/**
 		 * 目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
 		 */
-		para.put("mob", "13176868783");
+		para.put("mob", c.getCustomerMobile());
 		
 		/**
 		 * 微米账号的接口UID
@@ -135,7 +135,7 @@ public class WarnSender {
 		 * 3、短信内容不允许双签名，即短信内容里只有一个“【】”
 		 * 
 		 */
-		para.put("con", "【"+wc.getCompanyName()+"】尊敬的用户您好，您的水费余额为"+c.getCustomerBalance()+",请您及时交费。谢谢合作。");
+		para.put("con", "【"+wc.getCompanyName()+"】尊敬的"+c.getCustomerName()+"用户您好，您的水费余额为"+c.getCustomerBalance().doubleValue()+",请您及时交费。谢谢合作。");
 		
 		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
 				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
