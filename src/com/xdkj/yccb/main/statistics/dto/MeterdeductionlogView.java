@@ -7,41 +7,38 @@ import java.util.Date;
 public class MeterdeductionlogView {
 
 	private Integer pid;
-	private Integer priceKindID;
-	private Integer meterID;
-	private Integer settleLogID;
-	private int meterRead;
-	private Date meterReadTime;
-	private int lastDeRead;
-	private Date lastDeTime;
-	private BigDecimal deMoney;
-	private Integer settleSingleId;
-	private Date actionTime;
-	private char valid;
-	private String remark;
+	private String gprsAddr;//集中器地址
+	private String collectaddr;//采集器地址
+	private String meterAddr;//表地址
+	private int meterRead;//扣费读数
+	private Date meterReadTime;//扣费时间
+	private int lastDeRead;//上次扣费读数
+	private Date lastDeTime;//上次抄表时间
+	private BigDecimal deMoney;//扣钱数
+	private Date actionTime;//扣费时间
 	public Integer getPid() {
 		return pid;
 	}
 	public void setPid(Integer pid) {
 		this.pid = pid;
 	}
-	public Integer getPriceKindID() {
-		return priceKindID;
+	public String getGprsAddr() {
+		return gprsAddr;
 	}
-	public void setPriceKindID(Integer priceKindID) {
-		this.priceKindID = priceKindID;
+	public void setGprsAddr(String gprsAddr) {
+		this.gprsAddr = gprsAddr;
 	}
-	public Integer getMeterID() {
-		return meterID;
+	public String getCollectaddr() {
+		return collectaddr;
 	}
-	public void setMeterID(Integer meterID) {
-		this.meterID = meterID;
+	public void setCollectaddr(String collectaddr) {
+		this.collectaddr = collectaddr;
 	}
-	public Integer getSettleLogID() {
-		return settleLogID;
+	public String getMeterAddr() {
+		return meterAddr;
 	}
-	public void setSettleLogID(Integer settleLogID) {
-		this.settleLogID = settleLogID;
+	public void setMeterAddr(String meterAddr) {
+		this.meterAddr = meterAddr;
 	}
 	public int getMeterRead() {
 		return meterRead;
@@ -73,30 +70,11 @@ public class MeterdeductionlogView {
 	public void setDeMoney(BigDecimal deMoney) {
 		this.deMoney = deMoney;
 	}
-	public Integer getSettleSingleId() {
-		return settleSingleId;
-	}
-	public void setSettleSingleId(Integer settleSingleId) {
-		this.settleSingleId = settleSingleId;
-	}
 	public Date getActionTime() {
 		return actionTime;
 	}
 	public void setActionTime(Date actionTime) {
 		this.actionTime = actionTime;
 	}
-	public char getValid() {
-		return valid;
-	}
-	public void setValid(char valid) {
-		this.valid = valid;
-	}
-	public String getRemark() {
-		return remark;
-	}
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-	
 	
 }

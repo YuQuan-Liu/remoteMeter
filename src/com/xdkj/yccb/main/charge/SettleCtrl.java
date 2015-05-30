@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.charge.service.ReadLogService;
 import com.xdkj.yccb.main.charge.service.SettleService;
-import com.xdkj.yccb.main.charge.service.WarnService;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.security.UserForSession;

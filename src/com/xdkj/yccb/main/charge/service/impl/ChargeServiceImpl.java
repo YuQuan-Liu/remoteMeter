@@ -3,6 +3,9 @@ package com.xdkj.yccb.main.charge.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.jasperreports.engine.util.JsonUtil;
+import net.sf.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +15,11 @@ import com.xdkj.yccb.main.charge.dto.CustompaylogView;
 import com.xdkj.yccb.main.charge.service.ChargeService;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Customerpaylog;
+import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
+import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
 import com.xdkj.yccb.main.statistics.dto.MeterdeductionlogView;
 @Service
@@ -25,6 +30,8 @@ public class ChargeServiceImpl implements ChargeService {
 	private CustompaylogDAO custompaylogDAO;
 	@Autowired
 	private MeterDeductionLogDao meterDeductionLogDao;
+	@Autowired
+	private MeterDao meterDao;
 
 	@Override
 	public CustomerView getCustByNeibourAndCustId(String nbrId, String custId) {
@@ -100,12 +107,48 @@ public class ChargeServiceImpl implements ChargeService {
 		List<MeterdeductionlogView> listView = new ArrayList<MeterdeductionlogView>();
 		for (Meterdeductionlog mdl : list) {
 			MeterdeductionlogView mdlv = new MeterdeductionlogView();
+			Meter m = mdl.getMeter();
 			mdlv.setActionTime(mdl.getActionTime());
-			//mdlv.set
+			mdlv.setCollectaddr(m.getCollectorAddr());
+			mdlv.setDeMoney(mdl.getDeMoney());
+			mdlv.setGprsAddr(m.getGprs().getGprsaddr());
+			mdlv.setLastDeRead(mdl.getLastDeRead());
+			mdlv.setLastDeTime(mdl.getLastDeTime());
+			mdlv.setMeterAddr(m.getMeterAddr());
+			mdlv.setMeterRead(mdl.getMeterRead());
+			mdlv.setMeterReadTime(mdl.getMeterReadTime());
+			mdlv.setPid(mdl.getPid());
+			m = null;
 			listView.add(mdlv);
 		}
 		list = null;
 		return listView;
+	}
+
+	@Override
+	public String changeValue(String meterId, String valueState) {
+		JSONObject j = new JSONObject();
+		try {
+			meterDao.changeValue(Integer.parseInt(meterId), Byte.parseByte(valueState));
+			j.put("state", "succ");
+		} catch (Exception e) {
+			j.clear();
+			j.put("state", "fail");
+		}
+		return j.toJSONString();
+	}
+
+	@Override
+	public String updatePrice(String meterId, String priceId) {
+		JSONObject j = new JSONObject();
+		try {
+			meterDao.updateMeterPrice(Integer.parseInt(meterId), Integer.parseInt(priceId));
+			j.put("state", "succ");
+		} catch (Exception e) {
+			j.clear();
+			j.put("state", "fail");
+		}
+		return j.toJSONString();
 	}
 
 }

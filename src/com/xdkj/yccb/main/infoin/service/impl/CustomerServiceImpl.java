@@ -110,7 +110,8 @@ public class CustomerServiceImpl implements CustomerService {
 				mv.setMk(m.getMeterkind().getMeterTypeName());
 				listView.add(mv);
 			}
-			
+			//类有对象引用的gc不会及时回收 最好手动释放
+			list = null;
 			return listView;
 		}
 	}

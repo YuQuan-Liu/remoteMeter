@@ -26,8 +26,9 @@ function loadCust(){
 			//$('#hid_id').val(pid);
       }});
 	//获取表信息
-	//$("#meterFd").show();
+	//$("#custInfoDiv").show();
 	$("#searchDiv").show();
+	$("#actBtn").show();
 	$('#custMeters').datagrid({
 	    url:'${path}/charge/custMeters.do?custId='+pid,
 	   	fitColumns:true,
@@ -39,28 +40,46 @@ function loadCust(){
 			},
 	    columns:[[
 	        {field:'pid',title:'ID',hidden:true},
-			{field:'gprs',title:'集中器',width:60},
-	        {field:'qfh',title:'铅封号',width:60},
-	      	{field:'steelNum',title:'钢印号',width:60},
-	      	{field:'suppleMode',title:'供水方式',width:60},
+			{field:'gprs',title:'集中器',width:40},
+	        {field:'qfh',title:'铅封号',width:40},
+	      	{field:'steelNum',title:'钢印号',width:40},
+	      	{field:'suppleMode',title:'供水方式',width:45,formatter:function(value,row,index){
+	      		if(value=="1"){
+	      			return "一次供水";
+	      		}else if(value=="2"){
+	      			return "二次供水";
+	      		}
+	      	}},
 	      	{field:'collectorAddr',title:'采集器地址',width:60},
-	      	{field:'meterAddr',title:'表地址',width:60},
-	      	{field:'meterSolid',title:'虚实表',width:60},
-	      	{field:'mk',title:'表类型',width:60},
-	      	{field:'pk',title:'单价',width:60},
-	      	{field:'isValve',title:'阀门',width:60},
-	      	{field:'deductionStyle',title:'结算方式',width:50},
-	      	{field:'valveOffthre',title:'关阀余额',width:50},
-	      	{field:'timerSwitch',title:'定时检测',width:50},
+	      	{field:'meterAddr',title:'表地址',width:40},
+	      	{field:'meterSolid',title:'虚实表',width:40,formatter:function(value,row,index){
+	      		if(value=="1"){
+	      			return "实表";
+	      		}else{
+	      			return "虚表";
+	      		}
+	      	}},
+	      	{field:'mk',title:'表类型',width:40},
+	      	{field:'pk',title:'单价',width:40},
+	      	{field:'valveState',title:'阀门',width:30,formatter:function(value,row,index){
+	      		if(value=="1"){
+	      			return "开";
+	      		}else{
+	      			return "关";
+	      		}
+	      	}},
+	      	{field:'deductionStyle',title:'结算方式',width:40},
+	      	{field:'valveOffthre',title:'关阀余额',width:60},
+	      	{field:'timerSwitch',title:'定时检测',width:60},
 	      	{field:'timer',title:'定时时间',width:50},
 	      	{field:'overflow',title:'用量阀值',width:50},
 	      	{field:'changend',title:'换表读数',width:50},
 	      	{field:'changestart',title:'起始读数',width:50},
-	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
+	      	{field:'action',title:'操作',width:130,halign:'center',align:'center',formatter: function(value,row,index){
 				var id = row.pid;
-				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' title='开阀'> 开阀 </a>"
-				+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")' title='更新单价'> 更新单价 </a>"
-				+"<a href='#' class='operateHref' onclick='changemeter("+id+")' title='水表曲线'> 水表曲线</a>";
+				return "<a class='operateHref' onclick='openValue("+id+")'> 开阀 </a>"
+				+"<a class='operateHref' onclick='updatePrice("+id+")' title='更新单价'>更新单价 </a>"
+				+"<a class='operateHref' onclick='changemeter("+id+")' title='水表曲线'>水表曲线</a>";
 	  		}}
 	    ]],
 	});
@@ -103,15 +122,15 @@ function loadCust(){
 			},
 	    columns:[[
 	        {field:'pid',title:'ID',hidden:true},
-			{field:'gprs',title:'集中器地址',width:60},
-	        {field:'qfh',title:'采集器地址',width:60},
-	      	{field:'steelNum',title:'表地址',width:60},
-	      	{field:'suppleMode',title:'扣费读数',width:60},
-	      	{field:'collectorAddr',title:'扣费抄表时间',width:60},
-	      	{field:'meterAddr',title:'上次扣费读数',width:60},
-	      	{field:'meterSolid',title:'上次扣费抄表时间',width:60},
-	      	{field:'mk',title:'扣钱数',width:60},
-	      	{field:'mk',title:'扣费时间',width:60},
+			{field:'gprsAddr',title:'集中器地址',width:60},
+	        {field:'collectaddr',title:'采集器地址',width:60},
+	      	{field:'meterAddr',title:'表地址',width:60},
+	      	{field:'meterRead',title:'扣费读数',width:60},
+	      	{field:'meterReadTime',title:'扣费抄表时间',width:60},
+	      	{field:'lastDeRead',title:'上次扣费读数',width:60},
+	      	{field:'lastDeTime',title:'上次扣费抄表时间',width:60},
+	      	{field:'deMoney',title:'扣钱数',width:60},
+	      	{field:'actionTime',title:'扣费时间',width:60},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
 				var id = row.pid;
 				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' >撤销</a>";
@@ -120,27 +139,31 @@ function loadCust(){
 	});
 }
 function updateCust(){
-	//更新用户资料
-	$('#customer').form('submit', {   
-	    success: function(data){
-	    	var data = eval('(' + data + ')'); 
-	       if(data.update>0){
-	    	   $.messager.show({
-					title:'更新用户资料',
-					msg:'更新 成功！',
-					showType:'slide',
-					timeout:3000
-				});	
-	       }else{
-				 $.messager.show({
-						title:'更新用户资料',
-						msg:'更新失败！',
-						showType:'slide',
-						timeout:0
-					});
-			}
-	    }   
-	});  
+	$.messager.confirm('更新用户资料', 'Are you confirm this?', function(r){
+		if (r){
+			//更新用户资料
+			$('#customer').form('submit', {
+			    success: function(data){
+			    	var data = eval('(' + data + ')'); 
+			       if(data.update>0){
+			    	   $.messager.show({
+							title:'更新用户资料',
+							msg:'更新 成功！',
+							showType:'slide',
+							timeout:3000
+						});	
+			       }else{
+						 $.messager.show({
+								title:'更新用户资料',
+								msg:'更新失败！',
+								showType:'slide',
+								timeout:0
+							});
+					}
+			    }   
+			});  
+		}
+	});
 }
 function changePre(){
 	var prePaySign = $('#prePaySign').combobox('getValue');
@@ -169,14 +192,7 @@ function changePre(){
 function payFor(){
 	//缴费
 	if(pid!=""){
-		/* $('#payInfoWin').window({   
-		    href:'${path}/charge/chargePay.do?custId='+pid,
-		    width:'80%',   
-		    height:350,
-		    minimizable:false,
-		    maximizable:false,
-		    title: '缴费扣费信息'
-		});  */
+		
 	}else{
 		$.messager.show({
 			title:'缴费提示',
@@ -186,20 +202,67 @@ function payFor(){
 		});	
 	}
 }
+
+function openValue(id){
+	$.messager.confirm('确认操作','确认开阀?',function(r){   
+	    if (r){
+	    	$.ajax({
+	    		type:"POST",
+	    		url:"${path}/charge/openValue.do",
+	    		dataType:"json",  
+	    		data:{'meterId':id},
+	    		success:function(data){
+	    			if(data.state == "succ"){
+	    				$.messager.alert('Info','操作成功');
+	    				$('#custMeters').datagrid("reload");
+	    			}else{
+	    				$.messager.alert('Info','操作失败');
+	    			}
+	    		}
+	    	});
+	    }   
+	});  
+}
+
+function updatePrice(id){
+	var priceId = $('#price').combobox('getValue');
+	$.messager.confirm('确认操作','确认更新单价?',function(r){   
+	    if (r){
+	    	$.ajax({
+	    		type:"POST",
+	    		url:"${path}/charge/updatePrice.do",
+	    		dataType:"json",  
+	    		data:{'meterId':id,"priceId":priceId},
+	    		success:function(data){
+	    			if(data.state == "succ"){
+	    				$.messager.alert('Info','操作成功');
+	    				$('#custMeters').datagrid("reload");
+	    			}else{
+	    				$.messager.alert('Info','操作失败');
+	    			}
+	    		}
+	    	});
+	    }   
+	});  
+}
+
+function meterQX(){
+	//水表曲线
+}
 </script>
  <div id="tb" style="padding:2px 5px;">小区：
         <select class="easyui-combobox" panelHeight="auto" style="width:100px" id="sel_neibours">
             <option value="">请选择小区</option>
-					<c:forEach var="n" items="${neighbor_list }">
-			<option value="${n.pid }">${n.neighborName }</option>
+			<c:forEach var="n" items="${neighbor_list }">
+				<option value="${n.pid }">${n.neighborName }</option>
 			</c:forEach>
         </select>
          用户号/用户ID: <input class="easyui-textbox" id="cust_info">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loadCust()">Search</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loadCust()">查找</a>
   </div>
 <form id="customer" method="post" action="${path }/charge/updateCustInfo.do">
 <input type="hidden" name="pid" id="hid_pid"/>
-		<div>
+		<div id="custInfoDiv">
 			 <fieldset style="padding-left: 10px;">
 				<legend>用户信息</legend>
 				<table style="margin:0px auto" >
@@ -267,12 +330,10 @@ function payFor(){
 						</td>
 						<td><label>新单价：</label></td>
 						<td colspan="1">
-							<select class="easyui-combobox" panelHeight="auto" style="width:132px">
-					            <option value="java">Java</option>
-					            <option value="c">C</option>
-					            <option value="basic">Basic</option>
-					            <option value="perl">Perl</option>
-					            <option value="python">Python</option>
+							<select class="easyui-combobox" panelHeight="auto" style="width:132px" id="price">
+					            <c:forEach var="p" items="${price_list }">
+									<option value="${p.pid }">${p.priceKindName }</option>
+								</c:forEach>
 					        </select>
 						</td>
 					</tr>
@@ -295,11 +356,11 @@ function payFor(){
 		</fieldset>
 	</div>
 	 
-	<div style="text-align:center;padding-top:10px;">
+	<div style="text-align:center;padding-top:10px; display: none;" id="actBtn">
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateCust()">更新用户资料</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePre()">预后付费转换</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="payFor()">缴费</a>
 	</div>
-	<div id="payInfoWin"></div>
+	<!-- <div id="payInfoWin"></div> -->
 </body>
 </html>

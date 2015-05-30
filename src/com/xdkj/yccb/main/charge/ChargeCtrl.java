@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.WebUtil;
+import com.xdkj.yccb.main.adminor.dto.PriceKindView;
+import com.xdkj.yccb.main.adminor.service.PriceService;
 import com.xdkj.yccb.main.charge.service.ChargeService;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.infoin.dto.MeterView;
@@ -31,7 +33,6 @@ import com.xdkj.yccb.security.UserForSession;
 @Controller
 public class ChargeCtrl {
 	public static final String charge = "/charge/charge";
-	//public static final String chargePay = "/charge/payInfo";
 	public static final int logCount = 10;//显示收费记录条数
 	@Autowired
 	private ChargeService chargeService;
@@ -39,6 +40,8 @@ public class ChargeCtrl {
 	private CustomerService custService;
 	@Autowired
 	private NeighborService neighborService;
+	@Autowired
+	private PriceService priceService; 
 	/**
 	 * 跳转收费页面
 	 * @param request
@@ -50,7 +53,10 @@ public class ChargeCtrl {
 		//获取当前用户下的小区
 		UserForSession admin = WebUtil.getCurrUser(request);
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
+		//获取自来水公司下的单价
+		List<PriceKindView> price_list = priceService.getList(admin.getWaterComId());
 		model.addAttribute("neighbor_list", neighbor_list);
+		model.addAttribute("price_list", price_list);
 		return charge;
 	}
 	/**
@@ -139,5 +145,22 @@ public class ChargeCtrl {
 	@ResponseBody
 	public String costInfo(@RequestParam("custId") String custId){
 		return JSON.toJSONString(chargeService.getMList(custId, logCount));
+	}
+	/**
+	 * 开阀
+	 * @param mId
+	 * @return jsonString succ or fail 
+	 */
+	@RequestMapping(value ="/charge/openValue")
+	@ResponseBody
+	public String openValue(@RequestParam("meterId") String mId){
+		return chargeService.changeValue(mId, "1");
+	}
+	
+	@RequestMapping(value ="/charge/updatePrice")
+	@ResponseBody
+	public String updatePrice(@RequestParam("priceId") String priceId,
+			@RequestParam("meterId") String meterId){
+		return chargeService.updatePrice(meterId, priceId);
 	}
 }

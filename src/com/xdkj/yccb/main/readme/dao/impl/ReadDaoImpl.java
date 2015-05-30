@@ -74,7 +74,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				"on n.pid = c.neighborid " +
 				"left join gprs g " +
 				"on g.pid = m.GPRSID " +
-				"left join MeterKind mk " +
+				"left join meterkind mk " +
 				"on mk.pid = m.meterkindid " +
 				"where c.NeighborID = "+n_id+" and c.valid !=0 and m.valid != 0 and mk.remote = 0 ")
 				.addScalar("c_id",Hibernate.INTEGER)
