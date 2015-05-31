@@ -313,7 +313,7 @@ function cancleCost(id){
 	    if (r){
 	    	$.ajax({
 	    		type:"POST",
-	    		url:"${path}/cahrge/cancleCost.do",
+	    		url:"${path}/charge/cancleCost.do",
 	    		dataType:"json",  
 	    		data:{'meterDeLogId':id},
 	    		success:function(data){

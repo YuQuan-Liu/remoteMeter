@@ -117,6 +117,7 @@
 			<tx:method name="delete*" propagation="REQUIRED" />
 			<tx:method name="update*" propagation="REQUIRED" />
 			<tx:method name="change*" propagation="REQUIRED" />
+			<tx:method name="cancle*" propagation="REQUIRED" />
 			<tx:method name="remove*" propagation="REQUIRED" />
 			<tx:method name="get*" read-only="true" propagation="NOT_SUPPORTED" />
 			<tx:method name="*" read-only="true" />
