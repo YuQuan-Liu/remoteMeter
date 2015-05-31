@@ -33,6 +33,7 @@ import com.xdkj.yccb.security.UserForSession;
 @Controller
 public class ChargeCtrl {
 	public static final String charge = "/charge/charge";
+	public static final String meterCurve = "/charge/meterQX";
 	public static final int logCount = 10;//显示收费记录条数
 	@Autowired
 	private ChargeService chargeService;
@@ -107,19 +108,7 @@ public class ChargeCtrl {
 		String custId = request.getParameter("custId");
 		return chargeService.updatePayment(custId, prePaySign);
 	}
-	/**
-	 * Description: 收费弹窗 显示缴费信息 扣费信息
-	 * @param custId
-	 * @return 页面
-	 * @author SongWei
-	 * @date 2015-5-24
-	 * @version 1.0
-	 */
-	/*@RequestMapping(value="/charge/chargePay")
-	public String payInfoPage(@RequestParam("custId")String custId,Model model){
-		model.addAttribute("custId", custId);
-		return chargePay;
-	}*/
+
 	/**
 	 * Description: 收费记录
 	 * @param custId
@@ -162,5 +151,21 @@ public class ChargeCtrl {
 	public String updatePrice(@RequestParam("priceId") String priceId,
 			@RequestParam("meterId") String meterId){
 		return chargeService.updatePrice(meterId, priceId);
+	}
+	@RequestMapping(value ="/charge/meterCurve")
+	public String meterCurve(){
+		return meterCurve;
+	}
+	
+	@RequestMapping(value="/cahrge/canclePay")
+	@ResponseBody
+	public String canclePay(@RequestParam("custPayId") String custPayId){
+		return chargeService.cancleCustPay(custPayId);
+	}
+	@RequestMapping(value="/charge/cancleCost")
+	@ResponseBody
+	public String cancleCost(@RequestParam("meterDeLogId") String meterDeLogId){
+		
+		return chargeService.cancleCost(meterDeLogId);
 	}
 }

@@ -55,5 +55,25 @@ public interface ChargeService {
 	 * @return
 	 */
 	String updatePrice(String meterId,String priceId);
+	/**
+	 * 撤销缴费
+	 * Description: 
+	 * @param custPayLogId 缴费记录id
+	 * @return
+	 * @author SongWei
+	 * @date 2015-5-31
+	 * @version 1.0
+	 */
+	String cancleCustPay(String custPayLogId);
+	/**
+	 * 撤销扣费
+	 * Description: 
+	 * @param meterDeLogId
+	 * @return
+	 * @author SongWei
+	 * @date 2015-5-31
+	 * @version 1.0
+	 */
+	String cancleCost(String meterDeLogId);
 
 }

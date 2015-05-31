@@ -23,4 +23,8 @@ public interface CustompaylogDAO {
 
 
 	List<AdminSum> getAdminSum(int n_id, String start, String end, int pre);
+	
+	Customerpaylog getById(Integer id);
+	
+	void updateCustLog(Customerpaylog c);
 }

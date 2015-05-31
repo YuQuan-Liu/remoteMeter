@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.statistics.dto;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -46,8 +47,9 @@ public class MeterdeductionlogView {
 	public void setMeterRead(int meterRead) {
 		this.meterRead = meterRead;
 	}
-	public Date getMeterReadTime() {
-		return meterReadTime;
+	public String getMeterReadTime() {
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return s.format(meterReadTime);
 	}
 	public void setMeterReadTime(Date meterReadTime) {
 		this.meterReadTime = meterReadTime;
@@ -58,8 +60,9 @@ public class MeterdeductionlogView {
 	public void setLastDeRead(int lastDeRead) {
 		this.lastDeRead = lastDeRead;
 	}
-	public Date getLastDeTime() {
-		return lastDeTime;
+	public String getLastDeTime() {
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return s.format(lastDeTime);
 	}
 	public void setLastDeTime(Date lastDeTime) {
 		this.lastDeTime = lastDeTime;
@@ -70,8 +73,9 @@ public class MeterdeductionlogView {
 	public void setDeMoney(BigDecimal deMoney) {
 		this.deMoney = deMoney;
 	}
-	public Date getActionTime() {
-		return actionTime;
+	public String getActionTime() {
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return s.format(actionTime);
 	}
 	public void setActionTime(Date actionTime) {
 		this.actionTime = actionTime;

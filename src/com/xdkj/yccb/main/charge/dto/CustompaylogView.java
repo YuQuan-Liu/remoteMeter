@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.charge.dto;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 public class CustompaylogView {
 	private Integer pid;
@@ -52,8 +53,9 @@ public class CustompaylogView {
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
-	public Date getActionTime() {
-		return actionTime;
+	public String getActionTime() {
+		SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		return s.format(actionTime);
 	}
 	public void setActionTime(Date actionTime) {
 		this.actionTime = actionTime;

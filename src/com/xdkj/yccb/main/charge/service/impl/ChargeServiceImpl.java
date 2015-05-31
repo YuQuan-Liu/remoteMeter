@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.charge.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -148,6 +149,38 @@ public class ChargeServiceImpl implements ChargeService {
 			j.clear();
 			j.put("state", "fail");
 		}
+		return j.toJSONString();
+	}
+
+	@Override
+	public String cancleCustPay(String custPayLogId) {
+		JSONObject j = new JSONObject();
+		//将custpaylog valid置为0
+		Customerpaylog cpl = custompaylogDAO.getById(Integer.parseInt(custPayLogId));
+		int custId = cpl.getCustomer().getPid();
+		cpl.setValid("0");
+		custompaylogDAO.updateCustLog(cpl);
+		BigDecimal pay = cpl.getAmount();
+		//将交给额加至Customer 余额 CustomerBalance
+		custDAO.updateCustomerBalance(pay, custId);
+		//插入操作记录
+		j.put("state", "succ");
+		return j.toJSONString();
+	}
+
+	@Override
+	public String cancleCost(String meterDeLogId) {
+		JSONObject j = new JSONObject();
+		//将MeterDeductionLog valid置为0
+		Meterdeductionlog mdl = meterDeductionLogDao.getById(Integer.parseInt(meterDeLogId));
+		int custId = mdl.getMeter().getCustomer().getPid();
+		mdl.setValid('0');
+		meterDeductionLogDao.updateMeterductionLog(mdl);
+		BigDecimal pay = mdl.getDeMoney();
+		//将交给额加至Customer 余额 CustomerBalance
+		custDAO.updateCustomerBalance(pay, custId);
+		//插入操作记录
+		j.put("state", "succ");
 		return j.toJSONString();
 	}
 

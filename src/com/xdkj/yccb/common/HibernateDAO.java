@@ -39,4 +39,8 @@ public class HibernateDAO<T> extends HibernateDaoSupport {
 	public void updateBase(T t){
 		getHibernateTemplate().update(t);
 	}
+	
+	public T getById(Class<T> beanClass,Integer id){
+		return (T) getHibernateTemplate().load(beanClass, id);
+	}
 }

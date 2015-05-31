@@ -3,7 +3,6 @@ package com.xdkj.yccb.main.readme.dao;
 import java.util.List;
 
 import com.xdkj.yccb.common.PageBase;
-import com.xdkj.yccb.main.charge.dto.SettlementView;
 import com.xdkj.yccb.main.entity.Meter;
 
 public interface MeterDao {
@@ -20,5 +19,5 @@ public interface MeterDao {
 	
 	void updateMeterPrice(int meterId,int priceId);
 	
-	List<Meter> getList(SettlementView sv,PageBase pageInfo);
+	//sList<Meter> getList(SettlementView sv,PageBase pageInfo);
 }

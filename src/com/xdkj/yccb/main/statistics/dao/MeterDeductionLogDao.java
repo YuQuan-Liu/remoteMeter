@@ -2,7 +2,6 @@ package com.xdkj.yccb.main.statistics.dao;
 
 import java.util.List;
 
-import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 
 /**
@@ -25,7 +24,7 @@ public interface MeterDeductionLogDao {
 	 */
 	List<Meterdeductionlog> getList(int count,int custId);
 	
-	List<SettledView> getLogPostPay(int n_id, int settle_id);
+	Meterdeductionlog getById( Integer mdlId);
 	
-	List<SettledView> getLogAuto(int n_id, int settle_id);
+	void updateMeterductionLog(Meterdeductionlog mdl);
 }

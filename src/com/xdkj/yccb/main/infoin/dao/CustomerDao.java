@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.infoin.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -74,6 +75,6 @@ public interface CustomerDao {
 	 */
 	Meter getMeterByMAddr(String meterAddr);
 	
-	
+	void updateCustomerBalance(BigDecimal b,Integer custId);
 
 }

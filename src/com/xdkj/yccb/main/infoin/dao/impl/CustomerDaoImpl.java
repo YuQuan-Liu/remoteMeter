@@ -1,18 +1,15 @@
 package com.xdkj.yccb.main.infoin.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.entity.Customer;
-import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
-import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
-import com.xdkj.yccb.main.infoin.dto.CustomerMeter;
 
 @Repository
 public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
@@ -68,7 +65,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 
 	@Override
 	public int deleteMeter(int mid) {
-		String hql = "update Meter m set m.valid = '0' where m.pid = "+mid;
+		String hql = "update Meter m set m.valid = 0 where m.pid = "+mid;
 		Query q = getSession().createQuery(hql);
 		
 		return q.executeUpdate();
@@ -85,7 +82,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 	public int deleteCustomer(int cid) {
 		
 		
-		String hql = "update Customer c set c.valid = '0' where c.pid = "+cid;
+		String hql = "update Customer c set c.valid = 0 where c.pid = "+cid;
 		Query q = getSession().createQuery(hql);
 		
 		return q.executeUpdate();
@@ -155,6 +152,12 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 				"where m.valid='1' and m.meterAddr = :meterAddr";
 		Query q = getSession().createQuery(hql).setString("meterAddr", meterAddr);
 		return (Meter) q.uniqueResult();
+	}
+
+	@Override
+	public void updateCustomerBalance(BigDecimal b,Integer custId) {
+		String hql = "update Customer c set c.customerBalance = c.customerBalance + :balence where c.pid=:custId";
+		getSession().createQuery(hql).setBigDecimal("balence", b).setInteger("custId", custId).executeUpdate();
 	}
 	
 }

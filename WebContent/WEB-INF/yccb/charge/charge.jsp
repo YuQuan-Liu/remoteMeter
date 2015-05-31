@@ -79,7 +79,7 @@ function loadCust(){
 				var id = row.pid;
 				return "<a class='operateHref' onclick='openValue("+id+")'> 开阀 </a>"
 				+"<a class='operateHref' onclick='updatePrice("+id+")' title='更新单价'>更新单价 </a>"
-				+"<a class='operateHref' onclick='changemeter("+id+")' title='水表曲线'>水表曲线</a>";
+				+"<a class='operateHref' onclick='meterQX("+id+")' title='水表曲线'>水表曲线</a>";
 	  		}}
 	    ]],
 	});
@@ -104,7 +104,7 @@ function loadCust(){
 	      	{field:'adminName',title:'收费员',width:60},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
 				var id = row.pid;
-				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' > 撤销 </a>"
+				return "<a href='#' class='operateHref' onclick='cancelPay("+id+")' > 撤销 </a>"
 				+"<a href='#' class='operateHref' onclick='deleteMeter("+id+")' >收费打印</a>"
 				+"<a href='#' class='operateHref' onclick='changemeter("+id+")'> 详单打印</a>";
 	  		}}
@@ -133,7 +133,7 @@ function loadCust(){
 	      	{field:'actionTime',title:'扣费时间',width:60},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
 				var id = row.pid;
-				return "<a href='#' class='operateHref' onclick='updateMeter("+id+")' >撤销</a>";
+				return "<a href='#' class='operateHref' onclick='cancleCost("+id+")' >撤销</a>";
 	  		}}
 	    ]],
 	});
@@ -213,10 +213,20 @@ function openValue(id){
 	    		data:{'meterId':id},
 	    		success:function(data){
 	    			if(data.state == "succ"){
-	    				$.messager.alert('Info','操作成功');
+	    				$.messager.show({
+	    					title:'开阀',
+	    					msg:'操作成功！',
+	    					showType:'slide',
+	    					timeout:3000
+	    				});	
 	    				$('#custMeters').datagrid("reload");
 	    			}else{
-	    				$.messager.alert('Info','操作失败');
+	    				$.messager.show({
+	    					title:'开阀',
+	    					msg:'操作失败！',
+	    					showType:'slide',
+	    					timeout:0
+	    				});	
 	    			}
 	    		}
 	    	});
@@ -235,10 +245,20 @@ function updatePrice(id){
 	    		data:{'meterId':id,"priceId":priceId},
 	    		success:function(data){
 	    			if(data.state == "succ"){
-	    				$.messager.alert('Info','操作成功');
+	    				$.messager.show({
+	    					title:'更新单价',
+	    					msg:'操作成功！',
+	    					showType:'slide',
+	    					timeout:3000
+	    				});	
 	    				$('#custMeters').datagrid("reload");
 	    			}else{
-	    				$.messager.alert('Info','操作失败');
+	    				$.messager.show({
+	    					title:'更新单价',
+	    					msg:'操作失败！',
+	    					showType:'slide',
+	    					timeout:0
+	    				});	
 	    			}
 	    		}
 	    	});
@@ -246,12 +266,81 @@ function updatePrice(id){
 	});  
 }
 
-function meterQX(){
+function meterQX(meterId){
 	//水表曲线
+	$('#meterCurveWin').window({   
+	    href:'${path}/charge/meterCurve.do',
+	    width:600,   
+	    height:450,
+	    minimizable:false,
+	    maximizable:false,
+	    title: '水表曲线'
+	}); 
+}
+function cancelPay(id){
+	$.messager.confirm('确认操作','确认撤销缴费?',function(r){   
+	    if (r){
+	    	$.ajax({
+	    		type:"POST",
+	    		url:"${path}/cahrge/canclePay.do",
+	    		dataType:"json",  
+	    		data:{'custPayId':id},
+	    		success:function(data){
+	    			if(data.state == "succ"){
+	    				$.messager.show({
+	    					title:'更新单价',
+	    					msg:'操作成功！',
+	    					showType:'slide',
+	    					timeout:3000
+	    				});	
+	    				$('#payInfoTab').datagrid("reload");
+	    			}else{
+	    				$.messager.show({
+	    					title:'更新单价',
+	    					msg:'操作失败！',
+	    					showType:'slide',
+	    					timeout:0
+	    				});	
+	    			}
+	    		}
+	    	});
+	    }   
+	});
+}
+
+function cancleCost(id){
+	$.messager.confirm('确认操作','确认撤销扣费?',function(r){   
+	    if (r){
+	    	$.ajax({
+	    		type:"POST",
+	    		url:"${path}/cahrge/cancleCost.do",
+	    		dataType:"json",  
+	    		data:{'meterDeLogId':id},
+	    		success:function(data){
+	    			if(data.state == "succ"){
+	    				$.messager.show({
+	    					title:'更新单价',
+	    					msg:'操作成功！',
+	    					showType:'slide',
+	    					timeout:3000
+	    				});	
+	    				$('#costInfoTab').datagrid("reload");
+	    			}else{
+	    				$.messager.show({
+	    					title:'更新单价',
+	    					msg:'操作失败！',
+	    					showType:'slide',
+	    					timeout:0
+	    				});	
+	    			}
+	    		}
+	    	});
+	    }   
+	});
 }
 </script>
  <div id="tb" style="padding:2px 5px;">小区：
-        <select class="easyui-combobox" panelHeight="auto" style="width:100px" id="sel_neibours">
+        <select class="easyui-combobox" panelHeight="auto" style="width:100px" id="sel_neibours" data-options="editable:false">
             <option value="">请选择小区</option>
 			<c:forEach var="n" items="${neighbor_list }">
 				<option value="${n.pid }">${n.neighborName }</option>
@@ -273,7 +362,7 @@ function meterQX(){
 						</td>
 						<td><label>住宅类型：</label></td>
 						<td>
-							<select class="easyui-combobox" name="hk_id" data-options="panelHeight:'auto'" style="width:132px;">
+							<select class="easyui-combobox" name="hk_id" data-options="panelHeight:'auto',editable:false" style="width:132px;">
 								<option value="2" >高层</option>
 								<option value="3" >商业</option>
 								<option value="1" selected="selected">多层</option>
@@ -302,7 +391,7 @@ function meterQX(){
 					<tr>
 						<td><label>预后付费：</label></td>
 						<td>
-							<select class="easyui-combobox" id="prePaySign" name="prePaySign" data-options="panelHeight:'auto'" style="width:132px;">
+							<select class="easyui-combobox" id="prePaySign" name="prePaySign" data-options="panelHeight:'auto',editable:false" style="width:132px;">
 								<option value="1">预付费</option>
 								<option value="0" >后付费</option>
 							</select>
@@ -316,21 +405,21 @@ function meterQX(){
 						
 						<td><label>提醒开关：</label></td>
 						<td>
-							<select class="easyui-combobox" name="warnSwitch" data-options="panelHeight:'auto'" style="width:132px;">
+							<select class="easyui-combobox" name="warnSwitch" data-options="panelHeight:'auto',editable:false" style="width:132px;">
 								<option value="1" >开</option>
 								<option value="0">关</option>
 							</select>
 						</td>
 						<td><label>提醒方式：</label></td>
 						<td>
-							<select class="easyui-combobox" name="warnStyle" data-options="panelHeight:'auto'" style="width:132px;">
+							<select class="easyui-combobox" name="warnStyle" data-options="panelHeight:'auto',editable:false" style="width:132px;">
 								<option value="0">邮件</option>
 								<option value="1" >短信</option>
 							</select>
 						</td>
 						<td><label>新单价：</label></td>
 						<td colspan="1">
-							<select class="easyui-combobox" panelHeight="auto" style="width:132px" id="price">
+							<select class="easyui-combobox" panelHeight="auto" editable=false style="width:132px" id="price">
 					            <c:forEach var="p" items="${price_list }">
 									<option value="${p.pid }">${p.priceKindName }</option>
 								</c:forEach>
@@ -361,6 +450,6 @@ function meterQX(){
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePre()">预后付费转换</a>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="payFor()">缴费</a>
 	</div>
-	<!-- <div id="payInfoWin"></div> -->
+	<div id="meterCurveWin"></div>
 </body>
 </html>

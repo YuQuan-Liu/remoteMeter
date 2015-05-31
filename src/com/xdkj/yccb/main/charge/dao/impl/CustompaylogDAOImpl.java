@@ -2,8 +2,6 @@ package com.xdkj.yccb.main.charge.dao.impl;
 
 import java.util.List;
 
-import javassist.convert.Transformer;
-
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
@@ -111,6 +109,16 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 		q.setResultTransformer(Transformers.aliasToBean(AdminSum.class));
 		
 		return q.list();
+	}
+
+	@Override
+	public Customerpaylog getById(Integer id) {
+		return this.getById(Customerpaylog.class, id);
+	}
+
+	@Override
+	public void updateCustLog(Customerpaylog c) {
+		this.updateBase(c);
 	}
 
 }
