@@ -134,7 +134,7 @@ var _menus = {
 				"menuid" : "413",
 				"menuname" : "<fmt:message key='menu.chargelat'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "charge/postpay.do"
 			},
 			</c:if>
 			<c:if test="${menus['closetap']=='t'}">
@@ -150,7 +150,7 @@ var _menus = {
 				"menuid" : "415",
 				"menuname" : "<fmt:message key='menu.domaintap'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "charge/valvelog.do"
 			},</c:if>]
 
 		}],

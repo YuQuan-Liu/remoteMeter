@@ -14,4 +14,8 @@ public interface SettleLogDao {
 
 	void settleSingle(int m_id, int adminid, int settlelogid);
 
+	String getSettleLogs(int n_id);
+
+	String getSettleLogsAuto(int n_id);
+
 }

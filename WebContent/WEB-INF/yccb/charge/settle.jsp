@@ -21,6 +21,8 @@
 	    		</select>
 	    		<span style="margin-left:20px;">
 	    			<a href="javascript:void(0)" class="easyui-linkbutton" id="settleall" onclick="settleAll()" >结算小区</a>
+	    		</span>
+	    		<span style="margin-left:20px;">
 					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="warnAll()">提醒交费</a>
 	    		</span>
 			</div>
@@ -28,9 +30,10 @@
 	</div>
 	
 	<table id="settleTab" style="width:100%;height:400px;"></table>
-<!-- 	<div style="margin:10px;"> -->
-<!-- 		<p>总用水量：</p><p id="allYL"></p> -->
-<!-- 	</div> -->
+	<div style="margin:10px;">
+		<p>用水量</p>
+	</div>
+	<table id="ylTab" style="width:400px;height:200px;"></table>
 <script>
 $(function(){
 	$("#settleTab").datagrid({
@@ -109,6 +112,16 @@ $(function(){
 				  }}
 		      ]]
 	});
+	$("#ylTab").datagrid({
+		striped:true,
+		method:'post',
+		loadMsg:'<fmt:message key="main.loading"/>',
+		rownumbers:true,
+		columns:[[
+		          {field:'pricekindname',title:'单价',width:100},
+		          {field:'yl',title:'用水量',width:100}
+		      ]]
+	});
 });
 
 function searchSettle(){
@@ -121,17 +134,13 @@ function searchSettle(){
 				n_id:n_id
 			}
 		});
-// 		$.ajax({
-// 			type:"POST",
-// 			url:"${path}/charge/settle/allyl.do",
-// 			dataType:"json",
-// 			data:{
-// 				n_id:n_id
-// 			},
-// 			success:function(data){
-// // 				update allYL;
-// 			}
-// 		});
+		
+		$('#ylTab').datagrid({
+			url:"${path}/charge/settle/allyl.do",
+			queryParams: {
+				n_id:n_id
+			}
+		});
 	}
 }
 

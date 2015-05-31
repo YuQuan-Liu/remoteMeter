@@ -6,38 +6,47 @@
 <%@include file="/commonjsp/top.jsp" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>阀控日志</title>
 </head>
 <body>
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
 				<label>小区</label>
-				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:showMeterdata">
+				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:searchSettle">
 					<option value="">请选择小区</option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
-	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeValveAll()" >关阀</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="warnAll()" >提醒交费</a>
+	    		
+	    		<select class="easyui-combobox" id="settlelog" name="settlelog" style="width:200px" data-options="panelHeight:'auto',valueField:'pid',textField:'startTime',onSelect:searchCustomer">
+					<option value="">请选择结算</option>
+	    		</select>
+	    		
+	    		<span style="margin-left:20px;">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="print()">打印扣费统计</a>
+	    		</span>
 			</div>
 		</form>
 	</div>
 	
-	<div id="controlprogress" class="easyui-progressbar" data-options="text:''" style="width:100%;"></div>
-	<table id="controlTab" style="width:100%;height:400px;"></table>
+	<table id="valvelogTab" style="width:100%;height:400px;"></table>
+<!-- 	<div style="margin:10px;"> -->
+<!-- 		<p>总用水量：</p><p id="allYL"></p> -->
+<!-- 	</div> -->
+	<div style="margin:10px;">
+		<p>用水量</p>
+	</div>
+	<table id="ylTab" style="width:400px;height:200px;"></table>
 	<div style="margin:10px;">
 		<label>阀门开关异常日志</label>
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printControlError()" >打印日志</a>
 	</div>
 	<table id="controlErrorTab" style="width:100%;height:200px;"></table>
 <script>
-var intervalbar;
-var interval;
 $(function(){
-	$("#controlprogress").hide();
-	$("#controlTab").datagrid({
+	$("#valvelogTab").datagrid({
 		striped:true,
 		fitColumns:true,
 		method:'post',
@@ -65,14 +74,6 @@ $(function(){
 		        	  }
 		          }},
 		          {field:'warnThre',title:'提醒阀值',width:80},
-		          {field:'warnStyle',title:'提醒方式',width:80,formatter:function(value,row,index){
-		        	  if(value == 1){
-		        		  return "短信";
-		        	  }else{
-		        		  return "邮件";
-		        	  }
-		          }},
-		          {field:'g_addr',title:'集中器',width:80},
 		          {field:'collectorAddr',title:'采集器',width:80},
 		          {field:'meterAddr',title:'表地址',width:80},
 		          {field:'meterState',title:'表状态',width:80,formatter:function(value,row,index){
@@ -92,26 +93,29 @@ $(function(){
 							return "人工修改";
 						}
 		          }},
-		          {field:'valveState',title:'阀门状态',width:80,editor:'text',formatter:function(value,row,index){
-		        	  if(value == 1){
-		        		  return "开";
-		        	  }else{
-		        		  if(value == 0){
-		        			  return "关";
-		        		  }else{
-		        			  return "异常";
-		        		  }
-		        	  }
+		          {field:'pricekindname',title:'扣费单价',width:80},
+		          {field:'lastderead',title:'扣费读数',width:80},
+		          {field:'meterread',title:'表读数',width:80},
+		          {field:'meterreadtime',title:'抄表时间',width:80},
+		          {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
+						return row.meterread-row.lastderead;
 		          }},
-		          {field:'warnCount',title:'提醒次数',width:80},
-		          {field:'action',title:'操作',width:160,halign:'center',align:'center',
-						formatter: function(value,row,index){
-							return "<a href='#' class='operateHref' onclick='closeValveSingle("+row.m_id+","+index+")'>关阀</a>"
-							+"<a href='#' class='operateHref' onclick='warnSingle("+row.c_id+","+index+")'>提醒交费</a>";
-				  }}
+		          {field:'demoney',title:'扣费金额',width:80},
+		          {field:'printed',title:'MID',width:60,hidden:true},
+		          {field:'payed',title:'MID',width:60,hidden:true}
 		      ]]
 	});
-	
+	$("#ylTab").datagrid({
+		striped:true,
+		method:'post',
+		loadMsg:'<fmt:message key="main.loading"/>',
+		rownumbers:true,
+		columns:[[
+		          {field:'pricekindname',title:'单价',width:100},
+		          {field:'yl',title:'用水量',width:100},
+		          {field:'demoney',title:'用水量',width:100}
+		      ]]
+	});
 	$("#controlErrorTab").datagrid({
 		striped:true,
 		fitColumns:true,
@@ -176,15 +180,13 @@ $(function(){
 		      ]]
 	});
 });
-function showMeterdata(){
+
+function searchSettle(){
 	var n_id = $("#neighbor").combobox("getValue");
-	if(n_id != ""){
-		$('#controlTab').datagrid({
-			url:"${path}/charge/valve/listcontrol.do",
-			queryParams: {
-				n_id:n_id
-			}
-		});
+	
+	if(n_id != "" ){
+		$('#settlelog').combobox('reload','${path}/charge/settle/listsettlelog_auto.do?n_id='+n_id);
+		
 		$('#controlErrorTab').datagrid({
 			url:"${path}/charge/valve/listerror.do",
 			queryParams: {
@@ -194,84 +196,25 @@ function showMeterdata(){
 	}
 }
 
-function warnAll(){
-	var c_ids = [];
-	var rows = $('#controlTab').datagrid('getSelections');
-	
-	for(var i=0; i<rows.length; i++){
-		var row = rows[i];
-		c_ids.push(row.c_id);
-	}
-	if(c_ids.length != 0){
-		$.ajax({
-			type:"POST",
-			url:"${path}/charge/valve/warnall.do",
-			dataType:"json",  
-	        traditional :true,
-			data:{
-				'c_ids':c_ids
-			},
-			success:function(data){
-				if(data.done == true){
-					$.messager.show({title:'Info',msg:'服务器正努力发送中...'});
-				}else{
-					$.messager.alert('Info','请选择用户');
-				}
-			}
-		});
-	}else{
-		$.messager.alert('Info','请选择用户');
-	}
-}
 
-function warnSingle(cid,index){
-	$.ajax({
-		type:"POST",
-		url:"${path}/charge/valve/warnsingle.do",
-		dataType:"json",
-		data:{
-			c_id:cid
-		},
-		success:function(data){
-			if(data.done == true){
-				$.messager.alert('Info','信息已发送');
-			}else{
-				$.messager.alert('Error','信息发送失败');
-			}
+function searchCustomer(){
+	var n_id = $("#neighbor").combobox("getValue");
+	var settle_id = $("#settlelog").combobox("getValue");
+	$('#valvelogTab').datagrid({
+		url:"${path}/charge/valvelog/listsettleauto.do",
+		queryParams: {
+			n_id:n_id,  		
+			settle_id:settle_id
 		}
 	});
-}
-
-function closeValveAll(){
-	var m_ids = [];
-	var rows = $('#controlTab').datagrid('getSelections');
 	
-	for(var i=0; i<rows.length; i++){
-		var row = rows[i];
-		m_ids.push(row.m_id);
-	}
-	if(m_ids.length != 0){
-		$.ajax({
-			type:"POST",
-			url:"${path}/readme/valve/valvecontrolall.do",
-			dataType:"json",  
-	        traditional :true,
-			data:{
-				'm_ids':m_ids
-			},
-			success:function(data){
-				if(data.result == "success"){
-					$("#controlprogress").show();
-					intervalbar = setInterval(updateprogress,100);
-					interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
-				}else{
-					$.messager.alert('Error','操作失败,请稍后再试');
-				}
-			}
-		});
-	}else{
-		$.messager.alert('Info','请选择用户');
-	}
+	$('#ylTab').datagrid({
+		url:"${path}/charge/settle/settleallyl.do",
+		queryParams: {
+			n_id:n_id,  		
+			settle_id:settle_id
+		}
+	});
 }
 
 function resolveError(conf_id,index_){
@@ -293,54 +236,6 @@ function resolveError(conf_id,index_){
 			});
         }
     });
-}
-
-function closeValveSingle(mid,index){
-	$.ajax({
-		type:"POST",
-		url:"${path}/readme/valve/valvecontrol.do",
-		dataType:"json",
-		data:{
-			m_id:mid
-		},
-		success:function(data){
-			if(data.result == "success"){
-				$("#controlprogress").show();
-				intervalbar = setInterval(updateprogress,100);
-				interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
-			}else{
-				$.messager.alert('Error','操作失败,请稍后再试');
-			}
-		}
-	});
-}
-function checkcontroling(valvelogid,index){
-	$.ajax({
-		type:"POST",
-		url:"${path}/readme/valve/checkcontroling.do",
-		dataType:"json",
-		data:{
-			valvelogid:valvelogid
-		},
-		success:function(data){
-			if(data.status == 100){
-				clearInterval(intervalbar);
-				clearInterval(interval);
-				$('#controlprogress').progressbar('setValue', 100);
-				$.messager.alert('操作结果',"完成个数:"+data.completecount+"\r\n异常个数:"+data.errorcount,'info'); 
-				
-				if(data.completecount+data.errorcount == 1){
-					//单个表
-					$("#controlTab").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
-				}
-			}
-		}
-	});
-}
-
-function updateprogress(){
-	var value = $('#controlprogress').progressbar('getValue');
-	$('#controlprogress').progressbar('setValue', (value+1)%100);
 }
 
 function printControlError(){

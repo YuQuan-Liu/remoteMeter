@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
+import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettleView;
 import com.xdkj.yccb.main.entity.Readmeterlog;
 import com.xdkj.yccb.main.entity.Valveconflog;
@@ -138,6 +139,42 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 		q.setInteger("m_id", m_id);
 		q.setResultTransformer(Transformers.aliasToBean(SettleView.class));
 		return (SettleView) q.uniqueResult();
+	}
+
+	@Override
+	public List<SettleSum> getSettleSum(int n_id) {
+		String SQL = "select pk.pricekindname,sum(m.readdata-m.deread) yl from customer c " +
+				"join meter m " +
+				"on c.pid = m.customerid " +
+				"join pricekind pk " +
+				"on pk.pid = m.PriceKindID " +
+				"where c.Valid = 1 and m.valid = 1 and c.neighborid = :n_id " +
+				"group by pk.PriceKindName";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("pricekindname",Hibernate.STRING)
+				.addScalar("yl",Hibernate.INTEGER);
+		
+		q.setInteger("n_id", n_id);
+		q.setResultTransformer(Transformers.aliasToBean(SettleSum.class));
+		return q.list();
+	}
+
+	@Override
+	public List<SettleSum> getSettleSum(int n_id, int settle_id) {
+		String SQL = "select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
+				"join pricekind pk " +
+				"on mdl.pricekindid = pk.PID " +
+				"where settlelogid = :settlelogid and mdl.valid = 1";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("pricekindname",Hibernate.STRING)
+				.addScalar("yl",Hibernate.INTEGER)
+				.addScalar("demoney",Hibernate.DOUBLE);
+		
+		q.setInteger("settlelogid", settle_id);
+		q.setResultTransformer(Transformers.aliasToBean(SettleSum.class));
+		return q.list();
 	}
 
 }

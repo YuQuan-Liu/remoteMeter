@@ -1,6 +1,8 @@
 package com.xdkj.yccb.main.charge.dao.impl;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +10,8 @@ import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dao.SettleLogDao;
 import com.xdkj.yccb.main.entity.Readlog;
@@ -51,6 +55,50 @@ public class SettleLogDaoImpl extends HibernateDAO implements SettleLogDao {
 	public void settleSingle(int m_id, int adminid, int settlelogid) {
 		
 		readLogDao.settleSingle(m_id, adminid, settlelogid);
+	}
+
+	@Override
+	public String getSettleLogs(int n_id) {
+		String hql = "from Settlelog log " +
+				"where log.objectId = :n_id and log.objectType = 1 and log.auto = 0 order by log.pid desc ";
+		Query q = getSession().createQuery(hql);
+		q.setInteger("n_id", n_id);
+		q.setFirstResult(0);
+		q.setMaxResults(10);
+		List<Settlelog> list = q.list();
+		JSONArray ja = new JSONArray();
+		JSONObject jo = null;
+		Settlelog settlelog = null;
+		for(int i = 0;list != null && i < list.size();i++){
+			settlelog = list.get(i);
+			jo = new JSONObject();
+			jo.put("pid", settlelog.getPid());
+			jo.put("startTime", settlelog.getStartTime().toLocaleString());
+			ja.add(jo);
+		}
+		return ja.toJSONString();
+	}
+
+	@Override
+	public String getSettleLogsAuto(int n_id) {
+		String hql = "from Settlelog log " +
+				"where log.objectId = :n_id and log.objectType = 1 and log.auto = 1 order by log.pid desc ";
+		Query q = getSession().createQuery(hql);
+		q.setInteger("n_id", n_id);
+		q.setFirstResult(0);
+		q.setMaxResults(20);
+		List<Settlelog> list = q.list();
+		JSONArray ja = new JSONArray();
+		JSONObject jo = null;
+		Settlelog settlelog = null;
+		for(int i = 0;list != null && i < list.size();i++){
+			settlelog = list.get(i);
+			jo = new JSONObject();
+			jo.put("pid", settlelog.getPid());
+			jo.put("startTime", settlelog.getStartTime().toLocaleString());
+			ja.add(jo);
+		}
+		return ja.toJSONString();
 	}
 
 }

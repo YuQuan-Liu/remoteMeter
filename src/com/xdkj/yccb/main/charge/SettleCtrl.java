@@ -51,6 +51,20 @@ public class SettleCtrl {
 		return JSON.toJSONString(settleService.getSettleData(n_id));
 	}
 	
+	@RequestMapping(value="/charge/settle/allyl",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String allYL(int n_id){
+		
+		return JSON.toJSONString(settleService.getSettleYL(n_id));
+	}
+	
+	@RequestMapping(value="/charge/settle/settleallyl",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String settleallYL(int n_id,int settle_id){
+		
+		return JSON.toJSONString(settleService.getSettleYL(n_id,settle_id));
+	}
+	
 	@RequestMapping(value="/charge/settle/settleall",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String settleAll(HttpServletRequest request,int n_id){
@@ -63,5 +77,19 @@ public class SettleCtrl {
 	public String settleSingle(HttpServletRequest request,int m_id){
 		UserForSession admin = WebUtil.getCurrUser(request);
 		return settleService.settleSingle(m_id,admin.getPid());
+	}
+	
+	@RequestMapping(value="/charge/settle/listsettlelog",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String listSettlelog(int n_id){
+		
+		return settleService.getSettleLog(n_id);
+	}
+	
+	@RequestMapping(value="/charge/settle/listsettlelog_auto",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String listSettlelogAuto(int n_id){
+		
+		return settleService.getSettleLogAuto(n_id);
 	}
 }

@@ -62,7 +62,7 @@ public class WarnSender {
 	public void sendWarnAll(Watercompany wc, Object[] ids) {
 		for(int i = 0;i < ids.length;i++){
 			sendWarnSingle(wc, Integer.parseInt(ids[i].toString()));
-			System.out.println(Integer.parseInt(ids[i].toString()));
+//			System.out.println(Integer.parseInt(ids[i].toString()));
 			
 		}
 		

@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.charge.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import net.sf.jasperreports.engine.type.JsonOperatorEnum;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.charge.dao.SettleLogDao;
+import com.xdkj.yccb.main.charge.dto.SettleSum;
+import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
 import com.xdkj.yccb.main.charge.service.SettleService;
 import com.xdkj.yccb.main.entity.Meter;
@@ -17,6 +20,7 @@ import com.xdkj.yccb.main.entity.Settlelog;
 import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
+import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
 
 @Service
 public class SettleServiceImpl implements SettleService {
@@ -29,6 +33,9 @@ public class SettleServiceImpl implements SettleService {
 	private ReadLogDao readLogDao;
 	@Autowired
 	private MeterDao meterDao;
+	@Autowired
+	private MeterDeductionLogDao meterDeductionLogDao;
+	
 	
 	@Override
 	public List<SettleView> getSettleData(int n_id) {
@@ -85,6 +92,66 @@ public class SettleServiceImpl implements SettleService {
 			}
 		}
 		return jo.toJSONString();
+	}
+
+	@Override
+	public String getSettleLog(int n_id) {
+		
+		return settleLogDao.getSettleLogs(n_id);
+	}
+
+	@Override
+	public List<SettledView> getSettleDataPostPay(int n_id, int settle_id) {
+		
+		return meterDeductionLogDao.getLogPostPay(n_id,settle_id); 
+	}
+
+	@Override
+	public String getSettleLogAuto(int n_id) {
+
+		return settleLogDao.getSettleLogsAuto(n_id);
+	}
+
+	@Override
+	public List<SettledView> getSettleAuto(int n_id, int settle_id) {
+		
+		return meterDeductionLogDao.getLogAuto(n_id,settle_id); 
+	}
+
+	@Override
+	public List<SettleSum> getSettleYL(int n_id) {
+		List<SettleSum> list = readMeterLogDao.getSettleSum(n_id);
+		int yl = 0;
+		SettleSum sum = null;
+		for(int i = 0;i < list.size();i++){
+			sum = list.get(i);
+			yl += sum.getYl();
+		}
+		sum = new SettleSum();
+		sum.setDemoney(0);
+		sum.setYl(yl);
+		sum.setPricekindname("总水量");
+		list.add(sum);
+		return list;
+	}
+
+	@Override
+	public List<SettleSum> getSettleYL(int n_id, int settle_id) {
+		List<SettleSum> list = readMeterLogDao.getSettleSum(n_id,settle_id);
+		int yl = 0;
+		double demoney = 0;
+		SettleSum sum = null;
+		for(int i = 0;i < list.size();i++){
+			sum = list.get(i);
+			yl += sum.getYl();
+			demoney += sum.getDemoney();
+		}
+		sum = new SettleSum();
+		sum.setDemoney(demoney);
+		sum.setYl(yl);
+		sum.setPricekindname("总水量");
+		list.add(sum);
+		return list;
 	}
 
 }
