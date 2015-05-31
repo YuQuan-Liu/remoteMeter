@@ -9,6 +9,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Meter;
@@ -24,7 +25,9 @@ import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
 import com.xdkj.yccb.main.readme.dao.ValveConfLogDao;
 import com.xdkj.yccb.main.readme.dao.ValveLogDao;
+import com.xdkj.yccb.main.readme.dao.WasteLogDao;
 import com.xdkj.yccb.main.readme.dto.ReadView;
+import com.xdkj.yccb.main.readme.dto.WasteReadView;
 import com.xdkj.yccb.main.readme.service.ReadService;
 
 @Service
@@ -45,6 +48,8 @@ public class ReadServiceImpl implements ReadService {
 	private ValveConfLogDao valveConfLogDao;
 	@Autowired
 	private MeterDao meterDao;
+	@Autowired
+	private WasteLogDao wasteLogDao;
 	
 	
 	@Override
@@ -153,6 +158,17 @@ public class ReadServiceImpl implements ReadService {
 		jo.put("actionResult", newlog.getActionResult());
 		jo.put("actionTime", newlog.getActionTime().toLocaleString());
 		return jo.toJSONString();
+	}
+
+	@Override
+	public String showWaste(int readlogid) {
+		List<WasteReadView> list = wasteLogDao.getWasteByReadlogid(readlogid);
+		return JSON.toJSONString(list);
+	}
+
+	@Override
+	public void addWaste(int wid, String reason) {
+		wasteLogDao.addWaste(wid,reason);
 	}
 
 	

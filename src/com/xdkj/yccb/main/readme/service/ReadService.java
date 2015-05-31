@@ -16,5 +16,9 @@ public interface ReadService {
 	public List<ReadView> getNonRemoteMeters(String n_id);
 
 	public String addNonRemoteRead(int m_id, int newread, int readlogid);
+
+	public String showWaste(int readlogid);
+
+	public void addWaste(int wid, String reason);
 	
 }

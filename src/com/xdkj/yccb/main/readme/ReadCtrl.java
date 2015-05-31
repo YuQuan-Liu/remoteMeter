@@ -91,4 +91,17 @@ public class ReadCtrl {
 		return readService.checkReading(readlogid, admin.getPid());
 		
 	}
+	
+	@RequestMapping(value="/readme/read/listwaste",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String showWaste(int readlogid){
+		
+		return readService.showWaste(readlogid);
+	}
+	
+	@RequestMapping(value="/readme/read/addwaste")
+	public void addWaste(int wid,String reason){
+		
+		readService.addWaste(wid,reason);
+	}
 }

@@ -111,15 +111,15 @@ $(function(){
 		rownumbers:true,
 // 		singleSelect:true,
 		columns:[[
-				  {field:'wasteid',title:'ID',width:60,hidden:true},
-		          {field:'lou',title:'楼',width:60},
+				  {field:'pid',title:'ID',width:60,hidden:true},
+		          {field:'louNum',title:'楼',width:60},
 		          {field:'wasted',title:'已计入水损',width:100},
-		          {field:'newwasted',title:'本次水损',width:80},
-		          {field:'louread',title:'管理表读数',width:100},
-		          {field:'sumread',title:'用户表和',width:80},
+		          {field:'waste',title:'本次水损',width:80},
+		          {field:'meterRead',title:'管理表读数',width:100},
+		          {field:'salveSum',title:'用户表和',width:80},
 		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
-							return "<a href='#' class='operateHref' onclick='addwaste("+row.wasteid+","+index+")'>记入水损</a>";
+							return "<a href='#' class='operateHref' onclick='addwaste("+row.pid+","+index+")'>记入水损</a>";
 				  }}
 		      ]]
 	});
@@ -134,6 +134,8 @@ function showMeterdata(){
 			}  
 		});
 	}
+	
+// 	showNeighborWaste(96);
 }
 //水损统计只支持抄单个小区
 //单击某个小区之后  抄表成功返回  设置当前抄表对应的readlog id
@@ -153,7 +155,6 @@ function readNeighbor(){
 					$("#readprogress").show();
 					intervalbar = setInterval(updateprogress,100);
 					interval = setInterval(function(){checkreading(data.pid,-1);},1000);
-					//小区统计TODO
 				}else{
 					$.messager.alert('Error','抄表失败,请稍后再试');
 				}
@@ -222,6 +223,28 @@ function readMeterManual(mid,index){
     });
 }
 
+function addwaste(wid,index){
+	$.messager.prompt('记入水损', '请输入水损原因', function(r){
+        if (r){
+        	$.ajax({
+				type:"POST",
+				url:"${path}/readme/read/addwaste.do",
+				dataType:"json",
+				data:{
+					wid:wid,
+					reason:r
+				},
+				success:function(data){
+//					alert(data.id+data.read);
+// 					if(data.id > 0){
+// 						$("#readmeterTab").datagrid('updateRow', {index:index,row:{readdata:data.read}});
+// 					}
+				}
+			});
+        }
+    });
+}
+
 function checkreading(readlogid,index){
 	$.ajax({
 		type:"POST",
@@ -242,8 +265,10 @@ function checkreading(readlogid,index){
 						url:"${path}/readme/read/listread.do",
 						queryParams: {
 							n_id:data.objectid
-						}  
+						}
 					});
+					//显示小区的水损统计
+					showNeighborWaste(readlogid);
 				}else{
 					if(data.readobject == 3){
 						//单个表
@@ -258,6 +283,14 @@ function checkreading(readlogid,index){
 	});
 }
 
+function showNeighborWaste(readlogid){
+	$('#louwasteTab').datagrid({
+		url:"${path}/readme/read/listwaste.do",
+		queryParams: {
+			readlogid:readlogid
+		}
+	});
+}
 
 function openValve(mid,index){
 	$.ajax({

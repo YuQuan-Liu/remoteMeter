@@ -68,7 +68,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 
 	@Override
 	public int deleteMeter(int mid) {
-		String hql = "update Meter m set m.valid = 0 where m.pid = "+mid;
+		String hql = "update Meter m set m.valid = '0' where m.pid = "+mid;
 		Query q = getSession().createQuery(hql);
 		
 		return q.executeUpdate();
@@ -85,7 +85,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 	public int deleteCustomer(int cid) {
 		
 		
-		String hql = "update Customer c set c.valid = 0 where c.pid = "+cid;
+		String hql = "update Customer c set c.valid = '0' where c.pid = "+cid;
 		Query q = getSession().createQuery(hql);
 		
 		return q.executeUpdate();
