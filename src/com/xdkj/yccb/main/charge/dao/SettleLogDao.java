@@ -10,4 +10,8 @@ public interface SettleLogDao {
 
 	void settleAll(int n_id, int adminid, int readlogid);
 
+	Settlelog getLastSettleLog(int n_id);
+
+	void settleSingle(int m_id, int adminid, int settlelogid);
+
 }

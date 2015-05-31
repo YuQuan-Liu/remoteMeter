@@ -121,4 +121,14 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 		q.executeUpdate();
 	}
 
+	@Override
+	public void settleSingle(int m_id, int adminid, int settlelogid) {
+
+		Query q = getSession().createSQLQuery("{call calculate_hu(?,?,?)}");
+		q.setInteger(0, m_id);
+		q.setInteger(1, adminid);
+		q.setInteger(2, settlelogid);
+		q.executeUpdate();
+	}
+
 }

@@ -11,8 +11,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.charge.dao.SettleLogDao;
 import com.xdkj.yccb.main.charge.dto.SettleView;
 import com.xdkj.yccb.main.charge.service.SettleService;
+import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Readlog;
 import com.xdkj.yccb.main.entity.Settlelog;
+import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
 
@@ -25,6 +27,8 @@ public class SettleServiceImpl implements SettleService {
 	private SettleLogDao settleLogDao;
 	@Autowired
 	private ReadLogDao readLogDao;
+	@Autowired
+	private MeterDao meterDao;
 	
 	@Override
 	public List<SettleView> getSettleData(int n_id) {
@@ -60,8 +64,27 @@ public class SettleServiceImpl implements SettleService {
 
 	@Override
 	public String settleSingle(int m_id,int adminid) {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject jo = new JSONObject();
+		Meter meter = meterDao.getMeterByID(m_id);
+		if(meter.getReaddata() - meter.getDeRead() == 0){
+			jo.put("done", false);
+			jo.put("reason", "用水量为0");
+		}else{
+			Settlelog settlelog = settleLogDao.getLastSettleLog(meter.getNeighbor().getPid());
+			if(settlelog == null){
+				jo.put("done", false);
+				jo.put("reason", "小区未结算过");
+			}else{
+				settleLogDao.settleSingle(m_id,adminid,settlelog.getPid());
+				SettleView settleView = readMeterLogDao.getReadMeterLog(m_id);
+				jo.put("done", true);
+				jo.put("reason", "");
+				jo.put("customerBalance", settleView.getCustomerBalance().doubleValue());
+				jo.put("readdate", settleView.getReaddata());
+				jo.put("deread", settleView.getDeread());
+			}
+		}
+		return jo.toJSONString();
 	}
 
 }

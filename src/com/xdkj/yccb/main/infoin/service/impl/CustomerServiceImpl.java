@@ -91,7 +91,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public List<MeterView> getMeterbyCid(String cpid) {
 		List<Meter> list = customerDao.getMeterListByCid(cpid);
-		if(null == list){
+		if(list.size() == 0){
 			return null;
 		}else{
 			List<MeterView> listView = new ArrayList<>();

@@ -22,7 +22,8 @@ public class SettleLogDaoImpl extends HibernateDAO implements SettleLogDao {
 	@Override
 	public List<Settlelog> getTodaySettleLog(int n_id) {
 
-		String hql = "from Settlelog log where log.objectId = :n_id and log.objectType = 1 and log.auto = 0 and log.startTime >= :today";
+		String hql = "from Settlelog log " +
+				"where log.objectId = :n_id and log.objectType = 1 and log.auto = 0 and log.startTime >= :today";
 		Query q = getSession().createQuery(hql);
 		q.setInteger("n_id", n_id);
 		q.setString("today", new SimpleDateFormat("yyyy.MM.dd").format(new Date()));
@@ -32,8 +33,24 @@ public class SettleLogDaoImpl extends HibernateDAO implements SettleLogDao {
 	@Override
 	public void settleAll(int n_id, int adminid, int readlogid) {
 		//选出当前小区  最新的抄表记录
-		
 		readLogDao.settleAll(n_id,adminid,readlogid);
+	}
+
+	@Override
+	public Settlelog getLastSettleLog(int n_id) {
+		String hql = "from Settlelog log " +
+				"where log.objectId = :n_id and log.objectType = 1 and log.auto = 0 order by log.pid desc ";
+		Query q = getSession().createQuery(hql);
+		q.setInteger("n_id", n_id);
+		q.setFirstResult(0);
+		q.setMaxResults(1);
+		return (Settlelog) q.uniqueResult();
+	}
+
+	@Override
+	public void settleSingle(int m_id, int adminid, int settlelogid) {
+		
+		readLogDao.settleSingle(m_id, adminid, settlelogid);
 	}
 
 }

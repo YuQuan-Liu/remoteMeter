@@ -149,6 +149,20 @@ public class SettleView {
 	public SettleView() {
 		super();
 	}
+	@Override
+	public String toString() {
+		return "SettleView [c_id=" + c_id + ", g_addr=" + g_addr + ", c_num="
+				+ c_num + ", customerId=" + customerId + ", customerName="
+				+ customerName + ", customerMobile=" + customerMobile
+				+ ", customerEmail=" + customerEmail + ", customerBalance="
+				+ customerBalance + ", customerAddr=" + customerAddr
+				+ ", prePaySign=" + prePaySign + ", warnThre=" + warnThre
+				+ ", m_id=" + m_id + ", collectorAddr=" + collectorAddr
+				+ ", meterAddr=" + meterAddr + ", valveState=" + valveState
+				+ ", meterState=" + meterState + ", isValve=" + isValve
+				+ ", deread=" + deread + ", readdata=" + readdata
+				+ ", readtime=" + readtime + "]";
+	}
 	
 	
 }

@@ -28,6 +28,9 @@ public class Wastelog implements java.io.Serializable {
 	private int meterid;
 	private Date actionTime;
 	private int waste;
+	private int meterRead;
+	private int salveRead;
+	private String louNum;
 	private char valid;
 	private String remark;
 
@@ -71,6 +74,32 @@ public class Wastelog implements java.io.Serializable {
 
 	public void setMeterid(int meterid) {
 		this.meterid = meterid;
+	}
+	@Column(name = "MeterRead")
+	public int getMeterRead() {
+		return meterRead;
+	}
+
+	public void setMeterRead(int meterRead) {
+		this.meterRead = meterRead;
+	}
+
+	@Column(name = "SalveRead")
+	public int getSalveRead() {
+		return salveRead;
+	}
+
+	public void setSalveRead(int salveRead) {
+		this.salveRead = salveRead;
+	}
+
+	@Column(name = "LouNum")
+	public String getLouNum() {
+		return louNum;
+	}
+
+	public void setLouNum(String louNum) {
+		this.louNum = louNum;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

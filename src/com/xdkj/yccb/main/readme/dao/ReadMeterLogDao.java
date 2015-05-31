@@ -16,4 +16,6 @@ public interface ReadMeterLogDao {
 
 	List<SettleView> getReadMeterLogToSettle(int n_id);
 
+	SettleView getReadMeterLog(int m_id);
+
 }

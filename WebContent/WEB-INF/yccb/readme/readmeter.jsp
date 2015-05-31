@@ -28,11 +28,6 @@
 	<div id="readprogress" class="easyui-progressbar" data-options="text:''" style="width:100%;"></div>
 	<table id="readmeterTab" style="width:100%;height:400px;"></table>
 	<p>水损统计</p>
-	<div>
-		<label>水损原因</label>
-		<input type="text" id="wastereason" name="wastereason" class="easyui-textbox" style="width:300px;"/>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addwaste()" >记入水损</a>
-	</div>
 	<table id="louwasteTab" style="width:500px;height:200px;"></table>
 <script>
 var intervalbar;
@@ -116,11 +111,16 @@ $(function(){
 		rownumbers:true,
 // 		singleSelect:true,
 		columns:[[
+				  {field:'wasteid',title:'ID',width:60,hidden:true},
 		          {field:'lou',title:'楼',width:60},
-		          {field:'wasted',title:'已计入水损',width:80},
+		          {field:'wasted',title:'已计入水损',width:100},
 		          {field:'newwasted',title:'本次水损',width:80},
-		          {field:'louread',title:'管理表读数',width:80},
-		          {field:'sumread',title:'用户表和',width:80}
+		          {field:'louread',title:'管理表读数',width:100},
+		          {field:'sumread',title:'用户表和',width:80},
+		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
+						formatter: function(value,row,index){
+							return "<a href='#' class='operateHref' onclick='addwaste("+row.wasteid+","+index+")'>记入水损</a>";
+				  }}
 		      ]]
 	});
 });

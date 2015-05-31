@@ -30,4 +30,6 @@ public interface ReadLogDao {
 
 	public void settleAll(int n_id, int adminid, int readlogid);
 
+	public void settleSingle(int m_id, int adminid, int settlelogid);
+
 }

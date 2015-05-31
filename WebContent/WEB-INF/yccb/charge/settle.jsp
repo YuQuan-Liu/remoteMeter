@@ -28,9 +28,9 @@
 	</div>
 	
 	<table id="settleTab" style="width:100%;height:400px;"></table>
-	<div style="margin:10px;">
-		<p>总用水量：</p><p id="allYL"></p>
-	</div>
+<!-- 	<div style="margin:10px;"> -->
+<!-- 		<p>总用水量：</p><p id="allYL"></p> -->
+<!-- 	</div> -->
 <script>
 $(function(){
 	$("#settleTab").datagrid({
@@ -121,6 +121,17 @@ function searchSettle(){
 				n_id:n_id
 			}
 		});
+// 		$.ajax({
+// 			type:"POST",
+// 			url:"${path}/charge/settle/allyl.do",
+// 			dataType:"json",
+// 			data:{
+// 				n_id:n_id
+// 			},
+// 			success:function(data){
+// // 				update allYL;
+// 			}
+// 		});
 	}
 }
 
@@ -139,7 +150,7 @@ function readMeterManual(mid,index){
 					success:function(data){
 // 						alert(data.id+data.read);
 						if(data.id > 0){
-							$("#readmeterTab").datagrid('updateRow', {index:index,row:{readdata:data.read}});
+							$("#settleTab").datagrid('updateRow', {index:index,row:{readdata:data.read}});
 						}
 					}
 				});
@@ -197,6 +208,7 @@ function settleAll(){
 				success:function(data){
 					if(data.done == true){
 						$.messager.alert('Info','结算完成');
+						searchSettle();
 					}else{
 						$.messager.alert('Info',data.reason);
 					}
@@ -208,8 +220,8 @@ function settleAll(){
 }
 
 function settleSingle(mid,index){
-	var meteraddr = $('#nonRemoteTab').datagrid('getRows')[index]["meterAddr"];
-	var yl = $('#nonRemoteTab').datagrid('getRows')[index]["yl"];
+	var meteraddr = $('#settleTab').datagrid('getRows')[index]["meterAddr"];
+	var yl = $('#settleTab').datagrid('getRows')[index]["readdata"]-$('#settleTab').datagrid('getRows')[index]["deread"];
 	if(yl == 0){
 		$.messager.alert('Info','此表用量为0！');
 		return;
@@ -226,8 +238,10 @@ function settleSingle(mid,index){
 				success:function(data){
 					if(data.done == true){
 						$.messager.alert('Info','结算完成');
+						$("#settleTab").datagrid('updateRow', 
+								{index:index,row:{readdata:data.read,customerBalance:data.customerBalance,deread:data.deread}});
 					}else{
-						$.messager.alert('Info','结算异常，请联系管理员。');
+						$.messager.alert('Info',data.reason);
 					}
 				}
 			});
