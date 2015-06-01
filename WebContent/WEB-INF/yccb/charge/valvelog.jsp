@@ -25,9 +25,13 @@
 	    		</select>
 	    		
 	    		<span style="margin-left:20px;">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="print()">打印扣费统计</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printstatistic()">打印扣费统计</a>
 	    		</span>
 			</div>
+		</form>
+		<form id="exportform" method="post">
+			<input type="hidden" name="n_id" id="n_id"/> 
+			<input type="hidden" name="n_name" id="n_name"/>
 		</form>
 	</div>
 	
@@ -41,7 +45,7 @@
 	<table id="ylTab" style="width:400px;height:200px;"></table>
 	<div style="margin:10px;">
 		<label>阀门开关异常日志</label>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printControlError()" >打印日志</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printControlError()" >导出日志</a>
 	</div>
 	<table id="controlErrorTab" style="width:100%;height:200px;"></table>
 <script>
@@ -239,7 +243,19 @@ function resolveError(conf_id,index_){
 }
 
 function printControlError(){
+	var n_id = $("#neighbor").combobox("getValue");
+	var n_name = $("#neighbor").combobox("getText");
 	
+	if(n_id != ""){
+		$("#n_id").val(n_id);
+		$("#n_name").val(n_name);
+		
+		$("#exportform").form('submit',{
+			url:"${path}/charge/valve/downloaderror.do",
+		});
+	}else{
+		$.messager.alert('Info','请选择小区');
+	}
 }
 </script>
 </body>

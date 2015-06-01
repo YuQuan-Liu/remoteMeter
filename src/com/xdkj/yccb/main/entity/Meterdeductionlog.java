@@ -40,6 +40,7 @@ public class Meterdeductionlog implements java.io.Serializable {
 	private char paytype;
 	private char payed;
 	private char printed;
+	private Integer changend;
 	
 	public Meterdeductionlog() {
 	}
@@ -187,6 +188,15 @@ public class Meterdeductionlog implements java.io.Serializable {
 		this.printed = printed;
 	}
 
+	@Column(name = "changend")
+	public Integer getChangend() {
+		return changend;
+	}
+
+	public void setChangend(Integer changend) {
+		this.changend = changend;
+	}
+	
 	@Column(name = "Remark", length = 100)
 	public String getRemark() {
 		return this.remark;

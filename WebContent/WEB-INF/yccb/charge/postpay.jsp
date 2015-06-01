@@ -24,7 +24,7 @@
 					<option value="">请选择结算</option>
 	    		</select>
 	    		<span style="margin-left:20px;">
-	    			<a href="javascript:void(0)" class="easyui-linkbutton" id="settleall" onclick="print()" >打印</a>
+	    			<a href="javascript:void(0)" class="easyui-linkbutton" id="settleall" onclick="printAll()" >全部打印</a>
 	    		</span>
 	    		<span style="margin-left:20px;">
 					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chargePost()">交费</a>
@@ -34,8 +34,8 @@
 	</div>
 	
 	<table id="postpayTab" style="width:100%;height:400px;"></table>
-	<div style="margin:10px;">
-		<p>备注：选择框背景色为黄色表示未交费</p>
+	<div style="margin:10px;background-color:#ffee00;">
+		<p>备注：选择框背景色为黄色未交费</p>
 	</div>
 	<div style="margin:10px;">
 		<p>用水量</p>
@@ -58,8 +58,17 @@ $(function(){
 			
 		},
 		columns:[[
+		          {field:'printed',title:"打印",width:60,halign:'center',align:'center',formatter:function(value,row,index){
+		        	  return "<a href='#' class='operateHref' onclick='printSingle("+row.mdl_id+","+index+")'>打印</a>";
+			      }},		          
+		          {field:'payed',title:"交费",width:30,checkbox:true,styler:function(value,row,index){
+		        	  if(row.payed == 0){
+		        		  return 'background-color:#ffee00;';
+		        	  }
+		          }},
 		          {field:'c_id',title:'ID',width:60,hidden:true},
 		          {field:'m_id',title:'MID',width:60,hidden:true},
+		          {field:'mdl_id',title:'MID',width:60,hidden:true},
 		          {field:'c_num',title:'用户号',width:80},
 		          {field:'customerName',title:'用户名',width:80},
 		          {field:'customerAddr',title:'地址',width:80},
@@ -97,15 +106,7 @@ $(function(){
 		          {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
 						return row.meterread-row.lastderead;
 		          }},
-		          {field:'demoney',title:'扣费金额',width:80},
-		          {field:'printed',title:'MID',width:60,hidden:true},
-		          {field:'payed',title:"<input type='checkbox' class='allpay'/>",width:30,halign:'center',align:'center',formatter:function(value,row,index){
-		        	  if(row.payed == 1){
-		        		  return "<input type='checkbox' class='payed' mdlid="+row.mdl_id+" />";
-		        	  }else{
-		        		  return "<input type='checkbox' mdlid="+row.mdl_id+" />";
-		        	  }
-		          }}
+		          {field:'demoney',title:'扣费金额',width:80}
 		      ]]
 	});
 	$("#ylTab").datagrid({
@@ -150,11 +151,70 @@ function searchCustomer(){
 }
 
 function chargePost(){
+	var mdl_ids = [];
+	var rows = $('#postpayTab').datagrid('getSelections');
 	
+	for(var i=0; i<rows.length; i++){
+		var row = rows[i];
+		if(row.payed == 0){
+			mdl_ids.push(row.mdl_id);
+		}
+	}
+	if(mdl_ids.length != 0){
+		$.ajax({
+			type:"POST",
+			url:"${path}/charge/postpay/chargepostpay.do",
+			dataType:"json",  
+	        traditional :true,
+			data:{
+				'mdl_ids':mdl_ids
+			},
+			success:function(data){
+				if(data.done == true){
+					searchCustomer();
+				}else{
+					//;
+				}
+			}
+		});
+	}else{
+		$.messager.alert('Info','请选择记录');
+	}
 }
 
-function print(){
+function printAll(){
+	var mdl_ids = [];
+	var rows = $('#postpayTab').datagrid('getSelections');
 	
+	for(var i=0; i<rows.length; i++){
+		var row = rows[i];
+		mdl_ids.push(row.mdl_id);
+	}
+	
+	var len = mdl_ids.length;
+	var ids = mdl_ids.join(",");
+	
+	if(len != 0){
+		window.open("${path}/charge/postpay/printcharge.do?ids="+ids,"_blank");
+// 		$.ajax({
+// 			type:"POST",
+// 			url:"${path}/charge/postpay/printcharge.do",
+// 			dataType:"json",  
+// 	        traditional :true,
+// 			data:{
+// 				'mdl_ids':mdl_ids
+// 			},
+// 			success:function(data){
+				
+// 			}
+// 		});
+	}else{
+		$.messager.alert('Info','请选择记录');
+	}
+}
+
+function printSingle(mdl_id,index){
+	window.open("${path}/charge/postpay/printcharge.do?ids="+mdl_id,"_blank");
 }
 
 </script>

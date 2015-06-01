@@ -1,8 +1,10 @@
 package com.xdkj.yccb.main.charge;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -92,5 +95,14 @@ public class CloseValveCtrl {
 	@ResponseBody
 	public String resolveError(int conf_id,String reason){
 		return controlErrorService.updateError(conf_id, reason);
+	}
+	
+	@RequestMapping(value="/charge/valve/downloaderror")
+	public ModelAndView download(int n_id, String n_name){
+		Map map = new HashMap();
+		map.put("n_id", n_id);
+		map.put("n_name", n_name);
+		map.put("list", controlErrorService.getControlErrors(n_id));
+		return new ModelAndView("export_valveError", map);
 	}
 }
