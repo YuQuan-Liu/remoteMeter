@@ -40,5 +40,12 @@ public interface NeighborService {
 	 */
 	List<Map> getLous(int n_id);
 	List<Map> getDys(int n_id, String lou);
+	/**
+	 * 选出当前小区 本年度对应的所有的扣费记录对应抄表记录的水损分析
+	 * @param n_id
+	 * @param year
+	 * @return
+	 */
+	String getWaste(int n_id, int year);
 	
 }

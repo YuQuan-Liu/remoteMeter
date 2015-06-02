@@ -5,6 +5,7 @@ import java.util.List;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 
 public interface NeighborDAO {
@@ -40,6 +41,8 @@ public interface NeighborDAO {
 	List<String> getLous(int n_id);
 
 	List<String> getDys(int n_id, String lou);
+
+	List<MonthWaste> getWaste(int n_id, int year);
 
 	
 }

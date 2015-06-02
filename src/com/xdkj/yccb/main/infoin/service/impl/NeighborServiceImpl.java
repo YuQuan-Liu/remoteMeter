@@ -11,6 +11,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Gprs;
@@ -21,6 +22,7 @@ import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 @Service
 public class NeighborServiceImpl implements NeighborService {
@@ -212,6 +214,28 @@ public class NeighborServiceImpl implements NeighborService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public String getWaste(int n_id, int year) {
+		//获取总表的信息
+		List<MonthWaste> list = neighborDAO.getWaste(n_id,year);
+		JSONObject jo = new JSONObject();
+		JSONArray ja_n = new JSONArray();
+		JSONArray ja_s = new JSONArray();
+		for(int i = 0;i < 12;i++){
+			ja_n.add(i, 0);
+			ja_s.add(i, 0);
+		}
+		MonthWaste monthWaste = null;
+		for(int i = 0;i < list.size();i++){
+			monthWaste = list.get(i);
+			ja_n.set(monthWaste.getMonth()-1, monthWaste.getnRead());
+			ja_s.set(monthWaste.getMonth()-1, monthWaste.getSlaveSum());
+		}
+		jo.put("nread", ja_n);
+		jo.put("slaveSum", ja_s);
+		return jo.toJSONString();
 	}
 
 }

@@ -180,7 +180,7 @@ var _menus = {
 				"menuid" : "513",
 				"menuname" : "<fmt:message key='menu.chargewaterstat'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "settle"
 			}, 
 			</c:if>
 			<c:if test="${menus['buildingstat']=='t'}">
@@ -212,7 +212,7 @@ var _menus = {
 				"menuid" : "517",
 				"menuname" : "<fmt:message key='menu.waterlossanaly'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "statistics/waste.do"
 			},</c:if>
 			<c:if test="${menus['chargeratestat']=='t'}">
 			{

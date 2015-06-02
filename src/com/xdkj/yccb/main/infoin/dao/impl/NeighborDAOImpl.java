@@ -15,6 +15,7 @@ import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 @Repository
 public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborDAO {
@@ -140,5 +141,30 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		q.setString("lou", lou);
 		return q.list();
 	}
+
+	@Override
+	public List<MonthWaste> getWaste(int n_id, int year) {
+
+		String SQL = "select s.month_ month,sum(w.meterread) nRead,sum(w.SalveSum) slaveSum from wastelog w " +
+				"join ( " +
+				"select max(pid) readlogid,month(completetime) month_ from readlog " +
+				"where year(completetime) = :year and settle = 1 and objectid = :n_id " +
+				"group by month(completetime) " +
+				")s " +
+				"on w.readlogid = s.readlogid " +
+				"where w.louNum = 0 " +
+				"group by s.month_";
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("month", Hibernate.INTEGER)
+				.addScalar("nRead", Hibernate.INTEGER)
+				.addScalar("slaveSum", Hibernate.INTEGER);
+		q.setInteger("year", year);
+		q.setInteger("n_id", n_id);
+		q.setResultTransformer(Transformers.aliasToBean(MonthWaste.class));
+		return q.list();
+	}
+	
+	
+	
 
 }
