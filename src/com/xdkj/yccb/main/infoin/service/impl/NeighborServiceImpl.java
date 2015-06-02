@@ -3,12 +3,15 @@ package com.xdkj.yccb.main.infoin.service.impl;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
@@ -51,9 +54,6 @@ public class NeighborServiceImpl implements NeighborService {
 	public List<NeighborView> getList(int depart_id,int wcid){
 		List<Neighbor> list = neighborDAO.getList(depart_id, wcid);
 		
-		if(list == null){
-			return null;
-		}
 		List<NeighborView> listView = new ArrayList<NeighborView>();
 		NeighborView nv = null;
 		
@@ -182,6 +182,21 @@ public class NeighborServiceImpl implements NeighborService {
 	public List<NeighborBalance> getNeighborBalance(int n_id) {
 		
 		return neighborDAO.getNeighborBalance(n_id);
+	}
+
+	@Override
+	public List<Map> getLous(int n_id) {
+		List<String> list = neighborDAO.getLous(n_id);
+		List<Map> result = new ArrayList<>();
+		Map map = null;
+		for(int i = 0;i < list.size();i++){
+			map = new HashMap();
+			map.put("lou", list.get(i));
+			map.put("id", i+"");
+			result.add(map);
+		}
+		
+		return result;
 	}
 
 }

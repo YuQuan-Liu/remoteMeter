@@ -124,4 +124,12 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		return list;
 	}
 
+	@Override
+	public List<String> getLous(int n_id) {
+		String hql = "select distinct louNum lou from customer where valid = 1 and neighborid = :n_id";
+		Query q = getSession().createSQLQuery(hql).addScalar("lou", Hibernate.STRING);
+		q.setInteger("n_id", n_id);
+		return q.list();
+	}
+
 }

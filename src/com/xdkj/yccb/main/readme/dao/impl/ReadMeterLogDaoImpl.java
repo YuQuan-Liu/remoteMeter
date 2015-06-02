@@ -221,4 +221,65 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 		return list;
 	}
 
+	@Override
+	public List<SettleSum> getLouSettledSum(int n_id, int settle_id, int pre,
+			String lou) {
+		String SQL = "";
+		
+		if(pre == 2){
+			
+			SQL = "select pricekindname,sum(demoney) demoney,sum(yl) yl from ( " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"join meter m on mdl.meterid = m.pid " +
+					"join customer c on c.pid = m.customerid " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.changend = 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+					"union " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+mdl.changend-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"join meter m on mdl.meterid = m.pid " +
+					"join customer c on c.pid = m.customerid " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.changend > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+					") sum_";
+		}else{
+			SQL = "select pricekindname,sum(demoney) demoney,sum(yl) yl from ( " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"join meter m on mdl.meterid = m.pid " +
+					"join customer c on c.pid = m.customerid " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and mdl.changend = 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+					"union " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+mdl.changend-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"join meter m on mdl.meterid = m.pid " +
+					"join customer c on c.pid = m.customerid " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and mdl.changend > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+					") sum_";
+		}
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("pricekindname",Hibernate.STRING)
+				.addScalar("yl",Hibernate.INTEGER)
+				.addScalar("demoney",Hibernate.DOUBLE);
+		
+		q.setInteger("settlelogid", settle_id);
+		q.setString("lou", lou);
+		if(pre != 2){
+			q.setInteger("pre", pre);
+		}
+		q.setResultTransformer(Transformers.aliasToBean(SettleSum.class));
+		
+		List<SettleSum> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+
 }

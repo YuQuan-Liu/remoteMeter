@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.infoin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Gprs;
@@ -32,5 +33,11 @@ public interface NeighborService {
 	
 	List<GprsView> getGprsByNbrId(int nbrId);
 	List<NeighborBalance> getNeighborBalance(int n_id);
+	/**
+	 * 获取小区下的所有的楼号   将每个小区下的楼号  以lou为key 楼号为value存入map  便于json 数组转换 
+	 * @param n_id
+	 * @return
+	 */
+	List<Map> getLous(int n_id);
 	
 }

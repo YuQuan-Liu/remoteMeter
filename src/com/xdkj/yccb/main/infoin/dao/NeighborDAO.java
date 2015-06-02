@@ -37,5 +37,7 @@ public interface NeighborDAO {
 
 	List<NeighborBalance> getNeighborBalance(int n_id);
 
+	List<String> getLous(int n_id);
+
 	
 }

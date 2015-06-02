@@ -74,4 +74,8 @@ public interface SettleService {
 	 */
 	List<SettledView> getSettledAll(int n_id, int settle_id, int pre);
 
+	List<SettledView> getLouSettledAll(int n_id, int settle_id, int pre, String lou);
+
+	List<SettleSum> getLouSettledYL(int n_id, int settle_id, int pre, String lou);
+
 }

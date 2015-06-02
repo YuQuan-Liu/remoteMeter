@@ -160,4 +160,31 @@ public class SettleServiceImpl implements SettleService {
 		return meterDeductionLogDao.getLogAll(n_id,settle_id,pre);
 	}
 
+	@Override
+	public List<SettledView> getLouSettledAll(int n_id, int settle_id, int pre,
+			String lou) {
+		
+		return meterDeductionLogDao.getLouLogAll(n_id,settle_id,pre,lou);
+	}
+
+	@Override
+	public List<SettleSum> getLouSettledYL(int n_id, int settle_id, int pre,
+			String lou) {
+		List<SettleSum> list = readMeterLogDao.getLouSettledSum(n_id,settle_id,pre,lou);
+		int yl = 0;
+		double demoney = 0;
+		SettleSum sum = null;
+		for(int i = 0;i < list.size();i++){
+			sum = list.get(i);
+			yl += sum.getYl();
+			demoney += sum.getDemoney();
+		}
+		sum = new SettleSum();
+		sum.setDemoney(demoney);
+		sum.setYl(yl);
+		sum.setPricekindname("总水量");
+		list.add(sum);
+		return list;
+	}
+
 }

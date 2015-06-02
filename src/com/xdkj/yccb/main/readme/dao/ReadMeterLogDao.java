@@ -23,4 +23,7 @@ public interface ReadMeterLogDao {
 
 	List<SettleSum> getSettledSum(int n_id, int settle_id,int pre);
 
+	List<SettleSum> getLouSettledSum(int n_id, int settle_id, int pre,
+			String lou);
+
 }

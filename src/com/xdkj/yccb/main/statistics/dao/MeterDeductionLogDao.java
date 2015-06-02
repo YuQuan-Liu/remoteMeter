@@ -57,4 +57,5 @@ public interface MeterDeductionLogDao {
 	 * @return
 	 */
 	List<SettledView> getLogAll(int n_id, int settle_id, int pre);
+	List<SettledView> getLouLogAll(int n_id, int settle_id, int pre, String lou);
 }

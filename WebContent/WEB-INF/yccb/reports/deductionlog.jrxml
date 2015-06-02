@@ -12,6 +12,7 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\Java_Workspace\\remoteMeter\\WebContent\\WEB-INF\\yccb\\reports\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="lou" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -385,13 +386,13 @@
 				</textElement>
 				<text><![CDATA[用量统计]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="d14967c3-8d2d-4068-9675-90948118abaf" positionType="Float" x="19" y="72" width="100" height="20"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+			<textField>
+				<reportElement uuid="c385081c-c364-4687-8c8e-9956216cd734" positionType="Float" x="19" y="72" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[小区余额]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{lou}!=null?"":"小区余额"]]></textFieldExpression>
+			</textField>
 			<subreport>
 				<reportElement uuid="1d0b7ea5-fcc6-47ab-b267-0706689e3efb" positionType="Float" x="19" y="92" width="501" height="59"/>
 				<dataSourceExpression><![CDATA[$P{neighborbalance}]]></dataSourceExpression>
