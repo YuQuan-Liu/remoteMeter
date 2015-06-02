@@ -172,7 +172,7 @@ var _menus = {
 				"menuid" : "512",
 				"menuname" : "<fmt:message key='menu.chargedstat'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "statistics/settlelog.do"
 			},
 			</c:if>
 			<c:if test="${menus['chargewaterstat']=='t'}">

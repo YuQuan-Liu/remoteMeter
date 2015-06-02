@@ -51,7 +51,7 @@ public class PostPayCtrl {
 	@ResponseBody
 	public String listPostPay(int n_id, int settle_id){
 		
-		return JSON.toJSONString(settleService.getSettleDataPostPay(n_id,settle_id));
+		return JSON.toJSONString(settleService.getSettledDataPostPay(n_id,settle_id));
 	}
 	
 	@RequestMapping(value="/charge/postpay/chargepostpay",produces="application/json;charset=UTF-8")
@@ -71,7 +71,7 @@ public class PostPayCtrl {
 		PostCharge postCharge = null;
 		for(int i = 0;list != null && i < list.size();i++){
 			postCharge = list.get(i);
-			postCharge.setCnAmount(TransRMB.transform(postCharge.getAmount()+""));
+			postCharge.setCnDemoney(TransRMB.transform(postCharge.getDemoney()+""));
 		}
 		map.put("list", list);
 		map.put("header","***后付费***");

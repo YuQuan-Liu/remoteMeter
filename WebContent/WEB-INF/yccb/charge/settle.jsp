@@ -101,6 +101,7 @@ $(function(){
 		          }},
 		          {field:'deread',title:'扣费读数',width:80},
 		          {field:'readdata',title:'表读数',width:80},
+		          {field:'changeend',title:'换表底数',width:80},
 		          {field:'readtime',title:'抄表时间',width:80},
 		          {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
 		        	  return row.readdata-row.deread;

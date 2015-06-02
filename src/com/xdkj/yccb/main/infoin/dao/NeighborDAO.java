@@ -5,6 +5,7 @@ import java.util.List;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 
 public interface NeighborDAO {
 	
@@ -33,6 +34,8 @@ public interface NeighborDAO {
 	List<Neighbor> getNbrByWatcomId(int wcId);
 
 	Neighbor getNbrByWcIdName(String wcid, String n_name);
+
+	List<NeighborBalance> getNeighborBalance(int n_id);
 
 	
 }

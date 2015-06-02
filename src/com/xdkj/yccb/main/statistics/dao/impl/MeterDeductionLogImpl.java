@@ -1,10 +1,12 @@
 package com.xdkj.yccb.main.statistics.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
@@ -46,8 +48,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 	public List<SettledView> getLogPostPay(int n_id, int settle_id) {
 		
 		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-				"m.pid m_id, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
-				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed," +
+				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 				"pk.pricekindname from meterdeductionlog mdl " +
 				"join meter m " +
 				"on m.pid = mdl.meterid " +
@@ -55,7 +57,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
 				"on m.pricekindid = pk.pid " +
-				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
+				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
 		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("c_id",Hibernate.INTEGER)
@@ -70,6 +72,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
 				.addScalar("prePaySign",Hibernate.BYTE)
 				.addScalar("warnThre",Hibernate.INTEGER)
+				.addScalar("steelNum",Hibernate.STRING)
 				.addScalar("collectorAddr",Hibernate.STRING)
 				.addScalar("meterAddr",Hibernate.STRING)
 				.addScalar("valveState",Hibernate.BYTE)
@@ -83,20 +86,27 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("paytype",Hibernate.INTEGER)
 				.addScalar("printed",Hibernate.INTEGER)
 				.addScalar("payed",Hibernate.INTEGER)
+				.addScalar("changeend",Hibernate.INTEGER)
 				.addScalar("pricekindname",Hibernate.STRING);
 		
 		q.setInteger("n_id", n_id);
 		q.setInteger("settle_id", settle_id);
 		q.setResultTransformer(Transformers.aliasToBean(SettledView.class));
-		return q.list();
+		List<SettledView> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 	@Override
 	public List<SettledView> getLogAuto(int n_id, int settle_id) {
 		
 		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-				"m.pid m_id, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
-				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed," +
+				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 				"pk.pricekindname from meterdeductionlog mdl " +
 				"join meter m " +
 				"on m.pid = mdl.meterid " +
@@ -119,6 +129,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
 				.addScalar("prePaySign",Hibernate.BYTE)
 				.addScalar("warnThre",Hibernate.INTEGER)
+				.addScalar("steelNum",Hibernate.STRING)
 				.addScalar("collectorAddr",Hibernate.STRING)
 				.addScalar("meterAddr",Hibernate.STRING)
 				.addScalar("valveState",Hibernate.BYTE)
@@ -132,6 +143,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("paytype",Hibernate.INTEGER)
 				.addScalar("printed",Hibernate.INTEGER)
 				.addScalar("payed",Hibernate.INTEGER)
+				.addScalar("changeend",Hibernate.INTEGER)
 				.addScalar("pricekindname",Hibernate.STRING);
 		
 		q.setInteger("n_id", n_id);
@@ -160,10 +172,10 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		
 		List<PostCharge> list = null;
 		String[] mdl_ids = ids.split(",");
-		if(mdl_ids.length > 0){
-			String SQL = "select mdl.MeterRead thisread,mdl.LastDeRead lastread,mdl.MeterReadTime readTime,mdl.changend changeend,mdl.demoney amount,ad.AdminName,pk.pricekindname pkName," +
+		if(!ids.trim().equals("") && mdl_ids.length > 0){
+			String SQL = "select mdl.MeterRead thisread,mdl.LastDeRead lastread,mdl.MeterReadTime readTime,mdl.changend changeend,mdl.demoney demoney,ad.AdminName,pk.pricekindname pkName," +
 					"c.CustomerAddr,c.CustomerName,c.CustomerID,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num," +
-					"case when mdl.changend > 0 then mdl.MeterRead+mdl.changend - mdl.LastDeRead else mdl.MeterRead-mdl.LastDeRead end yl from meterdeductionlog mdl " +
+					"case when mdl.changend > 0 then mdl.MeterRead+mdl.changend - mdl.LastDeRead else mdl.MeterRead-mdl.LastDeRead end yl,m.steelNum from meterdeductionlog mdl " +
 					"join meter m on mdl.meterid = m.pid " +
 					"join customer c on m.customerid = c.pid " +
 					"join settlelog settle on settle.pid = mdl.settlelogid " +
@@ -181,14 +193,91 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					.addScalar("lastread",Hibernate.STRING)
 					.addScalar("thisread",Hibernate.STRING)
 					.addScalar("changeend",Hibernate.STRING)
-					.addScalar("amount",Hibernate.DOUBLE)
+					.addScalar("demoney",Hibernate.DOUBLE)
 					.addScalar("readTime",Hibernate.STRING)
-					.addScalar("pkName",Hibernate.STRING);
+					.addScalar("pkName",Hibernate.STRING)
+					.addScalar("steelNum",Hibernate.STRING);
 			q.setResultTransformer(Transformers.aliasToBean(PostCharge.class));
 			list = q.list();
 		}
 		
 		
+		return list;
+	}
+
+	@Override
+	public List<SettledView> getLogAll(int n_id, int settle_id, int pre) {
+		
+		String SQL = "";
+		if(pre == 2){
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
+					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+					"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
+					"pk.pricekindname from meterdeductionlog mdl " +
+					"join meter m " +
+					"on m.pid = mdl.meterid " +
+					"join customer c " +
+					"on c.pid = m.customerid " +
+					"join pricekind pk " +
+					"on m.pricekindid = pk.pid " +
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
+		}else{
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
+					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+					"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
+					"pk.pricekindname from meterdeductionlog mdl " +
+					"join meter m " +
+					"on m.pid = mdl.meterid " +
+					"join customer c " +
+					"on c.pid = m.customerid " +
+					"join pricekind pk " +
+					"on m.pricekindid = pk.pid " +
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = :pre and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
+		}
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("m_id",Hibernate.INTEGER)
+				.addScalar("mdl_id",Hibernate.INTEGER)
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("customerId",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("customerAddr",Hibernate.STRING)
+				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerEmail",Hibernate.STRING)
+				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
+				.addScalar("prePaySign",Hibernate.BYTE)
+				.addScalar("warnThre",Hibernate.INTEGER)
+				.addScalar("steelNum",Hibernate.STRING)
+				.addScalar("collectorAddr",Hibernate.STRING)
+				.addScalar("meterAddr",Hibernate.STRING)
+				.addScalar("valveState",Hibernate.BYTE)
+				.addScalar("meterState",Hibernate.BYTE)
+				.addScalar("isValve",Hibernate.INTEGER)
+				
+				.addScalar("lastderead",Hibernate.INTEGER)
+				.addScalar("meterread",Hibernate.INTEGER)
+				.addScalar("meterreadtime",Hibernate.STRING)
+				.addScalar("demoney",Hibernate.BIG_DECIMAL)
+				.addScalar("paytype",Hibernate.INTEGER)
+				.addScalar("printed",Hibernate.INTEGER)
+				.addScalar("payed",Hibernate.INTEGER)
+				.addScalar("changeend",Hibernate.INTEGER)
+				.addScalar("pricekindname",Hibernate.STRING);
+		
+		q.setInteger("n_id", n_id);
+		q.setInteger("settle_id", settle_id);
+		if(pre != 2){
+			q.setInteger("pre", pre);
+		}
+		q.setResultTransformer(Transformers.aliasToBean(SettledView.class));
+		
+		List<SettledView> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
 		return list;
 	}
 	

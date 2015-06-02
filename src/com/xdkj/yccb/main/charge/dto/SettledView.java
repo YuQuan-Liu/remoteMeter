@@ -18,6 +18,7 @@ public class SettledView {
 	
 	private String collectorAddr;
 	private String meterAddr;
+	private String steelNum;
 	private Byte valveState;
 	private Byte meterState;
 	private int isValve;
@@ -32,7 +33,20 @@ public class SettledView {
 	private int printed;
 	private int payed;
 	private String pricekindname;
+	private int changeend;
 	
+	public int getChangeend() {
+		return changeend;
+	}
+	public void setChangeend(int changeend) {
+		this.changeend = changeend;
+	}
+	public String getSteelNum() {
+		return steelNum;
+	}
+	public void setSteelNum(String steelNum) {
+		this.steelNum = steelNum;
+	}
 	public int getMdl_id() {
 		return mdl_id;
 	}

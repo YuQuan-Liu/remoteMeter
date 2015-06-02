@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
@@ -12,6 +15,7 @@ import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 @Repository
 public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborDAO {
 
@@ -94,6 +98,30 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		String hql = "from Neighbor nbr where nbr.watercompany.pid= "+wcid+" and nbr.neighborName = '"+ n_name+"' and nbr.valid = 1";
 		Query q = getSession().createQuery(hql);
 		return (Neighbor) q.uniqueResult();
+	}
+
+	@Override
+	public List<NeighborBalance> getNeighborBalance(int n_id) {
+		
+		String SQL = "select case when prepaysign = 1 then '预'else '后' end pre,sum(customerBalance) balance from customer c " +
+				"where c.neighborid = :n1 and valid = 1 " +
+				"group by prepaysign " +
+				"union " +
+				"select '合计' pre,sum(customerBalance) balance from customer c " +
+				"where c.neighborid = :n1 and valid = 1";
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("pre", Hibernate.STRING).addScalar("balance", Hibernate.BIG_DECIMAL);
+		q.setResultTransformer(Transformers.aliasToBean(NeighborBalance.class));
+		q.setInteger("n1", n_id);
+//		q.setInteger("n2", n_id);
+		List<NeighborBalance> list = new ArrayList<>();
+		
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+//			e.printStackTrace();
+		}
+		return list;
 	}
 
 }

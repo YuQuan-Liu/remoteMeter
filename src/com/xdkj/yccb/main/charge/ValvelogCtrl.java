@@ -39,7 +39,7 @@ public class ValvelogCtrl {
 	@ResponseBody
 	public String listsettleAuto(int n_id, int settle_id){
 		
-		return JSON.toJSONString(settleService.getSettleAuto(n_id,settle_id));
+		return JSON.toJSONString(settleService.getSettledAuto(n_id,settle_id));
 	}
 	
 }

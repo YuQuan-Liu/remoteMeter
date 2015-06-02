@@ -1,10 +1,12 @@
 package com.xdkj.yccb.main.readme.dao.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -76,7 +78,7 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 	public List<SettleView> getReadMeterLogToSettle(int n_id) {
 		
 		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-				"g.GPRSAddr g_addr,m.pid m_id, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.deread,m.readdata,m.readtime from customer c " +
+				"g.GPRSAddr g_addr,m.pid m_id, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.deread,m.readdata,m.readtime,m.changend changeend from customer c " +
 				"left join meter m " +
 				"on c.pid = m.customerid " +
 				"left join gprs g " +
@@ -100,6 +102,7 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 				.addScalar("isValve",Hibernate.INTEGER)
 				.addScalar("meterState",Hibernate.BYTE)
 				.addScalar("deread",Hibernate.INTEGER)
+				.addScalar("changeend",Hibernate.INTEGER)
 				.addScalar("readdata",Hibernate.INTEGER)
 				.addScalar("readtime",Hibernate.STRING);
 		q.setInteger("n_id", n_id);
@@ -157,24 +160,65 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 		
 		q.setInteger("n_id", n_id);
 		q.setResultTransformer(Transformers.aliasToBean(SettleSum.class));
-		return q.list();
+		List<SettleSum> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 
 	@Override
-	public List<SettleSum> getSettleSum(int n_id, int settle_id) {
-		String SQL = "select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
-				"join pricekind pk " +
-				"on mdl.pricekindid = pk.PID " +
-				"where settlelogid = :settlelogid and mdl.valid = 1";
+	public List<SettleSum> getSettledSum(int n_id, int settle_id,int pre) {
+		String SQL = "";
 		
+		if(pre == 2){
+			
+			SQL = "select pricekindname,sum(demoney) demoney,sum(yl) yl from ( " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and changend = 0 " +
+					"union " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+changend-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and changend > 0 " +
+					") sum_";
+		}else{
+			SQL = "select pricekindname,sum(demoney) demoney,sum(yl) yl from ( " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and changend = 0 " +
+					"union " +
+					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+changend-lastderead) yl from meterdeductionlog mdl " +
+					"join pricekind pk " +
+					"on mdl.pricekindid = pk.PID " +
+					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and changend > 0 " +
+					") sum_";
+		}
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("pricekindname",Hibernate.STRING)
 				.addScalar("yl",Hibernate.INTEGER)
 				.addScalar("demoney",Hibernate.DOUBLE);
 		
 		q.setInteger("settlelogid", settle_id);
+		if(pre != 2){
+			q.setInteger("pre", pre);
+		}
 		q.setResultTransformer(Transformers.aliasToBean(SettleSum.class));
-		return q.list();
+		
+		List<SettleSum> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 
 }

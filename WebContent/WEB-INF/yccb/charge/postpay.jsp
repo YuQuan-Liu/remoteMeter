@@ -82,6 +82,7 @@ $(function(){
 		          {field:'warnThre',title:'提醒阀值',width:80},
 		          {field:'collectorAddr',title:'采集器',width:80},
 		          {field:'meterAddr',title:'表地址',width:80},
+		          {field:'steelNum',title:'钢印号',width:80},
 		          {field:'meterState',title:'表状态',width:80,formatter:function(value,row,index){
 						if(value == 1){
 							return "正常";
@@ -102,6 +103,7 @@ $(function(){
 		          {field:'pricekindname',title:'扣费单价',width:80},
 		          {field:'lastderead',title:'扣费读数',width:80},
 		          {field:'meterread',title:'表读数',width:80},
+		          {field:'changeend',title:'换表底数',width:80},
 		          {field:'meterreadtime',title:'抄表时间',width:80},
 		          {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
 						return row.meterread-row.lastderead;
@@ -145,7 +147,8 @@ function searchCustomer(){
 		url:"${path}/charge/settle/settleallyl.do",
 		queryParams: {
 			n_id:n_id,  		
-			settle_id:settle_id
+			settle_id:settle_id,
+			pre:0
 		}
 	});
 }

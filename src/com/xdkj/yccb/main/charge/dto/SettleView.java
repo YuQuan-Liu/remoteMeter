@@ -26,6 +26,15 @@ public class SettleView {
 	private int deread;
 	private int readdata;
 	private String readtime;
+
+	private int changeend;
+	
+	public int getChangeend() {
+		return changeend;
+	}
+	public void setChangeend(int changeend) {
+		this.changeend = changeend;
+	}
 	public int getC_id() {
 		return c_id;
 	}

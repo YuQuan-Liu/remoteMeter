@@ -6,15 +6,35 @@ public class PostCharge {
 	private String customerAddr;
 	private String customerName;
 	private String readTime;
-	private double amount;
+	private double demoney;
 	private String yl;
 	private String c_num;
 	private String customerID;
 	private String lastread;
 	private String thisread;
 	private String changeend;
-	private String cnAmount;
+	private String cnDemoney;
 	private String pkName;
+	private String steelNum;
+	
+	public double getDemoney() {
+		return demoney;
+	}
+	public void setDemoney(double demoney) {
+		this.demoney = demoney;
+	}
+	public String getCnDemoney() {
+		return cnDemoney;
+	}
+	public void setCnDemoney(String cnDemoney) {
+		this.cnDemoney = cnDemoney;
+	}
+	public String getSteelNum() {
+		return steelNum;
+	}
+	public void setSteelNum(String steelNum) {
+		this.steelNum = steelNum;
+	}
 	public String getPkName() {
 		return pkName;
 	}
@@ -44,12 +64,6 @@ public class PostCharge {
 	}
 	public void setReadTime(String readTime) {
 		this.readTime = readTime;
-	}
-	public double getAmount() {
-		return amount;
-	}
-	public void setAmount(double amount) {
-		this.amount = amount;
 	}
 	public String getYl() {
 		return yl;
@@ -86,12 +100,6 @@ public class PostCharge {
 	}
 	public void setChangeend(String changeend) {
 		this.changeend = changeend;
-	}
-	public String getCnAmount() {
-		return cnAmount;
-	}
-	public void setCnAmount(String cnAmount) {
-		this.cnAmount = cnAmount;
 	}
 	public PostCharge() {
 		super();

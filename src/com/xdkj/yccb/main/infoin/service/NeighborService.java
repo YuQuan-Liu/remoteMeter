@@ -7,6 +7,7 @@ import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 
 public interface NeighborService {
 	
@@ -30,5 +31,6 @@ public interface NeighborService {
 	String deleteGprsById(String gprsId);
 	
 	List<GprsView> getGprsByNbrId(int nbrId);
+	List<NeighborBalance> getNeighborBalance(int n_id);
 	
 }

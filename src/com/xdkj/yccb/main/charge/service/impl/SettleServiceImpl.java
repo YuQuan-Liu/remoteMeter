@@ -101,7 +101,7 @@ public class SettleServiceImpl implements SettleService {
 	}
 
 	@Override
-	public List<SettledView> getSettleDataPostPay(int n_id, int settle_id) {
+	public List<SettledView> getSettledDataPostPay(int n_id, int settle_id) {
 		
 		return meterDeductionLogDao.getLogPostPay(n_id,settle_id); 
 	}
@@ -113,7 +113,7 @@ public class SettleServiceImpl implements SettleService {
 	}
 
 	@Override
-	public List<SettledView> getSettleAuto(int n_id, int settle_id) {
+	public List<SettledView> getSettledAuto(int n_id, int settle_id) {
 		
 		return meterDeductionLogDao.getLogAuto(n_id,settle_id); 
 	}
@@ -136,8 +136,8 @@ public class SettleServiceImpl implements SettleService {
 	}
 
 	@Override
-	public List<SettleSum> getSettleYL(int n_id, int settle_id) {
-		List<SettleSum> list = readMeterLogDao.getSettleSum(n_id,settle_id);
+	public List<SettleSum> getSettledYL(int n_id, int settle_id,int pre) {
+		List<SettleSum> list = readMeterLogDao.getSettledSum(n_id,settle_id,pre);
 		int yl = 0;
 		double demoney = 0;
 		SettleSum sum = null;
@@ -152,6 +152,12 @@ public class SettleServiceImpl implements SettleService {
 		sum.setPricekindname("总水量");
 		list.add(sum);
 		return list;
+	}
+
+	@Override
+	public List<SettledView> getSettledAll(int n_id, int settle_id, int pre) {
+		
+		return meterDeductionLogDao.getLogAll(n_id,settle_id,pre);
 	}
 
 }

@@ -60,7 +60,7 @@ public class SettleLogDaoImpl extends HibernateDAO implements SettleLogDao {
 	@Override
 	public String getSettleLogs(int n_id) {
 		String hql = "from Settlelog log " +
-				"where log.objectId = :n_id and log.objectType = 1 and log.auto = 0 order by log.pid desc ";
+				"where log.objectId = :n_id and log.objectType = 1 order by log.pid desc ";
 		Query q = getSession().createQuery(hql);
 		q.setInteger("n_id", n_id);
 		q.setFirstResult(0);

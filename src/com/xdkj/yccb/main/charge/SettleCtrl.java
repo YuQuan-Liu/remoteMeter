@@ -60,9 +60,9 @@ public class SettleCtrl {
 	
 	@RequestMapping(value="/charge/settle/settleallyl",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String settleallYL(int n_id,int settle_id){
+	public String settledallYL(int n_id,int settle_id,int pre){
 		
-		return JSON.toJSONString(settleService.getSettleYL(n_id,settle_id));
+		return JSON.toJSONString(settleService.getSettledYL(n_id,settle_id,pre));
 	}
 	
 	@RequestMapping(value="/charge/settle/settleall",produces="application/json;charset=UTF-8")

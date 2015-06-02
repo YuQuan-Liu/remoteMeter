@@ -18,6 +18,7 @@ import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 @Service
 public class NeighborServiceImpl implements NeighborService {
 	@Autowired
@@ -175,6 +176,12 @@ public class NeighborServiceImpl implements NeighborService {
 		}
 		list = null;
 		return listView;
+	}
+
+	@Override
+	public List<NeighborBalance> getNeighborBalance(int n_id) {
+		
+		return neighborDAO.getNeighborBalance(n_id);
 	}
 
 }
