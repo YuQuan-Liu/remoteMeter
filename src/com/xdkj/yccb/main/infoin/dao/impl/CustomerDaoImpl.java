@@ -3,10 +3,13 @@ package com.xdkj.yccb.main.infoin.dao.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
+import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
@@ -158,6 +161,164 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 	public void updateCustomerBalance(BigDecimal b,Integer custId) {
 		String hql = "update Customer c set c.customerBalance = c.customerBalance + :balence where c.pid=:custId";
 		getSession().createQuery(hql).setBigDecimal("balence", b).setInteger("custId", custId).executeUpdate();
+	}
+
+	@Override
+	public List<ControlWarnView> getCustomerOwe(int n_id, int pre, double low) {
+		String SQL = "";
+		if(pre == 2){
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
+					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
+					"left join ( " +
+					"select max(pid),customerid,count(*) warncount from warnlog " +
+					"where valid = 1 " +
+					"group by customerid " +
+					") maxwarn " +
+					"on maxwarn.customerid = c.pid " +
+					"where c.neighborid = :n_id and c.customerBalance <= :low and c.valid = 1";
+		}else{
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
+					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
+					"left join ( " +
+					"select max(pid),customerid,count(*) warncount from warnlog " +
+					"where valid = 1 " +
+					"group by customerid " +
+					") maxwarn " +
+					"on maxwarn.customerid = c.pid " +
+					"where c.neighborid = :n_id and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1";
+		}
+		
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("customerId",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("customerAddr",Hibernate.STRING)
+				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerEmail",Hibernate.STRING)
+				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
+				.addScalar("prePaySign",Hibernate.BYTE)
+				.addScalar("warnThre",Hibernate.INTEGER)
+				.addScalar("warnStyle",Hibernate.INTEGER)
+				.addScalar("warnCount",Hibernate.STRING);
+
+		q.setInteger("n_id", n_id);
+		q.setDouble("low", low);
+		if(pre != 2){
+			q.setInteger("pre", pre);
+		}
+		
+		q.setResultTransformer(Transformers.aliasToBean(ControlWarnView.class));
+		
+		return q.list();
+	}
+
+	@Override
+	public List<ControlWarnView> getCustomerOwe(int n_id, String lou, int pre,
+			double low) {
+		String SQL = "";
+		if(pre == 2){
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
+					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
+					"left join ( " +
+					"select max(pid),customerid,count(*) warncount from warnlog " +
+					"where valid = 1 " +
+					"group by customerid " +
+					") maxwarn " +
+					"on maxwarn.customerid = c.pid " +
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.customerBalance <= :low and c.valid = 1";
+		}else{
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
+					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
+					"left join ( " +
+					"select max(pid),customerid,count(*) warncount from warnlog " +
+					"where valid = 1 " +
+					"group by customerid " +
+					") maxwarn " +
+					"on maxwarn.customerid = c.pid " +
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1";
+		}
+		
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("customerId",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("customerAddr",Hibernate.STRING)
+				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerEmail",Hibernate.STRING)
+				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
+				.addScalar("prePaySign",Hibernate.BYTE)
+				.addScalar("warnThre",Hibernate.INTEGER)
+				.addScalar("warnStyle",Hibernate.INTEGER)
+				.addScalar("warnCount",Hibernate.STRING);
+
+		q.setInteger("n_id", n_id);
+		q.setString("lou", lou);
+		q.setDouble("low", low);
+		if(pre != 2){
+			q.setInteger("pre", pre);
+		}
+		
+		q.setResultTransformer(Transformers.aliasToBean(ControlWarnView.class));
+		
+		return q.list();
+	}
+
+	@Override
+	public List<ControlWarnView> getCustomerOwe(int n_id, String lou,
+			String dy, int pre, double low) {
+		String SQL = "";
+		if(pre == 2){
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
+					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
+					"left join ( " +
+					"select max(pid),customerid,count(*) warncount from warnlog " +
+					"where valid = 1 " +
+					"group by customerid " +
+					") maxwarn " +
+					"on maxwarn.customerid = c.pid " +
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.DYNum = :dy and c.customerBalance <= :low and c.valid = 1";
+		}else{
+			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
+					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
+					"left join ( " +
+					"select max(pid),customerid,count(*) warncount from warnlog " +
+					"where valid = 1 " +
+					"group by customerid " +
+					") maxwarn " +
+					"on maxwarn.customerid = c.pid " +
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.DYNum = :dy and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1";
+		}
+		
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("customerId",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("customerAddr",Hibernate.STRING)
+				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerEmail",Hibernate.STRING)
+				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
+				.addScalar("prePaySign",Hibernate.BYTE)
+				.addScalar("warnThre",Hibernate.INTEGER)
+				.addScalar("warnStyle",Hibernate.INTEGER)
+				.addScalar("warnCount",Hibernate.STRING);
+
+		q.setInteger("n_id", n_id);
+		q.setString("lou", lou);
+		q.setString("dy", dy);
+		q.setDouble("low", low);
+		if(pre != 2){
+			q.setInteger("pre", pre);
+		}
+		
+		q.setResultTransformer(Transformers.aliasToBean(ControlWarnView.class));
+		
+		return q.list();
 	}
 	
 }

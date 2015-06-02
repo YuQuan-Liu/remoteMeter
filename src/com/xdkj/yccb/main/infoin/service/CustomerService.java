@@ -3,6 +3,7 @@ package com.xdkj.yccb.main.infoin.service;
 import java.util.List;
 import java.util.Map;
 
+import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.infoin.dto.MeterView;
@@ -57,5 +58,7 @@ public interface CustomerService {
 	 * @param map
 	 */
 	public Map addCustomers(Map map);
+
+	public List<ControlWarnView> getOwes(int n_id, String lou, String dy, int pre, double low);
 
 }

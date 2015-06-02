@@ -39,5 +39,7 @@ public interface NeighborDAO {
 
 	List<String> getLous(int n_id);
 
+	List<String> getDys(int n_id, String lou);
+
 	
 }

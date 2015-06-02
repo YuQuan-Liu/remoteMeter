@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.main.adminor.dao.MeterKindDao;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
+import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Housekind;
@@ -461,5 +462,22 @@ public class CustomerServiceImpl implements CustomerService {
 		m.setApid(cm.getM_apid());
 		
 		customerDao.addMeter(m);
+	}
+	@Override
+	public List<ControlWarnView> getOwes(int n_id, String lou, String dy,
+			int pre, double low) {
+		if(lou.equals("")){
+			//小区
+			return customerDao.getCustomerOwe(n_id,pre,low);
+		}
+		
+		if(dy.equals("")){
+			//楼
+			return customerDao.getCustomerOwe(n_id,lou,pre,low);
+		}
+		
+		//单元
+		return customerDao.getCustomerOwe(n_id,lou,dy,pre,low);
+		
 	}
 }

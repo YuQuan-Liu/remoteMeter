@@ -199,4 +199,19 @@ public class NeighborServiceImpl implements NeighborService {
 		return result;
 	}
 
+	@Override
+	public List<Map> getDys(int n_id, String lou) {
+		List<String> list = neighborDAO.getDys(n_id,lou);
+		List<Map> result = new ArrayList<>();
+		Map map = null;
+		for(int i = 0;i < list.size();i++){
+			map = new HashMap();
+			map.put("dy", list.get(i));
+			map.put("id", i+"");
+			result.add(map);
+		}
+		
+		return result;
+	}
+
 }

@@ -39,5 +39,6 @@ public interface NeighborService {
 	 * @return
 	 */
 	List<Map> getLous(int n_id);
+	List<Map> getDys(int n_id, String lou);
 	
 }

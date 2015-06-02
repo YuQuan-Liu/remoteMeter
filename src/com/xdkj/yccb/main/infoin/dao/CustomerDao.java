@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
@@ -76,5 +77,16 @@ public interface CustomerDao {
 	Meter getMeterByMAddr(String meterAddr);
 	
 	void updateCustomerBalance(BigDecimal b,Integer custId);
+	/**
+	 * 获取用户的欠费和提醒次数情况
+	 * @param n_id
+	 * @param pre
+	 * @param low
+	 * @return
+	 */
+	List<ControlWarnView> getCustomerOwe(int n_id, int pre, double low);
+	List<ControlWarnView> getCustomerOwe(int n_id, String lou, int pre, double low);
+	List<ControlWarnView> getCustomerOwe(int n_id, String lou, String dy,
+			int pre, double low);
 
 }

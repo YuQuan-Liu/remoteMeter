@@ -191,12 +191,12 @@ var _menus = {
 				"url" : "statistics/lou.do"
 			},
 			</c:if>
-			<c:if test="${menus['chargewaterstat']=='t'}">
+			<c:if test="${menus['owedstat']=='t'}">
 			{
-				"menuid" : "515",
-				"menuname" : "<fmt:message key='menu.chargewaterstat'/>",
+				"menuid" : "514",
+				"menuname" : "<fmt:message key='menu.owedstat'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "statistics/owe.do"
 			},
 			</c:if>
 			<c:if test="${menus['maincustmonitor']=='t'}">
@@ -213,7 +213,15 @@ var _menus = {
 				"menuname" : "<fmt:message key='menu.waterlossanaly'/>",
 				"icon" : "micon-nav",
 				"url" : "#"
-			},</c:if>]
+			},</c:if>
+			<c:if test="${menus['chargeratestat']=='t'}">
+			{
+				"menuid" : "515",
+				"menuname" : "<fmt:message key='menu.chargeratestat'/>",
+				"icon" : "micon-nav",
+				"url" : "#"
+			},
+			</c:if>]
 
 		}]
 	};
