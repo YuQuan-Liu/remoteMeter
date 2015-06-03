@@ -47,5 +47,19 @@ public interface NeighborService {
 	 * @return
 	 */
 	String getWaste(int n_id, int year);
+	/**
+	 * 选出当前管理员下的小区  year 对应的全部结算过的用水统计
+	 * @param neighbor_list
+	 * @param year
+	 * @return
+	 */
+	String getSettledwater(List<NeighborView> neighbor_list, int year);
+	/**
+	 *  当前小区  year 对应的全部结算过的用水统计  绘制曲线
+	 * @param n_id
+	 * @param year
+	 * @return
+	 */
+	String getDrawSettledwater(int n_id, int year);
 	
 }

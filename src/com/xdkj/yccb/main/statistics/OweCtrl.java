@@ -40,7 +40,7 @@ public class OweCtrl {
 	private CustomerService customerService;
 	
 	@RequestMapping(value="/statistics/owe")
-	public String settleLog(HttpServletRequest request,Model model){
+	public String owe(HttpServletRequest request,Model model){
 		UserForSession admin = WebUtil.getCurrUser(request);
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 		model.addAttribute("neighbor_list", neighbor_list);

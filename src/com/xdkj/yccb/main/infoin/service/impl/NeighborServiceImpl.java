@@ -11,6 +11,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.PageBase;
@@ -22,8 +23,10 @@ import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.statistics.dto.MonthSettled;
 import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
+import com.xdkj.yccb.main.statistics.dto.SettledWater;
 @Service
 public class NeighborServiceImpl implements NeighborService {
 	@Autowired
@@ -64,10 +67,8 @@ public class NeighborServiceImpl implements NeighborService {
 			try {
 				BeanUtils.copyProperties(nv, n);
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -235,6 +236,45 @@ public class NeighborServiceImpl implements NeighborService {
 		}
 		jo.put("nread", ja_n);
 		jo.put("slaveSum", ja_s);
+		return jo.toJSONString();
+	}
+
+	@Override
+	public String getSettledwater(List<NeighborView> neighbor_list, int year) {
+		String ids = "";
+		
+		if(neighbor_list.size() > 0){
+			for(int i = 0;i < neighbor_list.size();i++){
+				ids += neighbor_list.get(i).getPid();
+				if(i != neighbor_list.size()-1){
+					ids += ",";
+				}
+			}
+			return JSON.toJSONString(neighborDAO.getSettledWater(ids,year));
+		}
+		
+		return "";
+	}
+
+	@Override
+	public String getDrawSettledwater(int n_id, int year) {
+		
+		List<MonthSettled> list = neighborDAO.getMonthSettled(n_id,year);
+		JSONObject jo = new JSONObject();
+		JSONArray ja_n = new JSONArray();
+		JSONArray ja_s = new JSONArray();
+		for(int i = 0;i < 12;i++){
+			ja_n.add(i, 0);
+			ja_s.add(i, 0);
+		}
+		MonthSettled monthSettled = null;
+		for(int i = 0;i < list.size();i++){
+			monthSettled = list.get(i);
+			ja_n.set(monthSettled.getMonth()-1, monthSettled.getYl());
+			ja_s.set(monthSettled.getMonth()-1, monthSettled.getDemoney());
+		}
+		jo.put("yl", ja_n);
+		jo.put("demoney", ja_s);
 		return jo.toJSONString();
 	}
 

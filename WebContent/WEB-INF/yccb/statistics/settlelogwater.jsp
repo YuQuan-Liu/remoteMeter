@@ -6,32 +6,46 @@
 <%@include file="/commonjsp/top.jsp" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>水损分析</title>
+<title>结算用水量统计</title>
 </head>
 <body>
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
-				<label>小区</label>
-				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto'">
-					<option value="">请选择小区</option>
-					<c:forEach var="n" items="${neighbor_list }">
-					<option value="${n.pid }">${n.neighborName }</option>
-					</c:forEach>
-	    		</select>
-	    		
-	    		<label style="margin-left:20px;">年</label>
+				
+	    		<label style="margin-right:10px;">年</label>
 	    		<input class="easyui-numberspinner" style="width:100px;" id="year_" name="year_" data-options="min:2015,max:2099" value=""/>
 	    		
 				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" >查找</a>
 			</div>
 		</form>
 	</div>
-	<div id="wasteChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;"></div>
+	<table id="settlewaterTab" style="width:700px;height:300px;"></table>
+	<div id="settleChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;"></div>
 	<script type="text/javascript">
 		$(function(){
 			var now_ = new Date();
 			$("#year_").numberspinner('setValue',now_.getFullYear());
+			
+			$("#settlewaterTab").datagrid({
+				striped:true,
+				fitColumns:true,
+				method:'post',
+				loadMsg:'<fmt:message key="main.loading"/>',
+				rownumbers:true,
+				singleSelect:true,
+				columns:[[
+				          {field:'n_id',title:'ID',width:60,hidden:true},
+				          {field:'n_name',title:'小区',width:80},
+				          {field:'yl',title:'用量',width:80},
+				          {field:'demoney',title:'金额',width:80},
+				          {field:'startTime',title:'结算月',width:80},
+				          {field:'action',title:'操作',width:100,halign:'center',align:'center',
+								formatter: function(value,row,index){
+									return "<a href='#' class='operateHref' onclick='draw("+row.n_id+","+index+")'>绘制小区曲线</a>";
+						  }}
+				      ]]
+			});
 		});
 		
 		var option = {
@@ -42,8 +56,7 @@
 				show : true
 			},
 			legend:{
-// 				data : ['总表','楼表和','户表和']
-				data : ['总表','户表和']
+				data : ['用量','金额']
 			},
 			xAxis:[{
 	            	type : 'category',
@@ -53,17 +66,12 @@
 				type:'value'
 			}],
 			series:[{
-					"name":"总表",
+					"name":"用量",
 					"type":"bar",
 					"data":[0,0,0,0,0,0,0,0,0,0,0,0]
 				},
-// 				{
-// 					"name":"楼表和",
-// 					"type":"bar",
-// 					"data":[0,0,0,0,0,0,0,0,0,0,0,0]
-// 				},
 				{
-					"name":"户表和",
+					"name":"金额",
 					"type":"bar",
 					"data":[0,0,0,0,0,0,0,0,0,0,0,0]
 				}
@@ -86,31 +94,40 @@
             ],
             function (ec) {
                 // 基于准备好的dom，初始化echarts图表
-                myChart = ec.init(document.getElementById('wasteChart')); 
+                myChart = ec.init(document.getElementById('settleChart')); 
                 // 为echarts对象加载数据 
                 myChart.setOption(option); 
             }
         );
         function search_(){
-        	var n_id = $("#neighbor").combobox("getValue");
         	var year_ = $("#year_").numberspinner('getValue');
-        	if(n_id != "" && year_ != ""){
-        		$.ajax({
-        			type:"POST",
-        			url:"${path}/statistics/waste/listwastedata.do",
-        			dataType:"json",
-        			data:{
-        				n_id:n_id,
-        				year:year_
-        			},
-        			success:function(data){
-        				//load the data in myChart;
-        				option.series[0].data = data.nread;
-        				option.series[1].data = data.slaveSum;
-        				myChart.setOption(option); 
-        			}
-        		});
+        	if(year_ != ""){
+        		$('#settlewaterTab').datagrid({
+    				url:"${path}/statistics/settlelogwater/listsettlewater.do",
+    				queryParams: {
+    					year:year_
+    				}
+    			});
         	}
+        }
+        function draw(n_id,index){
+        	var n_name = $('#settlewaterTab').datagrid('getRows')[index]["n_name"];
+        	var year_ = $("#year_").numberspinner('getValue');
+        	$.ajax({
+				type:"POST",
+				url:"${path}/statistics/settlelogwater/draw.do",
+				dataType:"json",
+				data:{
+					n_id:n_id,
+					year:year_
+				},
+				success:function(data){
+					option.title.text = n_name+"水量";
+					option.series[0].data = data.yl;
+    				option.series[1].data = data.demoney;
+    				myChart.setOption(option); 
+				}
+			});
         }
 	</script>
 </body>

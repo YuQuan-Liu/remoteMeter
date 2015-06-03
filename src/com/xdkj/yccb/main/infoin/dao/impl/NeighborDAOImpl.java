@@ -15,8 +15,10 @@ import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.MonthSettled;
 import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
+import com.xdkj.yccb.main.statistics.dto.SettledWater;
 @Repository
 public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborDAO {
 
@@ -162,6 +164,97 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		q.setInteger("n_id", n_id);
 		q.setResultTransformer(Transformers.aliasToBean(MonthWaste.class));
 		return q.list();
+	}
+
+	@Override
+	public List<SettledWater> getSettledWater(String ids, int year) {
+//		String SQL ="select sum_.pid,ObjectID n_id,neighborName,month,sum(yl) yl,sum(demoney) demoney from ( " +
+//				"select s.pid,s.objectid,month(s.startTime) month,sum(meterread-lastderead) yl,sum(demoney) demoney  from settlelog s " +
+//				"join  meterdeductionlog mdl " +
+//				"on s.pid = mdl.settlelogid " +
+//				"where year(startTime) = 2015 and objecttype = 1 and mdl.valid = 1 and mdl.changend = 0 " +
+//				"group by s.pid,s.objectid,month(s.startTime) " +
+//				"union " +
+//				"select s.pid,s.objectid,month(s.startTime),sum(meterread+mdl.changend-lastderead) yl,sum(demoney) demoney  from settlelog s " +
+//				"join  meterdeductionlog mdl " +
+//				"on s.pid = mdl.settlelogid " +
+//				"where year(startTime) = 2015 and objecttype = 1 and mdl.valid = 1 and mdl.changend > 0 " +
+//				"group by s.pid,s.objectid,month(s.startTime) " +
+//				")sum_  " +
+//				"join neighbor n " +
+//				"on n.pid = sum_.objectid " +
+//				"group by sum_.pid,ObjectID,neighborName,month";
+		
+		String SQL = "select s.pid settleid,s.startTime,n.pid n_id,n.neighborname n_name,sum(yl) yl,sum(demoney) demoney from ( " +
+				"select s.pid,sum(meterread-lastderead) yl,sum(demoney) demoney  from settlelog s " +
+				"join  meterdeductionlog mdl " +
+				"on s.pid = mdl.settlelogid " +
+				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend = 0 " +
+				"group by s.pid " +
+				"union " +
+				"select s.pid,sum(meterread+mdl.changend-lastderead) yl,sum(demoney) demoney  from settlelog s " +
+				"join  meterdeductionlog mdl " +
+				"on s.pid = mdl.settlelogid " +
+				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend > 0 " +
+				"group by s.pid " +
+				")sum_ " +
+				"join settlelog s " +
+				"on sum_.pid = s.pid " +
+				"join neighbor n " +
+				"on s.objectid = n.pid " +
+				"where n.pid in (:ids) " +
+				"group by s.pid,s.starttime,n.pid,n.neighborname";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("settleid", Hibernate.INTEGER)
+				.addScalar("n_id", Hibernate.INTEGER)
+				.addScalar("n_name", Hibernate.STRING)
+				.addScalar("yl", Hibernate.INTEGER)
+				.addScalar("demoney", Hibernate.BIG_DECIMAL)
+				.addScalar("startTime", Hibernate.STRING);
+		q.setInteger("year", year);
+		q.setString("ids", ids);
+		q.setResultTransformer(Transformers.aliasToBean(SettledWater.class));
+		
+		List<SettledWater> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<MonthSettled> getMonthSettled(int n_id, int year) {
+		String SQL = "select month(sum_.starttime) month,sum(yl) yl,sum(demoney) demoney from ( " +
+				"select s.objectid,s.starttime,meterread-lastderead yl,mdl.demoney from settlelog s " +
+				"join  meterdeductionlog mdl " +
+				"on s.pid = mdl.settlelogid " +
+				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend = 0 and s.ObjectID = :n_id " +
+				"union " +
+				"select s.objectid,s.starttime,meterread+mdl.changend-lastderead yl,mdl.demoney from settlelog s " +
+				"join  meterdeductionlog mdl " +
+				"on s.pid = mdl.settlelogid " +
+				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend > 0 and s.ObjectID = :n_id " +
+				")sum_ " +
+				"group by month(sum_.starttime)";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("yl", Hibernate.INTEGER)
+				.addScalar("demoney", Hibernate.BIG_DECIMAL)
+				.addScalar("month", Hibernate.INTEGER);
+		q.setInteger("year", year);
+		q.setInteger("n_id", n_id);
+		q.setResultTransformer(Transformers.aliasToBean(MonthSettled.class));
+		
+		List<MonthSettled> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 	
 	
