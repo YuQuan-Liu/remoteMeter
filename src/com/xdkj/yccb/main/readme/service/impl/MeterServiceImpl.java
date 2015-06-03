@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 import com.xdkj.yccb.main.entity.Readmeterlog;
@@ -17,6 +19,7 @@ import com.xdkj.yccb.main.entity.Valveconflog;
 import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
 import com.xdkj.yccb.main.readme.service.MeterService;
+import com.xdkj.yccb.main.statistics.dto.VIPMonitor;
 
 @Service
 public class MeterServiceImpl implements MeterService {
@@ -54,6 +57,35 @@ public class MeterServiceImpl implements MeterService {
 	public Map addMeterReads(List<Readmeterlog> list) {
 		
 		return readMeterLogDao.addReadMeterLogs(list);
+	}
+
+	@Override
+	public String getVIPMonitor(int n_id, String month) {
+		List<VIPMonitor> list = readMeterLogDao.getVIPMonitor(n_id,month);
+		JSONArray ja = new JSONArray();
+		
+		VIPMonitor vip = null;
+		int mid = 0;
+		JSONObject jo = null;
+		JSONArray ja_data = null;
+		
+		for(int i = 0;i<list.size();i++){
+			vip = list.get(i);
+			if(mid != vip.getM_id()){
+				mid = vip.getM_id();
+				jo = new JSONObject();
+				ja_data = new JSONArray();
+				for(int j = 0;j < 31;j++){
+					ja_data.add(i, 0);
+				}
+				jo.put("id", vip.getM_id());
+				jo.put("meteraddr", vip.getMeterAddr());
+				jo.put("data", ja_data);
+				ja.add(jo);
+			}
+			ja_data.set(vip.getDay()-1,vip.getReaddata());
+		}
+		return ja.toJSONString();
 	}
 
 }

@@ -20,6 +20,7 @@ import com.xdkj.yccb.main.charge.dto.SettleView;
 import com.xdkj.yccb.main.entity.Readmeterlog;
 import com.xdkj.yccb.main.entity.Valveconflog;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
+import com.xdkj.yccb.main.statistics.dto.VIPMonitor;
 
 @Repository
 public class ReadMeterLogDaoImpl extends HibernateDAO implements
@@ -279,6 +280,39 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 			e.printStackTrace();
 		}
 		
+		return list;
+	}
+
+	@Override
+	public List<VIPMonitor> getVIPMonitor(int n_id, String month) {
+		String SQL = "select rml.meterid m_id,rml.ActionTime readtime,rml.ActionResult readdata,day(rml.ActionTime) day,m.MeterAddr meterAddr from readmeterlog rml " +
+				"join meter m " +
+				"on rml.meterid = m.pid " +
+				"where rml.pid in " +
+				"( select max(pid) maxid from readmeterlog rml " +
+				"where rml.meterid in ( " +
+				"select m.pid from meter m " +
+				"where m.valid = 1 and m.TimerSwitch = 1 and m.neighborid = :n_id " +
+				") and actiontime between :start and date_add(:start,interval 1 month) " +
+				"group by day(rml.ActionTime) " +
+				") " +
+				"order by rml.MeterID";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("m_id", Hibernate.INTEGER)
+				.addScalar("readtime",Hibernate.STRING)
+				.addScalar("readdata", Hibernate.INTEGER)
+				.addScalar("day", Hibernate.INTEGER)
+				.addScalar("meterAddr", Hibernate.STRING);
+		q.setString("start", month+"-01");
+		q.setInteger("n_id", n_id);
+		q.setResultTransformer(Transformers.aliasToBean(VIPMonitor.class));
+		List<VIPMonitor> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
 		return list;
 	}
 

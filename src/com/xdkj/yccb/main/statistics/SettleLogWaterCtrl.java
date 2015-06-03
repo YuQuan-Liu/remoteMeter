@@ -34,10 +34,6 @@ public class SettleLogWaterCtrl {
 	
 	@Autowired
 	private NeighborService neighborService;
-	@Autowired
-	private SettleService settleService;
-	@Autowired
-	private CustomerService customerService;
 	
 	@RequestMapping(value="/statistics/settlelogwater")
 	public String settleLogwater(){

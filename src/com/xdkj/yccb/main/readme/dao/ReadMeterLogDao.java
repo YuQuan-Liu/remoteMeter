@@ -6,6 +6,7 @@ import java.util.Map;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettleView;
 import com.xdkj.yccb.main.entity.Readmeterlog;
+import com.xdkj.yccb.main.statistics.dto.VIPMonitor;
 
 public interface ReadMeterLogDao {
 
@@ -25,5 +26,7 @@ public interface ReadMeterLogDao {
 
 	List<SettleSum> getLouSettledSum(int n_id, int settle_id, int pre,
 			String lou);
+
+	List<VIPMonitor> getVIPMonitor(int n_id, String month);
 
 }

@@ -25,32 +25,39 @@ import com.xdkj.yccb.main.infoin.CustomerCtrl;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.readme.service.MeterService;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 import com.xdkj.yccb.main.statistics.service.PayLogService;
 import com.xdkj.yccb.security.UserForSession;
 
 @Controller
-public class WasteCtrl {
+public class VIPCtrl {
 	
 	@Autowired
 	private NeighborService neighborService;
+	@Autowired
+	private MeterService meterService;
 	
-	@RequestMapping(value="/statistics/waste")
-	public String waste(HttpServletRequest request,Model model){
+	@RequestMapping(value="/statistics/vip")
+	public String vip(HttpServletRequest request,Model model){
 		UserForSession admin = WebUtil.getCurrUser(request);
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 		model.addAttribute("neighbor_list", neighbor_list);
 		  
-		return "/statistics/waste";
+		return "/statistics/vip";
 	}
 	
-	@RequestMapping(value="/statistics/waste/listwastedata",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/statistics/vip/listvipdata",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String listLous(int n_id,int year){
+	public String listVIPMonitor(int n_id,String month){
 		/**
-		 * 选出当前小区 本年度对应的所有的扣费记录对应抄表记录的水损分析
+		 * 小区这个月month对应下的  所有检测表的每日最后一次的数据
 		 */
-		return neighborService.getWaste(n_id,year);
+		return meterService.getVIPMonitor(n_id,month);
+		
+//		String x = "[{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3333,3333,3333,0,0,0,3333,0,0,0,3333,3334,3333],\"meteraddr\":\"55550000000001\"}," +
+//				"{\"data\":[0,22,0,0,1,0,20,0,4440,0,0,0,0,0,0,0,0,0,3333,3333,3333,0,0,0,3333,0,0,0,3333,3334,3333],\"meteraddr\":\"5555000000033\"}," +
+//				"{\"data\":[0,202,0,0,1,0,20,0,450,0,0,0,0,0,0,0,0,0,2222,3333,3333,0,0,0,3333,0,0,0,3333,3334,3333],\"meteraddr\":\"5555000000044\"}]";
+//		return x;
 	}
-	
 }

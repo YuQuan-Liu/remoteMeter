@@ -204,7 +204,7 @@ var _menus = {
 				"menuid" : "516",
 				"menuname" : "<fmt:message key='menu.maincustmonitor'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "statistics/vip.do"
 			}, 
 			</c:if>
 			<c:if test="${menus['waterlossanaly']=='t'}">
@@ -219,7 +219,7 @@ var _menus = {
 				"menuid" : "515",
 				"menuname" : "<fmt:message key='menu.chargeratestat'/>",
 				"icon" : "micon-nav",
-				"url" : "#"
+				"url" : "statistics/chargerate.do"
 			},
 			</c:if>]
 
