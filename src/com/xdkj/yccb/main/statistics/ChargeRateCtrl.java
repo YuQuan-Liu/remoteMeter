@@ -30,36 +30,36 @@ import com.xdkj.yccb.main.statistics.service.PayLogService;
 import com.xdkj.yccb.security.UserForSession;
 
 @Controller
-public class WasteCtrl {
+public class ChargeRateCtrl {
 	
 	@Autowired
 	private NeighborService neighborService;
 	
-	@RequestMapping(value="/statistics/waste")
-	public String waste(HttpServletRequest request,Model model){
+	@RequestMapping(value="/statistics/chargerate")
+	public String settleLogwater(){
+		
+		return "/statistics/chargerate";
+	}
+	
+	@RequestMapping(value="/statistics/chargerate/listchargerate",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String listsettlewater(HttpServletRequest request,int year){
+		/**
+		 * 选出当前管理员下的小区  year  收费统计信息
+		 */
 		UserForSession admin = WebUtil.getCurrUser(request);
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
-		model.addAttribute("neighbor_list", neighbor_list);
-		  
-		return "/statistics/waste";
+		return JSON.toJSONString(neighborService.getChargeRate(neighbor_list,year));
 	}
 	
-	@RequestMapping(value="/statistics/waste/listwastedata",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/statistics/chargerate/listchargeratedraw",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String getWaste(int n_id,int year){
+	public String drawchargerate(HttpServletRequest request,int year){
 		/**
-		 * 选出当前小区 本年度对应的所有的扣费记录对应抄表记录的水损分析 小区总表  每个月最后的扣费记录  画图
+		 * 当前小区  year 对应的全部结算过的用水统计
 		 */
-		return neighborService.getWaste(n_id,year);
+		UserForSession admin = WebUtil.getCurrUser(request);
+		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
+		return neighborService.getDrawChargerate(neighbor_list,year);
 	}
-	
-	@RequestMapping(value="/statistics/waste/listsettledyl",produces="application/json;charset=UTF-8")
-	@ResponseBody
-	public String getSettledyl(int n_id,int year){
-		/**
-		 * 选出当前小区 本年度对应的所有的扣费记录对应抄表记录的水损分析  填表
-		 */
-		return JSON.toJSONString(neighborService.getSettledyl(n_id,year));
-	}
-	
 }

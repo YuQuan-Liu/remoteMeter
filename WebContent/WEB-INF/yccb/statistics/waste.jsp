@@ -27,11 +27,26 @@
 			</div>
 		</form>
 	</div>
-	<div id="wasteChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;"></div>
+	<table id="wasteSettleTab" style="width:500px;height:200px;"></table>
+	<div id="wasteChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;"></div>
 	<script type="text/javascript">
 		$(function(){
 			var now_ = new Date();
 			$("#year_").numberspinner('setValue',now_.getFullYear());
+			$("#wasteSettleTab").datagrid({
+				striped:true,
+				method:'post',
+				loadMsg:'<fmt:message key="main.loading"/>',
+				rownumbers:true,
+				columns:[[
+				          {field:'settleTime',title:'结算日期',width:100},
+				          {field:'nread',title:'总表',width:100},
+				          {field:'slaveSum',title:'户表和',width:100},
+				          {field:'c',title:'差值',width:100,formatter:function(value,row,index){
+				        	  return row.nread-row.slaveSum;
+				          }}
+				      ]]
+			});
 		});
 		
 		var option = {
@@ -95,6 +110,14 @@
         	var n_id = $("#neighbor").combobox("getValue");
         	var year_ = $("#year_").numberspinner('getValue');
         	if(n_id != "" && year_ != ""){
+        		$('#wasteSettleTab').datagrid({
+    				url:"${path}/statistics/waste/listsettledyl.do",
+    				queryParams: {
+    					n_id:n_id,
+        				year:year_
+    				}
+    			});
+        		
         		$.ajax({
         			type:"POST",
         			url:"${path}/statistics/waste/listwastedata.do",

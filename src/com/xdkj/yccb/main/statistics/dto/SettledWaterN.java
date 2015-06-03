@@ -2,18 +2,17 @@ package com.xdkj.yccb.main.statistics.dto;
 
 import java.math.BigDecimal;
 /**
- * 小区结算记录  对应的用水量和     和   扣费钱的话 的显示
+ * 时间段内  小区的全部的结算的用水量的和  和扣费的和    用在结算用水统计中   
  * @author Rocket
  *
  */
-public class SettledWater {
+public class SettledWaterN {
 
-	private int settleid;
+	
 	private int n_id;
 	private String n_name;
 	private int yl;
 	private BigDecimal demoney;
-	private String startTime;
 	public int getN_id() {
 		return n_id;
 	}
@@ -38,19 +37,7 @@ public class SettledWater {
 	public void setDemoney(BigDecimal demoney) {
 		this.demoney = demoney;
 	}
-	public int getSettleid() {
-		return settleid;
-	}
-	public void setSettleid(int settleid) {
-		this.settleid = settleid;
-	}
-	public String getStartTime() {
-		return startTime;
-	}
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
-	}
-	public SettledWater() {
+	public SettledWaterN() {
 		super();
 	}
 	

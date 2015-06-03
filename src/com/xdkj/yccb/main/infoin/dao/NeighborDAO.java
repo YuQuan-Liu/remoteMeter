@@ -5,10 +5,13 @@ import java.util.List;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.ChargeRate;
 import com.xdkj.yccb.main.statistics.dto.MonthSettled;
 import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
+import com.xdkj.yccb.main.statistics.dto.SettledWaste;
 import com.xdkj.yccb.main.statistics.dto.SettledWater;
+import com.xdkj.yccb.main.statistics.dto.SettledWaterN;
 
 public interface NeighborDAO {
 	
@@ -49,6 +52,12 @@ public interface NeighborDAO {
 	List<SettledWater> getSettledWater(String ids, int year);
 
 	List<MonthSettled> getMonthSettled(int n_id, int year);
+
+	List<SettledWaste> getSettledyl(int n_id, int year);
+
+	List<SettledWaterN> getSettledWaterN(String ids, int year);
+
+	List<ChargeRate> getChargeRate(String ids, int year);
 
 	
 }

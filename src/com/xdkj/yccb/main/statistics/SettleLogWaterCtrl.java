@@ -45,11 +45,22 @@ public class SettleLogWaterCtrl {
 	@ResponseBody
 	public String listsettlewater(HttpServletRequest request,int year){
 		/**
-		 * 选出当前管理员下的小区  year 对应的全部结算过的用水统计
+		 * 选出当前管理员下的小区  year 对应的每个小区每次结算的信息
 		 */
 		UserForSession admin = WebUtil.getCurrUser(request);
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 		return neighborService.getSettledwater(neighbor_list,year);
+	}
+	
+	@RequestMapping(value="/statistics/settlelogwater/listsettlewatern",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String listsettlewatern(HttpServletRequest request,int year){
+		/**
+		 * 选出当前管理员下的小区  year 对应的每个小区结算的信息和
+		 */
+		UserForSession admin = WebUtil.getCurrUser(request);
+		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
+		return neighborService.getSettledwaterN(neighbor_list,year);
 	}
 	
 	@RequestMapping(value="/statistics/settlelogwater/draw",produces="application/json;charset=UTF-8")

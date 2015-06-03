@@ -10,15 +10,19 @@ import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.statistics.dto.ChargeRate;
 import com.xdkj.yccb.main.statistics.dto.MonthSettled;
 import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
+import com.xdkj.yccb.main.statistics.dto.SettledWaste;
 import com.xdkj.yccb.main.statistics.dto.SettledWater;
+import com.xdkj.yccb.main.statistics.dto.SettledWaterN;
 @Repository
 public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborDAO {
 
@@ -249,6 +253,104 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		q.setResultTransformer(Transformers.aliasToBean(MonthSettled.class));
 		
 		List<MonthSettled> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<SettledWaste> getSettledyl(int n_id, int year) {
+		String SQL = "select s.completetime settleTime,w.meterread nread,w.SalveSum slaveSum from wastelog w " +
+				"join ( " +
+				"select pid readlogid,completetime from readlog " +
+				"where year(completetime) = :year and settle = 1 and objectid = :n_id " +
+				") s " +
+				"on w.readlogid = s.readlogid " +
+				"where w.louNum = 0 ";
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("settleTime", Hibernate.STRING)
+				.addScalar("nread", Hibernate.INTEGER)
+				.addScalar("slaveSum", Hibernate.INTEGER);
+		q.setInteger("year", year);
+		q.setInteger("n_id", n_id);
+		q.setResultTransformer(Transformers.aliasToBean(SettledWaste.class));
+		
+		return q.list();
+	}
+
+	@Override
+	public List<SettledWaterN> getSettledWaterN(String ids, int year) {
+		String SQL = "select n.pid n_id,n.neighborname n_name,sum(yl) yl,sum(demoney) demoney from ( " +
+				"select s.pid,sum(meterread-lastderead) yl,sum(demoney) demoney  from settlelog s " +
+				"join  meterdeductionlog mdl " +
+				"on s.pid = mdl.settlelogid " +
+				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend = 0 " +
+				"group by s.pid " +
+				"union " +
+				"select s.pid,sum(meterread+mdl.changend-lastderead) yl,sum(demoney) demoney  from settlelog s " +
+				"join  meterdeductionlog mdl " +
+				"on s.pid = mdl.settlelogid " +
+				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend > 0 " +
+				"group by s.pid " +
+				")sum_ " +
+				"join settlelog s " +
+				"on sum_.pid = s.pid " +
+				"join neighbor n " +
+				"on s.objectid = n.pid " +
+				"where n.pid in (:ids) " +
+				"group by n.pid,n.neighborname";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("n_id", Hibernate.INTEGER)
+				.addScalar("n_name", Hibernate.STRING)
+				.addScalar("yl", Hibernate.INTEGER)
+				.addScalar("demoney", Hibernate.BIG_DECIMAL);
+		q.setInteger("year", year);
+		q.setString("ids", ids);
+		q.setResultTransformer(Transformers.aliasToBean(SettledWaterN.class));
+		
+		List<SettledWaterN> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<ChargeRate> getChargeRate(String ids, int year) {
+		String SQL = "select cc.neighborid n_id,cc.neighborname n_name,cc.owecount,cc.allcount,format(cc.owerate,4) owerate,cc.owebalance,cc.balance,mm.demoney,format(1-cc.owebalance/mm.demoney,4) chargerate from ( " +
+				"select c.neighborid,n.neighborname,sum( case when c.customerbalance < 0 then 1 else 0 end) owecount, " +
+				"count(*) allcount, sum( case when c.customerbalance < 0 then 1 else 0 end)/count(*) owerate," +
+				"sum( case when c.customerbalance < 0 then -c.customerbalance else 0 end) owebalance,sum(c.customerbalance) balance from customer c " +
+				"join neighbor n on n.pid = c.neighborid " +
+				"where c.neighborid = :ids and c.valid = 1) cc " +
+				"join ( " +
+				"select m.neighborid,sum(mdl.demoney) demoney from meterdeductionlog mdl " +
+				"join meter m " +
+				"on mdl.meterid = m.pid " +
+				"where m.neighborid = :ids and mdl.valid = 1 and m.valid = 1 " +
+				"group by m.neighborid ) mm " +
+				"on cc.neighborid = mm.neighborid";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("n_id", Hibernate.INTEGER)
+				.addScalar("n_name", Hibernate.STRING)
+				.addScalar("owecount", Hibernate.INTEGER)
+				.addScalar("allcount", Hibernate.INTEGER)
+				.addScalar("owerate", Hibernate.DOUBLE)
+				.addScalar("owebalance", Hibernate.BIG_DECIMAL)
+				.addScalar("balance", Hibernate.BIG_DECIMAL)
+				.addScalar("demoney", Hibernate.BIG_DECIMAL)
+				.addScalar("chargerate", Hibernate.DOUBLE);
+		q.setString("ids", ids);
+		q.setResultTransformer(Transformers.aliasToBean(ChargeRate.class));
+		
+		List<ChargeRate> list = new ArrayList<>();
 		try {
 			list = q.list();
 		} catch (HibernateException e) {

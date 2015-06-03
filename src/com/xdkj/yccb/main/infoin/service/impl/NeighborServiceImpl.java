@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.infoin.service.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,10 +24,13 @@ import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.statistics.dto.ChargeRate;
 import com.xdkj.yccb.main.statistics.dto.MonthSettled;
 import com.xdkj.yccb.main.statistics.dto.MonthWaste;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
+import com.xdkj.yccb.main.statistics.dto.SettledWaste;
 import com.xdkj.yccb.main.statistics.dto.SettledWater;
+import com.xdkj.yccb.main.statistics.dto.SettledWaterN;
 @Service
 public class NeighborServiceImpl implements NeighborService {
 	@Autowired
@@ -276,6 +280,92 @@ public class NeighborServiceImpl implements NeighborService {
 		jo.put("yl", ja_n);
 		jo.put("demoney", ja_s);
 		return jo.toJSONString();
+	}
+
+	@Override
+	public List<SettledWaste> getSettledyl(int n_id, int year) {
+		return neighborDAO.getSettledyl(n_id,year);
+	}
+
+	@Override
+	public String getSettledwaterN(List<NeighborView> neighbor_list, int year) {
+		String ids = "";
+		
+		if(neighbor_list.size() > 0){
+			for(int i = 0;i < neighbor_list.size();i++){
+				ids += neighbor_list.get(i).getPid();
+				if(i != neighbor_list.size()-1){
+					ids += ",";
+				}
+			}
+			List<SettledWaterN> list = neighborDAO.getSettledWaterN(ids,year);
+			SettledWaterN settledWaterN = null;
+			BigDecimal demoney = new BigDecimal(0);
+			int yl = 0;
+			for(int i = 0;i<list.size();i++){
+				settledWaterN = list.get(i);
+				demoney = demoney.add(settledWaterN.getDemoney());
+				yl += settledWaterN.getYl();
+			}
+			settledWaterN = new SettledWaterN();
+			settledWaterN.setDemoney(demoney);
+			settledWaterN.setN_id(0);
+			settledWaterN.setYl(yl);
+			settledWaterN.setN_name("合计");
+			list.add(settledWaterN);
+			return JSON.toJSONString(list);
+		}
+		
+		return "";
+	}
+
+	@Override
+	public List<ChargeRate> getChargeRate(List<NeighborView> neighbor_list,
+			int year) {
+		String ids = "";
+		
+		if(neighbor_list.size() > 0){
+			for(int i = 0;i < neighbor_list.size();i++){
+				ids += neighbor_list.get(i).getPid();
+				if(i != neighbor_list.size()-1){
+					ids += ",";
+				}
+			}
+			return neighborDAO.getChargeRate(ids,year);
+		}
+		
+		return new ArrayList<>();
+	}
+
+	@Override
+	public String getDrawChargerate(List<NeighborView> neighbor_list,int year) {
+		
+		List<ChargeRate> list = getChargeRate(neighbor_list,year);
+		
+		JSONObject jo = new JSONObject();
+		JSONArray ja_n = new JSONArray();
+		JSONArray ja_count = new JSONArray();
+		JSONArray ja_owecount = new JSONArray();
+		JSONArray ja_balance = new JSONArray();
+		JSONArray ja_owebalance = new JSONArray();
+		
+		ChargeRate chargeRate = null;
+		for(int i = 0;i<list.size();i++){
+			chargeRate = list.get(i);
+			ja_n.add(chargeRate.getN_name());
+			ja_count.add(chargeRate.getAllcount()-chargeRate.getOwecount());
+			ja_owecount.add(chargeRate.getOwecount());
+			ja_balance.add(chargeRate.getBalance());
+			ja_owebalance.add(chargeRate.getOwebalance());
+		}
+		
+		jo.put("n_name", ja_n);
+		jo.put("count", ja_count);
+		jo.put("owecount", ja_owecount);
+		jo.put("balance", ja_balance);
+		jo.put("owebalance", ja_owebalance);
+		return jo.toJSONString();
+		
 	}
 
 }

@@ -109,7 +109,6 @@
         	
         	if(n_id !="" && month !=""){
         		//ajax get the data 
-     			$("#charts").empty();
         		$.ajax({
         			type:"POST",
         			url:"${path}/statistics/vip/listvipdata.do",
@@ -120,6 +119,10 @@
         			},
         			success:function(data){
         				//load the data in myChart;
+        				if(data.length > 0){
+							//清空已有
+        	     			$("#charts").empty();
+        				}
         				for(var i = 0;i < data.length;i++){
         					var show = data[i];
         					if(show.meteraddr != ""){
@@ -127,6 +130,7 @@
             					var myChart = EChart.init(document.getElementById('vipchart'+show.id)); 
     	       	     	        // 为echarts对象加载数据 
     	        				option.series[0].data = show.data;
+    	        				option.title.text = month+"表数";
     	        				option.title.subtext = '表地址：'+show.meteraddr;
     	       	     	        myChart.setOption(option);
             				}

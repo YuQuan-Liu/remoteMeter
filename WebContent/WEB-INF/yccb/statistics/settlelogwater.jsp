@@ -20,8 +20,16 @@
 			</div>
 		</form>
 	</div>
-	<table id="settlewaterTab" style="width:700px;height:300px;"></table>
-	<div id="settleChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;"></div>
+	<div style="margin-top:10px;float:left;">
+		<p>小区结算记录</p>
+		<table id="settlewaterTab" style="width:700px;height:300px;"></table>
+	</div>
+	<div style="margin-top:10px;margin-left:10px;float:left;">
+		<p>小区结算统计</p>
+		<table id="settlewaterNTab" style="width:700px;height:300px;"></table>
+	</div>
+	
+	<div id="settleChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;float:left;"></div>
 	<script type="text/javascript">
 		$(function(){
 			var now_ = new Date();
@@ -44,6 +52,21 @@
 								formatter: function(value,row,index){
 									return "<a href='#' class='operateHref' onclick='draw("+row.n_id+","+index+")'>绘制小区曲线</a>";
 						  }}
+				      ]]
+			});
+			
+			$("#settlewaterNTab").datagrid({
+				striped:true,
+				fitColumns:true,
+				method:'post',
+				loadMsg:'<fmt:message key="main.loading"/>',
+				rownumbers:true,
+				singleSelect:true,
+				columns:[[
+				          {field:'n_id',title:'ID',width:60,hidden:true},
+				          {field:'n_name',title:'小区',width:80},
+				          {field:'yl',title:'用量',width:80},
+				          {field:'demoney',title:'金额',width:80}
 				      ]]
 			});
 		});
@@ -104,6 +127,12 @@
         	if(year_ != ""){
         		$('#settlewaterTab').datagrid({
     				url:"${path}/statistics/settlelogwater/listsettlewater.do",
+    				queryParams: {
+    					year:year_
+    				}
+    			});
+        		$('#settlewaterNTab').datagrid({
+    				url:"${path}/statistics/settlelogwater/listsettlewatern.do",
     				queryParams: {
     					year:year_
     				}
