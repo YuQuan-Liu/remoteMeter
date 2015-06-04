@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.processors.JsonBeanProcessor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,11 +70,17 @@ public class ChargeCtrl {
 	 */
 	@RequestMapping(value="/charge/custinfo",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String getCustInfo(HttpServletRequest request) throws UnsupportedEncodingException{
-		String nbrId = request.getParameter("nbrId");
-		String custId = new String( request.getParameter("custId").getBytes("ISO-8859-1") , "UTF-8");
-		CustomerView cust = chargeService.getCustByNeibourAndCustId(nbrId, custId);
-		return JSON.toJSONString(cust);
+	public String getCustInfo(HttpServletRequest request,String nbrId,String custId) throws UnsupportedEncodingException{
+//		String nbrId = request.getParameter("nbrId");
+//		String custId = new String( request.getParameter("custId").getBytes("ISO-8859-1") , "UTF-8");
+//		CustomerView cust = chargeService.getCustByNeibourAndCustId(nbrId, custId);
+		List<CustomerView> list = custService.getCustomerby(nbrId,custId);
+		if(list.size() == 0){
+			return "{}";
+		}else{
+			return JSON.toJSONString(list.get(0));
+		}
+		
 	}
 	/**
 	 * 根据用户信息获取表信息
@@ -94,7 +102,7 @@ public class ChargeCtrl {
 	@RequestMapping(value="/charge/updateCustInfo",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String updateCustInfo(CustomerView cv){
-		return JSON.toJSONString(custService.updateCustomer(cv));
+		return JSON.toJSONString(custService.updateCustomerInfo(cv));
 	}
 	/**
 	 * 预后付费转换
@@ -103,9 +111,7 @@ public class ChargeCtrl {
 	 */
 	@RequestMapping(value="/charge/updatePrepaySign")
 	@ResponseBody
-	public String changePay(HttpServletRequest request){
-		String prePaySign = request.getParameter("prePaySign");
-		String custId = request.getParameter("custId");
+	public String changePay(int custId,int prePaySign){
 		return chargeService.updatePayment(custId, prePaySign);
 	}
 

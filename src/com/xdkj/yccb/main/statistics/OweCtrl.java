@@ -18,9 +18,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.WebUtil;
+import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.service.SettleService;
+import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.CustomerCtrl;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
@@ -38,6 +40,8 @@ public class OweCtrl {
 	private SettleService settleService;
 	@Autowired
 	private CustomerService customerService;
+	@Autowired
+	private WaterCompanyService waterCompanyService;
 	
 	@RequestMapping(value="/statistics/owe")
 	public String owe(HttpServletRequest request,Model model){
@@ -72,7 +76,8 @@ public class OweCtrl {
 	@RequestMapping(value="/statistics/owe/print")
 	public ModelAndView payInfoPrint(HttpServletRequest request,Model model,
 			int n_id,String lou,int pre,double low,String dy,String n_name) throws Exception{
-//		UserForSession admin = WebUtil.getCurrUser(request);
+		UserForSession admin = WebUtil.getCurrUser(request);
+		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
 //		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 //		model.addAttribute("neighbor_list", neighbor_list);
 //		
@@ -80,8 +85,8 @@ public class OweCtrl {
 		Map map = new HashMap();
 		List<ControlWarnView> list = customerService.getOwes(n_id,lou,dy,pre,low);
 		map.put("list", list);
-		map.put("header",new String(n_name.getBytes("ISO8859_1"), "utf-8")+"水费欠费统计");
-		map.put("payaddr","交费地址");
+		map.put("header",new String(n_name.getBytes("ISO8859_1"), "utf-8")+"水费欠费通知单");
+		map.put("payaddr","交费地址: "+wc.getPayAddr());
 		
 		return new ModelAndView("owe",map);
 	}

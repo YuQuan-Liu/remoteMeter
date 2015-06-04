@@ -13,6 +13,7 @@ import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
+import com.xdkj.yccb.main.infoin.dto.CustomerView;
 
 @Repository
 public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
@@ -26,8 +27,9 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 
 	@Override
 	public List<Customer> getCustomerListByID(String c_identify) {
-		String hql = "from Customer c where c.valid='1' and c.customerId = "+c_identify+" ";
+		String hql = "from Customer c where c.valid='1' and c.customerId = :c_identify ";
 		Query q = getSession().createQuery(hql);
+		q.setString("c_identify", c_identify);
 		return q.list();
 	}
 
@@ -93,26 +95,37 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 
 	@Override
 	public int updateCustomer(Customer c) {
-		try{
-			this.getHibernateTemplate().update(c);
-			return 1;
-		}catch(Exception e){
-			return 0;
-		}
+		
+//		String hql = "update Customer c set customername = :name,customerMobile=:mobile,customerEmail=:email,NationalID=:nationalid where c.pid = :pid";
+//		Query q = getSession().createSQLQuery(hql);
+//		q.setString("name", c.getCustomerName());
+//		q.setString("mobile", c.getCustomerMobile());
+//		q.setString("email", c.getCustomerEmail());
+//		q.setString("nationalid", c.getNationalId());
+//		q.setInteger("pid", c.getPid());
+//		return q.executeUpdate();
+//		
+//		try{
+//			this.getHibernateTemplate().update(c);
+//			return 1;
+//		}catch(Exception e){
+//			return 0;
+//		}
+		return 1;
 	}
-
+	
 	@Override
-	public Customer getCustByNborOrCust(int nbrId, String cust) {
-		String hql = "from Customer c where c.valid='1' and c.neighbor.pid=:pid "
-				+ "and (c.customerId=:cust0 or c.customerName=:cust1 )";
-		@SuppressWarnings("unchecked")
-		List<Customer> list = getSession().createQuery(hql).setParameter("pid", nbrId)
-		.setParameter("cust0", cust).setParameter("cust1", cust).list();
-		if(null!=list&&list.size()==1){
-			return list.get(0);
-		}
-		return null;
+	public int updateCustomerInfo(CustomerView c) {
+		String hql = "update Customer c set c.customername = :name,c.customerMobile=:mobile,c.customerEmail=:email,c.NationalID=:nationalid where c.pid = :pid";
+		Query q = getSession().createSQLQuery(hql);
+		q.setString("name", c.getCustomerName());
+		q.setString("mobile", c.getCustomerMobile());
+		q.setString("email", c.getCustomerEmail());
+		q.setString("nationalid", c.getNationalId());
+		q.setInteger("pid", c.getPid());
+		return q.executeUpdate();
 	}
+	
 	@Override
 	public Meter getMeterByPid(int mid) {
 		String hql = "from Meter m where m.valid='1' and m.pid = "+mid;
@@ -131,9 +144,9 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 	}
 
 	@Override
-	public void updatePrePaySign(int custId, byte prepaySign) {
+	public int updatePrePaySign(int custId, byte prepaySign) {
 		String hql = "update Customer c set c.prePaySign = :pps where c.pid=:pid";
-		getSession().createQuery(hql).setParameter("pps", prepaySign)
+		return getSession().createQuery(hql).setParameter("pps", prepaySign)
 			.setParameter("pid", custId).executeUpdate();
 	}
 
@@ -320,5 +333,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		
 		return q.list();
 	}
+
+	
 	
 }

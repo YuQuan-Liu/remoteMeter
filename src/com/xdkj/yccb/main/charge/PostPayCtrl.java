@@ -19,9 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.TransRMB;
 import com.xdkj.yccb.common.WebUtil;
+import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.service.ReadLogService;
 import com.xdkj.yccb.main.charge.service.SettleService;
+import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
@@ -37,6 +39,8 @@ public class PostPayCtrl {
 	private SettleService settleService;
 	@Autowired
 	private MeterDeductionLogService meterDeductionLogService;
+	@Autowired
+	private WaterCompanyService waterCompanyService;
 	
 	@RequestMapping(value="/charge/postpay")
 	public String postPay(HttpServletRequest request,Model model){
@@ -74,8 +78,10 @@ public class PostPayCtrl {
 			postCharge.setCnDemoney(TransRMB.transform(postCharge.getDemoney()+""));
 		}
 		map.put("list", list);
-		map.put("header","***后付费***");
-		map.put("tel","13176868783");
+		UserForSession admin = WebUtil.getCurrUser(request);
+		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+		map.put("header",wc.getCompanyName()+"收费单");
+		map.put("tel",wc.getTelephone());
 		
 		return new ModelAndView("postcharge",map);
 	}

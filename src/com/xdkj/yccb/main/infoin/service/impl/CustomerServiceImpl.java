@@ -66,29 +66,26 @@ public class CustomerServiceImpl implements CustomerService {
 				}
 			}
 		}
-		if(list == null){
-			return null;
-		}else{
-			List<CustomerView> listView = new ArrayList<>();
-			CustomerView cv = null;
-			for(Customer c:list){
-				cv = new CustomerView();
-				try {
-					BeanUtils.copyProperties(cv, c);
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
-				cv.setN_name(c.getNeighbor().getNeighborName());
-				cv.setHk(c.getHousekind().getHkname());
-				cv.setC_num(c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
-				listView.add(cv);
+		List<CustomerView> listView = new ArrayList<>();
+		CustomerView cv = null;
+		for(Customer c:list){
+			cv = new CustomerView();
+			try {
+				BeanUtils.copyProperties(cv, c);
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
 			}
-			return listView;
+			cv.setN_name(c.getNeighbor().getNeighborName());
+			cv.setHk(c.getHousekind().getHkname());
+			cv.setC_num(c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+			listView.add(cv);
 		}
+		return listView;
 		
 	}
+	
 	@Override
 	public List<MeterView> getMeterbyCid(String cpid) {
 		List<Meter> list = customerDao.getMeterListByCid(cpid);
@@ -235,6 +232,9 @@ public class CustomerServiceImpl implements CustomerService {
 		Map<String, String> map = cv.check_view();
 		if (map.get("success").equals("true")) {
 			Customer c = customerDao.getCustomerByPid(cv.getPid());
+			
+			//这个地方不可以使用 这中copy  ！！！可能会把不该更新的也更新了。  TODO  
+			//需要更改哪些属性  就直接  赋值哪些属性
 			try {
 				ConvertUtils.register(new BigDecimalConverter(),
 						BigDecimal.class);
@@ -246,6 +246,7 @@ public class CustomerServiceImpl implements CustomerService {
 			}
 			//住宅類型不更改
 			//金額不允許更改
+			//TODO
 			if (customerDao.updateCustomer(c) > 0) {
 				map.put("update", c.getPid() + "");
 //				map.put("cv", JSON.toJSONString(cv));
@@ -256,6 +257,23 @@ public class CustomerServiceImpl implements CustomerService {
 
 		return map;
 	}
+	
+	@Override
+	public String updateCustomerInfo(CustomerView cv) {
+//		Customer c = customerDao.getCustomerByPid(cv.getPid());
+//		c.setCustomerMobile(cv.getCustomerMobile());
+//		c.setCustomerEmail(cv.getCustomerEmail());
+//		c.setNationalId(cv.getNationalId());
+//		c.setCustomerName(cv.getCustomerName());
+		//上面直接更新到数据库了
+		
+		if(customerDao.updateCustomerInfo(cv) > 0){
+			return "1";
+		}
+		return "0";
+	}
+	
+	
 	@Override
 	public String deleteMeter(int mid) {
 		if(customerDao.deleteMeter(mid) > 0){
@@ -480,4 +498,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return customerDao.getCustomerOwe(n_id,lou,dy,pre,low);
 		
 	}
+
+	
+	
 }

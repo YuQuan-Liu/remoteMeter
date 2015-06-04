@@ -45,8 +45,20 @@ public interface CustomerService {
 	
 	public CustomerView getCustomerViewbyCid(int cid);
 
+	/**
+	 * 用户表信息里面的更新用户   各种信息都可以更新
+	 * @param cv
+	 * @return
+	 */
 	public Map<String, String> updateCustomer(CustomerView cv);
 
+	/**
+	 * 更新用户的  姓名  手机  邮箱  身份证
+	 * @param cv
+	 * @return
+	 */
+	public String updateCustomerInfo(CustomerView cv);
+	
 	public String deleteMeter(int mid);
 
 	public MeterView getMeterViewbyMid(int mid);

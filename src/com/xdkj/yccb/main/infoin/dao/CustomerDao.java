@@ -10,6 +10,7 @@ import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.CustomerMeter;
+import com.xdkj.yccb.main.infoin.dto.CustomerView;
 
 public interface CustomerDao {
 	
@@ -34,7 +35,7 @@ public interface CustomerDao {
 	 * @param custId
 	 * @param prepaySign
 	 */
-	void updatePrePaySign(int custId,byte prepaySign);
+	int updatePrePaySign(int custId,byte prepaySign);
 	
 	/**
 	 * 添加用户
@@ -44,7 +45,20 @@ public interface CustomerDao {
 	public int addCustomer(Customer c);
 	public Customer getCustomerByPid(int cid);
 	public int deleteCustomer(int cid);
+	/**
+	 * 用户信息中的更新用户   
+	 * @param c
+	 * @return
+	 */
 	public int updateCustomer(Customer c);
+	
+	/**
+	 * 收费界面更新用户资料
+	 * @param c
+	 * @return
+	 */
+	public int updateCustomerInfo(CustomerView cv);
+	
 	/**
 	 * 添加表
 	 * @param c
@@ -54,13 +68,7 @@ public interface CustomerDao {
 	public Meter getMeterByPid(int mid);
 	public int deleteMeter(int cid);
 	public int updateMeter(Meter m);
-	/**
-	 * 通过小区id 用户id或用户号查询用户信息
-	 * @param nbrId 小区id
-	 * @param cust 用户号或用户id
-	 * @return
-	 */
-	Customer getCustByNborOrCust(int nbrId,String cust);
+	
 	/**
 	 * eg协议  根据集中器  采集器 表地址 获取表
 	 * @param pid

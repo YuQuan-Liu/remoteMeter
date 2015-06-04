@@ -8,19 +8,12 @@ import com.xdkj.yccb.main.statistics.dto.MeterdeductionlogView;
 
 public interface ChargeService {
 	/**
-	 * 通过小区id和用户id查询用户信息
-	 * @param nbrId 小区id
-	 * @param custId 用户信息
-	 * @return 用户bean
-	 */
-	CustomerView getCustByNeibourAndCustId(String nbrId,String custId);
-	/**
 	 * 预后付费转换
 	 * @param cstId
 	 * @param prePaySign
 	 * @return
 	 */
-	String updatePayment(String cstId,String prePaySign);
+	String updatePayment(int cstId,int prePaySign);
 	/**
 	 * Description: 收费记录
 	 * @param custId

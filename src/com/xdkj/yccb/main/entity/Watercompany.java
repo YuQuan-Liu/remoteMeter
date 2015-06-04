@@ -29,6 +29,8 @@ public class Watercompany implements java.io.Serializable {
 	private String emailUser;
 	private String emailPassword;
 	private String remark;
+	private String telephone;
+	private String payAddr;
 	private Set<Roles> roleses = new HashSet<Roles>(0);
 	private Set<Neighbor> neighbors = new HashSet<Neighbor>(0);
 	private Set<Pricekind> pricekinds = new HashSet<Pricekind>(0);
@@ -70,7 +72,7 @@ public class Watercompany implements java.io.Serializable {
 		this.companyAddr = companyAddr;
 	}
 
-	@Column(name = "Mark", nullable = false, length = 4)
+	@Column(name = "Mark", nullable = false, length = 10)
 	public String getMark() {
 		return this.mark;
 	}
@@ -169,4 +171,23 @@ public class Watercompany implements java.io.Serializable {
 		this.departments = departments;
 	}
 
+	@Column(name = "Telephone", length = 45)
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+	
+	@Column(name = "PayAddr", length = 50)
+	public String getPayAddr() {
+		return payAddr;
+	}
+
+	public void setPayAddr(String payAddr) {
+		this.payAddr = payAddr;
+	}
+
+	
 }

@@ -35,48 +35,9 @@ public class ChargeServiceImpl implements ChargeService {
 	private MeterDao meterDao;
 
 	@Override
-	public CustomerView getCustByNeibourAndCustId(String nbrId, String custId) {
-		if(null!=nbrId&&null!=custId){
-			Customer c = custDAO.getCustByNborOrCust(Integer.parseInt(nbrId), custId);
-			if(c!=null){
-				CustomerView cv = new CustomerView();
-				cv.setApid(c.getApid());
-				cv.setCustomerAddr(c.getCustomerAddr());
-				cv.setCustomerBalance(c.getCustomerBalance());
-				cv.setCustomerEmail(c.getCustomerEmail());
-				cv.setCustomerId(c.getCustomerId());
-				cv.setCustomerMobile(c.getCustomerMobile());
-				cv.setCustomerName(c.getCustomerName());
-				cv.setHk_id(c.getHousekind().getPid()+"");
-				cv.setPid(c.getPid());
-				cv.setNationalId(c.getNationalId());
-				cv.setC_num(c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
-				cv.setN_name(c.getNeighbor().getNeighborName());
-				cv.setWarnThre(c.getWarnThre());
-				cv.setPrePaySign(c.getPrePaySign());
-				cv.setWarnStyle(c.getWarnStyle());
-				cv.setWarnSwitch(c.getWarnSwitch());
-				return cv;
-			}
-		}
-		return null;
+	public String updatePayment(int cstId, int prePaySign) {
 		
-	}
-
-	@Override
-	public String updatePayment(String cstId, String prePaySign) {
-		JSONObject j = new JSONObject();
-		try {
-			byte p = 0;
-			if("0".equals(prePaySign)){
-				p = 1;
-			}
-			custDAO.updatePrePaySign(Integer.parseInt(cstId), p);
-			j.put("update", 1);
-		} catch (Exception e) {
-			j.put("update", 0);
-		}
-		return j.toJSONString();
+		return custDAO.updatePrePaySign(cstId, (byte)prePaySign)+"";
 	}
 
 	@Override
