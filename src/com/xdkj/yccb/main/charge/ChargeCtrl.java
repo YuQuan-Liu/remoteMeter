@@ -141,16 +141,7 @@ public class ChargeCtrl {
 	public String costInfo(@RequestParam("custId") String custId){
 		return JSON.toJSONString(chargeService.getMList(custId, logCount));
 	}
-	/**
-	 * 开阀
-	 * @param mId
-	 * @return jsonString succ or fail 
-	 */
-	@RequestMapping(value ="/charge/openValue")
-	@ResponseBody
-	public String openValue(@RequestParam("meterId") String mId){
-		return chargeService.changeValue(mId, "1");
-	}
+	
 	
 	@RequestMapping(value ="/charge/updatePrice")
 	@ResponseBody

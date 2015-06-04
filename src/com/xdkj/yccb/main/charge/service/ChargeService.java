@@ -34,13 +34,7 @@ public interface ChargeService {
 	 * @version 1.0
 	 */
 	List<MeterdeductionlogView> getMList(String custId,int count);
-	/**
-	 *  开关阀
-	 * @param meterId 表id
-	 * @param valueState 1 开阀
-	 * @return
-	 */
-	String changeValue(String meterId,String valueState);
+	
 	/**
 	 * 更新单价
 	 * @param meterId 表id

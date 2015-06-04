@@ -88,29 +88,8 @@ public class ChargeServiceImpl implements ChargeService {
 	}
 
 	@Override
-	public String changeValue(String meterId, String valueState) {
-		JSONObject j = new JSONObject();
-		try {
-			meterDao.changeValue(Integer.parseInt(meterId), Byte.parseByte(valueState));
-			j.put("state", "succ");
-		} catch (Exception e) {
-			j.clear();
-			j.put("state", "fail");
-		}
-		return j.toJSONString();
-	}
-
-	@Override
 	public String updatePrice(String meterId, String priceId) {
-		JSONObject j = new JSONObject();
-		try {
-			meterDao.updateMeterPrice(Integer.parseInt(meterId), Integer.parseInt(priceId));
-			j.put("state", "succ");
-		} catch (Exception e) {
-			j.clear();
-			j.put("state", "fail");
-		}
-		return j.toJSONString();
+		return meterDao.updateMeterPrice(Integer.parseInt(meterId), Integer.parseInt(priceId))+"";
 	}
 
 	@Override
@@ -118,13 +97,16 @@ public class ChargeServiceImpl implements ChargeService {
 		JSONObject j = new JSONObject();
 		//将custpaylog valid置为0
 		Customerpaylog cpl = custompaylogDAO.getById(Integer.parseInt(custPayLogId));
-		int custId = cpl.getCustomer().getPid();
-		cpl.setValid("0");
-		custompaylogDAO.updateCustLog(cpl);
-		BigDecimal pay = cpl.getAmount();
-		//将交给额加至Customer 余额 CustomerBalance
-		custDAO.updateCustomerBalance(pay, custId);
-		//插入操作记录
+		if(cpl.getValid().equals("1")){
+			int custId = cpl.getCustomer().getPid();
+			cpl.setValid("0");
+			custompaylogDAO.updateCustLog(cpl);
+			BigDecimal pay = cpl.getAmount();
+			//将交给额加至Customer 余额 CustomerBalance
+			custDAO.updateCustomerBalance(pay, custId);
+			//插入操作记录
+			
+		}
 		j.put("state", "succ");
 		return j.toJSONString();
 	}
@@ -134,13 +116,16 @@ public class ChargeServiceImpl implements ChargeService {
 		JSONObject j = new JSONObject();
 		//将MeterDeductionLog valid置为0
 		Meterdeductionlog mdl = meterDeductionLogDao.getById(Integer.parseInt(meterDeLogId));
-		int custId = mdl.getMeter().getCustomer().getPid();
-		mdl.setValid('0');
-		meterDeductionLogDao.updateMeterductionLog(mdl);
-		BigDecimal pay = mdl.getDeMoney();
-		//将交给额加至Customer 余额 CustomerBalance
-		custDAO.updateCustomerBalance(pay, custId);
-		//插入操作记录
+		if(mdl.getValid()=='1'){
+			int custId = mdl.getMeter().getCustomer().getPid();
+			mdl.setValid('0');
+			meterDeductionLogDao.updateMeterductionLog(mdl);
+			BigDecimal pay = mdl.getDeMoney();
+			//将交给额加至Customer 余额 CustomerBalance
+			custDAO.updateCustomerBalance(pay, custId);
+			//插入操作记录
+			
+		}
 		j.put("state", "succ");
 		return j.toJSONString();
 	}

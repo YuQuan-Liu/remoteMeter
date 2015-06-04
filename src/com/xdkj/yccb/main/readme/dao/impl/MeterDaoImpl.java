@@ -31,16 +31,10 @@ public class MeterDaoImpl extends HibernateDAO<Meter> implements MeterDao {
 	}
 
 	@Override
-	public void changeValue(int meterId, byte valueState) {
-		String hql = "update Meter m set m.valveState=:valueState where m.pid =:pid";
-		getSession().createQuery(hql).setParameter("valueState", valueState)
-			.setInteger("pid", meterId).executeUpdate();
-	}
-
-	@Override
-	public void updateMeterPrice(int meterId, int priceId) {
-		String hql = "update Meter m set m.pricekind.pid=:priceId where m.pid=:meterId";
-		getSession().createQuery(hql).setInteger("priceId", priceId)
+	public int updateMeterPrice(int meterId, int priceId) {
+		String hql = "update Meter m set m.pricekindid=:priceId where m.pid=:meterId";
+		
+		return getSession().createSQLQuery(hql).setInteger("priceId", priceId)
 			.setInteger("meterId", meterId).executeUpdate();
 		
 	}

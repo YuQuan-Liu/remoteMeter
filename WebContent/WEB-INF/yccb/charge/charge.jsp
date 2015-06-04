@@ -109,7 +109,7 @@ $(function(){
 	      	{field:'collectorAddr',title:'采集器地址',width:60},
 	      	{field:'meterAddr',title:'表地址',width:40},
 	      	{field:'meterSolid',title:'虚实表',width:40,formatter:function(value,row,index){
-	      		if(value=="1"){
+	      		if(value==1){
 	      			return "实表";
 	      		}else{
 	      			return "虚表";
@@ -118,7 +118,7 @@ $(function(){
 	      	{field:'mk',title:'表类型',width:40},
 	      	{field:'pk',title:'单价',width:40},
 	      	{field:'valveState',title:'阀门状态',width:30,formatter:function(value,row,index){
-	      		if(value=="1"){
+	      		if(value==1){
 	      			return "开";
 	      		}else{
 	      			return "关";
@@ -132,8 +132,8 @@ $(function(){
 	      	{field:'action',title:'操作',width:130,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a class='operateHref' onclick='openValue("+row.pid+","+index+")'> 开阀 </a>"
 				+"<a class='operateHref' onclick='updatePrice("+row.pid+","+index+")'>更新单价 </a>"
-				+"<a class='operateHref' onclick='changeMeter("+row.pid+","+index+")'>换表 </a>"
-				+"<a class='operateHref' onclick='meterQX("+row.pid+","+index+")'>水表曲线</a>";
+				+"<a class='operateHref' onclick='waterwaste("+row.pid+","+index+")'>水费减免 </a>"
+				+"<a class='operateHref' onclick='meterQX("+row.pid+")'>水表曲线</a>";
 	  		}}
 	    ]],
 	});
@@ -155,8 +155,8 @@ $(function(){
 	      	{field:'adminName',title:'收费员',width:60},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' > 撤销 </a>"
-				+"<a href='#' class='operateHref' onclick='deleteMeter("+row.pid+","+index+")' >收费打印</a>"
-				+"<a href='#' class='operateHref' onclick='changemeter("+row.pid+","+index+")'> 详单打印</a>";
+				+"<a href='#' class='operateHref' onclick='chargeprint("+row.pid+","+index+")' >收费打印</a>"
+				+"<a href='#' class='operateHref' onclick='chargedetailprint("+row.pid+","+index+")'> 详单打印</a>";
 	  		}}
 	    ]]
 	});
@@ -322,7 +322,7 @@ $(function(){
 								msg : '转换成功！',
 								showType : 'slide'
 							});
-							loadCust();
+							$('#prePaySign').textbox('setValue',prestr);
 						}
 					}
 				});
@@ -352,37 +352,76 @@ $(function(){
 		});
 	}
 
-	function openValue(id,index) {
+	function openValue(mid,index) {
 		$.messager.confirm('确认操作', '确认开阀?', function(r) {
 			if (r) {
 				$.ajax({
-					
+					type:"POST",
+					url:"${path}/readme/valve/valvecontrol.do",
+					dataType:"json",
+					data:{
+						m_id:mid
+					},
+					success:function(data){
+						if(data.result == "success"){
+							$.messager.progress({text:"",interval:100});
+							interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
+						}else{
+							$.messager.alert('Error','操作失败,请稍后再试');
+						}
+					}
 				});
 			}
 		});
 	}
+	function checkcontroling(valvelogid,index){
+		$.ajax({
+			type:"POST",
+			url:"${path}/readme/valve/checkcontroling.do",
+			dataType:"json",
+			data:{
+				valvelogid:valvelogid
+			},
+			success:function(data){
+				if(data.status == 100){
+					$.messager.progress('close');
+					clearInterval(interval);
+					$.messager.show({
+						title : 'Info',
+						msg : '开阀完成！',
+						showType : 'slide'
+					});
+// 					$.messager.alert('操作结果',"完成个数:"+data.completecount+"\r\n异常个数:"+data.errorcount,'info'); 
+					if(data.completecount+data.errorcount == 1){
+						//单个表
+						$("#custMeters").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
+					}
+				}
+			}
+		});
+	}
 
-	function updatePrice(id) {
+	function updatePrice(mid,index) {
 		var priceId = $('#price').combobox('getValue');
-		$.messager.confirm('确认操作', '确认更新单价?', function(r) {
+		var priceName = $('#price').combobox('getText');
+		$.messager.confirm('确认操作', '确认更新单价为'+priceName+'?', function(r) {
 			if (r) {
 				$.ajax({
 					type : "POST",
 					url : "${path}/charge/updatePrice.do",
 					dataType : "json",
 					data : {
-						'meterId' : id,
-						"priceId" : priceId
+						meterId : mid,
+						priceId : priceId
 					},
 					success : function(data) {
-						if (data.state == "succ") {
+						if (data == 1) {
 							$.messager.show({
 								title : '更新单价',
 								msg : '操作成功！',
-								showType : 'slide',
-								timeout : 3000
+								showType : 'slide'
 							});
-							$('#custMeters').datagrid("reload");
+							$("#custMeters").datagrid('updateRow', {index:index,row:{pk:priceName}});
 						} else {
 							$.messager.show({
 								title : '更新单价',
@@ -396,7 +435,11 @@ $(function(){
 			}
 		});
 	}
-
+	
+	function waterwaste(id,index_){
+		//TODO
+	}
+	
 	function meterQX(meterId) {
 		//水表曲线
 		$('#meterCurveWin').window({
@@ -408,8 +451,12 @@ $(function(){
 			title : '水表曲线'
 		});
 	}
-	function cancelPay(id) {
-		$.messager.confirm('确认操作', '确认撤销缴费?', function(r) {
+	function cancelPay(id,index_) {
+		
+		var amount = $('#payInfoTab').datagrid('getRows')[index_]["amount"];
+		var time = $('#payInfoTab').datagrid('getRows')[index_]["actionTime"];
+		
+		$.messager.confirm('确认操作', '确认撤销'+time+'交费'+amount+'?', function(r) {
 			if (r) {
 				$.ajax({
 					type : "POST",
@@ -421,15 +468,17 @@ $(function(){
 					success : function(data) {
 						if (data.state == "succ") {
 							$.messager.show({
-								title : '更新单价',
+								title : '撤销交费',
 								msg : '操作成功！',
 								showType : 'slide',
 								timeout : 3000
 							});
-							$('#payInfoTab').datagrid("reload");
+							$('#payInfoTab').datagrid("deleteRow",index_);
+							$('#customerBalance').textbox('setValue',$('#customerBalance').textbox('getValue')-amount);
+							
 						} else {
 							$.messager.show({
-								title : '更新单价',
+								title : '撤销交费',
 								msg : '操作失败！',
 								showType : 'slide',
 								timeout : 0
@@ -441,8 +490,11 @@ $(function(){
 		});
 	}
 
-	function cancleCost(id) {
-		$.messager.confirm('确认操作', '确认撤销扣费?', function(r) {
+	function cancleCost(id,index_) {
+		var demoney = $('#costInfoTab').datagrid('getRows')[index_]["deMoney"];
+		var time = $('#costInfoTab').datagrid('getRows')[index_]["actionTime"];
+		
+		$.messager.confirm('确认操作', '确认撤销'+time+'扣费'+demoney+'?', function(r) {
 			if (r) {
 				$.ajax({
 					type : "POST",
@@ -454,15 +506,16 @@ $(function(){
 					success : function(data) {
 						if (data.state == "succ") {
 							$.messager.show({
-								title : '更新单价',
+								title : '撤销扣费',
 								msg : '操作成功！',
-								showType : 'slide',
-								timeout : 3000
+								showType : 'slide'
 							});
-							$('#costInfoTab').datagrid("reload");
+							$('#costInfoTab').datagrid("deleteRow",index_);
+							$('#customerBalance').textbox('setValue',$('#customerBalance').textbox('getValue')+demoney);
+							
 						} else {
 							$.messager.show({
-								title : '更新单价',
+								title : '撤销扣费',
 								msg : '操作失败！',
 								showType : 'slide',
 								timeout : 0

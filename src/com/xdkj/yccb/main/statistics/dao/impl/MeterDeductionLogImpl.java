@@ -30,7 +30,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Meterdeductionlog> getList(int count, int custId) {
-		String hql = "from Meterdeductionlog mdl where mdl.meter.customer.pid=:pid order by mdl.actionTime desc";
+		String hql = "from Meterdeductionlog mdl where mdl.meter.customer.pid=:pid and mdl.valid = 1 order by mdl.actionTime desc";
 		return getSession().createQuery(hql).setParameter("pid", custId)
 				.setFirstResult(0).setMaxResults(count).list();
 	}

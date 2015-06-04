@@ -171,9 +171,9 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 	}
 
 	@Override
-	public void updateCustomerBalance(BigDecimal b,Integer custId) {
+	public int updateCustomerBalance(BigDecimal b,Integer custId) {
 		String hql = "update Customer c set c.customerBalance = c.customerBalance + :balence where c.pid=:custId";
-		getSession().createQuery(hql).setBigDecimal("balence", b).setInteger("custId", custId).executeUpdate();
+		return getSession().createSQLQuery(hql).setBigDecimal("balence", b).setInteger("custId", custId).executeUpdate();
 	}
 
 	@Override

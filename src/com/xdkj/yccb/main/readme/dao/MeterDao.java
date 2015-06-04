@@ -10,14 +10,8 @@ public interface MeterDao {
 	public Meter getMeterByID(int m_id);
 
 	public void updateMeterRead(int m_id, int type, int m_read);
-	/**
-	 *  开关阀
-	 * @param meterId 表id
-	 * @param valueState 阀门状态
-	 */
-	void changeValue(int meterId,byte valueState);
 	
-	void updateMeterPrice(int meterId,int priceId);
+	int updateMeterPrice(int meterId,int priceId);
 	
 	//sList<Meter> getList(SettlementView sv,PageBase pageInfo);
 }

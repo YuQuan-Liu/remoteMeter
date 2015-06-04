@@ -18,7 +18,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Customerpaylog> getList(int count, int custId) {
-		String hql = "from Customerpaylog cpl where cpl.customer.pid=:pid order by cpl.actionTime desc ";
+		String hql = "from Customerpaylog cpl where cpl.customer.pid=:pid and cpl.valid = 1 order by cpl.actionTime desc ";
 		return getSession().createQuery(hql).setParameter("pid", custId)
 			.setFirstResult(0).setMaxResults(count).list();
 	}
