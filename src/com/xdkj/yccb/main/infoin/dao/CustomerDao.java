@@ -84,7 +84,13 @@ public interface CustomerDao {
 	 */
 	Meter getMeterByMAddr(String meterAddr);
 	
-	int updateCustomerBalance(BigDecimal b,Integer custId);
+	/**
+	 * 交费
+	 * @param b
+	 * @param custId
+	 * @return 返回用户
+	 */
+	Customer updateCustomerBalance(BigDecimal b,Integer custId);
 	/**
 	 * 获取用户的欠费和提醒次数情况
 	 * @param n_id

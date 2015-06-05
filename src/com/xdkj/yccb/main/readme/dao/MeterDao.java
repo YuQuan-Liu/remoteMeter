@@ -12,6 +12,8 @@ public interface MeterDao {
 	public void updateMeterRead(int m_id, int type, int m_read);
 	
 	int updateMeterPrice(int meterId,int priceId);
+
+	public int updateDeread(int m_id, int waste);
 	
 	//sList<Meter> getList(SettlementView sv,PageBase pageInfo);
 }

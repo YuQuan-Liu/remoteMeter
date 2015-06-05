@@ -91,8 +91,8 @@
 	</div>
 	<table id="costInfoTab" style="width:100%;height:100px;"></table>
 	
-	<div id="meterCurveWin"></div>
-	
+<!-- 	<div id="meterCurveWin"></div> -->
+	<div id="meterChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;"></div>
 <script type="text/javascript">
 $(function(){
 	$('#custMeters').datagrid({
@@ -125,15 +125,17 @@ $(function(){
 	      		}
 	      	}},
 	      	{field:'deductionStyle',title:'结算方式',width:40},
-	      	{field:'valveOffthre',title:'关阀余额',width:60},
-	      	{field:'timerSwitch',title:'定时检测',width:60},
-	      	{field:'timer',title:'定时时间',width:50},
-	      	{field:'changend',title:'换表底数',width:50},
+	      	{field:'valveOffthre',title:'关阀余额',width:40},
+	      	{field:'timerSwitch',title:'定时检测',width:40},
+	      	{field:'timer',title:'定时时间',width:40},
+	      	{field:'readdata',title:'表读数',width:40},
+	        {field:'readtime',title:'抄表时间',width:40},
+	      	{field:'changend',title:'换表底数',width:40},
 	      	{field:'action',title:'操作',width:130,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a class='operateHref' onclick='openValue("+row.pid+","+index+")'> 开阀 </a>"
 				+"<a class='operateHref' onclick='updatePrice("+row.pid+","+index+")'>更新单价 </a>"
 				+"<a class='operateHref' onclick='waterwaste("+row.pid+","+index+")'>水费减免 </a>"
-				+"<a class='operateHref' onclick='meterQX("+row.pid+")'>水表曲线</a>";
+				+"<a class='operateHref' onclick='draw("+row.pid+","+index+")'>水表曲线</a>";
 	  		}}
 	    ]],
 	});
@@ -146,17 +148,17 @@ $(function(){
 		rownumbers:true,
 	    columns:[[
 	        {field:'pid',title:'ID',hidden:true},
-			{field:'custNo',title:'用户号',width:60},
-	        {field:'CustId',title:'用户ID',width:60},
-	      	{field:'custName',title:'用户名',width:60},
-	      	{field:'custAddr',title:'地址',width:60},
+			{field:'c_num',title:'用户号',width:60},
+	        {field:'customerId',title:'用户ID',width:60},
+	      	{field:'customerName',title:'用户名',width:60},
+	      	{field:'customerAddr',title:'地址',width:60},
 	      	{field:'amount',title:'交费金额',width:60},
 	      	{field:'actionTime',title:'交费时间',width:60},
 	      	{field:'adminName',title:'收费员',width:60},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' > 撤销 </a>"
-				+"<a href='#' class='operateHref' onclick='chargeprint("+row.pid+","+index+")' >收费打印</a>"
-				+"<a href='#' class='operateHref' onclick='chargedetailprint("+row.pid+","+index+")'> 详单打印</a>";
+				+"<a href='#' class='operateHref' onclick='chargeprint("+row.pid+")' >收费打印</a>"
+				+"<a href='#' class='operateHref' onclick='chargedetailprint("+row.pid+")'> 详单打印</a>";
 	  		}}
 	    ]]
 	});
@@ -168,18 +170,25 @@ $(function(){
 		loadMsg:'<fmt:message key="main.loading"/>',
 		rownumbers:true,
 	    columns:[[
-	        {field:'pid',title:'ID',hidden:true},
-			{field:'gprsAddr',title:'集中器地址',width:60},
-	        {field:'collectaddr',title:'采集器地址',width:60},
+	        {field:'mdl_id',title:'ID',hidden:true},
+	        {field:'collectorAddr',title:'采集器地址',width:60},
 	      	{field:'meterAddr',title:'表地址',width:60},
-	      	{field:'meterRead',title:'扣费读数',width:60},
-	      	{field:'meterReadTime',title:'扣费抄表时间',width:60},
-	      	{field:'lastDeRead',title:'上次扣费读数',width:60},
-	      	{field:'lastDeTime',title:'上次扣费抄表时间',width:60},
-	      	{field:'deMoney',title:'扣钱数',width:60},
-	      	{field:'actionTime',title:'扣费时间',width:60},
+	      	{field:'steelNum',title:'钢印号',width:60},
+	      	{field:'pricekindname',title:'扣费单价',width:80},
+	        {field:'lastderead',title:'扣费读数',width:80},
+	        {field:'meterread',title:'表读数',width:80},
+	        {field:'changeend',title:'换表底数',width:80},
+	        {field:'meterreadtime',title:'抄表时间',width:80},
+	        {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
+	        	if(row.changeend > 0){
+	       	  		return row.meterread+row.changeend-row.lastderead;
+	        	}else{
+	        		return row.meterread-row.lastderead;
+	        	}
+	          }},
+	        {field:'demoney',title:'扣费金额',width:80},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='cancleCost("+row.pid+","+index+")' >撤销</a>";
+				return "<a href='#' class='operateHref' onclick='cancleCost("+row.mdl_id+","+index+")' >撤销</a>";
 	  		}}
 	    ]],
 	});
@@ -347,11 +356,50 @@ $(function(){
 		}
 		$.messager.prompt('Info', '请输入交费金额:', function(r){
 			if (r){
+				var amount = parseFloat(r);
+				if(amount.toString() != "NaN" && amount > 0){
+					$.ajax({
+						url : "${path}/charge/pay.do",
+						data : {
+							c_id : pid,
+							amount : amount
+						},
+						dataType : "json",
+						success : function(data) {
+							if (data.balance > 0) {
+								$.messager.show({
+									title : '交费',
+									msg : '交费成功！',
+									showType : 'slide'
+								});
+								window.open("${path}/charge/charge/printcharge.do?cplid="+data.cplid,"_blank");
+								$('#customerBalance').textbox('setValue',data.balance);
+							}else{
+								$.messager.show({
+									title : '交费',
+									msg : '交费失败！',
+									showType : 'slide',
+									timeout : 0
+								});
+							}
+						}
+					});
+				}else{
+					$.messager.alert('Error','金额有误！');
+				}
 				
 			}
 		});
 	}
-
+	
+	function chargeprint(cplid){
+		window.open("${path}/charge/charge/printcharge.do?cplid="+cplid,"_blank");
+	}
+	
+	function chargedetailprint(cplid){
+		window.open("${path}/charge/charge/printdetailcharge.do?cplid="+cplid+"&cid="+pid,"_blank");
+	}
+	
 	function openValue(mid,index) {
 		$.messager.confirm('确认操作', '确认开阀?', function(r) {
 			if (r) {
@@ -404,7 +452,7 @@ $(function(){
 	function updatePrice(mid,index) {
 		var priceId = $('#price').combobox('getValue');
 		var priceName = $('#price').combobox('getText');
-		$.messager.confirm('确认操作', '确认更新单价为'+priceName+'?', function(r) {
+		$.messager.confirm('确认操作', '确认更新单价为</br>'+priceName+'?', function(r) {
 			if (r) {
 				$.ajax({
 					type : "POST",
@@ -436,8 +484,40 @@ $(function(){
 		});
 	}
 	
-	function waterwaste(id,index_){
-		//TODO
+	function waterwaste(mid,index_){
+		$.messager.prompt('水费减免', '请输入水费减免吨数', function(r){
+	        if (r){
+				if(r > 0 && r < 1000){
+					$.ajax({
+						type:"POST",
+						url:"${path}/charge/waterwaste.do",
+						dataType:"json",
+						data:{
+							m_id:mid,
+							waste:r
+						},
+						success:function(data){
+//	 						alert(data.id+data.read);
+							if(data == 1){
+								$.messager.show({
+									title : '水费减免',
+									msg : '操作成功！',
+									showType : 'slide'
+								});
+								$('#costInfoTab').datagrid({
+									url:"${path}/charge/costInfoContent.do",
+									queryParams: {
+										custId:pid
+									}
+								});
+							}
+						}
+					});
+				}else{
+					 $.messager.alert('Error','减免吨数异常：'+r+',请重新输入');
+				}
+	        }
+	    });
 	}
 	
 	function meterQX(meterId) {
@@ -456,7 +536,7 @@ $(function(){
 		var amount = $('#payInfoTab').datagrid('getRows')[index_]["amount"];
 		var time = $('#payInfoTab').datagrid('getRows')[index_]["actionTime"];
 		
-		$.messager.confirm('确认操作', '确认撤销'+time+'交费'+amount+'?', function(r) {
+		$.messager.confirm('确认操作', '确认撤销</br>'+time+'</br>交费'+amount+'?', function(r) {
 			if (r) {
 				$.ajax({
 					type : "POST",
@@ -491,10 +571,10 @@ $(function(){
 	}
 
 	function cancleCost(id,index_) {
-		var demoney = $('#costInfoTab').datagrid('getRows')[index_]["deMoney"];
-		var time = $('#costInfoTab').datagrid('getRows')[index_]["actionTime"];
+		var demoney = $('#costInfoTab').datagrid('getRows')[index_]["demoney"];
+		var time = $('#costInfoTab').datagrid('getRows')[index_]["meterreadtime"];
 		
-		$.messager.confirm('确认操作', '确认撤销'+time+'扣费'+demoney+'?', function(r) {
+		$.messager.confirm('确认操作', '确认撤销</br>抄表时间'+time+'</br>扣费'+demoney+'?', function(r) {
 			if (r) {
 				$.ajax({
 					type : "POST",
@@ -526,6 +606,69 @@ $(function(){
 			}
 		});
 	}
+	
+	var option = {
+			title:{
+				text:"扣费读数"
+			},
+			tooltip:{
+				show : true
+			},
+			legend:{
+				data : ['用量']
+			},
+			xAxis:[{
+	            	type : 'category',
+	            	data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
+	        }],
+			yAxis:[{
+				type:'value'
+			}],
+			series:[{
+					"name":"用量",
+					"type":"bar",
+					"data":[0,0,0,0,0,0,0,0,0,0,0,0]
+				}
+			]
+		};
+		// 路径配置
+        require.config({
+            paths: {
+                echarts: 'http://echarts.baidu.com/build/dist'
+            }
+        });
+		
+		var myChart;
+        // 使用
+        require(
+            [
+                'echarts',
+                'echarts/chart/bar', // 使用柱状图就加载bar模块，按需加载
+                'echarts/chart/line'
+            ],
+            function (ec) {
+                // 基于准备好的dom，初始化echarts图表
+                myChart = ec.init(document.getElementById('meterChart')); 
+                // 为echarts对象加载数据 
+                myChart.setOption(option); 
+            }
+        );
+        function draw(mid,index){
+        	var steelNum = $('#custMeters').datagrid('getRows')[index]["steelNum"];
+        	$.ajax({
+				type:"POST",
+				url:"${path}/charge/charge/draw.do",
+				dataType:"json",
+				data:{
+					mid : mid
+				},
+				success:function(data){
+					option.title.text = steelNum+"扣费读数";
+					option.series[0].data = data.yl;
+    				myChart.setOption(option); 
+				}
+			});
+        }
 </script>
 </body>
 </html>

@@ -1,7 +1,11 @@
 package com.xdkj.yccb.main.charge;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,17 +18,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
+import com.xdkj.yccb.common.TransRMB;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.PriceService;
+import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
+import com.xdkj.yccb.main.charge.dto.CustomerpaylogView;
+import com.xdkj.yccb.main.charge.dto.PostCharge;
+import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.service.ChargeService;
+import com.xdkj.yccb.main.entity.Customerpaylog;
+import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.statistics.dto.MeterdeductionlogView;
 import com.xdkj.yccb.security.UserForSession;
 
 /**
@@ -35,7 +48,6 @@ import com.xdkj.yccb.security.UserForSession;
 @Controller
 public class ChargeCtrl {
 	public static final String charge = "/charge/charge";
-	public static final String meterCurve = "/charge/meterQX";
 	public static final int logCount = 10;//显示收费记录条数
 	@Autowired
 	private ChargeService chargeService;
@@ -45,6 +57,8 @@ public class ChargeCtrl {
 	private NeighborService neighborService;
 	@Autowired
 	private PriceService priceService; 
+	@Autowired
+	private WaterCompanyService waterCompanyService;
 	/**
 	 * 跳转收费页面
 	 * @param request
@@ -125,7 +139,7 @@ public class ChargeCtrl {
 	 */
 	@RequestMapping(value="/charge/payInfoContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String payInfo(@RequestParam("custId") String custId){
+	public String payInfo(@RequestParam("custId") int custId){
 		return JSON.toJSONString(chargeService.getCList(custId, logCount));
 	}
 	/**
@@ -138,7 +152,7 @@ public class ChargeCtrl {
 	 */
 	@RequestMapping(value="/charge/costInfoContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String costInfo(@RequestParam("custId") String custId){
+	public String costInfo(@RequestParam("custId") int custId){
 		return JSON.toJSONString(chargeService.getMList(custId, logCount));
 	}
 	
@@ -148,10 +162,6 @@ public class ChargeCtrl {
 	public String updatePrice(@RequestParam("priceId") String priceId,
 			@RequestParam("meterId") String meterId){
 		return chargeService.updatePrice(meterId, priceId);
-	}
-	@RequestMapping(value ="/charge/meterCurve")
-	public String meterCurve(){
-		return meterCurve;
 	}
 	
 	@RequestMapping(value="/cahrge/canclePay")
@@ -164,5 +174,96 @@ public class ChargeCtrl {
 	public String cancleCost(@RequestParam("meterDeLogId") String meterDeLogId){
 		
 		return chargeService.cancleCost(meterDeLogId);
+	}
+	
+	@RequestMapping(value="/charge/waterwaste")
+	@ResponseBody
+	public String waterwaste(int m_id,int waste){
+		
+		return chargeService.addwaterwaste(m_id,waste);
+	}
+	
+	@RequestMapping(value="/charge/pay")
+	@ResponseBody
+	public String pay(HttpServletRequest request,int c_id,BigDecimal amount){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return chargeService.addpay(admin.getPid(),c_id,amount);
+	}
+	
+	@RequestMapping(value="/charge/charge/printcharge")
+	public ModelAndView chargePrint(HttpServletRequest request,Model model,int cplid) throws Exception{
+		
+		//根据小区ID  时间  预付费标识  获取用户的交费信息
+		Map map = new HashMap();
+		
+		CustomerpaylogView paylogview = chargeService.getPaylog(cplid);
+		if(paylogview != null){
+			map.put("c_num", paylogview.getC_num());
+			map.put("customerId", paylogview.getCustomerId());
+			map.put("customerName", paylogview.getCustomerName());
+			map.put("customerAddr", paylogview.getCustomerAddr());
+			map.put("adminName", paylogview.getAdminName());
+			map.put("amount", paylogview.getAmount().doubleValue()+"");
+			map.put("cnAmount", TransRMB.transform(paylogview.getAmount().toString()));
+			map.put("customerBalance", paylogview.getCustomerBalance().doubleValue()+"");
+		}
+		//fake data to the datasourse    in the jasper we should use field instead of parameter
+		List list = new ArrayList();
+		list.add(paylogview);
+		map.put("list", list);
+		UserForSession admin = WebUtil.getCurrUser(request);
+		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+		map.put("header",wc.getCompanyName()+"收费单");
+		map.put("tel",wc.getTelephone());
+		
+		return new ModelAndView("charge",map);
+	}
+	
+	@RequestMapping(value="/charge/charge/printdetailcharge")
+	public ModelAndView detailPrint(HttpServletRequest request,Model model,int cid,int cplid) throws Exception{
+		
+		//根据小区ID  时间  预付费标识  获取用户的交费信息
+		Map map = new HashMap();
+		
+
+		//根据交费记录  获取  本次交费记录  上一次交费记录  的信息  获取时间   打印详单使用
+		List<Customerpaylog> paylogs = chargeService.getPaylogLimit2(cid,cplid);
+		
+		List<SettledView> list = new ArrayList<>();
+		BigDecimal sumDemoney = new BigDecimal(0);
+		if(paylogs.size() >= 2){
+			/**
+			 * 获取用户下  两条交费记录之间的扣费信息
+			 */
+			list = chargeService.getMeterDeLog(cid,paylogs.get(1).getActionTime(),paylogs.get(0).getActionTime());
+			SettledView view = null;
+			for(int i = 0;i < list.size();i++){
+				view = list.get(i);
+				sumDemoney = sumDemoney.add(view.getDemoney());
+			}
+		}
+		map.put("sumDemoney", sumDemoney.doubleValue());
+		map.put("list",list);
+		map.put("amount", paylogs.get(0).getAmount().doubleValue());
+		CustomerView cv = custService.getCustomerViewbyCid(cid);
+		map.put("customerBalance", cv.getCustomerBalance().doubleValue());
+		map.put("c_num", cv.getC_num());
+		map.put("customerName", cv.getCustomerName());
+		map.put("customerAddr", cv.getCustomerAddr());
+		
+		UserForSession admin = WebUtil.getCurrUser(request);
+		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+		map.put("header",wc.getCompanyName()+"扣费详单");
+		
+		return new ModelAndView("predetail",map);
+	}
+	
+	@RequestMapping(value="/charge/charge/draw",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String draw(int mid){
+		/**
+		 * 当前表具今年对应的全部的扣费读数
+		 */
+		return chargeService.getDrawMeter(mid);
 	}
 }

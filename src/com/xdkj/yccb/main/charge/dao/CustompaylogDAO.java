@@ -1,7 +1,9 @@
 package com.xdkj.yccb.main.charge.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import com.xdkj.yccb.main.charge.dto.CustomerpaylogView;
 import com.xdkj.yccb.main.entity.Customerpaylog;
 import com.xdkj.yccb.main.statistics.dto.AdminSum;
 import com.xdkj.yccb.main.statistics.dto.PayInfo;
@@ -16,7 +18,7 @@ public interface CustompaylogDAO {
 	 * @date 2015-5-24
 	 * @version 1.0
 	 */
-	List<Customerpaylog> getList(int count,int custId);
+	List<CustomerpaylogView> getList(int count,int custId);
 	
 	
 	public List<PayInfo> getCustomerPayLogs(int n_id, String start, String end, int pre);
@@ -27,4 +29,27 @@ public interface CustompaylogDAO {
 	Customerpaylog getById(Integer id);
 	
 	void updateCustLog(Customerpaylog c);
+
+
+	/**
+	 * 添加用户交费记录
+	 * @param amount
+	 * @param c_id
+	 * return 返回添加的cpl 的ID
+	 */
+	int addPaylog(int adminid,BigDecimal amount, int c_id);
+
+	/**
+	 * 根据用户的交费记录id  返回用于交费单据中使用
+	 * @param cplid
+	 * @return
+	 */
+	CustomerpaylogView getViewById(int cplid);
+
+	/**
+	 * 获取当前cplid 和cplid 前一条记录
+	 * @param cplid
+	 * @return
+	 */
+	List<Customerpaylog> getPaylogLimit2(int cid,int cplid);
 }

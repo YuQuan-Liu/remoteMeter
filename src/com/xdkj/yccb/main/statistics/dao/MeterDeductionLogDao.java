@@ -1,8 +1,10 @@
 package com.xdkj.yccb.main.statistics.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
@@ -16,16 +18,7 @@ import com.xdkj.yccb.main.entity.Meterdeductionlog;
  */
 public interface MeterDeductionLogDao {
 	Meterdeductionlog getMeterDeductionLog(int mdl_id);
-	/**
-	 * Description: 扣费信息  目前显示最新10条
-	 * @param count 查询显示的条数
-	 * @param custId 用户id
-	 * @return 扣费记录
-	 * @author SongWei
-	 * @date 2015-5-24
-	 * @version 1.0
-	 */
-	List<Meterdeductionlog> getList(int count,int custId);
+	
 	
 
 	Meterdeductionlog getById( Integer mdlId);
@@ -58,4 +51,34 @@ public interface MeterDeductionLogDao {
 	 */
 	List<SettledView> getLogAll(int n_id, int settle_id, int pre);
 	List<SettledView> getLouLogAll(int n_id, int settle_id, int pre, String lou);
+	/**
+	 * 根据最新的扣费记录  添加水费减免
+	 * @param m_id
+	 * @param waste
+	 * @return
+	 */
+	int addWaste(int m_id, int waste);
+	/**
+	 * 获取最新的扣费记录
+	 * @param mid
+	 * @return
+	 */
+	Meterdeductionlog getLastmdl(int mid);
+	/**
+	 * 获取当前用户下的  前count条扣费记录
+	 * @param c_id
+	 * @param count
+	 * @return
+	 */
+	List<SettledView> getLogDetail(int c_id, int count);
+	/**
+	 * 当前用户 start  到  end 期间的所有的扣费记录
+	 * @param cid
+	 * @param start
+	 * @param end
+	 * @return
+	 */
+	List<SettledView> getLogDetail(int cid, Date start, Date end);
+
+	List<MeterDereadMonth> getMeterDeread(int mid);
 }

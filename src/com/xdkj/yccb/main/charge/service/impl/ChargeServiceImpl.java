@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.charge.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.sf.jasperreports.engine.util.JsonUtil;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.charge.dao.CustompaylogDAO;
-import com.xdkj.yccb.main.charge.dto.CustompaylogView;
+import com.xdkj.yccb.main.charge.dto.CustomerpaylogView;
+import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
+import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.service.ChargeService;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Customerpaylog;
@@ -23,6 +26,7 @@ import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
 import com.xdkj.yccb.main.statistics.dto.MeterdeductionlogView;
+import com.xdkj.yccb.main.statistics.dto.MonthSettled;
 @Service
 public class ChargeServiceImpl implements ChargeService {
 	@Autowired
@@ -41,50 +45,31 @@ public class ChargeServiceImpl implements ChargeService {
 	}
 
 	@Override
-	public List<CustompaylogView> getCList(String custId, int count) {
-		List<Customerpaylog> list = custompaylogDAO.getList(count, Integer.parseInt(custId));
-		List<CustompaylogView> listView = new ArrayList<CustompaylogView>();
-		for (Customerpaylog cpl : list) {
-			Customer c = cpl.getCustomer();
-			CustompaylogView cplv = new CustompaylogView();
-			cplv.setActionTime(cpl.getActionTime());
-			cplv.setAdminName(cpl.getAdmininfo().getAdminName());
-			cplv.setAmount(cpl.getAmount());
-			cplv.setCustId(c.getCustomerId());
-			cplv.setCustName(c.getCustomerName());
-			cplv.setCustAddr(c.getCustomerAddr());
-			cplv.setCustNo(c.getPid()+"");//这个取。。。
-			cplv.setPid(cpl.getPid());
-			cplv.setPrePaySign(cpl.getPrePaySign());
-			cplv.setRemark(cpl.getRemark());
-			listView.add(cplv);
-		}
-		list = null;
-		return listView;
+	public List<CustomerpaylogView> getCList(int custId, int count) {
+		return custompaylogDAO.getList(count, custId);
+	}
+
+
+	@Override
+	public CustomerpaylogView getPaylog(int cplid) {
+		return custompaylogDAO.getViewById(cplid);
 	}
 
 	@Override
-	public List<MeterdeductionlogView> getMList(String custId, int count) {
-		List<Meterdeductionlog> list = meterDeductionLogDao.getList(count, Integer.parseInt(custId));
-		List<MeterdeductionlogView> listView = new ArrayList<MeterdeductionlogView>();
-		for (Meterdeductionlog mdl : list) {
-			MeterdeductionlogView mdlv = new MeterdeductionlogView();
-			Meter m = mdl.getMeter();
-			mdlv.setActionTime(mdl.getActionTime());
-			mdlv.setCollectaddr(m.getCollectorAddr());
-			mdlv.setDeMoney(mdl.getDeMoney());
-			mdlv.setGprsAddr(m.getGprs().getGprsaddr());
-			mdlv.setLastDeRead(mdl.getLastDeRead());
-			mdlv.setLastDeTime(mdl.getLastDeTime());
-			mdlv.setMeterAddr(m.getMeterAddr());
-			mdlv.setMeterRead(mdl.getMeterRead());
-			mdlv.setMeterReadTime(mdl.getMeterReadTime());
-			mdlv.setPid(mdl.getPid());
-			m = null;
-			listView.add(mdlv);
-		}
-		list = null;
-		return listView;
+	public List<Customerpaylog> getPaylogLimit2(int cid,int cplid) {
+		return custompaylogDAO.getPaylogLimit2(cid,cplid);
+	}
+
+	@Override
+	public List<SettledView> getMList(int c_id, int count) {
+		
+		return meterDeductionLogDao.getLogDetail(c_id, count);
+	}
+	
+
+	@Override
+	public List<SettledView> getMeterDeLog(int cid, Date start, Date end) {
+		return meterDeductionLogDao.getLogDetail(cid, start, end);
 	}
 
 	@Override
@@ -103,7 +88,7 @@ public class ChargeServiceImpl implements ChargeService {
 			custompaylogDAO.updateCustLog(cpl);
 			BigDecimal pay = cpl.getAmount();
 			//将交给额加至Customer 余额 CustomerBalance
-			custDAO.updateCustomerBalance(pay, custId);
+			custDAO.updateCustomerBalance(pay.negate(), custId);
 			//插入操作记录
 			
 		}
@@ -130,4 +115,44 @@ public class ChargeServiceImpl implements ChargeService {
 		return j.toJSONString();
 	}
 
+	@Override
+	public String addwaterwaste(int m_id, int waste) {
+		if(waste > 0){
+			meterDao.updateDeread(m_id,waste);
+			meterDeductionLogDao.addWaste(m_id,waste);
+		}
+		return "1";
+	}
+
+	@Override
+	public String addpay(int adminid,int c_id, BigDecimal amount) {
+		JSONObject jo = new JSONObject();
+		if(amount.doubleValue()>0){
+			Customer c = custDAO.updateCustomerBalance(amount, c_id);
+			int cplid = custompaylogDAO.addPaylog(adminid,amount,c_id);
+			jo.put("balance", c.getCustomerBalance());
+			jo.put("cplid", cplid);
+			return jo.toJSONString();
+		}
+		return jo.toJSONString();
+	}
+
+	@Override
+	public String getDrawMeter(int mid) {
+		List<MeterDereadMonth> list = meterDeductionLogDao.getMeterDeread(mid);
+		JSONObject jo = new JSONObject();
+		JSONArray ja_n = new JSONArray();
+		for(int i = 0;i < 12;i++){
+			ja_n.add(i, 0);
+		}
+		MeterDereadMonth meterDereadMonth = null;
+		for(int i = 0;i < list.size();i++){
+			meterDereadMonth = list.get(i);
+			ja_n.set(meterDereadMonth.getMonth()-1, meterDereadMonth.getMeterread());
+		}
+		jo.put("yl", ja_n);
+		return jo.toJSONString();
+	}
+
+	
 }

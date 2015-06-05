@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
+import com.sun.xml.internal.bind.v2.TODO;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Customer;
@@ -95,7 +96,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 
 	@Override
 	public int updateCustomer(Customer c) {
-		
+		//TODO
 //		String hql = "update Customer c set customername = :name,customerMobile=:mobile,customerEmail=:email,NationalID=:nationalid where c.pid = :pid";
 //		Query q = getSession().createSQLQuery(hql);
 //		q.setString("name", c.getCustomerName());
@@ -171,9 +172,10 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 	}
 
 	@Override
-	public int updateCustomerBalance(BigDecimal b,Integer custId) {
+	public Customer updateCustomerBalance(BigDecimal b,Integer custId) {
 		String hql = "update Customer c set c.customerBalance = c.customerBalance + :balence where c.pid=:custId";
-		return getSession().createSQLQuery(hql).setBigDecimal("balence", b).setInteger("custId", custId).executeUpdate();
+		getSession().createSQLQuery(hql).setBigDecimal("balence", b).setInteger("custId", custId).executeUpdate();
+		return getCustomerByPid(custId);
 	}
 
 	@Override

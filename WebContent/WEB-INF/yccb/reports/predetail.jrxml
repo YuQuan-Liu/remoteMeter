@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="predetail" pageWidth="572" pageHeight="342" orientation="Landscape" columnWidth="460" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28" uuid="824c03a0-2da5-4129-b614-36865cd45e79">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="predetail" pageWidth="572" pageHeight="342" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="460" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28" uuid="824c03a0-2da5-4129-b614-36865cd45e79">
 	<property name="ireport.zoom" value="1.6500000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -16,13 +16,12 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="steelNum" class="java.lang.String"/>
-	<field name="lastread" class="java.lang.String"/>
-	<field name="thisread" class="java.lang.String"/>
-	<field name="changeend" class="java.lang.String"/>
-	<field name="readTime" class="java.lang.String"/>
-	<field name="pkName" class="java.lang.String"/>
-	<field name="yl" class="java.lang.String"/>
-	<field name="demoney" class="java.lang.String"/>
+	<field name="lastderead" class="java.lang.Integer"/>
+	<field name="meterread" class="java.lang.Integer"/>
+	<field name="changeend" class="java.lang.Integer"/>
+	<field name="meterreadtime" class="java.lang.String"/>
+	<field name="pricekindname" class="java.lang.String"/>
+	<field name="demoney" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -273,7 +272,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{lastread}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{lastderead}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="a0a4eed9-baf6-42e1-abc8-3c8ab8fcb8a3" x="110" y="0" width="45" height="16"/>
@@ -287,7 +286,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{thisread}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{meterread}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="2db16cad-d24f-48a8-aac3-721715b04063" x="155" y="0" width="45" height="16"/>
@@ -315,7 +314,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{readTime}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{meterreadtime}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="fa3e8f3d-f5b1-4382-9ed0-cb3b6f2bc7d6" x="269" y="0" width="45" height="16"/>
@@ -329,7 +328,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{yl}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{changeend}>0?($F{changeend}-$F{lastderead}+$F{meterread}):($F{meterread}-$F{lastderead})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="1a7ff1cd-4dc2-409b-b98e-67dced8232e7" x="314" y="0" width="64" height="16"/>
@@ -343,7 +342,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{pkName}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pricekindname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement uuid="15cddef3-f903-493c-8e93-65defd3ae6fd" x="378" y="0" width="75" height="16"/>
@@ -357,7 +356,7 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{demoney}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{demoney}.doubleValue()]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

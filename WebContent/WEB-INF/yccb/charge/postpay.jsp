@@ -106,7 +106,11 @@ $(function(){
 		          {field:'changeend',title:'换表底数',width:80},
 		          {field:'meterreadtime',title:'抄表时间',width:80},
 		          {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
-						return row.meterread-row.lastderead;
+		        	  if(row.changeend > 0){
+		        		  return row.meterread+row.changeend-row.lastderead;
+		        	  }else{
+		        		  return row.meterread-row.lastderead;
+		        	  }
 		          }},
 		          {field:'demoney',title:'扣费金额',width:80}
 		      ]]

@@ -39,10 +39,25 @@ public class MeterView {
 	private Integer overflow;
 	private Integer changend;
 	private Integer changestart;
+	private int readdata;
+	private String readtime;
 //	private char valid;
 //	private String remark;
+	
 	public Integer getPid() {
 		return pid;
+	}
+	public int getReaddata() {
+		return readdata;
+	}
+	public void setReaddata(int readdata) {
+		this.readdata = readdata;
+	}
+	public String getReadtime() {
+		return readtime;
+	}
+	public void setReadtime(String readtime) {
+		this.readtime = readtime;
 	}
 	public void setPid(Integer pid) {
 		this.pid = pid;
