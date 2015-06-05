@@ -29,7 +29,6 @@
 		</form>
 	</div>
 	
-	<div id="controlprogress" class="easyui-progressbar" data-options="text:''" style="width:100%;"></div>
 	<table id="controlTab" style="width:100%;height:400px;"></table>
 	<div style="margin:10px;">
 		<label>阀门开关异常日志</label>
@@ -265,9 +264,8 @@ function closeValveAll(){
 			},
 			success:function(data){
 				if(data.result == "success"){
-					$("#controlprogress").show();
-					intervalbar = setInterval(updateprogress,100);
-					interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
+					$.messager.progress({title:"操作中...",text:"",interval:100});
+					interval = setInterval(function(){checkcontroling(data.pid,-1);},1000);
 				}else{
 					$.messager.alert('Error','操作失败,请稍后再试');
 				}
@@ -305,12 +303,12 @@ function closeValveSingle(mid,index){
 		url:"${path}/readme/valve/valvecontrol.do",
 		dataType:"json",
 		data:{
-			m_id:mid
+			m_id:mid,
+			control:0
 		},
 		success:function(data){
 			if(data.result == "success"){
-				$("#controlprogress").show();
-				intervalbar = setInterval(updateprogress,100);
+				$.messager.progress({title:"操作中...",text:"",interval:100});
 				interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
 			}else{
 				$.messager.alert('Error','操作失败,请稍后再试');
@@ -328,23 +326,19 @@ function checkcontroling(valvelogid,index){
 		},
 		success:function(data){
 			if(data.status == 100){
-				clearInterval(intervalbar);
 				clearInterval(interval);
-				$('#controlprogress').progressbar('setValue', 100);
+				$.messager.progress("close");
 				$.messager.alert('操作结果',"完成个数:"+data.completecount+"\r\n异常个数:"+data.errorcount,'info'); 
 				
 				if(data.completecount+data.errorcount == 1){
 					//单个表
 					$("#controlTab").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
+				}else{
+					showMeterdata();
 				}
 			}
 		}
 	});
-}
-
-function updateprogress(){
-	var value = $('#controlprogress').progressbar('getValue');
-	$('#controlprogress').progressbar('setValue', (value+1)%100);
 }
 
 function printControlError(){

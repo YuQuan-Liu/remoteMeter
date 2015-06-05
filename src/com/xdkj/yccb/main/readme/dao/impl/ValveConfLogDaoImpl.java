@@ -65,7 +65,7 @@ public class ValveConfLogDaoImpl extends HibernateDAO implements ValveConfLogDao
 			conflog = new Valveconflog();
 			conflog.setMeter(meter);
 			conflog.setValvelog(valvelog);
-			conflog.setSwitch_(meter.getValveState() != 0?0:1);
+			conflog.setSwitch_(0);
 			conflog.setResult(0);
 			conflog.setErrorReason("");
 			conflog.setErrorStatus(0);

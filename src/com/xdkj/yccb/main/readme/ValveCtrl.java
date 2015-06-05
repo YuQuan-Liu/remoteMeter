@@ -31,10 +31,10 @@ public class ValveCtrl {
 	
 	@RequestMapping(value="/readme/valve/valvecontrol",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String ValveControl(HttpServletRequest request,String m_id){
+	public String ValveControl(HttpServletRequest request,String m_id,int control){
 		
 		UserForSession admin = WebUtil.getCurrUser(request);
-		return valveControl.valveControl(meterService.getMeterbyPID(m_id), adminDao.getById(admin.getPid()));
+		return valveControl.valveControl(meterService.getMeterbyPID(m_id), adminDao.getById(admin.getPid()),control);
 		
 	}
 

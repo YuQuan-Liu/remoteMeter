@@ -121,7 +121,11 @@ $(function(){
 	      		if(value==1){
 	      			return "开";
 	      		}else{
-	      			return "关";
+	      			if(value == 0){
+	        			  return "关";
+	        		  }else{
+	        			  return "异常";
+	        		  }
 	      		}
 	      	}},
 	      	{field:'deductionStyle',title:'结算方式',width:40},
@@ -408,11 +412,12 @@ $(function(){
 					url:"${path}/readme/valve/valvecontrol.do",
 					dataType:"json",
 					data:{
-						m_id:mid
+						m_id:mid,
+						control:1
 					},
 					success:function(data){
 						if(data.result == "success"){
-							$.messager.progress({text:"",interval:100});
+							$.messager.progress({title:"操作中...",text:"",interval:100});
 							interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
 						}else{
 							$.messager.alert('Error','操作失败,请稍后再试');

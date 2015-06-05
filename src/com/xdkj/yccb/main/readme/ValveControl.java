@@ -29,7 +29,7 @@ public class ValveControl {
 	@Autowired
 	private MeterDao meterDao;
 	
-	public String valveControl(Meter meter, Admininfo admin) {
+	public String valveControl(Meter meter, Admininfo admin,int control) {
 
 		JSONObject jo = new JSONObject();
 		if(meter.getIsValve() == 0){
@@ -67,7 +67,7 @@ public class ValveControl {
 		Valveconflog conflog = new Valveconflog();
 		conflog.setMeter(meter);
 		conflog.setValvelog(valvelog);
-		conflog.setSwitch_(meter.getValveState() != 0?0:1);
+		conflog.setSwitch_(control);
 		conflog.setResult(0);
 		conflog.setErrorReason("");
 		conflog.setErrorStatus(0);

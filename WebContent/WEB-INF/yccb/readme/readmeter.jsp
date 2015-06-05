@@ -25,12 +25,10 @@
 		</form>
 	</div>
 	
-	<div id="readprogress" class="easyui-progressbar" data-options="text:''" style="width:100%;"></div>
 	<table id="readmeterTab" style="width:100%;height:400px;"></table>
 	<p>水损统计</p>
 	<table id="louwasteTab" style="width:500px;height:200px;"></table>
 <script>
-var intervalbar;
 var interval;
 $(function(){
 	$("#readprogress").hide();
@@ -82,7 +80,12 @@ $(function(){
 		        	  if(value == 1){
 		        		  return "开";
 		        	  }else{
-		        		  return "关";
+		        		  if(value == 0){
+		        			  return "关";
+		        		  }else{
+		        			  return "异常";
+		        		  }
+		        		 
 		        	  }
 		          }},
 		          {field:'deread',title:'扣费读数',width:80},
@@ -91,7 +94,11 @@ $(function(){
 		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
 							var id = row.m_id;
-							return "<a href='#' class='operateHref' onclick='openValve("+id+","+index+")'> 开/关阀 </a>"
+							var action = "开阀";
+							if(row.valveState == 1){
+								action = "关阀";
+							}
+							return "<a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a>"
 							+"<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'> 抄表 </a>"
 							+"<a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'> 修改 </a>";
 				  }}
@@ -152,8 +159,7 @@ function readNeighbor(){
 			},
 			success:function(data){
 				if(data.result == "success"){
-					$("#readprogress").show();
-					intervalbar = setInterval(updateprogress,100);
+					$.messager.progress({title:"抄表中...",text:"",interval:100});
 					interval = setInterval(function(){checkreading(data.pid,-1);},1000);
 				}else{
 					$.messager.alert('Error','抄表失败,请稍后再试');
@@ -169,8 +175,7 @@ function readNeighbors(){
 		dataType:"json",
 		success:function(data){
 			if(data.result == "success"){
-				$("#readprogress").show();
-				intervalbar = setInterval(updateprogress,100);
+				$.messager.progress({title:"抄表中...",text:"",interval:100});
 				interval = setInterval(function(){checkreading(data.pid,-1);},1000);
 			}else{
 				$.messager.alert('Error','抄表失败,请稍后再试');
@@ -188,8 +193,7 @@ function readMeter(mid,index){
 		},
 		success:function(data){
 			if(data.result == "success"){
-				$("#readprogress").show();
-				intervalbar = setInterval(updateprogress,100);
+				$.messager.progress({title:"抄表中...",text:"",interval:100});
 				interval = setInterval(function(){checkreading(data.pid,index);},1000);
 			}else{
 				$.messager.alert('Error','抄表失败,请稍后再试');
@@ -255,9 +259,8 @@ function checkreading(readlogid,index){
 		},
 		success:function(data){
 			if(data.readStatus == 100){
-				clearInterval(intervalbar);
 				clearInterval(interval);
-				$('#readprogress').progressbar('setValue', 100);
+				$.messager.progress("close");
 				$.messager.alert('抄表结果',"结果:"+data.result+"\r\n失败原因:"+data.failReason,'info');  
 				if(data.readobject == 1){
 					//单个小区  
@@ -292,19 +295,26 @@ function showNeighborWaste(readlogid){
 	});
 }
 
-function openValve(mid,index){
+function openValve(mid,index_){
+	var valveState = $('#readmeterTab').datagrid('getRows')[index_]["valveState"];
+	var control = 0;
+	if(valveState == 1){
+		control = 0;
+	}else{
+		control = 1;
+	}
 	$.ajax({
 		type:"POST",
 		url:"${path}/readme/valve/valvecontrol.do",
 		dataType:"json",
 		data:{
-			m_id:mid
+			m_id:mid,
+			control:control
 		},
 		success:function(data){
 			if(data.result == "success"){
-				$("#readprogress").show();
-				intervalbar = setInterval(updateprogress,100);
-				interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
+				$.messager.progress({text:"",interval:100});
+				interval = setInterval(function(){checkcontroling(data.pid,index_);},1000);
 			}else{
 				$.messager.alert('Error','操作失败,请稍后再试');
 			}
@@ -321,9 +331,8 @@ function checkcontroling(valvelogid,index){
 		},
 		success:function(data){
 			if(data.status == 100){
-				clearInterval(intervalbar);
 				clearInterval(interval);
-				$('#readprogress').progressbar('setValue', 100);
+				$.messager.progress("close");
 				$.messager.alert('操作结果',"完成个数:"+data.completecount+"\r\n异常个数:"+data.errorcount,'info'); 
 				
 				if(data.completecount+data.errorcount == 1){
@@ -335,10 +344,6 @@ function checkcontroling(valvelogid,index){
 	});
 }
 
-function updateprogress(){
-	var value = $('#readprogress').progressbar('getValue');
-	$('#readprogress').progressbar('setValue', (value+1)%100);
-}
 </script>
 </body>
 </html>
