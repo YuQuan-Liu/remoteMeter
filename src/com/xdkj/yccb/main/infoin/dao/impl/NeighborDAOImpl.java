@@ -25,22 +25,12 @@ import com.xdkj.yccb.main.statistics.dto.SettledWater;
 import com.xdkj.yccb.main.statistics.dto.SettledWaterN;
 @Repository
 public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborDAO {
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Neighbor> getList(NeighborView nbr, PageBase pb) {
-		String hql = "from Neighbor nbr where nbr.valid='1' ";
-		Query q = getSession().createQuery(hql);
-		q.setFirstResult((pb.getPage()-1)*pb.getRows());
-		q.setMaxResults(pb.getRows());
-		return q.list();
-	}
 	
 	public List<Neighbor> getList(int depart_id,int wcid) {
 		String hql = "";
 		if(depart_id == 0){
 			//获取自来水下全部小区
-			hql = "from Neighbor nbr where nbr.valid='1' and wcid = "+ wcid +" ";
+			hql = "from Neighbor nbr where nbr.valid='1' and nbr.watercompany.pid = "+ wcid +" ";
 		}else{
 			//获取片区下的全部小区
 			hql = "select neighbor from Detaildepart detail where detail.valid='1' and detail.department.pid = "+depart_id+" and detail.neighbor.valid = 1 ";
@@ -50,6 +40,19 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		return q.list();
 	}
 
+	@Override
+	public String checkn_name(int wcid, String n_name) {
+		String sql = "from Neighbor nbr where nbr.valid='1' and nbr.neighborName = :n_name and nbr.watercompany.pid = "+ wcid +" ";
+		Query q = getSession().createQuery(sql);
+		q.setString("n_name", n_name);
+		
+		if(null == q.uniqueResult()){
+			return "false";
+		}
+		return "true";
+		
+	}
+	
 	@Override
 	public int addNeighbor(Neighbor nbr) {
 		this.getHibernateTemplate().save(nbr);
@@ -78,19 +81,12 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void delete(String ids) {
-		String[] id = ids.split(",");
-		List<Integer> idlist = new ArrayList<Integer>();
-		for (String str : id) {
-			idlist.add(Integer.parseInt(str));
-			}
-		Query q = this.getSession().createQuery("from Neighbor nbr where nbr.pid in(:ids)");
-		q.setParameterList("ids", idlist);
-		Iterator nbr = q.list().iterator();
-		while(nbr.hasNext()){
-			Neighbor nbor = (Neighbor) nbr.next();
-			nbor.setValid("0");
-		}
+	public void delete(int id) {
+		
+		String sql = "update Neighbor set valid = 0 where pid = :n_id ";
+		Query q = getSession().createSQLQuery(sql);
+		q.setInteger("n_id", id);
+		q.executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -358,6 +354,20 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		}
 		return list;
 	}
+
+	@Override
+	public String checkGPRSAddr(String gprsaddr) {
+		String sql = "from Gprs g where g.valid='1' and g.gprsaddr = :gprsaddr";
+		Query q = getSession().createQuery(sql);
+		q.setString("gprsaddr", gprsaddr);
+		
+		if(null == q.uniqueResult()){
+			return "false";
+		}
+		return "true";
+	}
+
+	
 	
 	
 	

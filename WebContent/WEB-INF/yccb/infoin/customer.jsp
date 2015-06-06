@@ -80,16 +80,16 @@ $(function(){
 		          {field:'warnThre',title:'余额阀值',width:60},
 		          {field:'warnStyle',title:'提醒方式',width:60,editor:'text',formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "预";
+		        		  return "短信";
 		        	  }else{
-		        		  return "后";
+		        		  return "邮件";
 		        	  }
 		          }},
 		          {field:'warnSwitch',title:'提醒开关',width:60,editor:'text',formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "预";
+		        		  return "开";
 		        	  }else{
-		        		  return "后";
+		        		  return "关";
 		        	  }
 		          }},
 		          {field:'action',title:'操作',width:200,halign:'center',align:'center',

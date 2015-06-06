@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.security.UserForSession;
 
 @Controller
 public class NeighborCtrl {
@@ -37,9 +39,10 @@ public class NeighborCtrl {
 	
 	@RequestMapping(value="/infoin/neighbor/listContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String listContent(NeighborView nv,Neighbor nb,PageBase pb){
-		int count = neighborService.getCount(nb, pb);
-		return JsonDataUtil.getJsonData(neighborService.getList(nv, pb), count);
+	public String listContent(HttpServletRequest request){
+		
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return JSON.toJSONString(neighborService.getList(admin.getDepart_id(), admin.getWaterComId()));
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/addPage")
@@ -47,10 +50,18 @@ public class NeighborCtrl {
 		return neighborAdd;
 	}
 	
+	@RequestMapping(value="/infoin/neighbor/searchn_name",method=RequestMethod.POST)
+	@ResponseBody
+	public String checkn_name(HttpServletRequest request,String n_name){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return JSON.toJSONString(neighborService.checkn_name(admin.getWaterComId(),n_name));
+	}
+	
 	@RequestMapping(value="/infoin/neighbor/add",method=RequestMethod.POST)
 	@ResponseBody
-	public String add(Neighbor nv){
-		return neighborService.addNeighbor(nv);
+	public String add(HttpServletRequest request,Neighbor nv){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return neighborService.addNeighbor(admin.getPid(),admin.getWaterComId(),admin.getDepart_id(),nv);
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/updatePage")
@@ -70,8 +81,8 @@ public class NeighborCtrl {
 	
 	@RequestMapping(value="/infoin/neighbor/delete",method=RequestMethod.POST)
 	@ResponseBody
-	public String delete(@RequestParam("pids") String pids){
-		return neighborService.deleteNbrById(pids);
+	public String delete(int pid){
+		return neighborService.deleteNbrById(pid);
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/gprsListContent",produces="application/json;charset=UTF-8")
@@ -80,15 +91,9 @@ public class NeighborCtrl {
 		return JSON.toJSONString(neighborService.getGprsByNbrId(Integer.parseInt(pid)));
 	}
 	
-//	@RequestMapping(value="/infoin/neighbor/gprscombo",produces="application/json;charset=UTF-8")
-//	@ResponseBody
-//	public String gprsComboListContent(@RequestParam("n_id") String n_id){
-//		return JSON.toJSONString(neighborService.getGprsComboByNbrId(Integer.parseInt(n_id)));
-//	}
-	
 	@RequestMapping(value="/infoin/neighbor/deleteGprsById",method=RequestMethod.POST)
 	@ResponseBody
-	public String deleteGprsById(@RequestParam("pid") String pid){
+	public String deleteGprsById(@RequestParam("pid") int pid){
 		return neighborService.deleteGprsById(pid);
 	}
 	
@@ -96,6 +101,12 @@ public class NeighborCtrl {
 	public String addPageGprs(@RequestParam("neighborid") String neighborid,Model model){
 		model.addAttribute("neighborid",neighborid);
 		return gprsAdd;
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/searchgprs_addr",method=RequestMethod.POST)
+	@ResponseBody
+	public String checkGPRSAddr(String gprsaddr){
+		return JSON.toJSONString(neighborService.checkGPRSAddr(gprsaddr));
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/addGprs",method=RequestMethod.POST)

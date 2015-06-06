@@ -15,8 +15,6 @@ import com.xdkj.yccb.main.statistics.dto.SettledWaterN;
 
 public interface NeighborDAO {
 	
-	List<Neighbor> getList(NeighborView nbr,PageBase pb);
-	
 	/*
 	 * 根据片区id获取所有的小区的信息  
 	 * 片区id==0  返回自来水公司下的所有的小区
@@ -31,7 +29,7 @@ public interface NeighborDAO {
 	
 	void update (Neighbor nbr);
 	
-	void delete(String ids);
+	void delete(int id);
 	/**
 	 * 通过自来水公司id获取小区集合
 	 * @param wcId 自来水公司id
@@ -58,6 +56,10 @@ public interface NeighborDAO {
 	List<SettledWaterN> getSettledWaterN(String ids, int year);
 
 	List<ChargeRate> getChargeRate(String ids, int year);
+
+	public String checkn_name(int wcid, String n_name);
+
+	public String checkGPRSAddr(String gprsaddr);
 
 	
 }

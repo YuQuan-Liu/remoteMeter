@@ -16,6 +16,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.adminor.dao.DetaildepartDAO;
+import com.xdkj.yccb.main.entity.Department;
+import com.xdkj.yccb.main.entity.Detaildepart;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Watercompany;
@@ -37,28 +40,8 @@ public class NeighborServiceImpl implements NeighborService {
 	private NeighborDAO neighborDAO;
 	@Autowired
 	private GprsDAO gprsDAO;
-
-	@Override
-	public List<NeighborView> getList(NeighborView nbr, PageBase pb) {
-		List<Neighbor> list = neighborDAO.getList(nbr, pb);
-		List<NeighborView> listView = new ArrayList<NeighborView>();
-		for (Neighbor ngbr : list) {
-			NeighborView nv = new NeighborView();
-			nv.setPid(ngbr.getPid());
-			nv.setIp(ngbr.getIp());
-			nv.setMainMeter(ngbr.getMainMeter());
-			nv.setNeighborAddr(ngbr.getNeighborAddr());
-			nv.setNeighborName(ngbr.getNeighborName());
-			nv.setRemark(ngbr.getRemark());
-			nv.setTimer(ngbr.getTimer());
-			nv.setTimerSwitch(ngbr.getTimerSwitch());
-			nv.setValid(ngbr.getValid());
-			nv.setWatercompany(ngbr.getWatercompany().getCompanyName());
-			listView.add(nv);
-		}
-		list = null;
-		return listView;
-	}
+	@Autowired
+	private DetaildepartDAO detaildepartDAO;
 	
 	public List<NeighborView> getList(int depart_id,int wcid){
 		List<Neighbor> list = neighborDAO.getList(depart_id, wcid);
@@ -80,33 +63,49 @@ public class NeighborServiceImpl implements NeighborService {
 		}
 		
 		return listView;
-//		if(depart_id == 0){
-//			return neighborDAO.getList(depart_id, wcid);
-//		}else{
-//			List<Neighbor> list = new ArrayList<>();
-//			for (Object detail : neighborDAO.getList(depart_id, wcid)) {
-//				list.add(((Detaildepart)detail).getNeighbor());
-//			}
-//			return list;
-//		}
-		
-		
 	}
 
 	@Override
-	public String addNeighbor(Neighbor nbr) {
+	public String addNeighbor(int adid,int wcid,int depart_id,Neighbor nbr) {
 		//此处暂时默认自来水公司（待定）
 		Watercompany wc = new Watercompany();
-		wc.setPid(1);
+		wc.setPid(wcid);
 		nbr.setWatercompany(wc);
 		nbr.setValid("1");
 		int pid = neighborDAO.addNeighbor(nbr);
+		
 		if(pid > 0){
+			if(depart_id > 0){
+				//add to the department 
+				Detaildepart detail = new Detaildepart();
+				Department depart = new Department();
+				depart.setPid(depart_id);
+				detail.setDepartment(depart);
+				
+				detail.setNeighbor(nbr);
+				detail.setValid("1");
+				detaildepartDAO.addDetaildepart(detail);
+			}
 			return "succ";
 		}
 		return "fail";
 	}
 
+
+	@Override
+	public String checkn_name(int wcid, String n_name) {
+		
+		return neighborDAO.checkn_name(wcid,n_name);
+	}
+	
+
+	@Override
+	public String checkGPRSAddr(String gprsaddr) {
+		
+		return neighborDAO.checkGPRSAddr(gprsaddr);
+	}
+
+	
 	@Override
 	public String updateNeighbor(Neighbor nbr) {
 		neighborDAO.update(nbr);
@@ -114,11 +113,11 @@ public class NeighborServiceImpl implements NeighborService {
 	}
 
 	@Override
-	public String deleteNbrById(String nbrId) {
+	public String deleteNbrById(int nbrId) {
 		//这边“删除”小区后，集中器级联“删除”，事务能不鞥你回滚有待验证？
 		//……
 		neighborDAO.delete(nbrId);
-		gprsDAO.deleteByNbrId(nbrId);
+//		gprsDAO.deleteByNbrId(nbrId);
 		return "succ";
 	}
 
@@ -157,8 +156,8 @@ public class NeighborServiceImpl implements NeighborService {
 	}
 
 	@Override
-	public String deleteGprsById(String gprsId) {
-		gprsDAO.deleteGprs(Integer.parseInt(gprsId));
+	public String deleteGprsById(int gprsId) {
+		gprsDAO.deleteGprs(gprsId);
 		return "succ";
 	}
 
@@ -367,5 +366,6 @@ public class NeighborServiceImpl implements NeighborService {
 		return jo.toJSONString();
 		
 	}
+
 
 }

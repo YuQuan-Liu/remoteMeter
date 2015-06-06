@@ -2,7 +2,7 @@ package com.xdkj.yccb.main.infoin.dto;
 
 public class NeighborView {
 	private Integer pid;
-	private String watercompany;
+//	private String watercompany;
 	private String neighborName;
 	private String neighborAddr;
 	private int mainMeter;
@@ -17,12 +17,12 @@ public class NeighborView {
 	public void setPid(Integer pid) {
 		this.pid = pid;
 	}
-	public String getWatercompany() {
-		return watercompany;
-	}
-	public void setWatercompany(String watercompany) {
-		this.watercompany = watercompany;
-	}
+//	public String getWatercompany() {
+//		return watercompany;
+//	}
+//	public void setWatercompany(String watercompany) {
+//		this.watercompany = watercompany;
+//	}
 	public String getNeighborName() {
 		return neighborName;
 	}

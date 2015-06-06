@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>片区列表</title>
+<title>小区</title>
 <%@include file="/commonjsp/top.jsp" %>
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/datagrid-detailview.js"></script>
 </head>
@@ -14,8 +14,8 @@ $(function(){
 		url:'${path}/infoin/neighbor/listContent.do',
 		fit:true,
 		fitColumns:true,
-		pagination:true,
-		pageList:[5,10,15,20],
+// 		pagination:true,
+// 		pageList:[5,10,15,20],
 		queryParams:{},
 		rownumbers:true,
 		border:false,
@@ -27,16 +27,27 @@ $(function(){
 			{field:'pid',title:'ID',width:100,checkbox:true},	
 			{field:'neighborName',title:'小区名',width:100,halign:'center',align:'left'},	
 			{field:'neighborAddr',title:'地址',width:100,halign:'center',align:'left'},
-			{field:'mainMeter',title:'有无管理表',width:100,halign:'center',align:'center',formatter:TFFormatter},
-			{field:'timerSwitch',title:'定时抄表开关',width:100,halign:'center',align:'center',formatter:TFFormatter},
+			{field:'mainMeter',title:'有无管理表',width:100,halign:'center',align:'center',formatter:function(value,row,index){
+				if(value == 1){
+					return "有";
+				}else{
+					return "无";
+				}
+			}},
+			{field:'timerSwitch',title:'定时抄表开关',width:100,halign:'center',align:'center',formatter:function(value,row,index){
+				if(value == 1){
+					return "开";
+				}else{
+					return "关";
+				}
+			}},
 			{field:'timer',title:'定时抄表时间',width:100,halign:'center',align:'center'},
-			{field:'watercompany',title:'自来水公司',width:100,halign:'center',align:'left'},
+			{field:'ip',title:'抄表IP',width:100,halign:'center',align:'left'},
 			{field:'remark',title:'备注',width:100,halign:'center',align:'left'},
-			{field:'aa',title:'操作',width:100,halign:'center',align:'center',
-				formatter: function(value,row,index){
+			{field:'action',title:'操作',width:100,halign:'center',align:'center',formatter: function(value,row,index){
 					var id = row.pid;
 					return "<a href='#' class='operateHref' onclick='addGprs("+id+")'>添加集中器</a> ";
-				}}
+			}}
 		]],
 		toolbar: [{ 
 			text: '<fmt:message key="common.add"/>', 
@@ -44,17 +55,14 @@ $(function(){
 			handler: function() { 
 				$('#addNeighborWin').window({	
 					href:'${path}/infoin/neighbor/addPage.do',
-					width:467,	
-					height:300,
+					width:500,
+					height:350,
 					minimizable:false,
 					maximizable:false,
-					title: '添加小区'/* , 
-					onLoad:function(){	
-						//alert('loaded successfully'); 
-					}	*/
-				}); 
-			} 
-		}, '-', { 
+					title: '添加小区'
+				});
+			}
+		}, '-', {
 			text: '<fmt:message key="common.update"/>', 
 			iconCls: 'icon-edit', 
 			handler: function() { 
@@ -64,53 +72,56 @@ $(function(){
 					var pid = rows[0].pid;
 					$('#updateNeighborWin').window({	
 						href:'${path}/infoin/neighbor/updatePage.do?pid='+pid,
-						width:467,	
-						height:300,
+						width:500,
+						height:350,
 						minimizable:false,
 						maximizable:false,
-						title: '更新小区'/* , 
-						onLoad:function(){	
-							//alert('loaded successfully'); 
-						}	*/
-					}); 
+						title: '更新小区'
+					});
 					
 				}else if(leng>1){
 					$.messager.alert('提示','请选择一条记录！');
 				}else{
 					$.messager.alert('提示','未选中任何记录！');
 				}
-			} 
+			}
 		}, '-',{ 
 			text: '<fmt:message key="common.delete"/>', 
-			iconCls: 'icon-remove', 
-			handler: function(){ 
+			iconCls: 'icon-remove',
+			handler: function(){
 				var rows = $('#neighborListTab').datagrid('getSelections');
 				if(rows.length==0){
 					$.messager.alert('提示','请选择记录！');
+					return;
 				}else{
-					var pids = "";
-					rows.forEach(function(obj){  
-						pids += obj.pid+",";
-					});
-					$.messager.confirm('提示','确定要删除选中记录吗？',function(r){	
+					if(rows.length > 1){
+						$.messager.alert('提示','请选择一条记录！');
+						return;
+					}
+					var pid = rows[0].pid;
+					var index_ = $('#neighborListTab').datagrid('getRowIndex',rows[0]);
+					var name = rows[0].neighborName;
+					
+					$.messager.confirm('提示','确定要删除'+name+'吗？',function(r){	
 						if (r){	
 							$.ajax({
 								url:'delete.do',
 								type:'post',
-								data:{'pids':pids},
-								success:function(typ){
-									if(typ=="succ"){
-										$.messager.alert('提示','删除成功！','info',
-												function(){
-												 	$('#neighborListTab').datagrid('reload');
-												 });
+								data:{pid:pid},
+								success:function(data){
+									if(data=="succ"){
+										$.messager.show({
+											title:"删除小区",
+											msg:"删除成功",
+											showType:'slide'
+										});
+										$('#neighborListTab').datagrid('deleteRow',index_);
 									}
 								}
 							});	
 						}	
 					}); 
 				}
-				 
 			} 
 		}]
 	});
@@ -118,26 +129,40 @@ $(function(){
 	$('#neighborListTab').datagrid({
 		view: detailview,
 		detailFormatter:function(index,row){
-			return '<div style="padding:2px"><table id="ddv-' + index + '"></table></div>';
+			return '<div style="padding:2px"><table id="ddv-' + row.pid + '"></table></div>';
 		},
 		onExpandRow: function(index,row){
-			$('#ddv-'+index).datagrid({
-				url:'gprsListContent.do?pid='+row.pid,
+			$('#ddv-'+row.pid).datagrid({
+				url:'${path}/infoin/neighbor/gprsListContent.do?pid='+row.pid,
 				fitColumns:true,
 				singleSelect:true,
 				rownumbers:true,
 				loadMsg:'',
 				height:'auto',
 				columns:[[
-					{field:'gprstel',title:'集中器SIM',width:100,halign:'center',align:'right'},
-					{field:'gprsaddr',title:'集中器地址',width:100,halign:'center',align:'left'},
-					{field:'installAddr',title:'安装地址',width:100,halign:'center',align:'left'},
-					{field:'gprsprotocol',title:'使用协议',width:100,halign:'center',align:'right'},
+					{field:'gprstel',title:'集中器SIM',width:100,halign:'center'},
+					{field:'gprsaddr',title:'集中器地址',width:100,halign:'center'},
+					{field:'installAddr',title:'安装地址',width:100,halign:'center'},
+					{field:'gprsprotocol',title:'使用协议',width:100,halign:'center',formatter:function(value,row,index){
+						if(value == 1){
+							return "自主协议";
+						}else{
+							if(value == 2){
+								return "188协议";
+							}else{
+								return "异常";
+							}
+						}
+					}},
+					{field:'ip',title:'监听IP',width:100,halign:'center'},
+					{field:'port',title:'监听端口',width:100,halign:'center'},
 					{field:'remark',title:'备注',width:100,halign:'center'},
-					{field:'aa',title:'操作',width:100,halign:'center',align:'center',
-						formatter: function(value,row,index){
-							var id = row.pid;
-							return "<a href='#' class='operateHref' onclick='updatePageGprs("+id+")'>修改</a> | <a href='#' class='operateHref' onclick='deleteGprsById("+id+")'>删除</a>";
+					{field:'action',title:'操作',width:100,halign:'center',align:'center',
+						formatter: function(value,row_,index){
+							var id = row_.pid;
+							var nid = row.pid;
+							return "<a href='#' class='operateHref' onclick='updatePageGprs("+id+")'>修改</a>"
+							+"<a href='#' class='operateHref' onclick='deleteGprsById("+id+","+nid+","+index+")'>删除</a>";
 						}
 					}
 				]],
@@ -154,61 +179,51 @@ $(function(){
 		}
 	});
 });
-function TFFormatter(val,row){
-	if(val=="1")
-	return "有";
-	if(val=="0")
-	return "无";
-}
-//查询
-function query(){
-	var queryParams = $('#neighborListTab').datagrid('options').queryParams;
-	queryParams.uid = 111;
-	queryParams.uname = "fdasf";
-	$('#neighborListTab').datagrid('load');
-}
+
 //根据小区 id 添加集中器
 function addGprs(pid){
 	$('#addGprsWin').window({	
-		href:'addPageGprs.do?neighborid='+pid,
-		width:467,	
+		href:'${path}/infoin/neighbor/addPageGprs.do?neighborid='+pid,
+		width:500,
 		height:300,
 		minimizable:false,
 		maximizable:false,
-		title: '添加集中器'/* , 
-		onLoad:function(){	
-			//alert('loaded successfully'); 
-		}	*/
+		title:'添加集中器'
 	}); 
 }
 
 //修改集中器信息
 function updatePageGprs(pid){
 	$('#updateGprsWin').window({	
-		href:'updatePageGprs.do?pid='+pid,
-		width:467,	
+		href:'${path}/infoin/neighbor/updatePageGprs.do?pid='+pid,
+		width:500,	
 		height:300,
 		minimizable:false,
 		maximizable:false,
-		title: '修改集中器'/* , 
-		onLoad:function(){	
-			//alert('loaded successfully'); 
-		}	*/
+		title: '修改集中器'
 	}); 
 }
 
 //删除单个集中器
-function deleteGprsById(id){
+function deleteGprsById(id,nid,index){
 	$.ajax({
-		url:'deleteGprsById.do',
+		url:'${path}/infoin/neighbor/deleteGprsById.do',
 		type:'post',
-		data:{'pid':id},
+		data:{pid:id},
 		success:function(typ){
 			if(typ=="succ"){
-				$.messager.alert('提示','删除成功！','info',
-						function(){
-						 	$('#neighborListTab').datagrid('reload');
-						 });
+				
+				$.messager.show({
+					title:"删除集中器",
+					msg:"删除成功",
+					showType:'slide'
+				});
+				$('#ddv-'+nid).datagrid('deleteRow',index);
+				
+// 				$.messager.alert('提示','删除成功！','info',
+// 						function(){
+// 						 	$('#neighborListTab').datagrid('reload');
+// 						 });
 			}
 		}
 	});	

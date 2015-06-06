@@ -14,24 +14,23 @@ import com.xdkj.yccb.main.statistics.dto.SettledWaste;
 
 public interface NeighborService {
 	
-	List<NeighborView> getList(NeighborView nv,PageBase pb);
 	/*
 	 * 根据片区id获取所有的小区的信息  
 	 * 片区id==0  返回自来水公司下的所有的小区
 	 */
 	public List<NeighborView> getList(int depart_id,int wcid);
 	
-	String addNeighbor(Neighbor nbr);
+	String addNeighbor(int adid,int wcid,int depart_id,Neighbor nbr);
 	
 	String updateNeighbor(Neighbor nv);
-	String deleteNbrById(String nbrId);
+	String deleteNbrById(int nbrId);
 	int getCount(Neighbor nv, PageBase pb);
 	
 	Neighbor getNbrById(int nbrId);
 	String addGprs(Gprs gprs);
 	String updateGprs(Gprs gprs);
 	Gprs getGprsById(int gprsId);
-	String deleteGprsById(String gprsId);
+	String deleteGprsById(int gprsId);
 	
 	List<GprsView> getGprsByNbrId(int nbrId);
 	List<NeighborBalance> getNeighborBalance(int n_id);
@@ -91,5 +90,22 @@ public interface NeighborService {
 	 * @return
 	 */
 	String getDrawChargerate(List<NeighborView> neighbor_list, int year);
+
+	/**
+	 * 根据自来水公司ID  和小区名获取 是否已经录入  
+	 * @param waterComId
+	 * @param n_name
+	 * @return
+	 *  数据库中包含  true
+	 *  没有  false
+	 */
+	public String checkn_name(int waterComId, String n_name);
+
+	/**
+	 * 检测集中器是否已经录入
+	 * @param gprsaddr
+	 * @return
+	 */
+	public String checkGPRSAddr(String gprsaddr);
 	
 }

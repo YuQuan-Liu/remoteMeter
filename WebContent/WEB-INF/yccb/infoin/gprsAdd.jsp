@@ -8,28 +8,54 @@
 </head>
 <body>
 <script type="text/javascript">
-$(function(){
+
+$.extend($.fn.validatebox.defaults.rules, {
+	nonValidate: {
+        validator: function(value, param){
+            return false;
+        }
+    }
 });
+
 function submitForm(){
-	if($('#addGprsForm').form('validate')){
-		//一个小区下的集中器的IP和端口必须相同
-		if($("#ip").val() == $("#port").val()){
-			$('#addGprsForm').form('submit', {   
-			    success: function(data){   
-			       if(data=="succ"){
-			    	   $.messager.alert('添加集中器','添加成功！','info',
-							function(){
-			    		   		$('#addGprsWin').window('close');
-							 	$('#neighborListTab').datagrid('reload');
-							 });
-			       }
-			    }   
-			});  
-		}else{
-			$.messager.alert('提示','集中器的IP和端口必须相同');   
+	
+	$('#addGprsForm').form('submit', {
+		onSubmit:function(){
+			return $('#addGprsForm').form('validate');
+		},
+		success: function(data){
+			if(data=="succ"){
+				$.messager.show({
+					title:"更新小区",
+					msg:"更新成功",
+					showType:'slide'
+				});
+				$('#updateNeighborWin').window('close');
+				$('#neighborListTab').datagrid('reload');
+			}
+		}	
+	});
+}
+
+//检查集中器的地址  是否已经存在
+function checkGPRSAddr(){
+	var addr = $("#gprsaddr").textbox("getValue");
+	
+	$.ajax({
+		type:"POST",
+		url:"${path}/infoin/neighbor/searchgprs_addr.do",
+		data:{
+			gprsaddr:addr
+		},
+		dataType:"json",
+		success:function(data){
+			if(data == 'true'){
+				$("#gprsaddr").textbox("enableValidation");
+			}else{
+				$("#gprsaddr").textbox("disableValidation");
+			}
 		}
-		
-	}
+	});
 }
 function clearForm(){
 	$('#addGprsForm').form('clear');
@@ -37,15 +63,16 @@ function clearForm(){
 </script>
 <form action="${path}/infoin/neighbor/addGprs.do" id="addGprsForm" method="post">
  <input type="hidden" id="neighborid" name="neighborid" value="${neighborid }"/>
- <div style="padding:10px 0 10px 60px">
-			<table>
+ <div style="padding:10px;">
+			<table style="margin:0px auto">
 	    		<tr>
 	    			<td>SIM卡号：</td>
-	    			<td><input class="easyui-textbox" type="text" name="gprstel" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="gprstel" id="gprstel" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>集中器地址：</td>
-	    			<td><input class="easyui-textbox" type="text" name="gprsaddr" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="gprsaddr" id="gprsaddr" 
+						data-options="required:true,novalidate:true,onChange:checkGPRSAddr,invalidMessage:'集中器已存在！'" validType="nonValidate[]"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>安装地址:</td>
@@ -53,14 +80,19 @@ function clearForm(){
 	    		</tr>
 	    		<tr>
 	    			<td>使用协议：</td>
-	    			<td><input class="easyui-textbox" type="text" name="gprsprotocol" data-options="required:true"/></td>
+	    			<td>
+	    				<select class="easyui-combobox" name="gprsprotocol" data-options="panelHeight:'auto'" style="width: 80px">
+							<option value="1">自主协议</option>
+							<option value="2" selected="selected">188协议</option>
+						</select>
+	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>抄表IP：</td>
+	    			<td>监听IP：</td>
 	    			<td><input class="easyui-textbox" type="text" id="ip" name="ip" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>抄表端口：</td>
+	    			<td>监听端口：</td>
 	    			<td><input class="easyui-textbox" type="text" id="port" name="port" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>

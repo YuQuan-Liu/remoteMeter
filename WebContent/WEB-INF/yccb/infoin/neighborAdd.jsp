@@ -8,40 +8,66 @@
 </head>
 <body>
 <script type="text/javascript">
-$(function(){
-	
-});
 
 function submitForm(){
-	if($('#addNeighborForm').form('validate')){
-		$('#addNeighborForm').form('submit', {	
-			success: function(data){	
-				if(data=="succ"){
-					$.messager.alert('添加小区','添加成功！','info',
-						function(){
-						 	$('#addNeighborWin').window('close');
-						 	$('#neighborListTab').datagrid('reload');
-						 });
-				}
-			}	
-		});  
-	}
+	$('#addNeighborForm').form('submit', {	
+		onSubmit:function(){
+			return $('#addNeighborForm').form('validate');
+		},
+		success: function(data){
+			if(data=="succ"){
+				$.messager.show({
+					title:"添加小区",
+					msg:"添加成功",
+					showType:'slide'
+				});
+				$('#addNeighborWin').window('close');
+				$('#neighborListTab').datagrid('reload');
+			}
+		}	
+	}); 
 }
 //检查本自来水公司下此小区是否已经存在
 function checkNbrName(){
-alert(111);
+	var name = $("#neighborName").textbox("getValue");
+	
+	$.ajax({
+		type:"POST",
+		url:"${path}/infoin/neighbor/searchn_name.do",
+		data:{
+			n_name:name
+		},
+		dataType:"json",
+		success:function(data){
+			if(data == 'true'){
+				$("#neighborName").textbox("enableValidation");
+			}else{
+				$("#neighborName").textbox("disableValidation");
+			}
+		}
+	});
 }
+
+$.extend($.fn.validatebox.defaults.rules, {
+	nonValidate: {
+        validator: function(value, param){
+            return false;
+        }
+    }
+});
 
 function clearForm(){
 	$('#addNeighborForm').form('clear');
 }
 </script>
 	<form action="${path}/infoin/neighbor/add.do" id="addNeighborForm" method="post">
-	 	<div style="padding:10px 0 10px 60px">
-			<table>
+	 	<div style="padding:10px;">
+			<table style="margin:0px auto;">
 				<tr>
 					<td>小区名：</td>
-					<td><input class="easyui-textbox" type="text" name="neighborName" data-options="required:true" onblur="checkNbrName()"/></td>
+<!-- 					<td><input class="easyui-textbox" type="text" name="neighborName" id="neighborName" data-options="required:true,delay:2500" validType="checkNbrName['#neighborName']"/></td> -->
+						<td><input class="easyui-textbox" type="text" name="neighborName" id="neighborName" 
+						data-options="required:true,novalidate:true,onChange:checkNbrName,invalidMessage:'小区已存在！'" validType="nonValidate[]"/></td>
 				</tr>
 				<tr>
 					<td>地址：</td>
@@ -60,14 +86,18 @@ function clearForm(){
 					<td>定时抄表开关：</td>
 					<td>
 						<select class="easyui-combobox" name="timerSwitch" data-options="panelHeight:'auto'" style="width: 80px">
-							<option value="1" >有</option>
-							<option value="0" selected="selected">无</option>
+							<option value="1" >开</option>
+							<option value="0" selected="selected">关</option>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<td>定时抄表时间：</td>
 					<td><input class="easyui-textbox" type="text" name="timer" data-options="required:true" value="01 00 00"/></td>
+				</tr>
+				<tr>
+					<td>抄表IP：</td>
+					<td><input class="easyui-textbox" type="text" name="ip" data-options="required:true" value=""/></td>
 				</tr>
 				<tr>
 					<td>备注：</td>
