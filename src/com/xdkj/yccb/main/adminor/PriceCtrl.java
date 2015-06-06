@@ -21,6 +21,7 @@ import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.PriceService;
 import com.xdkj.yccb.main.entity.Pricekind;
 import com.xdkj.yccb.main.entity.Watercompany;
+import com.xdkj.yccb.security.UserForSession;
 /**
  * 单价
  * @author SGR
@@ -53,10 +54,10 @@ public class PriceCtrl {
 	
 	@RequestMapping(value="/admin/price/listContent",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String priceListContent(PriceKindView pkv, PageBase pb){
-		List<PriceKindView> list = priceService.getList(pkv, pb);
-		int total = priceService.getTotalCount(pkv);
-		return JsonDataUtil.getJsonData(list, total);
+	public String priceListContent(HttpServletRequest request){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		List<PriceKindView> list = priceService.getList(admin.getWaterComId());
+		return JSON.toJSONString(list);
 	}
 	/**
 	 * 获取单价下基本单价信息
@@ -72,9 +73,39 @@ public class PriceCtrl {
 	@RequestMapping(value="/admin/price/addprice")
 	@ResponseBody
 	public String addPriceKind(Pricekind pk,BasicpriceValues bpv,HttpServletRequest request){
+		
 		int wcid = WebUtil.getCurrUser(request).getWaterComId();
 		pk.setWatercompany(new Watercompany(wcid));
 		return priceService.addPriceKind(pk,bpv);
 	}
+	
+	@RequestMapping(value="/admin/price/checkpkname")
+	@ResponseBody
+	public String checkpkname(String pkname,HttpServletRequest request){
+		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		return JSON.toJSONString(priceService.checkPKname(pkname,wcid));
+	}
 
+	@RequestMapping(value="/admin/price/deletepk",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String deletePK(int pid){
+		return JSON.toJSONString(priceService.deletePK(pid));
+	}
+	
+	@RequestMapping(value="/admin/price/pricechange")
+	public String pricechange(Model model,HttpServletRequest request){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		//单价
+		List<PriceKindView> pk_list = priceService.getList(admin.getWaterComId());
+		model.addAttribute("pk_list", pk_list);
+				
+		return "/adminor/priceChange";
+	}
+	
+	@RequestMapping(value="/admin/price/changepk",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String changepk(int old_,int new_){
+		
+		return JSON.toJSONString(priceService.changepk(old_,new_));
+	}
 }

@@ -7,7 +7,6 @@ import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.entity.Pricekind;
 
 public interface PriceKindDAO {
-	List<Pricekind> getList(PriceKindView pkv,PageBase pb);
 	
 	/**
 	 * 根据自来水公司的pid  获取自来水公司下的全部单价  显示
@@ -20,4 +19,10 @@ public interface PriceKindDAO {
 	Integer addPriceKind(Pricekind pk);
 	boolean update(Pricekind pk);
 	Pricekind getById(int pid);
+
+	String checkPKname(String pkname, int wcid);
+
+	String deletePK(int pid);
+
+	String changepk(int old_, int new_);
 }

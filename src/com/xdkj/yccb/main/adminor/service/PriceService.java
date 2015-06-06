@@ -10,14 +10,7 @@ import com.xdkj.yccb.main.entity.Basicprice;
 import com.xdkj.yccb.main.entity.Pricekind;
 
 public interface PriceService {
-	/**
-	 * 单价列表
-	 * @param pkv
-	 * @param pb
-	 * @return
-	 */
-	List<PriceKindView> getList(PriceKindView pkv,PageBase pb);
-
+	
 	/**
 	 * 根据自来水公司的pid  获取自来水公司下的全部单价  显示
 	 * @param wcid
@@ -67,5 +60,25 @@ public interface PriceService {
 	 * @return
 	 */
 	Pricekind getById(int pid);
+	/**
+	 * 自来水下是否已近有这个单价名了
+	 * @param pkname
+	 * @param wcid
+	 * @return
+	 */
+	public String checkPKname(String pkname, int wcid);
+	/**
+	 * 删除单价
+	 * @param pid
+	 * @return
+	 */
+	public String deletePK(int pid);
+	/**
+	 * 调整单价  
+	 * @param old_
+	 * @param new_
+	 * @return
+	 */
+	public String changepk(int old_, int new_);
 
 }

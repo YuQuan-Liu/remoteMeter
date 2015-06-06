@@ -10,8 +10,8 @@ $(function(){
 	$('#priceListTab').datagrid({
 	    url:'${path}/admin/price/listContent.do',
 	    fit:true,
-	    pagination:true,
-	    pageList:[5,10,15,20],
+// 	    pagination:true,
+// 	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
 	    border:false,
@@ -21,11 +21,12 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'priceKindName',title:'单价名',width:100},
-	        {field:'watercompany',title:'自来水公司',width:100},
-	        {field:'remark',title:'备注',width:100},
-	        {field:'mark',title:'操作',width:100,formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'>查看</a> ";
+	        {field:'priceKindName',title:'单价名',width:100,halign:'center'},
+// 	        {field:'watercompany',title:'自来水公司',width:100},
+	        {field:'remark',title:'备注',width:100,halign:'center'},
+	        {field:'action',title:'操作',width:100,halign:'center',align:'center',formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'>查看</a> "+
+				"<a href='#' class='operateHref' onclick='deleteprice("+row.pid+","+index+")'>删除</a> ";
 			}}
 	    ]],
 	    toolbar: [{ 
@@ -34,7 +35,7 @@ $(function(){
 	        handler: function() { 
 	        	$('#priceAddWin').window({   
 	    		    href:'${path}/admin/price/priceAddPage.do',
-	    		    width:600,   
+	    		    width:600,
 	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
@@ -42,69 +43,18 @@ $(function(){
 	    		}); 
 	        } 
 	    }, '-', { 
-	        text: '<fmt:message key="common.update"/>', 
+	        text: '调整单价', 
 	        iconCls: 'icon-edit', 
 	        handler: function() { 
-	        	var rows = $('#priceListTab').datagrid('getSelections');
-	        	var leng = rows.length;
-	        	if(leng==1){
-	        		var pid = rows[0].pid;
-	        		$('#priceUpdateWin').window({   
-		    		    href:'${path}/admin/price/updatePage.do?pid='+pid,
-		    		    width:400,   
-		    		    height:250,
-		    		    minimizable:false,
-		    		    maximizable:false,
-		    		    title: '更新单价'
-		    		}); 
-	        		
-	        	}else if(leng>1){
-	        		 $.messager.show({
-							title:'更新单价',
-							msg:'请选择一条记录！',
-							showType:'slide',
-							timeout:3000
-						});
-	        	}else{
-	        		 $.messager.show({
-							title:'更新单价',
-							msg:'未选中单价！',
-							showType:'slide',
-							timeout:3000
-						});
-	        	}
-	        } 
-	    }, '-',{ 
-	        text: '<fmt:message key="common.delete"/>', 
-	        iconCls: 'icon-remove', 
-	        handler: function(){ 
-	        	var rows = $('#watComListTab').datagrid('getSelections');
-	        	var pids = "";
-	        	if(rows.length > 0){
-	        		$.messager.confirm('删除自来水公司', 'Are you confirm this?', function(r){
-	    				if (r){
-	    					rows.forEach(function(obj){  
-	    		        	    pids += obj.pid+",";
-	    		        	});
-	    					$.ajax({
-	    						   type: "POST",
-	    						   url: "some.php",
-	    						   data: "name=John&location=Boston",
-	    						   success: function(msg){
-	    						     alert( "Data Saved: " + msg );
-	    						   }
-	    						});
-	    				}
-	    			});
-	        	}else{
-	        		 $.messager.show({
-							title:'删除单价',
-							msg:'请选择单价！',
-							showType:'slide',
-							timeout:3000
-						});
-	        	}
-	        } 
+	        	$('#priceChangeWin').window({   
+	    		    href:'${path}/admin/price/pricechange.do',
+	    		    width:600,
+	    		    height:250,
+	    		    minimizable:false,
+	    		    maximizable:false,
+	    		    title: '更新单价'
+	    		});
+	        }
 	    }]
 	});
 })
@@ -116,15 +66,38 @@ function priceDetail(priceId){
 	    height:350,
 	    minimizable:false,
 	    maximizable:false,
-	    title: '片区详情' 
+	    title: '单价信息' 
 	}); 
+}
+
+function deleteprice(pid,index_){
+	
+	$.messager.confirm('提示', '确定要删除选中单价吗？', function(r){
+		if(r){
+			$.ajax({
+				url:'${path}/admin/price/deletepk.do',
+				type:'post',
+				data:{pid:pid},
+				success:function(data){
+					if(data=="true"){
+						$.messager.show({
+							title:"删除单价",
+							msg:"删除成功",
+							showType:'slide'
+						});
+						$('#priceListTab').datagrid('deleteRow',index_);
+					}
+				}
+			});	
+		}
+	});
 }
 </script>
 </head>
 <body>
 <table id="priceListTab"></table>
 <div id="priceAddWin"></div>
-<div id="priceUpdateWin"></div>
+<div id="priceChangeWin"></div>
 <div id="priceDetailWin"></div>
 </body>
 </html>

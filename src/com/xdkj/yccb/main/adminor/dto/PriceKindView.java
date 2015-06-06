@@ -4,7 +4,7 @@ package com.xdkj.yccb.main.adminor.dto;
 public class PriceKindView {
 	
 	private Integer pid;
-	private String watercompany;
+//	private String watercompany;
 	private String priceKindName;
 	private double priceKindFine;
 	private String valid;
@@ -15,12 +15,12 @@ public class PriceKindView {
 	public void setPid(Integer pid) {
 		this.pid = pid;
 	}
-	public String getWatercompany() {
-		return watercompany;
-	}
-	public void setWatercompany(String watercompany) {
-		this.watercompany = watercompany;
-	}
+//	public String getWatercompany() {
+//		return watercompany;
+//	}
+//	public void setWatercompany(String watercompany) {
+//		this.watercompany = watercompany;
+//	}
 	public String getPriceKindName() {
 		return priceKindName;
 	}

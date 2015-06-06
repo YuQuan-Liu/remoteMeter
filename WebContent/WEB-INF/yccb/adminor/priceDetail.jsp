@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>片区详情</title>
+<title>基本单价</title>
 <%@include file="/commonjsp/top.jsp" %>
 </head>
 <body>
@@ -14,13 +14,13 @@ $(function(){
 	    striped:true,
 	    fit:false,
 	    rownumbers:true,
-	    border:false,
+// 	    border:false,
 	    autoRowHeight:false,
 	    rowStyler: function(index,row){
 				return 'height:30px;';
 			},
 	    columns:[[
-	        {field:'pid',title:'',width:80,checkbox:true},
+// 	        {field:'pid',title:'',width:80,checkbox:true},
 	        {field:'basicPriceName',title:'基本单价名',width:80},   
 	        {field:'basicPriceFirst',title:'一阶单价',width:80,formatter:numFormatter},   
 	        {field:'basicFirstOver',title:'一阶超量',width:80},
@@ -43,10 +43,10 @@ function closeWin(){
 	    	<table>
 	    		<tr>
 	    			<td>单价名：</td>
-	    			<td><input class="easyui-textbox" type="text" name="departmentName" data-options="required:true" readonly="readonly" value="${price.priceKindName }"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="priceKindName" data-options="disabled:true" readonly="readonly" value="${price.priceKindName }"/></td>
 	    			<td>备注：</td>
 	    			<td>
-	    			<input class="easyui-textbox" name="remark" type="text" readonly="readonly" value="${price.remark }"/>
+	    			<input class="easyui-textbox" name="remark" type="text" data-options="disabled:true" readonly="readonly" value="${price.remark }"/>
 	    			</td>
 	    		</tr>
 	    	</table>

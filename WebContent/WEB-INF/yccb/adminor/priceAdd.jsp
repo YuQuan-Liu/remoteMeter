@@ -12,7 +12,7 @@ var editIndex = undefined;
 var isChecked = undefined;
 var bpTab = $('#basicPriceTab');
 function endEditing(){
-	if (editIndex == undefined){return true}
+	if (editIndex == undefined){return true;}
 	if ($('#basicPriceTab').datagrid('validateRow', editIndex)){
 		$('#basicPriceTab').datagrid('endEdit', editIndex);
 		editIndex = undefined;
@@ -24,46 +24,39 @@ function endEditing(){
 $(function(){
 	bpTab.datagrid({
 	    fit:false,
-	    border:false,
 	    singleSelect:true,
 	    autoRowHeight:false,
-	    onClickCell: function(index){
-	    	bpTab.datagrid('endEdit', index);
+	    onClickRow: function(index,row){
+	    	$('#basicPriceTab').datagrid('endEdit', index);
 		},
-		onDblClickCell: function(index, field){
-			if (endEditing()){
-				bpTab.datagrid('selectRow', index)
-						.datagrid('editCell', {index:index,field:field});
-				editIndex = index;
-			}
+		onDblClickRow: function(index,row){
+	    	if (editIndex != index){
+	            if (endEditing()){
+	                $('#basicPriceTab').datagrid('selectRow', index).datagrid('beginEdit', index);
+	                editIndex = index;
+	            } else {
+	                $('#basicPriceTab').datagrid('selectRow', editIndex);
+	            }
+	        }
+	    	bpTab.datagrid('beginEdit', index);
 		},
 	    columns:[[
 	        {field:'pid',title:'',width:80,checkbox:true},
-	        {field:'basicPriceName',title:'基本单价名',width:80,editor:{type:'validatebox',options:{required:true,missingMessage:'请输入基本单价名！'}}},   
-	        {field:'basicPriceFirst',title:'一阶单价',width:80,editor:{type:'numberbox',options:{precision:2,required:true,missingMessage:'请输入一阶单价!'}}},   
-	        {field:'basicFirstOver',title:'一阶超量',width:80,editor:{type:'numberbox',options:{precision:0,required:true,missingMessage:'请输入一阶超量!'}}},
-	        {field:'basicPriceSecond',title:'二阶单价',width:80,editor:{type:'numberbox',options:{precision:2,required:true,missingMessage:'请输入二阶单价!'}}},
-	        {field:'basicSecondOver',title:'二阶超量',width:80,editor:{type:'numberbox',options:{precision:0,required:true,missingMessage:'请输入二阶超量!'}}},
-	        {field:'basicPriceThird',title:'三阶单价',width:80,editor:{type:'numberbox',options:{precision:2,required:true,missingMessage:'请输入三阶单价!'}}}
+	        {field:'basicPriceName',title:'基本单价名',width:80,editor:{type:'validatebox'}},
+	        {field:'basicPriceFirst',title:'一阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},   
+	        {field:'basicFirstOver',title:'一阶超量',width:80,editor:{type:'numberbox',options:{precision:0}}},
+	        {field:'basicPriceSecond',title:'二阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},
+	        {field:'basicSecondOver',title:'二阶超量',width:80,editor:{type:'numberbox',options:{precision:0}}},
+	        {field:'basicPriceThird',title:'三阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}}
 	    ]],
-	    toolbar: [{ 
+	    data:[{"basicPriceName":"","basicPriceFirst":0,"basicFirstOver":0,"basicPriceSecond":0,"basicSecondOver":0,"basicSecondOver":0,"basicPriceThird":0}],
+	    toolbar: [{
 	        text: '添加', 
 	        iconCls: 'icon-add', 
 	        handler: function() {
-	        	var row = bpTab.datagrid('getSelected');
-	        	var rowIndex = bpTab.datagrid('getRowIndex',row);
-	        	if(bpTab.datagrid('validateRow',rowIndex)){
-	        		$('#basicPriceTab').datagrid('insertRow',{
-		        		row: {}
-		        	});
-	        	}else{
-	        		 $.messager.show({
-							title:'添加基本单价',
-							msg:'请先完成上条编辑！',
-							showType:'slide',
-							timeout:3000
-						});
-	        	}
+	        	$('#basicPriceTab').datagrid('insertRow',{
+	        		row: {"basicPriceName":"","basicPriceFirst":0,"basicFirstOver":0,"basicPriceSecond":0,"basicSecondOver":0,"basicSecondOver":0,"basicPriceThird":0}
+	        	});
 	        } 
 	    },
 	    '-',{ 
@@ -82,39 +75,19 @@ $(function(){
 						timeout:3000
 					});
 	        	}
-	        	} 
+	        } 
 	    }]
 	});
 	
-	/**
-	编辑列
-	*/
-	$.extend($.fn.datagrid.methods, {
-		editCell: function(jq,param){
-			return jq.each(function(){
-				var opts = $(this).datagrid('options');
-				var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
-				for(var i=0; i<fields.length; i++){
-					var col = $(this).datagrid('getColumnOption', fields[i]);
-					col.editor1 = col.editor;
-					if (fields[i] != param.field){
-						col.editor = null;
-					}
-				}
-				$(this).datagrid('beginEdit', param.index);
-				for(var i=0; i<fields.length; i++){
-					var col = $(this).datagrid('getColumnOption', fields[i]);
-					col.editor = col.editor1;
-				}
-			});
-		}
-	});
+	
 })
 
 function submitForm(){
-	if($('#priceAddForm').form('validate')){
-		getBasicData();
-		$('#priceAddForm').form('submit', {   
+	if(getBasicData()){
+		$('#priceAddForm').form('submit', {
+			onSubmit:function(){
+				return $('#priceAddForm').form('validate');
+			},
 		    success: function(data){   
 		       if(data=="succ"){
 		    	   $('#priceAddWin').window('close');
@@ -127,29 +100,105 @@ function submitForm(){
 				 	$('#priceListTab').datagrid('reload');
 		       }
 		    }   
-		});  
+		});
 	}
 }
-function clearForm(){
-	getBasicData();
-	$('#priceAddForm').form('clear');
-	}
+
+function checkPKName(){
+	var name = $("#priceKindName").textbox("getValue");
+	
+	$.ajax({
+		type:"POST",
+		url:"${path}/admin/price/checkpkname.do",
+		data:{
+			pkname:name
+		},
+		dataType:"json",
+		success:function(data){
+			if(data == 'true'){
+				$("#priceKindName").textbox("enableValidation");
+			}else{
+				$("#priceKindName").textbox("disableValidation");
+			}
+		}
+	});
+}
+
+$.extend($.fn.validatebox.defaults.rules, {
+	nonValidate: {
+        validator: function(value, param){
+            return false;
+        }
+    }
+});
+
+var bps = [];
 //获取添加基本单价的数据
 function getBasicData(){
 	var rows = bpTab.datagrid('getRows');
-	alert(rows.length);
+	$('#basicPriceTab').datagrid('endEdit', editIndex);
+	
 	if(rows.length>0){
 		var basicPriceName='',basicPriceFirst='',basicFirstOver='',
 		basicPriceSecond='',basicSecondOver='',basicPriceThird='';
+		
 		for(var i=0;i<rows.length;i++){
 			var row = rows[i];
-			//pid+=row.pid+",";
-			basicPriceName += row.basicPriceName+",";
-			basicPriceFirst += row.basicPriceFirst+",";
-			basicFirstOver += row.basicFirstOver+",";
-			basicPriceSecond += row.basicPriceSecond+",";
-			basicSecondOver +=row.basicSecondOver+",";
-			basicPriceThird+=row.basicPriceThird+",";
+			
+			if(row.basicPriceName == ""){
+				$.messager.show({
+					title : 'Info',
+					msg : '基本单价名不可为空！',
+					showType : 'slide',
+					timeout:0
+				});
+				return false;
+			}
+			
+			if(row.basicPriceFirst == 0){
+				$.messager.show({
+					title : 'Info',
+					msg : '一阶单价不可为空！',
+					showType : 'slide',
+					timeout:0
+				});
+				return false;
+			}
+			
+			if(row.basicFirstOver < row.basicSecondOver){
+				$.messager.show({
+					title : 'Info',
+					msg : '二阶超量要大于一阶超量！',
+					showType : 'slide',
+					timeout:0
+				});
+				return false;
+			}
+			
+			basicPriceName += row.basicPriceName;
+			basicPriceFirst += row.basicPriceFirst;
+			basicFirstOver += row.basicFirstOver;
+			basicPriceSecond += row.basicPriceSecond;
+			basicSecondOver +=row.basicSecondOver;
+			basicPriceThird+=row.basicPriceThird;
+			
+			if(i != rows.length-1){
+				basicPriceName += ",";
+				basicPriceFirst += ",";
+				basicFirstOver += ",";
+				basicPriceSecond += ",";
+				basicSecondOver += ",";
+				basicPriceThird += ",";
+			}
+// 			var bp = new Object();
+// 			bp.basicPriceName = row.basicPriceName;
+// 			bp.basicPriceFirst = row.basicPriceFirst;
+// 			bp.basicFirstOver = row.basicFirstOver;
+// 			bp.basicPriceSecond = row.basicPriceSecond;
+// 			bp.basicSecondOver = row.basicSecondOver;
+// 			bp.basicPriceThird = row.basicPriceThird;
+// // 			alert(JSON.stringify(bp));
+// 			bps.push(JSON.stringify(bp));
 		}
 		$('#basicPriceName').val(basicPriceName);
 		$('#basicPriceFirst').val(basicPriceFirst);
@@ -157,39 +206,39 @@ function getBasicData(){
 		$('#basicPriceSecond').val(basicPriceSecond);
 		$('#basicSecondOver').val(basicSecondOver);
 		$('#basicPriceThird').val(basicPriceThird);
+		return true;
 	}
 }
 </script>
 
-		<div style="padding:10px 0 10px 60px">
-	    <form id="priceAddForm" method="post" action="${path}/admin/price/addprice.do">
-	    	<input type="hidden" name="valid" value="1"/>
-	    	<!-- 添加基本单价 -->
-	    	<input type="hidden" name="basicPriceName" value="" id="basicPriceName"/>
-	    	<input type="hidden" name="basicPriceFirst" value="" id="basicPriceFirst"/>
-	    	<input type="hidden" name="basicFirstOver" value="" id="basicFirstOver"/>
-	    	<input type="hidden" name="basicPriceSecond" value="" id="basicPriceSecond"/>
-	    	<input type="hidden" name="basicSecondOver" value="" id="basicSecondOver"/>
-	    	<input type="hidden" name="basicPriceThird" value="" id="basicPriceThird"/>
-	    	<table>
-	    		<tr>
-	    			<td>单价名：</td>
-	    			<td><input class="easyui-textbox" type="text" name="priceKindName" data-options="required:true"/></td>
-	    			<td>备注：</td>
-	    			<td>
-	    			<input class="easyui-textbox" name="remark" type="text"/>
-	    			</td>
-	    		</tr>
-	    	</table>
-	    </form>
-	  </div>
-	  
-	   <div style="padding:10px 10px 0 10px">
+	<div style="padding: 10px 0 10px 60px">
+		<form id="priceAddForm" method="post" action="${path}/admin/price/addprice.do">
+			<input type="hidden" name="valid" value="1" />
+			<!-- 添加基本单价 -->
+			<input type="hidden" name="basicPriceName" value="" id="basicPriceName" /> 
+			<input type="hidden" name="basicPriceFirst" value="" id="basicPriceFirst" /> 
+			<input type="hidden" name="basicFirstOver" value="" id="basicFirstOver" /> 
+			<input type="hidden" name="basicPriceSecond" value="" id="basicPriceSecond" />
+			<input type="hidden" name="basicSecondOver" value="" id="basicSecondOver" /> 
+			<input type="hidden" name="basicPriceThird" value="" id="basicPriceThird" />
+			<table>
+				<tr>
+					<td>单价名：</td>
+					<td><input class="easyui-textbox" type="text" name="priceKindName" id="priceKindName" 
+					data-options="required:true,novalidate:true,onChange:checkPKName,invalidMessage:'单价名已存在！'" validType="nonValidate[]" /></td>
+					<td>备注：</td>
+					<td><input class="easyui-textbox" name="remark" type="text" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<div style="padding: 10px 10px 0 10px">
 		<table id="basicPriceTab"></table>
-	  </div>
-	    <div style="text-align:center;padding:5px;margin-bottom: 20px;">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()"><fmt:message key='common.reset'/></a>
-	    </div>
+	</div>
+	<div style="text-align: center; padding: 5px; margin-bottom: 20px;">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit' /></a> 
+	</div>
 </body>
 </html>

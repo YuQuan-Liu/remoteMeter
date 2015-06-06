@@ -206,27 +206,26 @@ function updatePageGprs(pid){
 
 //删除单个集中器
 function deleteGprsById(id,nid,index){
-	$.ajax({
-		url:'${path}/infoin/neighbor/deleteGprsById.do',
-		type:'post',
-		data:{pid:id},
-		success:function(typ){
-			if(typ=="succ"){
-				
-				$.messager.show({
-					title:"删除集中器",
-					msg:"删除成功",
-					showType:'slide'
-				});
-				$('#ddv-'+nid).datagrid('deleteRow',index);
-				
-// 				$.messager.alert('提示','删除成功！','info',
-// 						function(){
-// 						 	$('#neighborListTab').datagrid('reload');
-// 						 });
-			}
+	$.messager.confirm('提示', '确定要删除选中记录吗？', function(r){
+		if(r){
+			$.ajax({
+				url:'${path}/infoin/neighbor/deleteGprsById.do',
+				type:'post',
+				data:{pid:id},
+				success:function(typ){
+					if(typ=="succ"){
+						
+						$.messager.show({
+							title:"删除集中器",
+							msg:"删除成功",
+							showType:'slide'
+						});
+						$('#ddv-'+nid).datagrid('deleteRow',index);
+					}
+				}
+			});	
 		}
-	});	
+	});
 }
 </script>
 	<table id="neighborListTab"></table>

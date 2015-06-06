@@ -24,24 +24,6 @@ public class PriceServiceImpl implements PriceService {
 	private PriceKindDAO priceKindDAO;
 	@Autowired
 	private BasicpriceDAO basicpriceDAO;
-
-	@Override
-	public List<PriceKindView> getList(PriceKindView pkv, PageBase pb) {
-		List<Pricekind> list = priceKindDAO.getList(pkv, pb);
-		List<PriceKindView> listView = new ArrayList<PriceKindView>();
-		for (Pricekind pk0 : list) {
-			PriceKindView pkv0 = new PriceKindView();
-			pkv0.setPid(pk0.getPid());
-			pkv0.setPriceKindFine(pk0.getPriceKindFine());
-			pkv0.setPriceKindName(pk0.getPriceKindName());
-			pkv0.setRemark(pk0.getRemark());
-			pkv0.setValid(pk0.getValid());
-			pkv0.setWatercompany(pk0.getWatercompany().getCompanyName());
-			listView.add(pkv0);
-		}
-		list=null;
-		return listView;
-	}
 	
 	public List<PriceKindView> getList(int wcid) {
 		List<Pricekind> list = priceKindDAO.getList(wcid);
@@ -74,11 +56,12 @@ public class PriceServiceImpl implements PriceService {
 		int pkId = priceKindDAO.addPriceKind(pk);
 		//添加基本单价逻辑处理
 		String[] basicPriceName = bpv.getBasicPriceName().split(",");
-		String[] basicPriceFirst = bpv.getBasicFirstOver().split(",");
+		String[] basicPriceFirst = bpv.getBasicPriceFirst().split(",");
 		String[] basicFirstOver = bpv.getBasicFirstOver().split(",");
 		String[] basicPriceSecond = bpv.getBasicPriceSecond().split(",");
 		String[] basicSecondOver = bpv.getBasicSecondOver().split(",");
 		String[] basicPriceThird = bpv.getBasicPriceThird().split(",");
+		
 		for (int i = 0; i < basicPriceName.length; i++) {
 			Basicprice bp = new Basicprice();
 			bp.setBasicPriceName(basicPriceName[i]);
@@ -143,6 +126,24 @@ public class PriceServiceImpl implements PriceService {
 	@Override
 	public Pricekind getById(int pid) {
 		return priceKindDAO.getById(pid);
+	}
+
+	@Override
+	public String checkPKname(String pkname, int wcid) {
+		
+		return priceKindDAO.checkPKname(pkname,wcid);
+	}
+
+	@Override
+	public String deletePK(int pid) {
+		
+		return priceKindDAO.deletePK(pid);
+	}
+
+	@Override
+	public String changepk(int old_, int new_) {
+		
+		return priceKindDAO.changepk(old_,new_);
 	}
 
 }
