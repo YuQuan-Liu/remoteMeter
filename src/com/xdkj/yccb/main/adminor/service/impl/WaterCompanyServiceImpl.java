@@ -58,16 +58,11 @@ public class WaterCompanyServiceImpl implements WaterCompanyService {
 	}
 
 	@Override
-	public String delete(String pids) {
-		if(null!=pids&&!"".equals(pids)){
-			String [] ids = pids.split(",");
-			Integer [] delIds = null;
-			for (int i = 0; i < delIds.length; i++) {
-				delIds [i] = Integer.parseInt(ids [i]);
-			}
-			waterCompanyDAO.deleteByIds(delIds);
-		}
-		return "succ";
+	public String update(Watercompany watcom) {
+		
+		return waterCompanyDAO.updateWC(watcom);
 	}
+
+	
 
 }

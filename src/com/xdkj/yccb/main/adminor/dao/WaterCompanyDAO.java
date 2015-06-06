@@ -14,5 +14,5 @@ public interface WaterCompanyDAO {
 	
 	Watercompany getById(Integer pid);
 	
-	void deleteByIds(Integer [] pids);
+	String updateWC(Watercompany watcom);
 }

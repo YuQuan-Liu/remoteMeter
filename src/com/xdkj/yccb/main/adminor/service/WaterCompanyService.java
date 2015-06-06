@@ -8,7 +8,7 @@ import com.xdkj.yccb.main.entity.Watercompany;
 
 public interface WaterCompanyService {
 	/**
-	 * 获取列表信息
+	 * 获取列表信息  获取系统中所有的自来水信息
 	 * @param watcom
 	 * @param pageInfo
 	 * @return
@@ -29,9 +29,9 @@ public interface WaterCompanyService {
 	
 	Watercompany getById(String pid);
 	/**
-	 * 逻辑删除自来水公司
-	 * @param pids 自来水公司id集合
-	 * @return succ或fail
+	 * 更新自来水公司信息
+	 * @param watcom
+	 * @return
 	 */
-	String delete(String pids);
+	String update(Watercompany watcom);
 }

@@ -104,4 +104,18 @@ public class ReadCtrl {
 		
 		readService.addWaste(wid,reason);
 	}
+	
+	@RequestMapping(value="/readme/read/export")
+	public void addWaste(){
+		
+		try {
+			Class c = Class.forName("com.xdkj.yccb.main.readme.ExportDemo");
+			ExportDemo demo = (ExportDemo) c.newInstance();
+			demo.sayhello();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
 }

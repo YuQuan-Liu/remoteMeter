@@ -15,9 +15,8 @@ public class WaterCompanyDAOImpl extends HibernateDAO<Watercompany> implements W
 
 	@Override
 	public List<Watercompany> getList(Watercompany watcom, PageBase pageInfo) {
-		StringBuffer hql = new StringBuffer();
-		hql.append("from Watercompany wc where 1=1");
-		Query q = getSession().createQuery(hql.toString());
+		String hql = "from Watercompany wc ";
+		Query q = getSession().createQuery(hql);
 		return q.list();
 	}
 
@@ -44,9 +43,9 @@ public class WaterCompanyDAOImpl extends HibernateDAO<Watercompany> implements W
 	}
 
 	@Override
-	public void deleteByIds(Integer[] pids) {
-		String hql = "update Watercompany w set w.";
-		
+	public String updateWC(Watercompany watcom) {
+		getSession().update(watcom);
+		return "succ";
 	}
 
 }

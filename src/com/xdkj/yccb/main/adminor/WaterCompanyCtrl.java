@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.adminor.dto.WaterCompanyView;
@@ -36,8 +37,9 @@ public class WaterCompanyCtrl {
 	@ResponseBody
 	public String waterCompanyListContent(Watercompany watcom,PageBase pageInfo){
 		List<WaterCompanyView> list = waterCompanyService.getList(watcom, pageInfo);
-		int totalCount = waterCompanyService.getTotalCount(watcom);
-		return JsonDataUtil.getJsonData(list, totalCount);
+//		int totalCount = waterCompanyService.getTotalCount(watcom);
+//		return JsonDataUtil.getJsonData(list, totalCount);
+		return JSON.toJSONString(list);
 	}
 	@RequestMapping(value="admin/watcom/addPage",method=RequestMethod.GET)
 	public String addPage(){
@@ -54,9 +56,9 @@ public class WaterCompanyCtrl {
 		model.addAttribute("watcom", waterCompanyService.getById(pid));
 		return waterComUpdate;
 	}
-	@RequestMapping(value="admin/watcom/delete",method=RequestMethod.POST)
+	@RequestMapping(value="admin/watcom/update",method=RequestMethod.POST)
 	@ResponseBody
-	public String delete(@RequestParam("pids")String pids){
-		return waterCompanyService.delete(pids);
+	public String update(Watercompany watcom){
+		return waterCompanyService.update(watcom);
 	}
 }

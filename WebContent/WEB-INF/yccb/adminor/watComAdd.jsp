@@ -11,40 +11,46 @@
 $(function(){
 	
 })
+$.extend($.fn.validatebox.defaults.rules, {
+    equals: {
+        validator: function(value,param){
+            return value == $(param[0]).val();
+        },
+        message: '两次密码不相同.'
+    }
+});
 function submitForm(){
-	if($('#watAddForm').form('validate')){
-		$('#watAddForm').form('submit', {   
-		    success: function(data){   
-		       if(data=="succ"){
-		    	   $('#watComAddWin').window('close');
-		    	   $.messager.show({
-						title:'添加自来水公司',
-						msg:'添加成功',
-						showType:'slide',
-						timeout:3000
-					});
-				 	$('#watComListTab').datagrid('reload');
-		    	  /*  $.messager.alert('添加管理员','添加成功！','info',
-						function(){
-						 	$('#watComAddWin').window('close');
-						 	$('#watComListTab').datagrid('reload');
-						 }); */
-		       }
-		    }   
-		});  
-	}
+	$('#watAddForm').form('submit', {
+		onSubmit: function(){
+			var isValid = $('#watAddForm').form('validate');
+			return isValid;	// return false will stop the form submission
+		},
+	    success: function(data){   
+	       if(data=="succ"){
+	    	   $('#watComAddWin').window('close');
+	    	   $.messager.show({
+					title:'添加自来水公司',
+					msg:'添加成功',
+					showType:'slide',
+					timeout:3000
+				});
+			 	$('#watComListTab').datagrid('reload');
+	       }
+	    }   
+	});	  
+	
 }
 function clearForm(){
 	$('#watAddForm').form('clear');
-	}
+}
 </script>
-		<div style="padding:10px 0 10px 60px">
+		<div style="padding:10px 0 ;">
 	    <form id="watAddForm" method="post" action="${path}/admin/watcom/add.do">
 	    	<input type="hidden" name="valid" value="1"/>
-	    	<table>
+	    	<table style="margin:0px auto;">
 	    		<tr>
 	    			<td>自来水公司名：</td>
-	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true"/></td>
+	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true" missingMessage="请输入自来水公司" invalidMessage=""/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>自来水公司地址：</td>
@@ -53,6 +59,30 @@ function clearForm(){
 	    		<tr>
 	    			<td>自来水公司标识：</td>
 	    			<td><input class="easyui-textbox" type="text" name="mark" data-options="required:true"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td>邮箱主机：</td>
+	    			<td><input class="easyui-textbox" type="text" name="emailHost" data-options="required:true"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td>邮箱用户名：</td>
+	    			<td><input class="easyui-textbox" type="text" name="emailUser" data-options="required:true"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td>邮箱密码：</td>
+	    			<td><input class="easyui-textbox" type="password" name="emailPassword" id="p1" data-options="required:true"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td>重复密码：</td>
+	    			<td><input class="easyui-textbox" type="password" name="emailPassword2" id="p2" data-options="required:true" validType="equals['#p1']"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td>交费地址：</td>
+	    			<td><input class="easyui-textbox" type="text" name="payAddr" data-options="required:true"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td>查询电话：</td>
+	    			<td><input class="easyui-textbox" type="text" name="telephone" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
 	    			<td>备注：</td>
@@ -65,7 +95,7 @@ function clearForm(){
 	    </div>
 	    <div style="text-align:center;padding:5px">
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清空</a>
 	    </div>
 </body>
 </html>

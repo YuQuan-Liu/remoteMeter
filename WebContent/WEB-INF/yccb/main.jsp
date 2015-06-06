@@ -244,7 +244,8 @@ var _menus = {
 		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
 		<span id="clock"><fmt:message key="currenttime"/>：<span id="bgclock"></span></span>
 		<ul id="topmenu">
-				<li ><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>"><fmt:message key='menu.index'/></a></li>
+				<li ><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>">
+				<fmt:message key='menu.index'/></a></li>
 			<c:if test="${menus['admin']=='t'}">
 				<li><a name="admin" href="javascript:;" title="<fmt:message key='menu.admin'/>">
 				<fmt:message key="menu.admin"/></a></li>
@@ -271,8 +272,8 @@ var _menus = {
 			<a href="${path}/logout.do"><fmt:message key="logout"/></a>
 		</span>
 		 <span id="lang-chose" style="float:right; padding-right:20px;" class="head">
-        	<a href="${path}/lang.do?langType=zh" >中文</a> 
-        	<a href="${path}/lang.do?langType=en" >English</a>
+        	<a href="${path}/lang.do?langType=zh" style="color:rgb(199, 199, 224)">中文</a> 
+        	<a href="${path}/lang.do?langType=en" style="color:rgb(199, 199, 224)">English</a>
         </span>
 	</div>
 	<div data-options="region:'west',collapsed:true,split:true,title:'<fmt:message key="main.navi" />' " style="width:180px;padding:1px;" id="west-layout">
@@ -284,8 +285,8 @@ var _menus = {
 		<div id="tabs" class="easyui-tabs" data-options="fit:true">  
 		     <div id='welcome' title='<fmt:message key="main.welcome"/>' data-options="closable:false,select:true" style="padding:5px;">
 		     <h2><fmt:message key="main.welcome"/></h2>
-		     </div>  
-		</div>  
+		     </div>
+		</div>
 	</div>
 	<div data-options="region:'south',border:false" style="background: #D2E0F2;overflow: hidden;">
 		<p align="center">copyright 2015 版权所有 淅川西岛光电仪表科技有限公司</p>

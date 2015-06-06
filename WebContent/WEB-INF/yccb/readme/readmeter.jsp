@@ -11,7 +11,7 @@
 <body>
 	<div style="margin:10px;">
 		<form id="" method="post">
-			<div>
+			<span style="width:400px;">
 				<label>小区</label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:showMeterdata">
 					<option value="">请选择小区</option>
@@ -21,7 +21,16 @@
 	    		</select>
 	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbor()" >抄当前小区</a>
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" >抄全部小区</a>
-			</div>
+			</span>
+			<span style="margin-left:200px;">
+				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'auto',onSelect:showMeterdata">
+					<option value="">请选择导出格式</option>
+					<c:forEach var="n" items="${neighbor_list }">
+					<option value="${n.pid }">${n.neighborName }</option>
+					</c:forEach>
+				</select>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="export()" >导出</a>
+			</span>
 		</form>
 	</div>
 	

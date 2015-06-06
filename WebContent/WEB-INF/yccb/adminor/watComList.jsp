@@ -10,8 +10,8 @@ $(function(){
 	$('#watComListTab').datagrid({
 	    url:'${path}/admin/watcom/listContent.do',
 	    fit:true,
-	    pagination:true,
-	    pageList:[5,10,15,20],
+// 	    pagination:true,
+// 	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
 	    border:false,
@@ -24,18 +24,13 @@ $(function(){
 	        {field:'companyName',title:'公司名',width:100},   
 	        {field:'companyAddr',title:'公司地址',width:100},
 	        {field:'mark',title:'公司标识',width:100},
+	        
+	        {field:'emailHost',title:'邮箱主机',width:100},
+	        {field:'emailUser',title:'邮箱用户名',width:100},	
+	        {field:'telephone',title:'查询电话',width:100},
+	        {field:'payAddr',title:'交费地址',width:100},
+	        
 	        {field:'remark',title:'备注',width:100}
-	       /*  {field:'null',title:'操作',width:100,formatter:
-	        	function operFmt(value, rec, index){
-		        	if (!rec.pid) {
-		        		return '';
-		        	}
-		        	var href = '';
-		        	href += "[<a href='"+rec.pid+"' >";
-		        	href += "删除</a>]";
-		        	return href;
-	        	}	
-	        } */
 	    ]],
 	    toolbar: [{ 
 	        text: '<fmt:message key="common.add"/>', 
@@ -43,14 +38,11 @@ $(function(){
 	        handler: function() { 
 	        	$('#watComAddWin').window({   
 	    		    href:'${path}/admin/watcom/addPage.do',
-	    		    width:400,   
-	    		    height:250,
+	    		    width:500,
+	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加自来水公司', 
-	    		    onLoad:function(){   
-	    		        //alert('loaded successfully'); 
-	    		    }   
+	    		    title: '添加自来水公司'
 	    		}); 
 	        } 
 	    }, '-', { 
@@ -63,47 +55,17 @@ $(function(){
 	        		var pid = rows[0].pid;
 	        		$('#watComUpdateWin').window({   
 		    		    href:'${path}/admin/watcom/updatePage.do?pid='+pid,
-		    		    width:400,   
-		    		    height:250,
+		    		    width:500,   
+		    		    height:400,
 		    		    minimizable:false,
 		    		    maximizable:false,
-		    		    title: '更新自来水公司', 
-		    		    onLoad:function(){   
-		    		        //alert('loaded successfully'); 
-		    		    }   
+		    		    title: '更新自来水公司'
 		    		}); 
 	        		
 	        	}else if(leng>1){
 	        		$.messager.alert('更新自来水公司','Single selected!','info');
 	        	}else{
 	        		$.messager.alert('更新自来水公司','Select needed!','info');
-	        	}
-	        } 
-	    }, '-',{ 
-	        text: '<fmt:message key="common.delete"/>', 
-	        iconCls: 'icon-remove', 
-	        handler: function(){ 
-	        	var rows = $('#watComListTab').datagrid('getSelections');
-	        	var pids = "";
-	        	if(rows.length > 0){
-	        		$.messager.confirm('删除自来水公司', 'Are you confirm this?', function(r){
-	    				if (r){
-	    					rows.forEach(function(obj){  
-	    		        	    pids += obj.pid+",";
-	    		        	});
-	    					$.ajax({
-	    						   type: "POST",
-	    						   url: "some.php",
-	    						   data: "name=John&location=Boston",
-	    						   success: function(msg){
-	    						     alert( "Data Saved: " + msg );
-	    						   }
-	    						});
-	    					//alert('confirmed: '+pids);
-	    				}
-	    			});
-	        	}else{
-	        		$.messager.alert('删除自来水公司','Select needed!','info');
 	        	}
 	        } 
 	    }]
