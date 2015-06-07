@@ -14,16 +14,11 @@ import com.xdkj.yccb.main.entity.Department;
 public class DepartmentDAOImpl extends HibernateDAO<Department> implements DepartmentDAO {
 
 	@Override
-	public List<Department> getList(DepartmentView depv, PageBase pageInfo) {
+	public List<Department> getList(int wcid) {
 		
-		StringBuffer sb = new StringBuffer();
-		sb.append("from Department d where 1=1 ");
-		/*if(null!=adInfo.getAdminName()){
-			sb.append(" and ai.adminName like %"+adInfo.getAdminName()+"%");
-		}*/
-		Query q = getSession().createQuery(sb.toString());
-		q.setFirstResult((pageInfo.getPage()-1)*pageInfo.getRows());
-		q.setMaxResults(pageInfo.getRows());
+		String sql = "from Department d where d.watercompany.pid = :wcid and d.valid = 1 ";
+		Query q = getSession().createQuery(sql);
+		q.setInteger("wcid", wcid);
 		return q.list();
 	}
 
@@ -41,7 +36,7 @@ public class DepartmentDAOImpl extends HibernateDAO<Department> implements Depar
 
 	@Override
 	public Department getById(Integer depId) {
-		String hql = "from Admininfo a where a.pid=:pid ";
+		String hql = "from Department d where d.pid=:pid ";
 		Query q = getSession().createQuery(hql);
 		q.setInteger("pid", depId);
 		return (Department) q.uniqueResult();
@@ -62,6 +57,25 @@ public class DepartmentDAOImpl extends HibernateDAO<Department> implements Depar
 	public boolean update(Department dep) {
 		getHibernateTemplate().update(dep);
 		return true;
+	}
+
+	@Override
+	public String checkdepname(int wcid, String name) {
+		
+		String sql = "from Department d where d.watercompany.pid = :wcid and d.departmentName=:name and d.valid = 1 ";
+		if(null == getSession().createQuery(sql).setInteger("wcid", wcid).setString("name", name).uniqueResult()){
+			return "false";
+		}
+		return "true";
+	}
+
+	@Override
+	public String deletedep(int pid) {
+		String sql = "update Department d set d.valid = 0 where d.pid = :pid";
+		if(getSession().createQuery(sql).setInteger("pid", pid).executeUpdate() > 0){
+			return "true";
+		}
+		return "false";
 	}
 
 }

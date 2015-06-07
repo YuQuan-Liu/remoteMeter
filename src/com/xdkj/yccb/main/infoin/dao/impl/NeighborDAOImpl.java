@@ -33,7 +33,8 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 			hql = "from Neighbor nbr where nbr.valid='1' and nbr.watercompany.pid = "+ wcid +" ";
 		}else{
 			//获取片区下的全部小区
-			hql = "select neighbor from Detaildepart detail where detail.valid='1' and detail.department.pid = "+depart_id+" and detail.neighbor.valid = 1 ";
+			hql = "select neighbor from Detaildepart detail " +
+					"where detail.valid='1' and detail.department.watercompany.pid = "+wcid+" and detail.department.valid = 1 and detail.department.pid = "+depart_id+" and detail.neighbor.valid = 1 ";
 		}
 
 		Query q = getSession().createQuery(hql);

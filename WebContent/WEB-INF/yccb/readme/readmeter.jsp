@@ -151,7 +151,6 @@ function showMeterdata(){
 		});
 	}
 	
-// 	showNeighborWaste(96);
 }
 //水损统计只支持抄单个小区
 //单击某个小区之后  抄表成功返回  设置当前抄表对应的readlog id

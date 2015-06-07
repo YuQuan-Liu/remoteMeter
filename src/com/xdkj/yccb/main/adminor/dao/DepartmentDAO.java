@@ -12,7 +12,7 @@ public interface DepartmentDAO {
 	 * 获取片区列表
 	 * @return
 	 */
-	List<Department> getList(DepartmentView depv,PageBase pageInfo);
+	List<Department> getList(int wcid);
 	/**
 	 * 获取总记录数
 	 * @param adInfo
@@ -43,5 +43,18 @@ public interface DepartmentDAO {
 	 * @return
 	 */
 	boolean update (Department dep);
+	/**
+	 * 检测自来水公司下的小区的片区名  是否已经存在
+	 * @param wcid
+	 * @param name
+	 * @return
+	 */
+	String checkdepname(int wcid, String name);
+	/**
+	 * 删除片区
+	 * @param pid
+	 * @return
+	 */
+	String deletedep(int pid);
 
 }

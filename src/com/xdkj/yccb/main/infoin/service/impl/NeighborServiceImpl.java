@@ -367,5 +367,22 @@ public class NeighborServiceImpl implements NeighborService {
 		
 	}
 
+	@Override
+	public List<Neighbor> getallNbrBywcid(int waterComId) {
+		List<Neighbor> list = neighborDAO.getNbrByWatcomId(waterComId);
+//		JSONArray ja = new JSONArray();
+//		Neighbor n = null;
+//		for(int i = 0;i < list.size();i++){
+//			n = list.get(i);
+//			JSONObject jo = new JSONObject();
+//			jo.put("nid", n.getPid());
+//			jo.put("name", n.getNeighborName());
+//			jo.put("addr", n.getNeighborAddr());
+//			ja.add(jo);
+//		}
+//		return ja.toJSONString();
+		return list;
+	}
+
 
 }

@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dto.DepartmentView;
 import com.xdkj.yccb.main.adminor.service.DepartmentService;
 import com.xdkj.yccb.main.entity.Department;
+import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 /**
@@ -45,10 +48,9 @@ public class DepartmentCtrl {
 	}
 	@RequestMapping(value="/admin/dep/listContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String depListContent(DepartmentView dv,PageBase pageInfo){
-		List<DepartmentView> list = departmentService.getList(dv, pageInfo);
-		int totalCount = departmentService.getTotalCount(dv);
-		return JsonDataUtil.getJsonData(list, totalCount);
+	public String depListContent(HttpServletRequest request){
+		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		return JSON.toJSONString(departmentService.getList(wcid));
 	}
 	@RequestMapping(value="/admin/dep/addPage",method=RequestMethod.GET)
 	public String addPage(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -69,44 +71,79 @@ public class DepartmentCtrl {
 	 * @date 2015-5-6
 	 * @version 1.0
 	 */
-	@RequestMapping(value="/admin/dep/nbrlistContent",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/admin/dep/listallNbr",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String depNbrListContent(HttpServletRequest request){
-		String depId = request.getParameter("depId");
-		return departmentService.getNbrByCurrUser(WebUtil.getCurrUser(request), depId);
+	public String listallNbr(HttpServletRequest request){
+		List<Neighbor> list = neighborService.getallNbrBywcid(WebUtil.getCurrUser(request).getWaterComId());
+		JSONArray ja = new JSONArray();
+		Neighbor n = null;
+		for(int i = 0;i < list.size();i++){
+			n = list.get(i);
+			JSONObject jo = new JSONObject();
+			jo.put("nid", n.getPid());
+			jo.put("name", n.getNeighborName());
+			jo.put("addr", n.getNeighborAddr());
+			ja.add(jo);
+		}
+		return ja.toJSONString();
 	}
 	
-	@RequestMapping(value="/admin/dep/add",method=RequestMethod.POST)
+	@RequestMapping(value="/admin/dep/add",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String add(Department dep,HttpServletRequest request){
-		//小区
-		String[] neighbors = request.getParameterValues("neighbors");
+	public String add(String name,String remark,int[] nbr_ids,HttpServletRequest request){
+		
 		//自来水公司id
 		int wcid = WebUtil.getCurrUser(request).getWaterComId();
-		dep.setWatercompany(new Watercompany(wcid));
-		return departmentService.add(dep,neighbors);
+		return JSON.toJSONString(departmentService.add(wcid,name,remark,nbr_ids));
 	}
+	
+	@RequestMapping(value="/admin/dep/checkdepname",method=RequestMethod.POST)
+	@ResponseBody
+	public String checkDepName(String name,HttpServletRequest request){
+		
+		//自来水公司id
+		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		return JSON.toJSONString(departmentService.checkdepname(wcid,name));
+	}
+	
 	@RequestMapping(value="/admin/dep/detail")
-	public String depDetail(@RequestParam("depId")String depId, Model model){
+	public String depDetail(@RequestParam("depId")String depId, Model model,HttpServletRequest request){
 		model.addAttribute("dep", departmentService.getById(depId));
+		
+		//自来水下的全部小区
+		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		model.addAttribute("neighbor_list", neighborService.getallNbrBywcid(wcid));
+		
 		return depDetail;
 	}
 	
 	@RequestMapping(value="/admin/dep/nbrTabContent",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String depNbrListTabContent(HttpServletRequest request){
-		String depId = request.getParameter("depId");
-		return JSON.toJSONString(neighborService.getList(Integer.parseInt(depId), 11));
+	public String depNbrListTabContent(HttpServletRequest request,int depId){
+		//片区对应的全部小区
+//		String depId = request.getParameter("depId");
+		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		return JSON.toJSONString(neighborService.getList(depId, wcid));
 	}
 	
-	@RequestMapping(value="/admin/dep/update",method=RequestMethod.POST)
+	@RequestMapping(value="/admin/dep/deletedep",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String update(Department dep,HttpServletRequest request){
-		//小区
-		String[] neighbors = request.getParameterValues("neighbors");
-		//自来水公司id
-		int wcid = WebUtil.getCurrUser(request).getWaterComId();
-		dep.setWatercompany(new Watercompany(wcid));
-		return departmentService.update(dep,neighbors);
+	public String deletedep(int pid){
+		
+		return JSON.toJSONString(departmentService.deletedep(pid));
+	}
+	
+	@RequestMapping(value="/admin/dep/deletedetail",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String deletedetail(int dep_id,int n_id){
+		
+		return JSON.toJSONString(departmentService.deletedetail(dep_id,n_id));
+	}
+	
+	@RequestMapping(value="/admin/dep/adddetail",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String adddetail(int dep_id,int n_id){
+		
+		return JSON.toJSONString(departmentService.adddetail(dep_id,n_id));
 	}
 }

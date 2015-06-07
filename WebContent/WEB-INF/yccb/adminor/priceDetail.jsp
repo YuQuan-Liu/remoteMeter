@@ -12,13 +12,13 @@ $(function(){
 	$('#basicPriceListTab').datagrid({
 	    url:'${path}/admin/price/priceListContent.do?priceId=${price.pid}',
 	    striped:true,
-	    fit:false,
+	    fit:true,
 	    rownumbers:true,
 // 	    border:false,
 	    autoRowHeight:false,
 	    rowStyler: function(index,row){
 				return 'height:30px;';
-			},
+		},
 	    columns:[[
 // 	        {field:'pid',title:'',width:80,checkbox:true},
 	        {field:'basicPriceName',title:'基本单价名',width:80},   

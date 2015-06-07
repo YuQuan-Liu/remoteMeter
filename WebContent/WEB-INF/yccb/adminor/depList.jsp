@@ -10,22 +10,18 @@ $(function(){
 	$('#depListTab').datagrid({
 	    url:'${path}/admin/dep/listContent.do',
 	    fit:true,
-	    pagination:true,
-	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
-	    border:false,
 	    autoRowHeight:false,
 	    rowStyler: function(index,row){
 			return 'height:30px;';
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'departmentName',title:'片区名',width:100},   
-	       /*  {field:'companyAddr',title:'管理员',width:100}, */
-	        {field:'watercompany',title:'自来水公司',width:100},
-	        {field:'mark',title:'操作',width:100,formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='depDetail("+row.pid+")'>查看</a> ";
+	        {field:'departmentName',title:'片区名',width:100},
+	        {field:'action',title:'操作',width:150,halign:'center',align:'center',formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='depDetail("+row.pid+")'>查看</a> "+
+				"<a href='#' class='operateHref' onclick='deleteDep("+row.pid+","+index+")'>删除</a> ";
 			}}
 	    ]],
 	    toolbar: [{ 
@@ -35,68 +31,43 @@ $(function(){
 	        	$('#depAddWin').window({   
 	    		    href:'${path}/admin/dep/addPage.do',
 	    		    width:550,   
-	    		    height:250,
+	    		    height:500,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加片区', 
-	    		    onLoad:function(){   
-	    		        //alert('loaded successfully'); 
-	    		    }   
+	    		    title: '添加片区'
 	    		}); 
-	        } 
-	    }, '-', { 
-	        text: '修改', 
-	        iconCls: 'icon-edit', 
-	        handler: function() { 
-	        	var rows = $('#depListTab').datagrid('getSelections');
-	        	var leng = rows.length;
-	        	if(leng==1){
-	        		var pid = rows[0].pid;
-	        		$('#depUpdateWin').window({   
-		    		    href:'${path}/admin/dep/updatePage.do?depId='+pid,
-		    		    width:550,   
-		    		    height:250,
-		    		    minimizable:false,
-		    		    maximizable:false,
-		    		    title: '更新片区'
-		    		}); 
-	        		
-	        	}else if(leng>1){
-	        		 $.messager.show({
-							title:'更新片区',
-							msg:'请选择一条记录！！',
-							showType:'slide',
-							timeout:3000
-						});
-	        	}else{
-	        		 $.messager.show({
-							title:'更新片区',
-							msg:'未选中片区！',
-							showType:'slide',
-							timeout:3000
-						});
-	        	}
-	        } 
-	    }, '-',{ 
-	        text: '删除', 
-	        iconCls: 'icon-remove', 
-	        handler: function(){ 
-	        	var rows = $('#depListTab').datagrid('getSelections');
-	        	var pids = "";
-	        	rows.forEach(function(obj){  
-	        	    pids += obj.pid+",";
-	        	}) 
-	        	alert(pids);
 	        } 
 	    }]
 	});
 })
 
+function deleteDep(pid,index){
+	$.messager.confirm('提示', '确定要删除选中片区吗？', function(r){
+		if(r){
+			$.ajax({
+				url:'${path}/admin/dep/deletedep.do',
+				type:'post',
+				data:{pid:pid},
+				success:function(data){
+					if(data=="true"){
+						$.messager.show({
+							title:"删除片区",
+							msg:"删除成功",
+							showType:'slide'
+						});
+						$('#depListTab').datagrid('deleteRow',index_);
+					}
+				}
+			});	
+		}
+	});
+}
+
 function depDetail(depId){
 	$('#depDetailWin').window({   
 	    href:'${path}/admin/dep/detail.do?depId='+depId,
-	    width:520,   
-	    height:250,
+	    width:550,
+	    height:500,
 	    minimizable:false,
 	    maximizable:false,
 	    title: '片区详情' 
@@ -107,7 +78,6 @@ function depDetail(depId){
 <body>
 <table id="depListTab"></table>
 <div id="depAddWin"></div>
-<div id="depUpdateWin"></div>
 <div id="depDetailWin"></div>
 </body>
 </html>

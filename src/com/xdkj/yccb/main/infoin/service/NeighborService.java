@@ -107,5 +107,12 @@ public interface NeighborService {
 	 * @return
 	 */
 	public String checkGPRSAddr(String gprsaddr);
+
+	/**
+	 * 获取自来水公司下的所有小区
+	 * @param waterComId
+	 * @return
+	 */
+	public List<Neighbor> getallNbrBywcid(int waterComId);
 	
 }

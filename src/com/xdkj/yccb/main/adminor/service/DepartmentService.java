@@ -9,7 +9,13 @@ import com.xdkj.yccb.security.UserForSession;
 
 public interface DepartmentService {
 	
-	List<DepartmentView> getList(DepartmentView depview,PageBase pageInfo);
+	
+	/**
+	 * 获取自来水公司下的所有的片区
+	 * @param wcid
+	 * @return
+	 */
+	List<DepartmentView> getList(int wcid);
 	
 	int getTotalCount(DepartmentView depview);
 	/**
@@ -18,14 +24,35 @@ public interface DepartmentService {
 	 * @param nbrIds 小区ids
 	 * @return succ or fail
 	 */
-	String add( Department dep,String [] nbrIds);
+	String add(int wcid,String name,String remark,int[] nbr_ids);
 	
-	String delete(String ids);
-	
-	String getNbrByCurrUser(UserForSession u,String depId);
 	
 	Department getById(String depId);
 	
-	String update(Department dep,String [] nbrIds);
+	String checkdepname(int wcid, String name);
+
+	/**
+	 * 删除片区
+	 * @param pid
+	 * @return
+	 */
+	String deletedep(int pid);
+
+	/**
+	 * 删除片区下的小区
+	 * @param dep_id
+	 * @param n_id
+	 * @return
+	 */
+	String deletedetail(int dep_id, int n_id);
+
+	/**
+	 * 添加片区下的小区
+	 * @param dep_id
+	 * @param n_id
+	 * @return
+	 */
+	String adddetail(int dep_id, int n_id);
+
 
 }
