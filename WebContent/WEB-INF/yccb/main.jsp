@@ -30,14 +30,6 @@ var _menus = {
 					"url" : "admin/list.do"
 				},
 			</c:if>
-			<c:if test="${menus['auth']=='t'}">
-				{
-					"menuid" : "115",
-					"menuname" : "<fmt:message key='menu.auth'/>",
-					"icon" : "micon-nav",
-					"url" : "sys/auth/list.do"
-				},
-			</c:if>	
 			<c:if test="${menus['role']=='t'}">
 				{
 					"menuid" : "115",
