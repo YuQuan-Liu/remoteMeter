@@ -40,6 +40,17 @@ public interface AuthorityDAO {
 	 */
 	void delete( Integer [] ids);
 	Authority getById(int auId);
+	/**
+	 * 获取所有的权限
+	 * @return
+	 */
+	List<Authority> getListAll();
+	/**
+	 * 获取角色下所有  有效的权限
+	 * @param pid
+	 * @return
+	 */
+	List<Authority> getAuthsByRole(int pid);
 	
 
 }

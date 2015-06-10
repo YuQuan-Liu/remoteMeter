@@ -87,44 +87,44 @@ public class AuthorityServiceImpl implements AuthorityService {
 		
 	}
 
-	@Override
-	public String getAuthTreeJson(HttpServletRequest request,String roleId) {
-		String auids = "";
-		if(null!=roleId&&!"".equals(roleId)){
-			Roles r = roleDAO.getById(Integer.parseInt(roleId));
-			Set<RoleAuthority> ras = r.getRoleAuthorities();
-			for (RoleAuthority ra :ras) {
-				auids += ra.getAuthority().getPid()+",";
-			}
-		}
-		//一级菜单
-		List<Authority> list = authorityDAO.getList(0);
-		String json = "";
-		for (Authority au : list) {
-			 RequestContext requestContext = new RequestContext(request);
-			JSONArray jarr = new JSONArray();
-			List<Authority> clist = authorityDAO.getList(au.getPid());
-			for (Authority auc : clist) {
-				JSONObject o = new JSONObject();
-				o.put("id", auc.getPid());
-				 String menus = requestContext.getMessage(auc.getAuthorityCode());
-				o.put("text", menus);
-				o.put("url", auc.getActUrl());
-				if(auids.contains(String.valueOf(auc.getPid()))){
-					o.put("checked", "true");
-				}
-				//o.put("state", "closed");
-				jarr.add(o);
-			}
-			String j1 = jarr.toString();
-			json+="{\"id\":\""+au.getPid()+"\",\"state\":\"closed\",\"text\":\""
-			+requestContext.getMessage(au.getAuthorityCode())+"\",\"url\":\""+
-					au.getActUrl()+"\",\"children\":"+j1+"},";
-		}
-		json = json.substring(0, json.lastIndexOf(","));
-		json = "["+json+"]";
-		return json;
-	}
+//	@Override
+//	public String getAuthTreeJson(HttpServletRequest request,String roleId) {
+//		String auids = "";
+//		if(null!=roleId&&!"".equals(roleId)){
+//			Roles r = roleDAO.getById(Integer.parseInt(roleId));
+//			Set<RoleAuthority> ras = r.getRoleAuthorities();
+//			for (RoleAuthority ra :ras) {
+//				auids += ra.getAuthority().getPid()+",";
+//			}
+//		}
+//		//一级菜单
+//		List<Authority> list = authorityDAO.getList(0);
+//		String json = "";
+//		for (Authority au : list) {
+//			 RequestContext requestContext = new RequestContext(request);
+//			JSONArray jarr = new JSONArray();
+//			List<Authority> clist = authorityDAO.getList(au.getPid());
+//			for (Authority auc : clist) {
+//				JSONObject o = new JSONObject();
+//				o.put("id", auc.getPid());
+//				 String menus = requestContext.getMessage(auc.getAuthorityCode());
+//				o.put("text", menus);
+//				o.put("url", auc.getActUrl());
+//				if(auids.contains(String.valueOf(auc.getPid()))){
+//					o.put("checked", "true");
+//				}
+//				//o.put("state", "closed");
+//				jarr.add(o);
+//			}
+//			String j1 = jarr.toString();
+//			json+="{\"id\":\""+au.getPid()+"\",\"state\":\"closed\",\"text\":\""
+//			+requestContext.getMessage(au.getAuthorityCode())+"\",\"url\":\""+
+//					au.getActUrl()+"\",\"children\":"+j1+"},";
+//		}
+//		json = json.substring(0, json.lastIndexOf(","));
+//		json = "["+json+"]";
+//		return json;
+//	}
 
 	@Override
 	public Authority getById(String auId) {
@@ -132,6 +132,37 @@ public class AuthorityServiceImpl implements AuthorityService {
 			return authorityDAO.getById(Integer.parseInt(auId));
 		}
 		return null;
+	}
+
+	@Override
+	public String getAuthTreeJson(HttpServletRequest request) {
+		List<Authority> list = authorityDAO.getList(0);
+		RequestContext requestContext = new RequestContext(request);
+		String json = "";
+		JSONArray ja = new JSONArray();
+		for (Authority au : list) {
+			JSONObject parent = new JSONObject();
+			JSONArray children = new JSONArray();
+			List<Authority> clist = authorityDAO.getList(au.getPid());
+			for (Authority auc : clist) {
+				JSONObject o = new JSONObject();
+				o.put("id", auc.getPid());
+				o.put("text", requestContext.getMessage(auc.getAuthorityCode()));
+				o.put("url", auc.getActUrl());
+//				if(auids.contains(String.valueOf(auc.getPid()))){
+//					o.put("checked", "true");
+//				}
+				children.add(o);
+			}
+			parent.put("id", au.getPid());
+			parent.put("text", requestContext.getMessage(au.getAuthorityCode()));
+			parent.put("state", "closed");
+			parent.put("url", au.getActUrl());
+			parent.put("children", children);
+			ja.add(parent);
+		}
+		
+		return ja.toString();
 	}
 
 }

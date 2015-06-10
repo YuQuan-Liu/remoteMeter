@@ -13,7 +13,7 @@ public interface RoleDAO {
 	 * @param pageInfo
 	 * @return
 	 */
-	List<Roles> getList(RoleView rv,PageBase pageInfo);
+	List<Roles> getList(int wcid);
 	
 	int getTotalCount(RoleView rv,PageBase pb);
 	
@@ -24,4 +24,12 @@ public interface RoleDAO {
 	void delete(Roles r);
 	
 	Roles getById(int pid);
+
+	/**
+	 * 检测此自来水下是否有此角色名了
+	 * @param wcid
+	 * @param name
+	 * @return
+	 */
+	String checkname(int wcid, String name);
 }

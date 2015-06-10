@@ -1,21 +1,30 @@
 package com.xdkj.yccb.main.sys.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.RequestContext;
 
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.entity.Authority;
 import com.xdkj.yccb.main.entity.RoleAuthority;
 import com.xdkj.yccb.main.entity.Roles;
 import com.xdkj.yccb.main.entity.Watercompany;
+import com.xdkj.yccb.main.sys.dao.AuthorityDAO;
 import com.xdkj.yccb.main.sys.dao.RoleAuthorityDAO;
 import com.xdkj.yccb.main.sys.dao.RoleDAO;
 import com.xdkj.yccb.main.sys.dto.RoleView;
+import com.xdkj.yccb.main.sys.service.AuthorityService;
 import com.xdkj.yccb.main.sys.service.RoleService;
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -23,10 +32,12 @@ public class RoleServiceImpl implements RoleService {
 	private RoleDAO roleDAO;
 	@Autowired
 	private RoleAuthorityDAO roleAuthorityDAO;
+	@Autowired
+	private AuthorityDAO authorityDAO;
 
 	@Override
-	public List<RoleView> getList(RoleView rv, PageBase pb) {
-		List<Roles> list = roleDAO.getList(rv, pb);
+	public List<RoleView> getList(int wcid) {
+		List<Roles> list = roleDAO.getList(wcid);
 		List<RoleView> listView = new ArrayList<RoleView>();
 		for (Roles roles : list) {
 			RoleView r = new RoleView();
@@ -44,23 +55,21 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public String addRole(RoleView rv,String chAuth,String pAuth) {
+	public String addRole(RoleView rv,String childauth,int wcid) {
 		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
-		String [] ids = (chAuth+pAuth).split(",");
+		String [] ids = childauth.split(",");
 		Roles r = new Roles();
-		for (String id : ids) {
+		for (String id : ids){
 			RoleAuthority ra = new RoleAuthority();
-			if(null!=id&&!"".equals(id)){
-				ra.setAuthority(new Authority(Integer.parseInt(id)));
-			}
+			ra.setAuthority(new Authority(Integer.parseInt(id)));
 			ra.setRoles(r);
 			auset.add(ra);
 		}
 		r.setRoleAuthorities(auset);
 		r.setRoleName(rv.getRoleName());
 		r.setRemark(rv.getRemark());
-		r.setSystemRole(rv.getSystemRole());
-		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
+		r.setSystemRole("0");
+		r.setWatercompany(new Watercompany(wcid));
 		r.setValid("1");
 		int rid = roleDAO.add(r);
 		if(rid>0){
@@ -86,57 +95,120 @@ public class RoleServiceImpl implements RoleService {
 	}
 	
 	@Override
-	public String updateRole(RoleView rv, String chAuth, String pAuth) {
-		String info = "succ";
-		String [] ids = (chAuth+pAuth).split(",");
-		Roles r = roleDAO.getById(rv.getPid());
-		Set<RoleAuthority> set = r.getRoleAuthorities();
-		//需要新增的权限集合
-		Set<RoleAuthority> auset = new HashSet<RoleAuthority>();
-		List<Integer> DelIds = new ArrayList<Integer>();
-		//对比选出需要新增的权限
-		for (String id : ids) {
-			if(null!=id&&!"".equals(id)){
-				boolean isNew = true;
-					for (RoleAuthority rid : set) {
-						if(Integer.parseInt(id)==rid.getAuthority().getPid()){
-							isNew=false;
-							break;
-						}
-					}
-				if(isNew){
-					RoleAuthority ra = new RoleAuthority();
-					ra.setAuthority(new Authority(Integer.parseInt(id)));
-					ra.setRoles(r);
-					auset.add(ra);
+	public String updateRole(String childauth,int pid) {
+		
+		//获取角色下 有效的权限
+		List<Authority> auths = authorityDAO.getAuthsByRole(pid);
+		String [] ids = childauth.split(",");
+		
+		List<String> c_ids = Arrays.asList(ids);
+		
+		if("".equals(childauth)){
+			//delete all
+		}else{
+			List<String> auths_id = new ArrayList<>();
+			Authority a = null;
+			for(int i = 0;i < auths.size();i++){
+				a = auths.get(i);
+				auths_id.add(a.getPid()+"");
+			}
+			List<String> add= new ArrayList<>();
+			List<String> delete = new ArrayList<>();
+			
+			for(int i = 0;i < ids.length;i++){
+				if(!auths_id.contains(ids[i])){
+					add.add(ids[i]);
 				}
 			}
-		}
-		//对比筛选出需要删除的权限
-		for (RoleAuthority rid : set) {
-			boolean del = true;
-			for (String id : ids) {
-				if(null!=id&&!"".equals(id)){
-					if(Integer.parseInt(id)==rid.getAuthority().getPid()){
-						del = false;
-						break;
-					}
+			
+			for(int i = 0;i < auths_id.size();i++){
+				if(!c_ids.contains(auths_id.get(i))){
+					delete.add(auths_id.get(i));
 				}
 			}
-			if(del){
-				DelIds.add(rid.getPid());
+			
+			if(add.size() > 0){
+				roleAuthorityDAO.add(pid,add);
+			}
+			if(delete.size() > 0){
+				roleAuthorityDAO.delete(pid,delete);
 			}
 		}
-		if(DelIds.size()>0){
-			roleAuthorityDAO.delete(DelIds);
+		
+		return "succ";
+	}
+	
+	
+	@Override
+	public String getAuthTreeJson(HttpServletRequest request) {
+		List<Authority> list = authorityDAO.getList(0);
+		RequestContext requestContext = new RequestContext(request);
+		JSONArray ja = new JSONArray();
+		for (Authority au : list) {
+			JSONObject parent = new JSONObject();
+			JSONArray children = new JSONArray();
+			List<Authority> clist = authorityDAO.getList(au.getPid());
+			for (Authority auc : clist) {
+				JSONObject o = new JSONObject();
+				o.put("id", auc.getPid());
+				o.put("text", requestContext.getMessage(auc.getAuthorityCode()));
+				o.put("url", auc.getActUrl());
+//				if(auids.contains(String.valueOf(auc.getPid()))){
+//					o.put("checked", "true");
+//				}
+				children.add(o);
+			}
+			parent.put("id", au.getPid());
+			parent.put("text", requestContext.getMessage(au.getAuthorityCode()));
+			parent.put("state", "closed");
+			parent.put("url", au.getActUrl());
+			parent.put("children", children);
+			ja.add(parent);
 		}
-		r.setSystemRole(rv.getSystemRole());
-		r.setRoleAuthorities(auset);
-		r.setRoleName(rv.getRoleName());
-		r.setRemark(rv.getRemark());
-		r.setWatercompany(new Watercompany(Integer.parseInt(rv.getWcid())));
-		roleDAO.update(r);
-		return info;
+		
+		return ja.toString();
+	}
+
+	@Override
+	public String checkname(int wcid, String name) {
+		
+		return roleDAO.checkname(wcid,name);
+	}
+
+	@Override
+	public String getAuthTreeJson(HttpServletRequest request, int pid) {
+		//获取角色下 有效的权限
+		List<Authority> auths = authorityDAO.getAuthsByRole(pid);
+		
+		List<Authority> list = authorityDAO.getList(0);
+		RequestContext requestContext = new RequestContext(request);
+		JSONArray ja = new JSONArray();
+		for (Authority au : list) {
+			JSONObject parent = new JSONObject();
+			JSONArray children = new JSONArray();
+			List<Authority> clist = authorityDAO.getList(au.getPid());
+			for (Authority auc : clist) {
+				JSONObject o = new JSONObject();
+				o.put("id", auc.getPid());
+				o.put("text", requestContext.getMessage(auc.getAuthorityCode()));
+				o.put("url", auc.getActUrl());
+				if(auths.contains(auc)){
+					o.put("checked", "true");
+				}
+//				if(auids.contains(String.valueOf(auc.getPid()))){
+//					o.put("checked", "true");
+//				}
+				children.add(o);
+			}
+			parent.put("id", au.getPid());
+			parent.put("text", requestContext.getMessage(au.getAuthorityCode()));
+			parent.put("state", "closed");
+			parent.put("url", au.getActUrl());
+			parent.put("children", children);
+			ja.add(parent);
+		}
+		
+		return ja.toString();
 	}
 
 }

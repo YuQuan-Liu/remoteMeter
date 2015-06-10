@@ -50,7 +50,7 @@ public interface AuthorityService {
 	 * @param roleId
 	 * @return
 	 */
-	String getAuthTreeJson(HttpServletRequest request,String roleId);
+	String getAuthTreeJson(HttpServletRequest request);
 	
 
 }

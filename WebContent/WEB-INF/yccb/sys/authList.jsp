@@ -12,11 +12,9 @@ $(function(){
 	$('#authListTab').datagrid({
 	    url:'${path}/sys/auth/listContent.do',
 	    fit:true,
-	    pagination:true,
-	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
-	    border:false,
+	    border:true,
 	    autoRowHeight:false,
 	    rowStyler: function(index,row){
 			return 'height:30px;';

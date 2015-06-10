@@ -66,7 +66,7 @@ function submitForm(){
 					'nbr_ids':nbr_ids
 				},
 				success:function(data){
-					if(data == succ){
+					if(data == "succ"){
 						$('#depListTab').datagrid('reload');
 						$('#depAddWin').window('close');
 					}

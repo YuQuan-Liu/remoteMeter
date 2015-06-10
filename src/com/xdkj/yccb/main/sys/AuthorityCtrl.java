@@ -66,15 +66,5 @@ public class AuthorityCtrl {
 	public String update(Authority au){
 		return authorityService.update(au);
 	}
-	/**
-	 * 获取权限菜单树
-	 * @param request
-	 * @return json字符串
-	 */
-	@RequestMapping(value="/sys/auth/tree",produces="application/json;charset=UTF-8")
-	@ResponseBody
-	public String getAuthTree(HttpServletRequest request){
-		String roleId = request.getParameter("roleId");
-		return authorityService.getAuthTreeJson(request,roleId);
-	}
+	
 }

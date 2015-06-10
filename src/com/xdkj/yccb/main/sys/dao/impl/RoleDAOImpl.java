@@ -14,15 +14,9 @@ import com.xdkj.yccb.main.sys.dto.RoleView;
 public class RoleDAOImpl extends HibernateDAO<Roles>implements RoleDAO {
 
 	@Override
-	public List<Roles> getList(RoleView r, PageBase pageInfo) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("from Roles r where 1=1 ");
-		/*if(null!=adInfo.getAdminName()){
-			sb.append(" and ai.adminName like %"+adInfo.getAdminName()+"%");
-		}*/
-		Query q = getSession().createQuery(sb.toString());
-		q.setFirstResult((pageInfo.getPage()-1)*pageInfo.getRows());
-		q.setMaxResults(pageInfo.getRows());
+	public List<Roles> getList(int wcid) {
+		Query q = getSession().createQuery("from Roles r where r.watercompany.pid=:wcid and r.valid = 1");
+		q.setInteger("wcid", wcid);
 		return q.list();
 	}
 
@@ -58,6 +52,18 @@ public class RoleDAOImpl extends HibernateDAO<Roles>implements RoleDAO {
 		String hql = "from Roles r where r.pid= "+pid;
 		Query q = getSession().createQuery(hql);
 		return (Roles) q.uniqueResult();
+	}
+
+	@Override
+	public String checkname(int wcid, String name) {
+		String sql = "from Roles r where r.watercompany.pid=:wcid and r.roleName = :name and r.valid = 1";
+		Query q = getSession().createQuery(sql);
+		q.setInteger("wcid", wcid);
+		q.setString("name", name);
+		if(q.list().size() > 0){
+			return "true";
+		}
+		return "false";
 	}
 
 }

@@ -22,18 +22,15 @@ $(function(){
 	    columns:[[
 // 	        {field:'pid',title:'',width:80,checkbox:true},
 	        {field:'basicPriceName',title:'基本单价名',width:80},   
-	        {field:'basicPriceFirst',title:'一阶单价',width:80,formatter:numFormatter},   
+	        {field:'basicPriceFirst',title:'一阶单价',width:80},   
 	        {field:'basicFirstOver',title:'一阶超量',width:80},
-	        {field:'basicPriceSecond',title:'二阶单价',width:80,formatter:numFormatter},
+	        {field:'basicPriceSecond',title:'二阶单价',width:80},
 	        {field:'basicSecondOver',title:'二阶超量',width:80},
-	        {field:'basicPriceThird',title:'三阶单价',width:80,formatter:numFormatter}
+	        {field:'basicPriceThird',title:'三阶单价',width:80}
 	    ]],
 	});
 })
 
-function numFormatter(val,row){
-	return val.toFixed(2);;
-}
 function closeWin(){
 	$('#priceDetailWin').window('close');
 }
@@ -51,9 +48,7 @@ function closeWin(){
 	    		</tr>
 	    	</table>
 	    </div>
-	     <div style="padding:10px 10px 0 10px">
-		<table id="basicPriceListTab"></table>
-	  </div>
+	    <table id="basicPriceListTab"></table>
 	  
 	   <div style="text-align:center;padding:5px">
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeWin()"><fmt:message key='main.mm.close'/></a>

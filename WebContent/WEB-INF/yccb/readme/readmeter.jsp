@@ -68,7 +68,11 @@ $(function(){
 		          {field:'g_addr',title:'集中器',width:80},
 		          {field:'collectorAddr',title:'采集器',width:80},
 		          {field:'meterAddr',title:'表地址',width:80},
-		          {field:'meterState',title:'表状态',width:80,formatter:function(value,row,index){
+		          {field:'meterState',title:'表状态',width:80,styler:function(value,row,index){
+		        	  if(value != 1){
+		        		  return 'background-color:#ffee00;color:red;';
+		        	  }
+		          },formatter:function(value,row,index){
 						if(value == 1){
 							return "正常";
 						}

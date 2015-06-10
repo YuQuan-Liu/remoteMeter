@@ -41,7 +41,7 @@ $(function(){
 	});
 })
 
-function deleteDep(pid,index){
+function deleteDep(pid,index_){
 	$.messager.confirm('提示', '确定要删除选中片区吗？', function(r){
 		if(r){
 			$.ajax({
