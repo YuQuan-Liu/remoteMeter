@@ -1,9 +1,16 @@
 package com.xdkj.yccb.security;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -16,78 +23,79 @@ import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
+import com.xdkj.yccb.main.adminor.service.AdministratorService;
+import com.xdkj.yccb.main.entity.AdminRole;
+import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.RoleAuthority;
 @Controller
 public class LoginCtrl {
-	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public String login(HttpServletRequest request, HttpServletResponse response,String uname, Model model){
+	@Autowired
+	private AdministratorService administratorService;
+	
+	@RequestMapping(value="/resource/login")
+	public String login(HttpServletRequest request, HttpServletResponse response, Model model){
 		
 		String username = request.getParameter("loginname");
         String password = request.getParameter("loginkey");
         //获取HttpSession中的验证码  
         String checkcode = (String)request.getSession().getAttribute("check");
         //获取用户请求表单中输入的验证码  
-        String submitCode = WebUtils.getCleanParam(request, "checkcode");  
-        if (StringUtils.isEmpty(submitCode) || !StringUtils.equals(checkcode, submitCode.toLowerCase())){  
+        String submitCode = WebUtils.getCleanParam(request, "checkcode");
+        if (StringUtils.isEmpty(submitCode)){
+        	return  "login";
+        }
+        if (!StringUtils.equals(checkcode, submitCode.toLowerCase())){  
             request.setAttribute("message_login", "验证码不正确！");  
             return  "login";  
-        } 
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);  
-        token.setRememberMe(true);
-        //获取当前的Subject  
-        Subject currentUser = SecurityUtils.getSubject();  
-        try {
-            currentUser.login(token);  
-        }catch(UnknownAccountException uae){  
-            request.setAttribute("message_login", "未知账户！"); 
+        }
+        
+        Admininfo admin = administratorService.getByLoginName(username, new Md5PwdEncoder().encodePassword(password));
+        if(admin == null){
+        	request.setAttribute("message_login", "用户名密码错误！"); 
             return "login";
-        }catch(IncorrectCredentialsException ice){
-            request.setAttribute("message_login", "密码不正确！");
-            return "login";
-        }catch(LockedAccountException lae){  
-            request.setAttribute("message_login", "账户已锁定！");
-            return "login";
-        }catch(ExcessiveAttemptsException eae){  
-            request.setAttribute("message_login", "用户名或密码错误次数过多！");
-        }catch(AuthenticationException ae){  
-            request.setAttribute("message_login", "用户名或密码不正确！");
-            return "login";
-        }  
-        //验证是否登录成功  
-        if(currentUser.isAuthenticated()){
-        	//登录成功的操作
-            loginSucc(token,true,currentUser,request,response);
         }else{
-            token.clear();  
-        }  
-		return "redirect:/index.do";
+        	UserForSession ufs = new UserForSession();
+			ufs.setPid(admin.getPid());
+			ufs.setLoginName(admin.getLoginName());
+			ufs.setAdminName(admin.getAdminName());
+			ufs.setAdminEmail(admin.getAdminEmail());
+			ufs.setAdminMobile(admin.getAdminMobile());
+			ufs.setWaterComId(admin.getWatercompany().getPid());
+			
+			//管理员没有片区   将0存到Session中
+			if(null == admin.getDepartment()){
+				ufs.setDepart_id(0);
+			}else{
+				ufs.setDepart_id(admin.getDepartment().getPid());
+			}
+			
+			List<AdminRole> adminRole = new ArrayList<AdminRole>(admin.getAdminRoles());
+			Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
+			Map<String, String> menus = new HashMap<String, String>();
+			for (RoleAuthority roleAuthority : ras) {
+				menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
+			}
+			ufs.setMenus(menus);
+			
+			request.getSession().setAttribute("curuser", ufs);
+			
+        }
+        return "redirect:/index.do";
 	}
-	/**
-	 * 登录成功操作
-	 */
-	private void loginSucc(AuthenticationToken token,boolean adminLogin,Subject subject,
-			ServletRequest request, ServletResponse response){
-		
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpServletResponse res = (HttpServletResponse) response;
-		String username = (String) subject.getPrincipal();
-		//管理登录
-		if(adminLogin){
-			//cmsLogMng.loginSuccess(req, user);
-		}
-		// 清除需要验证码cookie
-		//return super.onLoginSuccess(token, subject, request, response);
-	}
-	@RequestMapping(value="logout",method=RequestMethod.GET)
+
+	
+	@RequestMapping(value="logout")
 	public String logout(HttpServletRequest request){
-		Subject subject = SecurityUtils.getSubject();
-		if (subject.isAuthenticated()) {
-			// session销毁
-			subject.logout(); 
-		}
+		
+		HttpSession session = request.getSession();
+		session.removeAttribute("curuser");
 		return "redirect:/login.do";
 	}
 }

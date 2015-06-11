@@ -67,11 +67,10 @@ public class AdministratorDAOImpl extends HibernateDAO<Admininfo> implements Adm
 
 	@Override
 	public Admininfo getByLoginName(String loginName, String password) {
-		Query q = getSession().createQuery("from Admininfo a where a.loginName=:loginName");
+		Query q = getSession().createQuery("from Admininfo a where a.loginName=:loginName and a.loginKey=:password and a.valid = 1");
 		q.setString("loginName", loginName);
-		Admininfo adInfo = null;
-		adInfo = (Admininfo) q.uniqueResult();
-		return adInfo;
+		q.setString("password", password);
+		return (Admininfo) q.uniqueResult();
 	}
 
 }

@@ -18,7 +18,7 @@ public class LangUtilCtrl {
 	 /**
      * 语言切换
      */
-    @RequestMapping(value="/lang", method = {RequestMethod.GET})
+    @RequestMapping(value="/resource/lang", method = {RequestMethod.GET})
     public String changeLang(HttpServletRequest request,Model model, @RequestParam(value="langType", defaultValue="zh") String langType){
         if(langType.equals("zh")){
             Locale locale = new Locale("zh", "CN"); 
@@ -34,17 +34,5 @@ public class LangUtilCtrl {
         //返回当前页面
         String uri = request.getHeader("Referer");
         return "redirect:"+uri;
-    }
-    /**
-     * 登录跳转，国际化处理
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping(value="login*",method=RequestMethod.GET)
-    public String login(HttpServletRequest request,HttpServletResponse response){
-    	HttpSession session = request.getSession();
-    	session.removeAttribute("check");
-		return "login";
     }
 }

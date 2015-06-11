@@ -12,15 +12,13 @@ $(function(){
 	$('#adminListTab').datagrid({
 	    url:'${path}/admin/listContent.do',
 	    fit:true,
-	    pagination:true,
-	    pageList:[5,10,15,20],
 	    queryParams:{},
 	    rownumbers:true,
-	    border:false,
+	    border:true,
 	    autoRowHeight:false,
 	    rowStyler: function(index,row){
-				return 'height:30px;';
-			},
+			return 'height:30px;';
+		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
 	        {field:'adminName',title:'用户名',width:100},   
@@ -28,9 +26,14 @@ $(function(){
 	        {field:'adminMobile',title:'手机',width:100},
 	        {field:'adminTel',title:'固话',width:100},   
 	        {field:'adminEmail',title:'邮箱',width:100},
-	        {field:'adminAddr',title:'地址',width:100}
+	        {field:'adminAddr',title:'地址',width:100},
+	        {field:'depName',title:'片区',width:100},
+	        {field:'action',title:'操作',width:150,halign:'center',align:'center',formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='depDetail("+row.pid+")'>修改</a> "+
+				"<a href='#' class='operateHref' onclick='deleteDep("+row.pid+","+index+")'>删除</a> ";
+			}}
 	    ]],
-	    toolbar: [{ 
+	    toolbar: [{
 	        text: '添加', 
 	        iconCls: 'icon-add', 
 	        handler: function() { 

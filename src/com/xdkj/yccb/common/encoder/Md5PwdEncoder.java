@@ -111,7 +111,7 @@ public class Md5PwdEncoder implements PwdEncoder {
 	public static void main(String[] args) {
 		
 		Md5PwdEncoder md = new Md5PwdEncoder();
-		String aa = md.encodePassword("11111");
+		String aa = md.encodePassword("111111");
 		System.out.println(aa);
 		
 	}

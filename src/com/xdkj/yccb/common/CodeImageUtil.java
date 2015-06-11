@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class CodeImageUtil{
-	@RequestMapping(value="/codeImg",method=RequestMethod.GET)
+	@RequestMapping(value="/resource/codeImg",method=RequestMethod.GET)
 	public void getImg(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		response.setHeader("pragma", "No-cache");
