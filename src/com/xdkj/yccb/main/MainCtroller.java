@@ -38,7 +38,7 @@ public class MainCtroller {
 	private AdministratorService administratorService;
 	
 	
-	@RequestMapping(value="/index",method = RequestMethod.GET)
+	@RequestMapping(value="/resource/index",method = RequestMethod.GET)
 	public String homePage(HttpServletRequest request,HttpServletResponse response,Model model){
 		
 		Admininfo adInfo = administratorService.getByLoginName("admin", "96e79218965eb72c92a549dd5a330112");

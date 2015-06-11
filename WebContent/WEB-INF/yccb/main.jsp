@@ -19,7 +19,7 @@ var _menus = {
 					"menuid" : "111",
 					"menuname" : "<fmt:message key='menu.watcom'/>",
 					"icon" : "micon-nav",
-					"url" : "admin/watcom/list.do"
+					"url" : "${path}/admin/watcom/list.do"
 				}, 
 			</c:if>
 			<c:if test="${menus['watcom']=='t'}">
@@ -27,7 +27,7 @@ var _menus = {
 					"menuid" : "113",
 					"menuname" : "<fmt:message key='menu.admin'/>",
 					"icon" : "micon-nav",
-					"url" : "admin/list.do"
+					"url" : "${path}/admin/list.do"
 				},
 			</c:if>
 			<c:if test="${menus['role']=='t'}">
@@ -35,7 +35,7 @@ var _menus = {
 					"menuid" : "115",
 					"menuname" : "<fmt:message key='menu.role'/>",
 					"icon" : "micon-nav",
-					"url" : "sys/role/list.do"
+					"url" : "${path}/sys/role/list.do"
 				},
 			</c:if>
 			<c:if test="${menus['areas']=='t'}">
@@ -43,7 +43,7 @@ var _menus = {
 					"menuid" : "117",
 					"menuname" : "<fmt:message key='menu.areas'/>",
 					"icon" : "micon-nav",
-					"url" : "admin/dep/list.do"
+					"url" : "${path}/admin/dep/list.do"
 				},
 			</c:if>
 			<c:if test="${menus['basicprice']=='t'}">
@@ -51,7 +51,7 @@ var _menus = {
 					"menuid" : "118",
 					"menuname" : "<fmt:message key='menu.basicprice'/>",
 					"icon" : "micon-nav",
-					"url" : "admin/price/list.do"
+					"url" : "${path}/admin/price/list.do"
 				},
 			</c:if>]
 		}],
@@ -65,7 +65,7 @@ var _menus = {
 				"menuid" : "211",
 				"menuname" : "<fmt:message key='menu.community'/>",
 				"icon" : "micon-nav",
-				"url" : "infoin/neighbor/list.do",
+				"url" : "${path}/infoin/neighbor/list.do",
 			},
 			</c:if>
 			<c:if test="${menus['userinfo']=='t'}">
@@ -73,7 +73,7 @@ var _menus = {
 				"menuid" : "213",
 				"menuname" : "<fmt:message key='menu.user'/>",
 				"icon" : "micon-nav",
-				"url" : "infoin/customer/list.do"
+				"url" : "${path}/infoin/customer/list.do"
 			} ,
 			</c:if>]
 
@@ -88,7 +88,7 @@ var _menus = {
 				"menuid" : "311",
 				"menuname" : "<fmt:message key='menu.readmeter'/>",
 				"icon" : "micon-nav",
-				"url" : "readme/read/remotelist.do"
+				"url" : "${path}/readme/read/remotelist.do"
 			}, 
 			</c:if>
 			<c:if test="${menus['unremote']=='t'}">
@@ -96,7 +96,7 @@ var _menus = {
 				"menuid" : "313",
 				"menuname" : "<fmt:message key='menu.unremote'/>",
 				"icon" : "micon-nav",
-				"url" : "readme/read/unremotelist.do"
+				"url" : "${path}/readme/read/unremotelist.do"
 			}, </c:if>]
 
 		}],
@@ -110,7 +110,7 @@ var _menus = {
 				"menuid" : "411",
 				"menuname" : "<fmt:message key='menu.charge'/>",
 				"icon" : "micon-nav",
-				"url" : "charge/charge.do"
+				"url" : "${path}/charge/charge.do"
 			}, 
 			</c:if>
 			<c:if test="${menus['calcost']=='t'}">
@@ -118,7 +118,7 @@ var _menus = {
 				"menuid" : "412",
 				"menuname" : "<fmt:message key='menu.calcost'/>",
 				"icon" : "micon-nav",
-				"url" : "charge/settle.do"
+				"url" : "${path}/charge/settle.do"
 			} ,
 			</c:if>
 			<c:if test="${menus['chargelat']=='t'}">
@@ -126,7 +126,7 @@ var _menus = {
 				"menuid" : "413",
 				"menuname" : "<fmt:message key='menu.chargelat'/>",
 				"icon" : "micon-nav",
-				"url" : "charge/postpay.do"
+				"url" : "${path}/charge/postpay.do"
 			},
 			</c:if>
 			<c:if test="${menus['closetap']=='t'}">
@@ -134,7 +134,7 @@ var _menus = {
 				"menuid" : "414",
 				"menuname" : "<fmt:message key='menu.closetap'/>",
 				"icon" : "micon-nav",
-				"url" : "charge/closevalve.do"
+				"url" : "${path}/charge/closevalve.do"
 			} ,
 			</c:if>
 			<c:if test="${menus['domaintap']=='t'}">
@@ -142,7 +142,7 @@ var _menus = {
 				"menuid" : "415",
 				"menuname" : "<fmt:message key='menu.domaintap'/>",
 				"icon" : "micon-nav",
-				"url" : "charge/valvelog.do"
+				"url" : "${path}/charge/valvelog.do"
 			},</c:if>]
 
 		}],
@@ -156,7 +156,7 @@ var _menus = {
 				"menuid" : "511",
 				"menuname" : "<fmt:message key='menu.chargestat'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/payinfo.do"
+				"url" : "${path}/statistics/payinfo.do"
 			},
 			</c:if>
 			<c:if test="${menus['chargedstat']=='t'}">
@@ -164,7 +164,7 @@ var _menus = {
 				"menuid" : "512",
 				"menuname" : "<fmt:message key='menu.chargedstat'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/settlelog.do"
+				"url" : "${path}/statistics/settlelog.do"
 			},
 			</c:if>
 			<c:if test="${menus['chargewaterstat']=='t'}">
@@ -172,7 +172,7 @@ var _menus = {
 				"menuid" : "513",
 				"menuname" : "<fmt:message key='menu.chargewaterstat'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/settlelogwater.do"
+				"url" : "${path}/statistics/settlelogwater.do"
 			}, 
 			</c:if>
 			<c:if test="${menus['buildingstat']=='t'}">
@@ -180,7 +180,7 @@ var _menus = {
 				"menuid" : "514",
 				"menuname" : "<fmt:message key='menu.buildingstat'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/lou.do"
+				"url" : "${path}/statistics/lou.do"
 			},
 			</c:if>
 			<c:if test="${menus['owedstat']=='t'}">
@@ -188,7 +188,7 @@ var _menus = {
 				"menuid" : "514",
 				"menuname" : "<fmt:message key='menu.owedstat'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/owe.do"
+				"url" : "${path}/statistics/owe.do"
 			},
 			</c:if>
 			<c:if test="${menus['maincustmonitor']=='t'}">
@@ -196,7 +196,7 @@ var _menus = {
 				"menuid" : "516",
 				"menuname" : "<fmt:message key='menu.maincustmonitor'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/vip.do"
+				"url" : "${path}/statistics/vip.do"
 			}, 
 			</c:if>
 			<c:if test="${menus['waterlossanaly']=='t'}">
@@ -204,14 +204,14 @@ var _menus = {
 				"menuid" : "517",
 				"menuname" : "<fmt:message key='menu.waterlossanaly'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/waste.do"
+				"url" : "${path}/statistics/waste.do"
 			},</c:if>
 			<c:if test="${menus['chargeratestat']=='t'}">
 			{
 				"menuid" : "515",
 				"menuname" : "<fmt:message key='menu.chargeratestat'/>",
 				"icon" : "micon-nav",
-				"url" : "statistics/chargerate.do"
+				"url" : "${path}/statistics/chargerate.do"
 			},
 			</c:if>]
 
