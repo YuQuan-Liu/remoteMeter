@@ -50,7 +50,14 @@ $(function(){
 	});
 });
 function adminDetail(pid){
-	
+	$('#addWin').window({   
+	    href:'${path}/admin/updatePage.do?pid='+pid,
+	    width:500,   
+	    height:700,
+	    minimizable:false,
+	    maximizable:false,
+	    title: '管理员信息'
+	}); 
 }
 function deleteadmin(pid,index_){
 	var adminName = $('#adminListTab').datagrid('getRows')[index_]["adminName"];

@@ -10,6 +10,21 @@ public class AdminInfoView {
 	private String adminMobile;
 	private String adminTel;
 	private String remark;
+	private String roleName;
+	private int nowc;
+	
+	public int getNowc() {
+		return nowc;
+	}
+	public void setNowc(int nowc) {
+		this.nowc = nowc;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 	public int getPid() {
 		return pid;
 	}

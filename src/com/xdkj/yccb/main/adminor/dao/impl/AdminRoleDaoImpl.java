@@ -15,4 +15,13 @@ public class AdminRoleDaoImpl extends HibernateDAO<AdminRole> implements AdminRo
 		return adminrole.getPid();
 	}
 
+	@Override
+	public String updateRole(int pid, int rid) {
+		String hql = "update AdminRole a set a.roles.pid= :rid where a.admininfo.pid = :pid";
+		if(getSession().createQuery(hql).setInteger("pid", pid).setInteger("rid", rid).executeUpdate()>0){
+			return "true";
+		}
+		return "false";
+	}
+
 }

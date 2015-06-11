@@ -26,12 +26,18 @@ public class AdministratorDAOImpl extends HibernateDAO<Admininfo> implements Adm
 
 	@Override
 	public List<AdminInfoView> getListView(int wcid) {
-		Query q = getSession().createSQLQuery("select ad.*,DepartmentName depName from admininfo ad " +
+		Query q = getSession().createSQLQuery("select ad.*,DepartmentName depName,RoleName roleName from admininfo ad " +
 				"left join department d " +
 				"on ad.DepartmentID = d.pid " +
+				"left join admin_role r " +
+				"on ad.pid = r.adminid " +
+				"left join roles rs " +
+				"on rs.pid = r.roleid " +
 				"where ad.WCID = :wcid and ad.valid = 1 ")
 				.addScalar("pid", Hibernate.INTEGER)
 				.addScalar("depName", Hibernate.STRING)
+				.addScalar("nowc", Hibernate.INTEGER)
+				.addScalar("roleName", Hibernate.STRING)
 				.addScalar("adminName", Hibernate.STRING)
 				.addScalar("loginName", Hibernate.STRING)
 				.addScalar("adminEmail", Hibernate.STRING)
@@ -69,7 +75,7 @@ public class AdministratorDAOImpl extends HibernateDAO<Admininfo> implements Adm
 	@Override
 	public boolean update(Admininfo adminInfo) {
 		getHibernateTemplate().merge(adminInfo);
-		return false;
+		return true;
 	}
 
 	@Override
@@ -96,6 +102,69 @@ public class AdministratorDAOImpl extends HibernateDAO<Admininfo> implements Adm
 		Query q = getSession().createQuery("from Admininfo a where a.loginName = :name ");
 		q.setString("name", name);
 		if(q.list().size() > 0){
+			return "true";
+		}
+		return "false";
+	}
+
+	@Override
+	public AdminInfoView getViewByid(int pid) {
+		Query q = getSession().createSQLQuery("select ad.*,DepartmentName depName,RoleName roleName from admininfo ad " +
+				"left join department d " +
+				"on ad.DepartmentID = d.pid " +
+				"left join admin_role r " +
+				"on ad.pid = r.adminid " +
+				"left join roles rs " +
+				"on rs.pid = r.roleid " +
+				"where ad.pid = :pid ")
+				.addScalar("pid", Hibernate.INTEGER)
+				.addScalar("depName", Hibernate.STRING)
+				.addScalar("nowc", Hibernate.INTEGER)
+				.addScalar("roleName", Hibernate.STRING)
+				.addScalar("adminName", Hibernate.STRING)
+				.addScalar("loginName", Hibernate.STRING)
+				.addScalar("adminEmail", Hibernate.STRING)
+				.addScalar("adminAddr", Hibernate.STRING)
+				.addScalar("adminMobile", Hibernate.STRING)
+				.addScalar("adminTel", Hibernate.STRING);
+		q.setInteger("pid", pid);
+		q.setResultTransformer(Transformers.aliasToBean(AdminInfoView.class));
+		return (AdminInfoView) q.uniqueResult();
+	}
+
+	@Override
+	public boolean checkoldpwd(int pid, String oldpwd) {
+		Query q = getSession().createQuery("from Admininfo a where a.pid = :pid and a.loginKey = :oldpwd ");
+		q.setString("oldpwd", oldpwd);
+		q.setInteger("pid", pid);
+		if(q.list().size() > 0){
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updatePwd(int pid, String newpwd) {
+		String hql = "update Admininfo a set a.loginKey= :newpwd where a.pid = :pid";
+		if(getSession().createQuery(hql).setInteger("pid", pid).setString("newpwd", newpwd).executeUpdate()>0){
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public String resetpwd(int pid) {
+		String hql = "update Admininfo a set a.loginKey= '96e79218965eb72c92a549dd5a330112' where a.pid = :pid";
+		if(getSession().createQuery(hql).setInteger("pid", pid).executeUpdate()>0){
+			return "true";
+		}
+		return "false";
+	}
+
+	@Override
+	public String updateDep(int pid, int did) {
+		String hql = "update Admininfo a set a.department.pid= :did where a.pid = :pid";
+		if(getSession().createQuery(hql).setInteger("pid", pid).setInteger("did", did).executeUpdate()>0){
 			return "true";
 		}
 		return "false";

@@ -6,12 +6,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
 import com.xdkj.yccb.main.adminor.dao.AdminRoleDao;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dto.AdminInfoView;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Department;
 import com.xdkj.yccb.main.entity.Roles;
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
@@ -58,16 +60,15 @@ public class AdministratorServiceImpl implements AdministratorService {
 		return administratorDAO.removeById(adminId);
 	}
 	@Override
-	public boolean update(Admininfo adminInfo) {
-		Admininfo ad = administratorDAO.getById(adminInfo.getPid());
-		/*try {
-			PropertyUtils.copyProperties(ad, adminInfo);
-		} catch (IllegalAccessException | InvocationTargetException
-				| NoSuchMethodException e) {
-			e.printStackTrace();
-		}*/
-		administratorDAO.update(ad);
-		return false;
+	public boolean update(Admininfo admin) {
+		Admininfo ad = administratorDAO.getById(admin.getPid());
+		ad.setAdminAddr(admin.getAdminAddr());
+		ad.setAdminEmail(admin.getAdminEmail());
+		ad.setAdminMobile(admin.getAdminMobile());
+		ad.setLoginName(admin.getLoginName());
+		ad.setAdminTel(admin.getAdminTel());
+		
+		return administratorDAO.update(ad);
 	}
 
 	@Override
@@ -84,5 +85,43 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public String checkLoginName(String name) {
 		
 		return administratorDAO.checkLoginName(name);
+	}
+
+	@Override
+	public AdminInfoView getAdminViewById(int pid) {
+		
+		return administratorDAO.getViewByid(pid);
+	}
+
+	@Override
+	public String changepwd(int pid, String old_, String new_) {
+		//就密码是否相同
+		Md5PwdEncoder md5 = new Md5PwdEncoder();
+		String oldpwd = md5.encodePassword(old_);
+		String newpwd = md5.encodePassword(new_);
+		if(administratorDAO.checkoldpwd(pid,oldpwd)){
+			//相同 更新密码
+			administratorDAO.updatePwd(pid,newpwd);
+			return "true";
+		}
+		return "false";
+	}
+
+	@Override
+	public String resetpwd(int pid) {
+		
+		return administratorDAO.resetpwd(pid);
+	}
+
+	@Override
+	public String changerole(int pid, int rid) {
+		
+		return adminRoleDao.updateRole(pid,rid);
+	}
+
+	@Override
+	public String changedep(int pid, int did) {
+		
+		return administratorDAO.updateDep(pid,did);
 	}
 }

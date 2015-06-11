@@ -93,16 +93,28 @@ public class AdministratorCtrl {
 	}
 	
 	
-	@RequestMapping(value="admin/updatePage",method = RequestMethod.GET)
-	public String updatePage(String pid,Model model){
-		Admininfo ad = adminstratorService.getById(pid);
-		model.addAttribute("adInfo", ad);
+	@RequestMapping(value="admin/updatePage")
+	public String updatePage(HttpServletRequest request,int pid,Model model){
+		AdminInfoView ad = adminstratorService.getAdminViewById(pid);
+		model.addAttribute("admin", ad);
+		
+		//注入权限    管辖片区   自来水公司
+		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		//权限
+		List<RoleView> role_list = roleService.getList(wcid);
+		model.addAttribute("role_list", role_list);
+		//片区
+		List<DepartmentView> dep_list = departmentService.getList(wcid);
+		model.addAttribute("dep_list", dep_list);
+		
+		model.addAttribute("wcid", wcid);
 		return updateAdminor;
 	}
-	@RequestMapping(value="admin/update",method = RequestMethod.POST)
+	@RequestMapping(value="/admin/admin/update")
+	@ResponseBody
 	public String update(Admininfo ad){
-		adminstratorService.update(ad);
-		return null;
+		
+		return adminstratorService.update(ad)+"";
 	}
 	
 	@RequestMapping(value="/admin/admin/delete",produces="application/json;charset=UTF-8")
@@ -110,5 +122,33 @@ public class AdministratorCtrl {
 	public String delete(int pid){
 		
 		return JSON.toJSONString(adminstratorService.removeById(pid)+"");
+	}
+	
+	@RequestMapping(value="/admin/admin/changepwd",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String changepwd(int pid,String old_,String new_){
+		
+		return JSON.toJSONString(adminstratorService.changepwd(pid,old_,new_));
+	}
+	
+	@RequestMapping(value="/admin/admin/resetpwd",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String resetpwd(int pid){
+		
+		return JSON.toJSONString(adminstratorService.resetpwd(pid));
+	}
+	
+	@RequestMapping(value="/admin/admin/changerole",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String changerole(int pid,int rid){
+		
+		return JSON.toJSONString(adminstratorService.changerole(pid,rid));
+	}
+	
+	@RequestMapping(value="/admin/admin/changedep",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String changedep(int pid,int did){
+		
+		return JSON.toJSONString(adminstratorService.changedep(pid,did));
 	}
 }

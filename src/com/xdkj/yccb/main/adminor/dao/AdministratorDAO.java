@@ -61,6 +61,33 @@ public interface AdministratorDAO {
 	 * @return
 	 */
 	String checkLoginName(String name);
+	/**
+	 * 管理员对应的view
+	 * @param pid
+	 * @return
+	 */
+	AdminInfoView getViewByid(int pid);
+	/**
+	 * 检测旧密码
+	 * @param pid
+	 * @param oldpwd
+	 * @return
+	 */
+	boolean checkoldpwd(int pid, String oldpwd);
+	/**
+	 * 更新密码
+	 * @param pid
+	 * @param newpwd
+	 * @return
+	 */
+	boolean updatePwd(int pid, String newpwd);
+	/**
+	 * 重置密码
+	 * @param pid
+	 * @return
+	 */
+	String resetpwd(int pid);
+	String updateDep(int pid, int did);
 	
 
 }

@@ -56,5 +56,40 @@ public interface AdministratorService {
 	 * @return
 	 */
 	String checkLoginName(String name);
+	/**
+	 * 获取管理员对应的  view  更新用户时用
+	 * @param pid
+	 * @return
+	 */
+	AdminInfoView getAdminViewById(int pid);
+	/**
+	 * 修改密码
+	 * @param pid
+	 * @param old_
+	 * @param new_
+	 * @return
+	 */
+	String changepwd(int pid, String old_, String new_);
+	/**
+	 * 重置密码
+	 * @param pid
+	 * @return
+	 */
+	String resetpwd(int pid);
+	/**
+	 * 修改角色
+	 * @param pid
+	 * @param rid
+	 * @return
+	 */
+	String changerole(int pid, int rid);
+	/**
+	 * 修改片区
+	 * @param pid
+	 * @param did
+	 * @return
+	 */
+	String changedep(int pid, int did);
+	
 
 }

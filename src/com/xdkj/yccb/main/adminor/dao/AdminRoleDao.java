@@ -6,4 +6,6 @@ public interface AdminRoleDao {
 
 	int addAdminRole(AdminRole adminrole);
 
+	String updateRole(int pid, int rid);
+
 }
