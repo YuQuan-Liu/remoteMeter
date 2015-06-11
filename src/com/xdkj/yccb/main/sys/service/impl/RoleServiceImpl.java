@@ -24,7 +24,6 @@ import com.xdkj.yccb.main.sys.dao.AuthorityDAO;
 import com.xdkj.yccb.main.sys.dao.RoleAuthorityDAO;
 import com.xdkj.yccb.main.sys.dao.RoleDAO;
 import com.xdkj.yccb.main.sys.dto.RoleView;
-import com.xdkj.yccb.main.sys.service.AuthorityService;
 import com.xdkj.yccb.main.sys.service.RoleService;
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -161,6 +160,9 @@ public class RoleServiceImpl implements RoleService {
 			JSONArray children = new JSONArray();
 			List<Authority> clist = authorityDAO.getList(au.getPid());
 			for (Authority auc : clist) {
+				if(auc.getPid() == 6 || auc.getPid() == 7){
+					continue;
+				}
 				JSONObject o = new JSONObject();
 				o.put("id", auc.getPid());
 				o.put("text", requestContext.getMessage(auc.getAuthorityCode()));
@@ -200,6 +202,9 @@ public class RoleServiceImpl implements RoleService {
 			JSONArray children = new JSONArray();
 			List<Authority> clist = authorityDAO.getList(au.getPid());
 			for (Authority auc : clist) {
+				if(auc.getPid() == 6 || auc.getPid() == 7){
+					continue;
+				}
 				JSONObject o = new JSONObject();
 				o.put("id", auc.getPid());
 				o.put("text", requestContext.getMessage(auc.getAuthorityCode()));

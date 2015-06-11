@@ -39,7 +39,7 @@ $(function(){
 	        	$('#watComAddWin').window({   
 	    		    href:'${path}/admin/watcom/addPage.do',
 	    		    width:500,
-	    		    height:400,
+	    		    height:600,
 	    		    minimizable:false,
 	    		    maximizable:false,
 	    		    title: '添加自来水公司'

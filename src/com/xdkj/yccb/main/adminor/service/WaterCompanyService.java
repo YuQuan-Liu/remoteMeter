@@ -21,11 +21,11 @@ public interface WaterCompanyService {
 	 */
 	int getTotalCount(Watercompany watcom);
 	/**
-	 * 添加自来水公司
+	 * 添加自来水公司  并且添加自来水下的超级管理员
 	 * @param watcom
 	 * @return
 	 */
-	String addWatcom( Watercompany watcom);
+	String addWatcom( Watercompany watcom,String adminName,String loginName);
 	
 	Watercompany getById(String pid);
 	/**

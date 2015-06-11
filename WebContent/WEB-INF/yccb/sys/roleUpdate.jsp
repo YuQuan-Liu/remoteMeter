@@ -66,10 +66,12 @@ function submitForm(){
 	</table>
 </div>
 </form>
-<c:if test="${role.systemRole == '0' }">
+<c:if test="${role.pid != 1}">
+<c:if test="${role.systemRole == '0'}">
 	<div style="text-align: center; padding: 5px">
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">更新</a>
 	</div>
+</c:if>
 </c:if>
 <div class="easyui-panel" title="选择权限" style="padding:5px;height:250px;">
 	<ul id="authTree" class="easyui-tree" data-options="url:'${path}/sys/role/tree_detail.do?pid=${role.pid }',method:'get',animate:true,checkbox:true"></ul>

@@ -21,7 +21,6 @@ import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.RoleAuthority;
-import com.xdkj.yccb.main.sys.service.AuthorityService;
 import com.xdkj.yccb.security.UserForSession;
 /**
  * 首页controller
@@ -31,8 +30,6 @@ import com.xdkj.yccb.security.UserForSession;
 @Controller
 public class MainCtroller {
 	public static final String homePage = "/main";
-	@Autowired
-	private AuthorityService authorityService;
 	
 	@Autowired
 	private AdministratorService administratorService;

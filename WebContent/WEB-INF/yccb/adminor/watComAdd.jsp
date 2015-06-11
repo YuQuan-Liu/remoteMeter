@@ -8,9 +8,6 @@
 </head>
 <body>
 <script type="text/javascript">
-$(function(){
-	
-})
 $.extend($.fn.validatebox.defaults.rules, {
     equals: {
         validator: function(value,param){
@@ -18,6 +15,14 @@ $.extend($.fn.validatebox.defaults.rules, {
         },
         message: '两次密码不相同.'
     }
+});
+
+$.extend($.fn.validatebox.defaults.rules, {
+	nonValidate: {
+      validator: function(value, param){
+          return false;
+      }
+  }
 });
 function submitForm(){
 	$('#watAddForm').form('submit', {
@@ -39,6 +44,27 @@ function submitForm(){
 	    }   
 	});	  
 	
+}
+
+//检查登录名是否已经存在
+function checkLoginName(){
+	var name = $("#loginName").textbox("getValue");
+	
+	$.ajax({
+		type:"POST",
+		url:"${path}/admin/admin/checkloginname.do",
+		data:{
+			name:name
+		},
+		dataType:"json",
+		success:function(data){
+			if(data == 'true'){
+				$("#loginName").textbox("enableValidation");
+			}else{
+				$("#loginName").textbox("disableValidation");
+			}
+		}
+	});
 }
 function clearForm(){
 	$('#watAddForm').form('clear');
@@ -90,6 +116,17 @@ function clearForm(){
 	    			<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px">
 	    			</td>
 	    		</tr>
+	    		
+	    		<tr>
+	    			<td>管理员姓名：</td>
+	    			<td><input class="easyui-textbox" type="text" name="adminName" data-options="required:true"/></td>
+	    		</tr>
+	    		<tr>
+	    			<td>管理员登陆名：</td>
+	    			<td><input class="easyui-textbox" type="text" name="loginName" id="loginName" 
+	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'登录名已存在！'" validType="nonValidate[]"/></td>
+	    		</tr>
+	    		
 	    	</table>
 	    </form>
 	    </div>

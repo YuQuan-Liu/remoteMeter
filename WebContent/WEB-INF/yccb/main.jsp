@@ -22,7 +22,7 @@ var _menus = {
 					"url" : "${path}/admin/watcom/list.do"
 				}, 
 			</c:if>
-			<c:if test="${menus['watcom']=='t'}">
+			<c:if test="${menus['adminor']=='t'}">
 				{
 					"menuid" : "113",
 					"menuname" : "<fmt:message key='menu.admin'/>",
@@ -101,7 +101,7 @@ var _menus = {
 
 		}],
 		charge : [
-			<c:if test="${menus['chargech']=='t'}">
+			<c:if test="${menus['charge']=='t'}">
 		   {
 			"menuid" : "40",
 			"icon" : "micon-charge",
@@ -113,7 +113,7 @@ var _menus = {
 				"url" : "${path}/charge/charge.do"
 			}, 
 			</c:if>
-			<c:if test="${menus['calcost']=='t'}">
+			<c:if test="${menus['settle']=='t'}">
 			{
 				"menuid" : "412",
 				"menuname" : "<fmt:message key='menu.calcost'/>",
@@ -121,7 +121,7 @@ var _menus = {
 				"url" : "${path}/charge/settle.do"
 			} ,
 			</c:if>
-			<c:if test="${menus['chargelat']=='t'}">
+			<c:if test="${menus['postpay']=='t'}">
 			{
 				"menuid" : "413",
 				"menuname" : "<fmt:message key='menu.chargelat'/>",
@@ -129,7 +129,7 @@ var _menus = {
 				"url" : "${path}/charge/postpay.do"
 			},
 			</c:if>
-			<c:if test="${menus['closetap']=='t'}">
+			<c:if test="${menus['closevalve']=='t'}">
 			{
 				"menuid" : "414",
 				"menuname" : "<fmt:message key='menu.closetap'/>",
@@ -137,7 +137,7 @@ var _menus = {
 				"url" : "${path}/charge/closevalve.do"
 			} ,
 			</c:if>
-			<c:if test="${menus['domaintap']=='t'}">
+			<c:if test="${menus['vavlelog']=='t'}">
 			{
 				"menuid" : "415",
 				"menuname" : "<fmt:message key='menu.domaintap'/>",
@@ -159,7 +159,7 @@ var _menus = {
 				"url" : "${path}/statistics/payinfo.do"
 			},
 			</c:if>
-			<c:if test="${menus['chargedstat']=='t'}">
+			<c:if test="${menus['settlelogstat']=='t'}">
 			{
 				"menuid" : "512",
 				"menuname" : "<fmt:message key='menu.chargedstat'/>",
@@ -167,7 +167,7 @@ var _menus = {
 				"url" : "${path}/statistics/settlelog.do"
 			},
 			</c:if>
-			<c:if test="${menus['chargewaterstat']=='t'}">
+			<c:if test="${menus['settlelogwaterstat']=='t'}">
 			{
 				"menuid" : "513",
 				"menuname" : "<fmt:message key='menu.chargewaterstat'/>",
@@ -175,7 +175,7 @@ var _menus = {
 				"url" : "${path}/statistics/settlelogwater.do"
 			}, 
 			</c:if>
-			<c:if test="${menus['buildingstat']=='t'}">
+			<c:if test="${menus['loustat']=='t'}">
 			{
 				"menuid" : "514",
 				"menuname" : "<fmt:message key='menu.buildingstat'/>",
@@ -183,7 +183,7 @@ var _menus = {
 				"url" : "${path}/statistics/lou.do"
 			},
 			</c:if>
-			<c:if test="${menus['owedstat']=='t'}">
+			<c:if test="${menus['owestat']=='t'}">
 			{
 				"menuid" : "514",
 				"menuname" : "<fmt:message key='menu.owedstat'/>",
@@ -191,7 +191,7 @@ var _menus = {
 				"url" : "${path}/statistics/owe.do"
 			},
 			</c:if>
-			<c:if test="${menus['maincustmonitor']=='t'}">
+			<c:if test="${menus['vipstat']=='t'}">
 			{
 				"menuid" : "516",
 				"menuname" : "<fmt:message key='menu.maincustmonitor'/>",
@@ -199,7 +199,7 @@ var _menus = {
 				"url" : "${path}/statistics/vip.do"
 			}, 
 			</c:if>
-			<c:if test="${menus['waterlossanaly']=='t'}">
+			<c:if test="${menus['wastestat']=='t'}">
 			{
 				"menuid" : "517",
 				"menuname" : "<fmt:message key='menu.waterlossanaly'/>",
@@ -238,23 +238,23 @@ var _menus = {
 		<ul id="topmenu">
 				<li ><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>">
 				<fmt:message key='menu.index'/></a></li>
-			<c:if test="${menus['admin']=='t'}">
+<%-- 			<c:if test="${menus['admin']=='t'}"> --%>
 				<li><a name="admin" href="javascript:;" title="<fmt:message key='menu.admin'/>">
 				<fmt:message key="menu.admin"/></a></li>
-			</c:if>
-			<c:if test="${menus['info']=='t'}">
+<%-- 			</c:if> --%>
+			<c:if test="${menus['infoin']=='t'}">
 				<li ><a name="info" href="javascript:;" title="<fmt:message key='menu.info'/>">
 				<fmt:message key='menu.info'/></a></li>
 			</c:if>
-			<c:if test="${menus['read']=='t'}">
+			<c:if test="${menus['readview']=='t'}">
 				<li><a name="read" href="javascript:;" title="<fmt:message key='menu.read'/>">
 				<fmt:message key='menu.read'/></a></li>
 			</c:if>
-			<c:if test="${menus['charge']=='t'}">
+			<c:if test="${menus['chargeview']=='t'}">
 				<li ><a name="charge" href="javascript:;" title="<fmt:message key='menu.charge'/>">
 				<fmt:message key='menu.charge'/></a></li>
 			</c:if>
-			<c:if test="${menus['statis']=='t'}">
+			<c:if test="${menus['statisticview']=='t'}">
 				<li><a name="statis" href="javascript:;" title="<fmt:message key='menu.statis'/>">
 				<fmt:message key='menu.statis'/></a></li>
 			</c:if>

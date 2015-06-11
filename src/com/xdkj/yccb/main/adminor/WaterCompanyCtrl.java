@@ -47,8 +47,8 @@ public class WaterCompanyCtrl {
 	}
 	@RequestMapping(value="admin/watcom/add",method=RequestMethod.POST)
 	@ResponseBody
-	public String add(Watercompany watcom){
-		return waterCompanyService.addWatcom(watcom);
+	public String add(Watercompany watcom,String adminName,String loginName){
+		return waterCompanyService.addWatcom(watcom,adminName,loginName);
 		
 	}
 	@RequestMapping(value="admin/watcom/updatePage",method=RequestMethod.GET)
