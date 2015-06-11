@@ -32,4 +32,10 @@ public interface RoleDAO {
 	 * @return
 	 */
 	String checkname(int wcid, String name);
+
+	/**
+	 * 获取系统默认的权限
+	 * @return
+	 */
+	List<Roles> getSystemList();
 }

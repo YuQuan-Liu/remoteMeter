@@ -23,7 +23,7 @@ $(function(){
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
 	        {field:'roleName',title:'角色名称',width:100},   
 // 	        {field:'watercompany',title:'自来水公司',width:100},
-// 	        {field:'systemRole',title:'系统角色',width:100,formatter:TFFormatter},
+	        {field:'systemRole',title:'系统角色',width:100,formatter:TFFormatter},
 	        {field:'remark',title:'备注',width:100},
 	        {field:'action',title:'操作',width:100,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a href='#' class='operateHref' onclick='roleDetail("+row.pid+")'>查看</a> ";

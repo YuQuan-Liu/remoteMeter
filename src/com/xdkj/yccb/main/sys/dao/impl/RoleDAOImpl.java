@@ -15,7 +15,7 @@ public class RoleDAOImpl extends HibernateDAO<Roles>implements RoleDAO {
 
 	@Override
 	public List<Roles> getList(int wcid) {
-		Query q = getSession().createQuery("from Roles r where r.watercompany.pid=:wcid and r.valid = 1");
+		Query q = getSession().createQuery("from Roles r where r.watercompany.pid=:wcid and r.systemRole = 0 and r.valid = 1");
 		q.setInteger("wcid", wcid);
 		return q.list();
 	}
@@ -64,6 +64,12 @@ public class RoleDAOImpl extends HibernateDAO<Roles>implements RoleDAO {
 			return "true";
 		}
 		return "false";
+	}
+
+	@Override
+	public List<Roles> getSystemList() {
+		Query q = getSession().createQuery("from Roles r where r.systemRole = 1 and r.valid = 1");
+		return q.list();
 	}
 
 }

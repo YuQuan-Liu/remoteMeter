@@ -38,7 +38,19 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public List<RoleView> getList(int wcid) {
 		List<Roles> list = roleDAO.getList(wcid);
+		List<Roles> system = roleDAO.getSystemList();
 		List<RoleView> listView = new ArrayList<RoleView>();
+		for (Roles roles : system) {
+			RoleView r = new RoleView();
+			r.setPid(roles.getPid());
+			r.setRemark(roles.getRemark());
+			r.setRoleName(roles.getRoleName());
+			r.setSystemRole(roles.getSystemRole());
+			r.setValid(roles.getValid());
+			r.setWatercompany(roles.getWatercompany().getCompanyName());
+			r.setWcid(roles.getWatercompany().getPid()+"");
+			listView.add(r);
+		}
 		for (Roles roles : list) {
 			RoleView r = new RoleView();
 			r.setPid(roles.getPid());
