@@ -29,8 +29,8 @@ $(function(){
 	        {field:'adminAddr',title:'地址',width:100},
 	        {field:'depName',title:'片区',width:100},
 	        {field:'action',title:'操作',width:150,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='depDetail("+row.pid+")'>修改</a> "+
-				"<a href='#' class='operateHref' onclick='deleteDep("+row.pid+","+index+")'>删除</a> ";
+				return "<a href='#' class='operateHref' onclick='adminDetail("+row.pid+")'>修改</a> "+
+				"<a href='#' class='operateHref' onclick='deleteadmin("+row.pid+","+index+")'>删除</a> ";
 			}}
 	    ]],
 	    toolbar: [{
@@ -39,63 +39,42 @@ $(function(){
 	        handler: function() { 
 	        	$('#addWin').window({   
 	    		    href:'${path}/admin/addPage.do',
-	    		    width:400,   
-	    		    height:350,
+	    		    width:500,   
+	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加管理员', 
-	    		    onLoad:function(){   
-	    		        //alert('loaded successfully'); 
-	    		    }   
+	    		    title: '添加管理员'
 	    		}); 
-	        } 
-	    }, '-', { 
-	        text: '修改', 
-	        iconCls: 'icon-edit', 
-	        handler: function() { 
-	        	var rows = $('#adminListTab').datagrid('getSelections');
-	        	var leng = rows.length;
-	        	if(leng==1){
-	        		var pid = rows[0].pid;
-	        		alert(pid);
-	        		$('#updateWin').window({   
-		    		    href:'${path}/admin/updatePage.do?pid='+pid,
-		    		    width:400,   
-		    		    height:350,
-		    		    minimizable:false,
-		    		    maximizable:false,
-		    		    title: '更新管理员', 
-		    		    onLoad:function(){   
-		    		        //alert('loaded successfully'); 
-		    		    }   
-		    		}); 
-	        		
-	        	}else if(leng>1){
-	        		alert("single selected");
-	        	}else{
-	        		alert("unselected");
-	        	}
-	        } 
-	    }, '-',{ 
-	        text: '删除', 
-	        iconCls: 'icon-remove', 
-	        handler: function(){ 
-	        	var rows = $('#adminListTab').datagrid('getSelections');
-	        	var pids = "";
-	        	rows.forEach(function(obj){  
-	        	    pids += obj.pid+",";
-	        	}) 
-	        	alert(pids);
 	        } 
 	    }]
 	});
-})
-//查询
-function query(){
-	var queryParams = $('#adminListTab').datagrid('options').queryParams;
-	queryParams.uid = 111;
-	queryParams.uname = "fdasf";
-	$('#adminListTab').datagrid('load');
+});
+function adminDetail(pid){
+	
+}
+function deleteadmin(pid,index_){
+	var adminName = $('#adminListTab').datagrid('getRows')[index_]["adminName"];
+	$.messager.confirm('提示', '确定要删除'+adminName+'吗？', function(r){
+		if(r){
+			$.ajax({
+				url:'${path}/admin/admin/delete.do',
+				type:'post',
+				data:{
+					pid:pid
+				},
+				success:function(data){
+					if(data=="true"){
+						$.messager.show({
+							title:"删除管理员",
+							msg:"删除成功",
+							showType:'slide'
+						});
+						$('#adminListTab').datagrid('deleteRow',index_);
+					}
+				}
+			});	
+		}
+	});
 }
 </script>
 	<table id="adminListTab"></table>

@@ -6,36 +6,24 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.adminor.dao.AdminRoleDao;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dto.AdminInfoView;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
+import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Roles;
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
 	@Autowired
 	private AdministratorDAO administratorDAO;
+	@Autowired
+	private AdminRoleDao adminRoleDao;
 
 	@Override
-	public List<AdminInfoView> getList(Admininfo adInfo,PageBase pageInfo) {
-		List<Admininfo> list = administratorDAO.getList(adInfo, pageInfo);
-		List<AdminInfoView> listView = new ArrayList<AdminInfoView>() ;
-		for (Admininfo ai : list) {
-			AdminInfoView aiv = new AdminInfoView();
-			aiv.setAdminAddr(ai.getAdminAddr());
-			aiv.setAdminEmail(ai.getAdminEmail());
-			aiv.setAdminMobile(ai.getAdminMobile());
-			aiv.setAdminName(ai.getAdminName());
-			aiv.setAdminTel(ai.getAdminTel());
-			aiv.setLoginName(ai.getLoginName());
-			aiv.setNoWc(ai.getNoWc());
-			aiv.setPid(ai.getPid());
-			aiv.setRemark(ai.getRemark());
-			aiv.setValid(ai.getValid());
-			listView.add(aiv);
-		}
-		list=null;
-		return listView;
+	public List<AdminInfoView> getList(int wcid) {
+		
+		return administratorDAO.getListView(wcid);
 	}
 
 	@Override
@@ -48,9 +36,17 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
-	public String addAdmin(Admininfo adminInfo) {
+	public String addAdmin(Admininfo adminInfo,int roleid) {
 		int pid = administratorDAO.addAdmin(adminInfo);
 		if(pid>0){
+			//add the admin_role
+			AdminRole adminrole = new AdminRole();
+			adminrole.setAdmininfo(adminInfo);
+			
+			Roles roles = new Roles();
+			roles.setPid(roleid);
+			adminrole.setRoles(roles);
+			adminRoleDao.addAdminRole(adminrole);
 			return "succ";
 		}
 		return "fail";
@@ -58,7 +54,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public boolean removeById(Integer adminId) {
-		return false;
+		
+		return administratorDAO.removeById(adminId);
 	}
 	@Override
 	public boolean update(Admininfo adminInfo) {
@@ -81,5 +78,11 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public Admininfo getByLoginName(String loginName, String password) {
 		return administratorDAO.getByLoginName(loginName, password);
+	}
+
+	@Override
+	public String checkLoginName(String name) {
+		
+		return administratorDAO.checkLoginName(name);
 	}
 }

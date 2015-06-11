@@ -9,10 +9,10 @@ import com.xdkj.yccb.main.entity.Admininfo;
 public interface AdministratorService {
 	
 	/**
-	 * 获取管理员列表
+	 * 获取自来水公司下的管理员列表
 	 * @return
 	 */
-	List<AdminInfoView> getList(Admininfo adInfo,PageBase pageInfo);
+	List<AdminInfoView> getList(int wcid);
 	/**
 	 * 获取总记录数
 	 * @param adInfo
@@ -30,7 +30,7 @@ public interface AdministratorService {
 	 * @param adminInfo
 	 * @return id
 	 */
-	String addAdmin(Admininfo adminInfo);
+	String addAdmin(Admininfo adminInfo,int roleid);
 	/**
 	 * 通过id删除管理员
 	 * @param adminId
@@ -50,5 +50,11 @@ public interface AdministratorService {
 	 * @return
 	 */
 	Admininfo getByLoginName(String loginName,String password);
+	/**
+	 * 检测登录名是否存在
+	 * @param name
+	 * @return
+	 */
+	String checkLoginName(String name);
 
 }

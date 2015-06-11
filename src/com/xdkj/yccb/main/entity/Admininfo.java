@@ -221,4 +221,16 @@ public class Admininfo implements java.io.Serializable {
 		this.adminRoles = adminRoles;
 	}
 
+	@Override
+	public String toString() {
+		return "Admininfo [pid=" + pid + ", watercompany=" + watercompany
+				+ ", department=" + department + ", adminName=" + adminName
+				+ ", loginName=" + loginName + ", loginKey=" + loginKey
+				+ ", adminEmail=" + adminEmail + ", adminAddr=" + adminAddr
+				+ ", adminMobile=" + adminMobile + ", adminTel=" + adminTel
+				+ ", noWc=" + noWc + ", valid=" + valid + ", remark=" + remark
+				+ ", adminRoles=" + adminRoles + "]";
+	}
+
+	
 }

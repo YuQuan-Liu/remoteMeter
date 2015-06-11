@@ -1,40 +1,27 @@
 package com.xdkj.yccb.main.adminor.dto;
 
-import com.xdkj.yccb.main.entity.Department;
-import com.xdkj.yccb.main.entity.Watercompany;
-
 public class AdminInfoView {
-	private Integer pid;
-	/*private Watercompany watercompany;
-	private Department department;*/
+	private int pid;
+	private String depName;
 	private String adminName;
 	private String loginName;
-	private String loginKey;
 	private String adminEmail;
 	private String adminAddr;
 	private String adminMobile;
 	private String adminTel;
-	private int noWc;
-	private String valid;
 	private String remark;
-	public Integer getPid() {
+	public int getPid() {
 		return pid;
 	}
-	public void setPid(Integer pid) {
+	public void setPid(int pid) {
 		this.pid = pid;
 	}
-	/*public Watercompany getWatercompany() {
-		return watercompany;
+	public String getDepName() {
+		return depName;
 	}
-	public void setWatercompany(Watercompany watercompany) {
-		this.watercompany = watercompany;
+	public void setDepName(String depName) {
+		this.depName = depName;
 	}
-	public Department getDepartment() {
-		return department;
-	}
-	public void setDepartment(Department department) {
-		this.department = department;
-	}*/
 	public String getAdminName() {
 		return adminName;
 	}
@@ -46,12 +33,6 @@ public class AdminInfoView {
 	}
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
-	}
-	public String getLoginKey() {
-		return loginKey;
-	}
-	public void setLoginKey(String loginKey) {
-		this.loginKey = loginKey;
 	}
 	public String getAdminEmail() {
 		return adminEmail;
@@ -77,23 +58,12 @@ public class AdminInfoView {
 	public void setAdminTel(String adminTel) {
 		this.adminTel = adminTel;
 	}
-	public int getNoWc() {
-		return noWc;
-	}
-	public void setNoWc(int noWc) {
-		this.noWc = noWc;
-	}
-	public String getValid() {
-		return valid;
-	}
-	public void setValid(String valid) {
-		this.valid = valid;
-	}
 	public String getRemark() {
 		return remark;
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	
 	
 }

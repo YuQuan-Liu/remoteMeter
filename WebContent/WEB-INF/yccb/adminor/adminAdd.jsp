@@ -8,82 +8,129 @@
 </head>
 <body>
 <script type="text/javascript">
-$(function(){
-	$('#loginName').validatebox({   
-	    required: true,   
-	    validType: "remote['${path}/admin/check.do','loginName']"  
-	});  
-})
+
 function submitForm(){
-	if($('#addForm').form('validate')){
-		$('#addForm').form('submit', {   
-		    success: function(data){   
-		       if(data=="succ"){
-		    	   $.messager.alert('添加管理员','添加成功！','info',
-						function(){
-						 	$('#addWin').window('close');
-						 	$('#adminListTab').datagrid('reload');
-						 });
-		       }
-		    }   
-		});  
+	var did = $("#depid").combobox("getValue");
+	var rid = $("#roleid").combobox("getValue");
+	if(did == ""){
+		$.messager.show({
+			title:'添加管理员',
+			msg:'请选择片区！',
+			showType:'slide',
+			timeout:3000
+		});
+		return;
 	}
+	if(rid == ""){
+		$.messager.show({
+			title:'添加管理员',
+			msg:'请选择权限！',
+			showType:'slide',
+			timeout:3000
+		});
+		return;
+	}
+	$('#addForm').form('submit', { 
+		onSubmit:function(){
+			return $('#addForm').form('validate');
+		},
+	    success: function(data){   
+	       if(data=="succ"){
+	    		$('#addWin').window('close');
+			 	$('#adminListTab').datagrid('reload');
+	       }
+	    }   
+	}); 
 }
-function clearForm(){
-	$('#addForm').form('clear');
-	}
+
+$.extend($.fn.validatebox.defaults.rules, {
+	nonValidate: {
+      validator: function(value, param){
+          return false;
+      }
+  }
+});
+
+//检查登录名是否已经存在
+function checkLoginName(){
+	var name = $("#loginName").textbox("getValue");
+	
+	$.ajax({
+		type:"POST",
+		url:"${path}/admin/admin/checkloginname.do",
+		data:{
+			name:name
+		},
+		dataType:"json",
+		success:function(data){
+			if(data == 'true'){
+				$("#loginName").textbox("enableValidation");
+			}else{
+				$("#loginName").textbox("disableValidation");
+			}
+		}
+	});
+}
 </script>
-		<div style="padding:10px 0 10px 60px">
-	    <form id="addForm" method="post" action="${path}/admin/addAdmin.do">
+		<div style="padding:10px;">
+	    <form id="addForm" method="post" action="${path}/admin/admin/add.do">
 	    	<input type="hidden" name="valid" value="1"/>
-	    	<table>
+	    	<input type="hidden" name="watercompany.pid" value="${wcid}"/>
+	    	<table style="margin:0px auto;">
 	    		<tr>
 	    			<td>用户名：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminName" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>登录名：</td>
-	    			<td> <input id="loginName" name="loginName" />
-	    			 <!-- <input class="easyui-validatebox" type="text" name="loginName" data-options="required:true"></input> --></td>
+	    			<td><input class="easyui-textbox" type="text" name="loginName" id="loginName" 
+	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'登录名已存在！'" validType="nonValidate[]"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>手机：</td>
-	    			<td><input class="easyui-numberbox" type="text" name="adminMobile" data-options="required:true"></input></td>
+	    			<td><input class="easyui-numberbox" type="text" name="adminMobile"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>固话：</td>
-	    			<td><input class="easyui-textbox" type="text" name="adminTel" data-options="required:true"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="adminTel"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>邮箱：</td>
-	    			<td><input class="easyui-textbox" type="text" name="adminEmail" data-options="required:true,validType:'email'"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="adminEmail"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>地址：</td>
-	    			<td><input class="easyui-textbox" type="text" name="adminAddr" data-options="required:true"></input></td>
+	    			<td><input class="easyui-textbox" type="text" name="adminAddr"></input></td>
 	    		</tr>
 	    		<tr>
 	    			<td>权限角色:</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="language" data-options="panelHeight:'auto'">
-	    					<option value="1">Arabic</option>
-	    				</select>
+	    				<select class="easyui-combobox" id="roleid" name="roleid" data-options="panelHeight:'auto',required:true" style="width:100px;">
+							<option value="">请选择权限</option>
+							<c:forEach var="r" items="${role_list }">
+							<option value="${r.pid }">${r.roleName }</option>
+							</c:forEach>
+						</select>
 	    			</td>
 	    		</tr>
 	    		<tr>
 	    			<td>管辖片区:</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="department.pid" data-options="panelHeight:'auto'">
-	    					<option value="1">测试</option>
-	    				</select>
+	    				<select class="easyui-combobox" id="depid" name="department.pid" data-options="anelHeight:'auto',required:true" style="width:100px;">
+							<option value="">请选择片区</option>
+							<c:forEach var="d" items="${dep_list }">
+							<option value="${d.pid }">${d.departmentName }</option>
+							</c:forEach>
+						</select>
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水公司:</td>
+	    			<td>人员类型:</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="watercompany.pid" data-options="panelHeight:'auto'">
-	    					<option value="1">测试</option>
-	    				</select>
+	    				<select class="easyui-combobox" id="nowc" name="nowc" data-options="anelHeight:'auto',required:true" style="">
+							<option value="0">自来水公司</option>
+							<option value="1">物业</option>
+						</select>
 	    			</td>
 	    		</tr>
 	    	</table>
@@ -91,7 +138,6 @@ function clearForm(){
 	    </div>
 	    <div style="text-align:center;padding:5px">
 	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()"><fmt:message key='common.reset'/></a>
 	    </div>
 </body>
 </html>

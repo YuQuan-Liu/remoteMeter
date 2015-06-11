@@ -26,24 +26,6 @@ $(function(){
 	});
 });
 function submitForm(){
-// 	$('#depAddForm').form('submit', {
-// 		onSubmit:function(){
-// 			return $('#depAddForm').form('validate');
-// 		},
-// 	    success: function(data){
-// 	       if(data=="succ"){
-// 	    	   $('#depAddWin').window('close');
-// 	    	   $.messager.show({
-// 					title:'添加片区',
-// 					msg:'添加成功',
-// 					showType:'slide',
-// 					timeout:3000
-// 				});
-// 	    	   $('#depListTab').datagrid('reload');
-// 	       }
-// 	    }   
-// 	});  
-	
 	var nbr_ids = [];
 	var rows = $('#allNbrTab').datagrid('getSelections');
 	

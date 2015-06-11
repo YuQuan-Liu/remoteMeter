@@ -3,14 +3,15 @@ package com.xdkj.yccb.main.adminor.dao;
 import java.util.List;
 
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.adminor.dto.AdminInfoView;
 import com.xdkj.yccb.main.entity.Admininfo;
 
 public interface AdministratorDAO {
 	/**
-	 * 获取管理员列表
+	 * 获取自来水下的管理员列表
 	 * @return
 	 */
-	List<Admininfo> getList(Admininfo adInfo,PageBase pageInfo);
+	List<Admininfo> getList(int wcid);
 	/**
 	 * 获取总记录数
 	 * @param adInfo
@@ -48,6 +49,18 @@ public interface AdministratorDAO {
 	 * @return
 	 */
 	Admininfo getByLoginName(String loginName,String password);
+	/**
+	 * 获取自来水下的管理员列表  显示管理员列表
+	 * @param wcid
+	 * @return
+	 */
+	List<AdminInfoView> getListView(int wcid);
+	/**
+	 * 检查登录名是否存在
+	 * @param name
+	 * @return
+	 */
+	String checkLoginName(String name);
 	
 
 }
