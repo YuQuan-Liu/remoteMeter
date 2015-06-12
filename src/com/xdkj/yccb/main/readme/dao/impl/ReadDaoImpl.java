@@ -23,7 +23,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 	public List<ReadView> getRemoteMeters(String n_id) {
 		
 		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName,c.prePaySign,c.CustomerMobile,c.CustomerBalance, " +
-				"m.pid m_id,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime, " +
+				"m.pid m_id,m.apid m_apid,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime, " +
 				"mk.MeterTypeName,mk.Remote, " +
 				"n.pid n_id,n.NeighborName n_name,g.pid g_id,g.GPRSAddr g_addr from customer c " +
 				"left join meter m " +
@@ -37,6 +37,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				"where c.NeighborID = "+n_id+" and c.valid !=0 and m.valid != 0 and mk.remote = 1 ")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
+				.addScalar("m_apid",Hibernate.STRING)
 				.addScalar("n_name",Hibernate.STRING)
 				.addScalar("n_id",Hibernate.INTEGER)
 				.addScalar("g_id",Hibernate.INTEGER)
@@ -65,7 +66,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 	@Override
 	public List<ReadView> getNonRemoteMeters(String n_id) {
 		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName,c.prePaySign,c.CustomerMobile,c.CustomerBalance, " +
-				"m.pid m_id,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime, " +
+				"m.pid m_id,m.apid m_apid,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime, " +
 				"mk.MeterTypeName,mk.Remote, " +
 				"n.pid n_id,n.NeighborName n_name,g.pid g_id,g.GPRSAddr g_addr from customer c " +
 				"left join meter m " +
@@ -79,6 +80,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				"where c.NeighborID = "+n_id+" and c.valid !=0 and m.valid != 0 and mk.remote = 0 ")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
+				.addScalar("m_apid",Hibernate.STRING)
 				.addScalar("n_name",Hibernate.STRING)
 				.addScalar("n_id",Hibernate.INTEGER)
 				.addScalar("g_id",Hibernate.INTEGER)
@@ -101,6 +103,94 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 		
 		q.setResultTransformer(Transformers.aliasToBean(ReadView.class));
 		
+		return q.list();
+	}
+
+	@Override
+	public List<ReadView> getAllRemoteMeters(List<Integer> nid_list) {
+		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName,c.prePaySign,c.CustomerMobile,c.CustomerBalance, " +
+				"m.pid m_id,m.apid m_apid,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime, " +
+				"mk.MeterTypeName,mk.Remote, " +
+				"n.pid n_id,n.NeighborName n_name,g.pid g_id,g.GPRSAddr g_addr from customer c " +
+				"left join meter m " +
+				"on c.pid = m.CustomerID " +
+				"left join neighbor n " +
+				"on n.pid = c.neighborid " +
+				"left join gprs g " +
+				"on g.pid = m.GPRSID " +
+				"left join MeterKind mk " +
+				"on mk.pid = m.meterkindid " +
+				"where c.NeighborID in (:nid_list) and c.valid !=0 and m.valid != 0 and mk.remote = 1 " +
+				"order by c.NeighborID ")
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("m_id",Hibernate.INTEGER)
+				.addScalar("m_apid",Hibernate.STRING)
+				.addScalar("n_name",Hibernate.STRING)
+				.addScalar("n_id",Hibernate.INTEGER)
+				.addScalar("g_id",Hibernate.INTEGER)
+				.addScalar("g_addr",Hibernate.STRING)
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
+				.addScalar("prePaySign",Hibernate.BYTE)
+				.addScalar("meterTypeName",Hibernate.STRING)
+				.addScalar("remote",Hibernate.INTEGER)
+				.addScalar("collectorAddr",Hibernate.STRING)
+				.addScalar("meterAddr",Hibernate.STRING)
+				.addScalar("valveState",Hibernate.BYTE)
+				.addScalar("deread",Hibernate.INTEGER)
+				.addScalar("readdata",Hibernate.INTEGER)
+				.addScalar("readtime",Hibernate.STRING)
+				.addScalar("meterState",Hibernate.BYTE);
+
+		
+		q.setResultTransformer(Transformers.aliasToBean(ReadView.class));
+		q.setParameterList("nid_list", nid_list);
+		return q.list();
+	}
+
+	@Override
+	public List<ReadView> getYT2Data(List<Integer> nid_list) {
+		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName,c.prePaySign,c.CustomerMobile,c.CustomerBalance, " +
+				"m.pid m_id,m.apid m_apid,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime, " +
+				"mk.MeterTypeName,mk.Remote, " +
+				"n.pid n_id,n.NeighborName n_name,g.pid g_id,g.GPRSAddr g_addr from customer c " +
+				"left join meter m " +
+				"on c.pid = m.CustomerID " +
+				"left join neighbor n " +
+				"on n.pid = c.neighborid " +
+				"left join gprs g " +
+				"on g.pid = m.GPRSID " +
+				"left join MeterKind mk " +
+				"on mk.pid = m.meterkindid " +
+				"where c.NeighborID in (:nid_list) and c.valid !=0 and m.valid != 0 and mk.remote = 1 and m.lihu = 1 " +
+				"order by c.NeighborID ")
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("m_id",Hibernate.INTEGER)
+				.addScalar("m_apid",Hibernate.STRING)
+				.addScalar("n_name",Hibernate.STRING)
+				.addScalar("n_id",Hibernate.INTEGER)
+				.addScalar("g_id",Hibernate.INTEGER)
+				.addScalar("g_addr",Hibernate.STRING)
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
+				.addScalar("prePaySign",Hibernate.BYTE)
+				.addScalar("meterTypeName",Hibernate.STRING)
+				.addScalar("remote",Hibernate.INTEGER)
+				.addScalar("collectorAddr",Hibernate.STRING)
+				.addScalar("meterAddr",Hibernate.STRING)
+				.addScalar("valveState",Hibernate.BYTE)
+				.addScalar("deread",Hibernate.INTEGER)
+				.addScalar("readdata",Hibernate.INTEGER)
+				.addScalar("readtime",Hibernate.STRING)
+				.addScalar("meterState",Hibernate.BYTE);
+
+		
+		q.setResultTransformer(Transformers.aliasToBean(ReadView.class));
+		q.setParameterList("nid_list", nid_list);
 		return q.list();
 	}
 

@@ -23,17 +23,22 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" >抄全部小区</a>
 			</span>
 			<span style="margin-left:200px;">
-				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'auto',onSelect:showMeterdata">
-					<option value="">请选择导出格式</option>
-					<c:forEach var="n" items="${neighbor_list }">
-					<option value="${n.pid }">${n.neighborName }</option>
+				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'auto'">
+					<c:forEach var="e" items="${export_list }">
+					<option value="${e.pid }">${e.exportName }</option>
 					</c:forEach>
+					<option value="0">默认导出格式</option>
 				</select>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="export()" >导出</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton " onclick="exportsingle()" >导出当前小区</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton " onclick="exportall()" >导出全部</a>
 			</span>
 		</form>
 	</div>
-	
+	<form id="exportform" method="post">
+		<input type="hidden" name="n_id" id="n_id"/> 
+		<input type="hidden" name="n_name" id="n_name"/>
+		<input type="hidden" name="export_id" id="export_id"/>
+	</form>
 	<table id="readmeterTab" style="width:100%;height:400px;"></table>
 	<p>水损统计</p>
 	<table id="louwasteTab" style="width:500px;height:200px;"></table>
@@ -356,6 +361,32 @@ function checkcontroling(valvelogid,index){
 	});
 }
 
+function exportsingle(){
+	var n_id = $("#neighbor").combobox("getValue");
+	var n_name = $("#neighbor").combobox("getText");
+	var export_id = $("#export_frame").combobox("getValue");
+	
+	if(n_id != ""){
+		$("#n_id").val(n_id);
+		$("#n_name").val(n_name);
+		$("#export_id").val(export_id);
+		
+		$("#exportform").form('submit',{
+			url:"${path}/readme/read/downloadsingle.do",
+		});
+	}else{
+		$.messager.alert('Info','请选择小区');
+	}
+}
+function exportall(){
+	$("#n_id").val(0);
+	$("#n_name").val("");
+	$("#export_id").val(export_id);
+	
+	$("#exportform").form('submit',{
+		url:"${path}/readme/read/downloadall.do",
+	});
+}
 </script>
 </body>
 </html>

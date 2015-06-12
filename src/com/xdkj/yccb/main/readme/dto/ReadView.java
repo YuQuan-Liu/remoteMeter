@@ -7,6 +7,7 @@ public class ReadView {
 	
 	private int c_id;
 	private int m_id;
+	private String m_apid;
 	private String n_name;
 	private int n_id;
 	private int g_id;
@@ -31,6 +32,13 @@ public class ReadView {
 	private String meterTypeName;
 	private int remote;
 	
+	
+	public String getM_apid() {
+		return m_apid;
+	}
+	public void setM_apid(String m_apid) {
+		this.m_apid = m_apid;
+	}
 	public int getC_id() {
 		return c_id;
 	}

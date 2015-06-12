@@ -20,5 +20,12 @@ public interface ReadService {
 	public String showWaste(int readlogid);
 
 	public void addWaste(int wid, String reason);
+
+	/**
+	 * 获取小区列表小的全部的远传表数据
+	 * @param nid_list
+	 * @return
+	 */
+	public List<ReadView> getAllRemoteMeters(List<Integer> nid_list);
 	
 }

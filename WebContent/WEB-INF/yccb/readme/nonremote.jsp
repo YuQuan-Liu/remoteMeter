@@ -192,7 +192,7 @@ function download_(){
 		$("#n_name").val(n_name);
 		
 		$("#exportform").form('submit',{
-			url:"${path}/readme/read/download.do",
+			url:"${path}/readme/nonremote/download.do",
 		});
 	}else{
 		$.messager.alert('Info','请选择小区');

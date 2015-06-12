@@ -171,6 +171,12 @@ public class ReadServiceImpl implements ReadService {
 		wasteLogDao.addWaste(wid,reason);
 	}
 
+	@Override
+	public List<ReadView> getAllRemoteMeters(List<Integer> nid_list) {
+		List<ReadView> list = readDao.getAllRemoteMeters(nid_list);
+		return list;
+	}
+
 	
 	
 }

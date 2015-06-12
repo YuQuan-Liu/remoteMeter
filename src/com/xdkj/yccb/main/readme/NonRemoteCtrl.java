@@ -79,7 +79,7 @@ public class NonRemoteCtrl {
 		return readService.addNonRemoteRead(m_id, newread, readlogid);
 	}
 	
-	@RequestMapping(value="/readme/read/download")
+	@RequestMapping(value="/readme/nonremote/download")
 	public ModelAndView download(int n_id, String n_name){
 		Map map = new HashMap();
 		map.put("n_id", n_id);
