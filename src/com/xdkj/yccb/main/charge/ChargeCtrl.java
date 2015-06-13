@@ -74,6 +74,8 @@ public class ChargeCtrl {
 		List<PriceKindView> price_list = priceService.getList(admin.getWaterComId());
 		model.addAttribute("neighbor_list", neighbor_list);
 		model.addAttribute("price_list", price_list);
+		//界面用到了撤销权限
+		model.addAttribute("userInfo", admin);
 		return charge;
 	}
 	/**

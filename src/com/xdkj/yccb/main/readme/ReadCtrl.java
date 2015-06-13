@@ -55,6 +55,8 @@ public class ReadCtrl {
 		//导出格式
 		List<RemoteExport> export_list = remoteExportDao.getList(admin.getWaterComId());
 		model.addAttribute("export_list", export_list);
+		//界面用到了阀控权限
+		model.addAttribute("userInfo", admin);
 		return "/readme/readmeter";
 	}
 	

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.support.RequestContext;
 
+import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
@@ -35,35 +36,35 @@ public class MainCtroller {
 	private AdministratorService administratorService;
 	
 	
-	@RequestMapping(value="/resource/index",method = RequestMethod.GET)
+	@RequestMapping(value="/index",method = RequestMethod.GET)
 	public String homePage(HttpServletRequest request,HttpServletResponse response,Model model){
 		
-		Admininfo adInfo = administratorService.getByLoginName("admin", "96e79218965eb72c92a549dd5a330112");
-		UserForSession ufs = new UserForSession();
-		ufs.setPid(adInfo.getPid());
-		ufs.setLoginName(adInfo.getLoginName());
-		ufs.setAdminName(adInfo.getAdminName());
-		ufs.setAdminEmail(adInfo.getAdminEmail());
-		ufs.setAdminMobile(adInfo.getAdminMobile());
-		ufs.setWaterComId(adInfo.getWatercompany().getPid());
-		
-		//管理员没有片区   将0存到Session中
-		if(null == adInfo.getDepartment()){
-			ufs.setDepart_id(0);
-		}else{
-			ufs.setDepart_id(adInfo.getDepartment().getPid());
-		}
-		
-		List<AdminRole> adminRole = new ArrayList<AdminRole>(adInfo.getAdminRoles());
-		Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
-		Map<String, String> menus = new HashMap<String, String>();
-		for (RoleAuthority roleAuthority : ras) {
-			menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
-		}
-		ufs.setMenus(menus);
-		model.addAttribute("userInfo", ufs);
-		
-		request.getSession().setAttribute("curuser", ufs);
+//		Admininfo adInfo = administratorService.getByLoginName("admin", "96e79218965eb72c92a549dd5a330112");
+//		UserForSession ufs = new UserForSession();
+//		ufs.setPid(adInfo.getPid());
+//		ufs.setLoginName(adInfo.getLoginName());
+//		ufs.setAdminName(adInfo.getAdminName());
+//		ufs.setAdminEmail(adInfo.getAdminEmail());
+//		ufs.setAdminMobile(adInfo.getAdminMobile());
+//		ufs.setWaterComId(adInfo.getWatercompany().getPid());
+//		
+//		//管理员没有片区   将0存到Session中
+//		if(null == adInfo.getDepartment()){
+//			ufs.setDepart_id(0);
+//		}else{
+//			ufs.setDepart_id(adInfo.getDepartment().getPid());
+//		}
+//		
+//		List<AdminRole> adminRole = new ArrayList<AdminRole>(adInfo.getAdminRoles());
+//		Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
+//		Map<String, String> menus = new HashMap<String, String>();
+//		for (RoleAuthority roleAuthority : ras) {
+//			menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
+//		}
+//		ufs.setMenus(menus);
+//		model.addAttribute("userInfo", ufs);
+//		
+//		request.getSession().setAttribute("curuser", ufs);
 		
 //		UserForSession ufs =(UserForSession) request.getSession().getAttribute("curuser") ;
 //		if(null!=ufs){
@@ -71,11 +72,9 @@ public class MainCtroller {
 //			
 //		}
 		
+		UserForSession admin = WebUtil.getCurrUser(request);
+		model.addAttribute("userInfo", admin);
 		
-		
-		
-		//String jsons = authorityService.getAuthTreeJson(request);
-		//model.addAttribute("menu", jsons);
 		return homePage;
 	}
 	@RequestMapping(value="/usermenu",method=RequestMethod.GET,produces="application/json;charset=UTF-8")
@@ -85,5 +84,11 @@ public class MainCtroller {
 	    RequestContext requestContext = new RequestContext(request);
 	    String menus = requestContext.getMessage("main.welcome");
 		return menus;
+	}
+	
+	@RequestMapping(value="/intro",method = RequestMethod.GET)
+	public String introl(){
+		
+		return "intro";
 	}
 }

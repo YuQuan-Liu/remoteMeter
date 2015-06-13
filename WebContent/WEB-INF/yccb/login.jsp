@@ -15,8 +15,8 @@
      <div style="width:277px; float:left; height:255px; overflow:hidden;"><img src="${path}/resource/images/login_mid1.jpg" width="277" height="255" /></div>
      <div class="login_midbg">
      	<div class="lang_postion">
-     		<a href="${path}/resource/lang.do?langType=zh">中文</a> 
-     		<a href="${path}/resource/lang.do?langType=en">EN</a>
+     		<a href="${path}/resource/lang.do?langType=zh" style="color:rgb(199, 199, 224)">中文</a> 
+     		<a href="${path}/resource/lang.do?langType=en" style="color:rgb(199, 199, 224)">EN</a>
      	</div>
      	<form onsubmit="return submitInfo()" id = "loginForm" action="${path}/resource/login.do" method="post">
 	     	<table width="285" border="0" cellspacing="0" cellpadding="0" style="margin-left:180px; margin-top:48px; line-height:24px;">

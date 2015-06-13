@@ -54,6 +54,7 @@ var _menus = {
 				},
 			]
 		}],
+		<c:if test="${menus['infoin']=='t'}">
 		info : [{
 			"menuid" : "20",
 			"icon" : "micon-inf",
@@ -77,6 +78,8 @@ var _menus = {
 			</c:if>]
 
 		}],
+		</c:if>
+		<c:if test="${menus['readview']=='t'}"> 
 		read : [{
 			"menuid" : "30",
 			"icon" : "micon-read",
@@ -99,6 +102,8 @@ var _menus = {
 			}, </c:if>]
 
 		}],
+		</c:if>
+		<c:if test="${menus['chargeview']=='t'}"> 
 		charge : [
 			<c:if test="${menus['charge']=='t'}">
 		   {
@@ -145,6 +150,8 @@ var _menus = {
 			},</c:if>]
 
 		}],
+		</c:if>
+		<c:if test="${menus['statisticview']=='t'}"> 
 		statis : [{
 			"menuid" : "50",
 			"icon" : "micon-stat",
@@ -214,7 +221,7 @@ var _menus = {
 			},
 			</c:if>]
 
-		}]
+		}]</c:if>
 	};
 </script>
 </head>
@@ -233,38 +240,38 @@ var _menus = {
 </div>
 	<div data-options="region:'north',border:false,expand:true" style="height:95px;padding:0px;" id="north-head">
 		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
-		<span id="clock"><fmt:message key="currenttime"/>：<span id="bgclock"></span></span>
+<%-- 		<span id="clock"><fmt:message key="currenttime"/>：<span id="bgclock"></span></span> --%>
 		<ul id="topmenu">
-				<li ><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>">
+				<li class="nav_ico1"><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>">
 				<fmt:message key='menu.index'/></a></li>
 <%-- 			<c:if test="${menus['admin']=='t'}"> --%>
-				<li><a name="admin" href="javascript:;" title="<fmt:message key='menu.admin'/>">
+				<li class="nav_ico2"><a name="admin" href="javascript:;" title="<fmt:message key='menu.admin'/>">
 				<fmt:message key="menu.admin"/></a></li>
 <%-- 			</c:if> --%>
 			<c:if test="${menus['infoin']=='t'}">
-				<li ><a name="info" href="javascript:;" title="<fmt:message key='menu.info'/>">
+				<li class="nav_ico3"><a name="info" href="javascript:;" title="<fmt:message key='menu.info'/>">
 				<fmt:message key='menu.info'/></a></li>
 			</c:if>
 			<c:if test="${menus['readview']=='t'}">
-				<li><a name="read" href="javascript:;" title="<fmt:message key='menu.read'/>">
+				<li class="nav_ico4"><a name="read" href="javascript:;" title="<fmt:message key='menu.read'/>">
 				<fmt:message key='menu.read'/></a></li>
 			</c:if>
 			<c:if test="${menus['chargeview']=='t'}">
-				<li ><a name="charge" href="javascript:;" title="<fmt:message key='menu.charge'/>">
+				<li class="nav_ico5"><a name="charge" href="javascript:;" title="<fmt:message key='menu.charge'/>">
 				<fmt:message key='menu.charge'/></a></li>
 			</c:if>
 			<c:if test="${menus['statisticview']=='t'}">
-				<li><a name="statis" href="javascript:;" title="<fmt:message key='menu.statis'/>">
+				<li class="nav_ico6"><a name="statis" href="javascript:;" title="<fmt:message key='menu.statis'/>">
 				<fmt:message key='menu.statis'/></a></li>
 			</c:if>
 		</ul>
-		<span id="userInfo">
-			<fmt:message key="main.welcome"/>，${userInfo.adminName }
-			<a href="${path}/logout.do"><fmt:message key="logout"/></a>
+		<span id="userInfo" style="color:rgb(199, 199, 224)">
+			<fmt:message key="main.welcome"/>,${userInfo.adminName }
+			<a href="${path}/logout.do" style="color:rgb(199, 199, 224)"><fmt:message key="logout"/></a>
 		</span>
 		 <span id="lang-chose" style="float:right; padding-right:20px;" class="head">
-        	<a href="${path}/lang.do?langType=zh" style="color:rgb(199, 199, 224)">中文</a> 
-        	<a href="${path}/lang.do?langType=en" style="color:rgb(199, 199, 224)">English</a>
+        	<a href="${path}/resource/lang.do?langType=zh" style="color:rgb(199, 199, 224)">中文</a> 
+        	<a href="${path}/resource/lang.do?langType=en" style="color:rgb(199, 199, 224)">English</a>
         </span>
 	</div>
 	<div data-options="region:'west',collapsed:true,split:true,title:'<fmt:message key="main.navi" />' " style="width:180px;padding:1px;" id="west-layout">
@@ -275,7 +282,7 @@ var _menus = {
 	<div data-options="region:'center',border:false">
 		<div id="tabs" class="easyui-tabs" data-options="fit:true">  
 		     <div id='welcome' title='<fmt:message key="main.welcome"/>' data-options="closable:false,select:true" style="padding:5px;">
-		     <h2><fmt:message key="main.welcome"/></h2>
+		     <iframe style="border:0px;width:100%;height:100%;" src="${path}/intro.do"></iframe>
 		     </div>
 		</div>
 	</div>

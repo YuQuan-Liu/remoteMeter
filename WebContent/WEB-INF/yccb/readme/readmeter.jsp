@@ -6,6 +6,7 @@
 <%@include file="/commonjsp/top.jsp" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<c:set var="menus" scope="session" value="${userInfo.menus}"/>
 <title>抄表</title>
 </head>
 <body>
@@ -116,9 +117,10 @@ $(function(){
 							if(row.valveState == 1){
 								action = "关阀";
 							}
-							return "<a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a>"
-							+"<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'> 抄表 </a>"
-							+"<a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'> 修改 </a>";
+							var tt = " "<c:if test="${menus['readvalve']=='t'}">"<a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a>"</c:if>;
+							
+							return "<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'> 抄表 </a>"+tt+
+							"<a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'> 修改 </a>";
 				  }}
 		      ]]
 	});

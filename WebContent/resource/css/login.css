@@ -13,4 +13,4 @@ ul {list-style: none;}
 .login_copyrightbg { background:url(../images/copyrightbg.jpg) no-repeat left top; height:83px;
 	line-height:45px; text-align:center; font-size:12px; font-family:"宋体"; color:#fff;}
 .lang_postion{position: relative;left:30px;top:200px;width: 150px;}
-.lang_postion a{width: 70px;cursor: pointer;text-decoration: none;padding-left: 3px;color:#333;}
+.lang_postion a{width: 70px;cursor: pointer;font-size:14px;text-decoration: none;padding-left: 3px;color:#333;}

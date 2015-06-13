@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>抄表</title>
 <%@include file="/commonjsp/top.jsp" %>
+<c:set var="menus" scope="session" value="${userInfo.menus}"/>
 </head>
 <body>
 
@@ -160,9 +161,10 @@ $(function(){
 	      	{field:'actionTime',title:'交费时间',width:60},
 	      	{field:'adminName',title:'收费员',width:60},
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' > 撤销 </a>"
-				+"<a href='#' class='operateHref' onclick='chargeprint("+row.pid+")' >收费打印</a>"
-				+"<a href='#' class='operateHref' onclick='chargedetailprint("+row.pid+")'> 详单打印</a>";
+				return <c:if test="${menus['undo']=='t'}"> 
+				"<a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' > 撤销 </a>"</c:if>
+				"<a href='#' class='operateHref' onclick='chargeprint("+row.pid+")' >收费打印</a>"+
+				"<a href='#' class='operateHref' onclick='chargedetailprint("+row.pid+")'> 详单打印</a>";
 	  		}}
 	    ]]
 	});
@@ -190,10 +192,10 @@ $(function(){
 	        		return row.meterread-row.lastderead;
 	        	}
 	          }},
-	        {field:'demoney',title:'扣费金额',width:80},
+	        {field:'demoney',title:'扣费金额',width:80}<c:if test="${menus['undo']=='t'}"> ,
 	      	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a href='#' class='operateHref' onclick='cancleCost("+row.mdl_id+","+index+")' >撤销</a>";
-	  		}}
+	  		}}</c:if>
 	    ]],
 	});
 });
