@@ -97,8 +97,8 @@ public class CustomerCtrl {
 			try {
 				byte[] bytes = file.getBytes();
 				long time = Calendar.getInstance().getTimeInMillis();
-				String excelPath = "D:/Excels/"+name.substring(name.lastIndexOf("\\")+1)+time;
-				System.out.println(excelPath);
+				String excelPath = "D:/Excels/"+time+name.substring(name.lastIndexOf("\\")+1);
+//				System.out.println(excelPath);
 				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
 				
 				
@@ -118,6 +118,12 @@ public class CustomerCtrl {
                 	jo.put("done", true);
                 	jo.put("success", result.get("success"));
                 	jo.put("reason", result.get("reason"));
+                	jo.put("c_add", result.get("c_add"));
+                	jo.put("c_added", result.get("c_added"));
+                	jo.put("m_add", result.get("m_add"));
+                	jo.put("m_added", result.get("m_added"));
+                	jo.put("c_nums", result.get("c_nums"));
+                	jo.put("m_addrs", result.get("m_addrs"));
                 }
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -150,7 +156,7 @@ public class CustomerCtrl {
 	@RequestMapping(value="/infoin/customer/update")
 	@ResponseBody
 	public String updateCustomer(CustomerView cv){
-		return JSON.toJSONString(customerService.updateCustomer(cv));
+		return customerService.updateCustomer(cv);
 	}
 	
 	//更新某一行用户信息
@@ -190,6 +196,34 @@ public class CustomerCtrl {
 	@RequestMapping(value="/infoin/meter/update")
 	@ResponseBody
 	public String updateMeter(MeterView mv){
-		return JSON.toJSONString(customerService.updateMeter(mv));
+		return customerService.updateMeter(mv);
+	}
+	
+	@RequestMapping(value="/infoin/customer/check_capid",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String check_capid(String c_apid){
+		return JSON.toJSONString(customerService.check_capid(c_apid));
+	}
+	
+	@RequestMapping(value="/infoin/customer/check_mapid",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String check_mapid(String m_apid){
+		return JSON.toJSONString(customerService.check_mapid(m_apid));
+	}
+	
+	@RequestMapping(value="/infoin/customer/check_maddr",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String check_maddr(String maddr,String caddr,int gprs_id){
+		
+		return JSON.toJSONString(customerService.check_maddr(maddr,caddr,gprs_id));
+	}
+	
+	@RequestMapping(value="/infoin/customer/changemeter",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String changemeter(String new_maddr,int end,int meterid){
+		
+//		System.out.println(new_maddr+"~"+new_read+"~"+meterid);
+//		return JSON.toJSONString();
+		return customerService.changemeter(new_maddr,end,meterid);
 	}
 }

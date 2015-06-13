@@ -6,7 +6,7 @@
 <%@include file="/commonjsp/top.jsp" %>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Insert title here</title>
+<title>非远传录入</title>
 </head>
 <body>
 	<div style="margin:10px;">
@@ -114,13 +114,13 @@ function showMeterdata(){
 	var n_id = $("#neighbor").combobox("getValue");
 	if(n_id != ""){
 		$('#nonRemoteTab').datagrid({
-			url:"${path}/readme/read/listnonremote.do",
+			url:"${path}/readme/nonremote/listnonremote.do",
 			queryParams: {
 				n_id:n_id
 			}  
 		});
 		//get the readlogs unsettle
-		$('#readlog').combobox('reload','${path}/readme/read/readloglist.do?n_id='+n_id);
+		$('#readlog').combobox('reload','${path}/readme/nonremote/readloglist.do?n_id='+n_id);
 		
 	}
 }
@@ -158,7 +158,7 @@ function readManual(id,index){
         	if(readlogid > 0 && newread >0){
             	$.ajax({
             		type:"POST",
-    	    		url:"${path}/readme/read/addnonremote.do",
+    	    		url:"${path}/readme/nonremote/addnonremote.do",
     	    		data:{
     	    			m_id:id,
     	    			newread:newread,
@@ -174,7 +174,7 @@ function readManual(id,index){
     	    		}
     	    	});
         	}else{
-        		if(readlogid > 0){
+        		if(readlogid == ""){
             		$.messager.alert('Error','请选择抄表批次');
         		}
         	}
@@ -208,7 +208,7 @@ function upload_(){
 	}
 	
 	$('#uploadWin').window({	
-		href:'${path}/readme/read/uploadPage.do',
+		href:'${path}/readme/nonremote/uploadPage.do',
 		width:467,	
 		height:300,
 		minimizable:false,
@@ -216,6 +216,35 @@ function upload_(){
 		collapsible:false,
 		title: '上传非远传表具'
 	});
+}
+
+function addreadlog(){
+	var n_id = $("#neighbor").combobox("getValue");
+	
+	if(n_id != ""){
+		$.ajax({
+    		type:"POST",
+    		url:"${path}/readme/nonremote/addreadlog.do",
+    		data:{
+    			n_id:n_id
+    		},
+    		dataType:"json",
+    		success:function(data){
+    			if(data.success == true){
+    				$('#readlog').combobox('reload','${path}/readme/nonremote/readloglist.do?n_id='+n_id);
+    			}else{
+    				$.messager.show({
+    					title:'Info',
+    					msg:data.reason,
+    					showType:'slide',
+    					timeout:3000
+    				});
+    			}
+    		}
+    	});
+	}else{
+		$.messager.alert('Info','请选择小区');
+	}
 }
 </script>
 </body>

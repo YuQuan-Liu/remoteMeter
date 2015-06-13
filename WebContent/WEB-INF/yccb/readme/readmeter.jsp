@@ -379,8 +379,9 @@ function exportsingle(){
 	}
 }
 function exportall(){
+	var export_id = $("#export_frame").combobox("getValue");
 	$("#n_id").val(0);
-	$("#n_name").val("");
+	$("#n_name").val("all");
 	$("#export_id").val(export_id);
 	
 	$("#exportform").form('submit',{

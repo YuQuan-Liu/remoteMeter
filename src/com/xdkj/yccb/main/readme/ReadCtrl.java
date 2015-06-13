@@ -21,6 +21,7 @@ import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.entity.RemoteExport;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.readme.dao.ReadDao;
 import com.xdkj.yccb.main.readme.dao.RemoteExportDao;
 import com.xdkj.yccb.main.readme.export.ExportRead;
 import com.xdkj.yccb.main.readme.service.MeterService;
@@ -42,6 +43,8 @@ public class ReadCtrl {
 	private MeterService meterService;
 	@Autowired
 	private RemoteExportDao remoteExportDao;
+	@Autowired
+	private ReadDao readDao;
 	
 	@RequestMapping(value="/readme/read/remotelist")
 	public String readMeter(HttpServletRequest request,Model model){
@@ -146,7 +149,8 @@ public class ReadCtrl {
 				
 				Class c = Class.forName(export.getClazz());
 				ExportRead exportRead = (ExportRead) c.newInstance();
-				exportRead.download(request,response,nid_list,n_name);
+				
+				exportRead.download(request,response,nid_list,n_name,readDao);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
@@ -175,7 +179,7 @@ public class ReadCtrl {
 			try {
 				Class c = Class.forName(export.getClazz());
 				ExportRead exportRead = (ExportRead) c.newInstance();
-				exportRead.download(request,response,nid_list,"全部记录");
+				exportRead.download(request,response,nid_list,"全部记录",readDao);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 

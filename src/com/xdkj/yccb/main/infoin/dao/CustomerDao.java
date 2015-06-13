@@ -100,7 +100,32 @@ public interface CustomerDao {
 	 */
 	List<ControlWarnView> getCustomerOwe(int n_id, int pre, double low);
 	List<ControlWarnView> getCustomerOwe(int n_id, String lou, int pre, double low);
-	List<ControlWarnView> getCustomerOwe(int n_id, String lou, String dy,
-			int pre, double low);
+	List<ControlWarnView> getCustomerOwe(int n_id, String lou, String dy,int pre, double low);
+	/**
+	 * 检测数据库中是否已经包含此用户的关联ID
+	 * @param c_apid
+	 * @return
+	 */
+	String getCustomerByAPID(String c_apid);
+	/**
+	 * 检测数据库中是否已经包含此表的关联ID
+	 * @param m_apid
+	 * @return
+	 */
+	String getMeterByAPID(String m_apid);
+	/**
+	 * 检测表地址是否存在
+	 * @param maddr
+	 * @param caddr
+	 * @param g
+	 * @return
+	 */
+	String check_maddr(String maddr, String caddr, Gprs g);
+	/**
+	 * 获取当前表对应的总表的ID
+	 * @param meterid
+	 * @return
+	 */
+	int getMainMeterid(Meter meter);
 
 }

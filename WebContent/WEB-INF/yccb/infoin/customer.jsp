@@ -7,7 +7,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title><fmt:message key="info.customer"/></title>
-<script type="text/javascript" src="${path}/resource/js/jquery.form.min.js"></script>
 </head>
 <body>
 	<div style="margin:10px;">
@@ -24,7 +23,7 @@
 		    		<label>用户号</label>
 					<input type="text" id="c_num" name="c_num" class="easyui-textbox"/>
 				</div>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="searchCustomer()" >Submit</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="searchCustomer_()" >Submit</a>
 			</div>
 		</form>
 	</div>
@@ -35,6 +34,25 @@
 	<div id="addCustomerWins"></div>
 	<div id="updateCustomerWin"></div>
 	<div id="updateMeterWin"></div>
+	<div class="easyui-dialog" title="换表" id="changedialog" data-options="closed:true" style="width:500px;height:300px;padding:10px;">
+		<form id="changemeterform" method="post">
+		<table style="margin:0px auto;padding-top:20px;">
+			<tr>
+				<td><lable>新表地址：</lable></td>
+				<td><input type="text" class="easyui-textbox" name="new_maddr" id="new_maddr" data-options="required:true,onChange:check_maddr"/></td>
+			</tr>
+			<tr>
+				<td><lable>换表底数</lable></td>
+				<td><input type="text" class="easyui-numberbox" name="end" id="end" data-options="min:0,max:9999"/>
+					<input type="hidden" name="meterid" id="meterid"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+		<div style="text-align:center;padding-top:10px;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" id="changeMeter" onclick="changeMeter()">Submit</a>
+		</div>
+	</div>
 </body>
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/datagrid-detailview.js"></script>
 <script>
@@ -125,20 +143,51 @@ $(function(){
 	                  loadMsg:'',
 	                  height:'auto',
 	                  columns:[[
-							{field:'pid',title:'ID',width:60},
+							{field:'pid',title:'ID',width:60,checkbox:true},
+							{field:'apid',title:'关联ID',width:60},
 							{field:'gprs',title:'集中器',width:60},
 	                      	{field:'qfh',title:'铅封号',width:60},
 				          	{field:'steelNum',title:'钢印号',width:60},
-				          	{field:'suppleMode',title:'供水方式',width:60},
+				          	{field:'suppleMode',title:'供水方式',width:60,formatter:function(value,row,index){
+					        	  if(value == 1){
+					        		  return "一次供水";
+					        	  }else{
+					        		  return "二次供水";
+					        	  }
+					        }},
 				          	{field:'collectorAddr',title:'采集器地址',width:60},
 				          	{field:'meterAddr',title:'表地址',width:60},
-				          	{field:'meterSolid',title:'虚实表',width:60},
+				          	{field:'meterSolid',title:'虚实表',width:60,formatter:function(value,row,index){
+					        	  if(value == 1){
+					        		  return "实表";
+					        	  }else{
+					        		  return "虚表";
+					        	  }
+					        }},
 				          	{field:'mk',title:'表类型',width:60},
 				          	{field:'pk',title:'单价',width:60},
-				          	{field:'isValve',title:'阀门',width:60},
-				          	{field:'deductionStyle',title:'结算方式',width:50},
+				          	{field:'isValve',title:'阀门',width:60,formatter:function(value,row,index){
+					        	  if(value == 1){
+					        		  return "有";
+					        	  }else{
+					        		  return "无";
+					        	  }
+					        }},
+				          	{field:'deductionStyle',title:'有阀结算方式',width:50,formatter:function(value,row,index){
+					        	  if(value == 1){
+					        		  return "抄表后结算";
+					        	  }else{
+					        		  return "抄表后不结算";
+					        	  }
+					        }},
 				          	{field:'valveOffthre',title:'关阀余额',width:50},
-				          	{field:'timerSwitch',title:'定时检测',width:50},
+				          	{field:'timerSwitch',title:'定时检测',width:50,formatter:function(value,row,index){
+					        	  if(value == 1){
+					        		  return "开";
+					        	  }else{
+					        		  return "关";
+					        	  }
+					        }},
 				          	{field:'timer',title:'定时时间',width:50},
 				          	{field:'overflow',title:'用量阀值',width:50},
 				          	{field:'changend',title:'换表读数',width:50},
@@ -165,7 +214,7 @@ $(function(){
 	          }
 	});
 });
-function check_c_num(c_num){
+function check_c_num_(c_num){
 	if(c_num.trim() != ''){
 		var ldh = c_num.split(/[ ,.-]/);
 		var len = ldh.length;
@@ -178,15 +227,15 @@ function check_c_num(c_num){
 	}
 	return true;
 }
-function searchCustomer(){
+function searchCustomer_(){
 	var n_id = $("#neighbor").combobox("getValue");
-	var c_num = $("#c_num").val();
+	var c_num = $("#c_num").textbox("getValue");
 	
 	if(n_id == ''){
 		$.messager.alert('提示','请选择小区！');
 		return;
 	}
-	if(check_c_num(c_num)){
+	if(check_c_num_(c_num)){
 		$('#customerTab').datagrid({
 			url:"${path}/infoin/customer/ListCustomer.do",
 			queryParams: {
@@ -270,7 +319,7 @@ function refreshRow(index){
 // 		updata_cid = cid;
 		$('#updateMeterWin').window({	
 			href:'${path}/infoin/meter/updatePage.do?mid='+mid+"&cid="+cid,
-			width:800,	
+			width:800,
 			height:500,
 			minimizable:false,
 			maximizable:false,
@@ -295,8 +344,69 @@ function refreshRow(index){
 			}
 		});
 	}
-	function changemeter(mid) {
-		alert(mid);
+	//
+	var gprs_id ;
+	var m_id;
+	var caddr;
+	function changemeter(mid,index,index_) {
+		//获取当前 集中器  地址  采集器地址
+		caddr = $("#customerTab").datagrid('getRowDetail',index).find('table.ddv').datagrid('getRows')[index_]["collectorAddr"];
+		gprs_id = $("#customerTab").datagrid('getRowDetail',index).find('table.ddv').datagrid('getRows')[index_]["gprs_id"];
+		m_id = mid;
+		$("#meterid").val(mid);
+		$("#changedialog").dialog('open');
+	}
+	function check_maddr(){
+		var maddr=$("#new_maddr").textbox("getValue");
+		if(maddr != ""){
+			$.ajax({
+				type:"POST",
+				url:"${path}/infoin/customer/check_maddr.do",
+				dataType:"json",
+				data:{
+					maddr:maddr,
+					caddr:caddr,
+					gprs_id:gprs_id
+				},
+				success:function(data){
+					if(data == 'true'){
+						$("#new_maddr").textbox("setValue","");
+						$.messager.show({
+							title:"Info",
+							msg:"表地址已存在",
+							showType:'slide'
+						});
+					}
+				}
+			});
+		}
+	}
+	function changeMeter(){
+		var end=$("#end").textbox("getValue");
+// 		var maddr=$("#new_maddr").textbox("getValue");
+		$("#changemeterform").form('submit',{
+			url:"${path}/infoin/customer/changemeter.do",
+			onSubmit:function(){
+				//check the data ,bad data return false
+				if(!$('#changemeterform').form('validate')){
+					return false;
+				}
+				if(end == ''){
+					$.messager.show({
+						title:"Info",
+						msg:"请输入旧表底数",
+						showType:'slide'
+					});
+					return false;
+				}
+			},
+			success:function(data){
+// 				var data = eval('(' + data + ')'); // change the JSON string to javascript object 
+				if(data == "true"){
+					$("#changedialog").dialog('close');
+				}
+			}
+		});
 	}
 </script>
 </html>

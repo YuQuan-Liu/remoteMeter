@@ -27,5 +27,13 @@ public interface ReadService {
 	 * @return
 	 */
 	public List<ReadView> getAllRemoteMeters(List<Integer> nid_list);
+
+	/**
+	 * 添加抄表记录
+	 * @param adminid
+	 * @param n_id
+	 * @return
+	 */
+	public String addreadlog(int adminid,int n_id);
 	
 }

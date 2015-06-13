@@ -12,6 +12,7 @@ import com.sun.xml.internal.bind.v2.TODO;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Customer;
+import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
@@ -334,6 +335,80 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		q.setResultTransformer(Transformers.aliasToBean(ControlWarnView.class));
 		
 		return q.list();
+	}
+
+	@Override
+	public String getCustomerByAPID(String c_apid) {
+		String hql = "from Customer c " +
+				"where c.valid='1' and c.apid = :apid";
+		Query q = getSession().createQuery(hql);
+		q.setString("apid", c_apid);
+		if(q.list().size() > 0){
+			return "true";
+		}
+		return "false";
+	}
+
+	@Override
+	public String getMeterByAPID(String m_apid) {
+		String hql = "from Meter m " +
+				"where m.valid='1' and m.apid = :apid";
+		Query q = getSession().createQuery(hql);
+		q.setString("apid", m_apid);
+		if(q.list().size() > 0){
+			return "true";
+		}
+		return "false";
+	}
+
+	@Override
+	public String check_maddr(String maddr, String caddr, Gprs g) {
+		if(g.getGprsprotocol() == 1){
+			//eg
+			Query q = getSession().createQuery("from Meter m where m.valid='1' and m.meterAddr = :maddr and m.collectorAddr = :caddr and m.gprs.pid = :gid");
+			q.setString("maddr", maddr);
+			q.setString("caddr", caddr);
+			q.setInteger("gid", g.getPid());
+			if(q.list().size() > 0){
+				return "true";
+			}
+			return "false";
+		}else{
+			//188
+			Query q = getSession().createQuery("from Meter m where m.valid='1' and m.meterAddr = :maddr ");
+			q.setString("maddr", maddr);
+			if(q.list().size() > 0){
+				return "true";
+			}
+			return "false";
+		}
+	}
+
+	@Override
+	public int getMainMeterid(Meter meter) {
+		
+		//查看有没有总表 
+		Query q = getSession().createQuery("from Meter m where m.mainMeter > 0 and m.neighbor.pid = :nid");
+		q.setInteger("nid", meter.getNeighbor().getPid());
+		List<Meter> list = q.list();
+		
+		if(list.size() > 0){
+			String lou = meter.getCustomer().getLouNum();
+			Meter m = null;
+			int mid = 0;
+			for(int i = 0;i < list.size();i++){
+				m = list.get(i);
+				if(lou.equals(m.getCustomer().getLouNum())){
+					return m.getPid();
+				}
+				if(m.getMainMeter() == 1){
+					mid = m.getPid();
+				}
+			}
+			return mid;
+		}else{
+			return 0;
+		}
 	}
 
 	

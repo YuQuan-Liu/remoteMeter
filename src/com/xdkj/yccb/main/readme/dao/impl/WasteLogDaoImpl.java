@@ -8,6 +8,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
+import com.xdkj.yccb.main.entity.Wastelog;
 import com.xdkj.yccb.main.readme.dao.WasteLogDao;
 import com.xdkj.yccb.main.readme.dto.WasteReadView;
 
@@ -48,6 +49,13 @@ public class WasteLogDaoImpl extends HibernateDAO implements WasteLogDao {
 		q.setString("reason", reason);
 		q.executeUpdate();
 		
+	}
+
+	@Override
+	public Wastelog addchangeMeter(Wastelog waste) {
+		getHibernateTemplate().save(waste);
+		
+		return waste;
 	}
 
 }

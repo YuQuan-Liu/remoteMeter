@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
@@ -27,6 +29,7 @@ import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Meterkind;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Pricekind;
+import com.xdkj.yccb.main.entity.Wastelog;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
 import com.xdkj.yccb.main.infoin.dao.GprsDAO;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
@@ -34,6 +37,8 @@ import com.xdkj.yccb.main.infoin.dto.CustomerMeter;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
+import com.xdkj.yccb.main.readme.dao.ReadLogDao;
+import com.xdkj.yccb.main.readme.dao.WasteLogDao;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -46,6 +51,10 @@ public class CustomerServiceImpl implements CustomerService {
 	private GprsDAO gprsDAO;
 	@Autowired
 	private MeterKindDao meterKindDao;
+	@Autowired
+	private ReadLogDao readLogDao;
+	@Autowired
+	private WasteLogDao wasteLogDao;
 	
 	@Override
 	public List<CustomerView> getCustomerby(String n_id, String c_num) {
@@ -104,6 +113,7 @@ public class CustomerServiceImpl implements CustomerService {
 					e.printStackTrace();
 				}
 				mv.setGprs(m.getGprs().getGprsaddr());
+				mv.setGprs_id(m.getGprs().getPid()+"");
 				mv.setPk(m.getPricekind().getPriceKindName());
 				mv.setMk(m.getMeterkind().getMeterTypeName());
 				listView.add(mv);
@@ -137,14 +147,21 @@ public class CustomerServiceImpl implements CustomerService {
 			Housekind hk = new Housekind();
 			hk.setPid(Integer.parseInt(cv.getHk_id()));
 			c.setHousekind(hk);
+			c.setWarnSwitch(0);
 			c.setLoginName("");
 			c.setLoginKey("96e79218965eb72c92a549dd5a330112");
 			c.setValid("1");
 			c.setCustomerId("0");
-			if(customerDao.addCustomer(c) > 0){
-				map.put("add", c.getPid()+"");
+			
+			List<Customer> clist = customerDao.getCustomerListByNLDH(n.getPid()+"",c.getLouNum(),c.getDyNum(),c.getHuNum());
+			if(clist.size() == 0){
+				if(customerDao.addCustomer(c) > 0){
+					map.put("add", c.getPid()+"");
+				}else{
+					map.put("add", "0");
+				}
 			}else{
-				map.put("add", "0");
+				map.put("add", clist.get(0).getPid()+"");
 			}
 		}
 		
@@ -152,9 +169,56 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	@Override
 	public Map<String, String> addMeter(MeterView mv) {
-		//check meterview
-		Map<String, String> map = mv.check_view();
-		if(map.get("success").equals("true")){
+		Map<String, String> map = new HashMap<>();
+		
+		//检测是否已经包含此表了
+		List<Meter> mlist = customerDao.getMeterListByCid(mv.getC_id()+"");
+		boolean done = false;
+		if(mlist.size() == 0){
+			//new
+			done = false;
+		}else{
+			//got one in db
+			//check the meter
+			if(mv.getCollectorAddr().equals("0")){
+				//手抄
+				for(int j = 0;j < mlist.size();j++){
+					if(mlist.get(j).getMeterAddr().equalsIgnoreCase(mv.getMeterAddr())){
+						done = true;
+						break;
+					}
+				}
+			}else{
+				//远传
+				Gprs g = gprsDAO.getById(Integer.parseInt(mv.getGprs_id()));
+				switch (g.getGprsprotocol()) {
+				case 1:
+					//eg
+					for(int j = 0;j < mlist.size();j++){
+//						m = mlist.get(j);
+						if(null != customerDao.getMeterByGCM(g.getPid(),mv.getCollectorAddr(),mv.getMeterAddr())){
+							done = true;
+							break;
+						}
+					}
+					break;
+				case 2:
+					//188
+					for(int j = 0;j < mlist.size();j++){
+//						m = mlist.get(j);
+						if(null != customerDao.getMeterByMAddr(mv.getMeterAddr())){
+							done = true;
+							break;
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		if(!done){
+			//add the meter
 			Meter m = new Meter();
 			try {
 				BeanUtils.copyProperties(m, mv);
@@ -188,14 +252,16 @@ public class CustomerServiceImpl implements CustomerService {
 			m.setChangestart(0);
 			m.setReaddata(0);
 			m.setReadtime(new Date());
-			
-			if(customerDao.addMeter(m) > 0){
-				map.put("add", m.getPid()+"");
-			}else{
-				map.put("add", "0");
+			if(mv.getDeductionStyle() == null){
+				m.setDeductionStyle(0);
 			}
+			if(mv.getTimer() == null){
+				m.setTimer("");
+			}
+			customerDao.addMeter(m);
+			map.put("add", m.getPid()+"");
 		}
-		
+		map.put("success", "true");
 		
 		return map;
 	}
@@ -227,35 +293,21 @@ public class CustomerServiceImpl implements CustomerService {
 		return cv;
 	}
 	@Override
-	public Map<String, String> updateCustomer(CustomerView cv) {
-		// check CustomerView
-		Map<String, String> map = cv.check_view();
-		if (map.get("success").equals("true")) {
-			Customer c = customerDao.getCustomerByPid(cv.getPid());
-			
-			//这个地方不可以使用 这中copy  ！！！可能会把不该更新的也更新了。  TODO  
-			//需要更改哪些属性  就直接  赋值哪些属性
-			try {
-				ConvertUtils.register(new BigDecimalConverter(),
-						BigDecimal.class);
-				BeanUtils.copyProperties(c, cv);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-			//住宅類型不更改
-			//金額不允許更改
-			//TODO
-			if (customerDao.updateCustomer(c) > 0) {
-				map.put("update", c.getPid() + "");
-//				map.put("cv", JSON.toJSONString(cv));
-			} else {
-				map.put("update", "0");
-			}
-		}
-
-		return map;
+	public String updateCustomer(CustomerView cv) {
+		
+		Customer c = customerDao.getCustomerByPid(cv.getPid());
+		
+		c.setCustomerAddr(cv.getCustomerAddr());
+		c.setCustomerName(cv.getCustomerName());
+		c.setApid(cv.getApid());
+		c.setCustomerMobile(cv.getCustomerMobile());
+		c.setCustomerEmail(cv.getCustomerEmail());
+		c.setWarnThre(cv.getWarnThre());
+		c.setWarnStyle(cv.getWarnStyle());
+		
+		JSONObject jo = new JSONObject();
+		jo.put("update", c.getPid());
+		return jo.toString();
 	}
 	
 	@Override
@@ -305,30 +357,33 @@ public class CustomerServiceImpl implements CustomerService {
 		return mv;
 	}
 	@Override
-	public Map<String, String> updateMeter(MeterView mv) {
-		// check CustomerView
-		Map<String, String> map = mv.check_view();
-		if (map.get("success").equals("true")) {
-			Meter m = customerDao.getMeterByPid(mv.getPid());
-			try {
-				BeanUtils.copyProperties(m, mv);
-				//可以更新那些程序  就copy那些 属性  //TODO
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			}
-			// 住宅類型不更改
-			// 金額不允許更改
-			if (customerDao.updateMeter(m) > 0) {
-				map.put("update", m.getPid() + "");
-				// map.put("cv", JSON.toJSONString(cv));
-			} else {
-				map.put("update", "0");
-			}
-		}
-
-		return map;
+	public String updateMeter(MeterView mv) {
+		
+		Meter m = customerDao.getMeterByPid(mv.getPid());
+		m.setSteelNum(mv.getSteelNum());
+		m.setQfh(mv.getQfh());
+		m.setCollectorAddr(mv.getCollectorAddr());
+		m.setMeterAddr(mv.getMeterAddr());
+		m.setApid(mv.getApid());
+		m.setMainMeter(mv.getMainMeter());
+		m.setSuppleMode(mv.getSuppleMode());
+		
+		Meterkind mk = new Meterkind();
+		mk.setPid(Integer.parseInt(mv.getMk_id()));
+		m.setMeterkind(mk);
+		
+		m.setMeterSolid(mv.getMeterSolid());
+		m.setLihu(mv.getLihu());
+		m.setIsValve(mv.getIsValve());
+		m.setDeductionStyle(mv.getDeductionStyle());
+		m.setValveOffthre(mv.getValveOffthre());
+		m.setTimerSwitch(mv.getTimerSwitch());
+		m.setTimer(mv.getTimer());
+		m.setOverflow(mv.getOverflow());
+		
+		JSONObject jo = new JSONObject();
+		jo.put("update", m.getPid());
+		return jo.toString();
 	}
 	@Override
 	public Map addCustomers(Map map) {
@@ -337,6 +392,12 @@ public class CustomerServiceImpl implements CustomerService {
 		String wcid = map.get("wcid")+"";
 		List<CustomerMeter> list = (List<CustomerMeter>) map.get("list");
 		
+		int c_add = 0;
+		int c_added = 0;
+		int m_add = 0;
+		int m_added = 0;
+		String c_nums = "";
+		String m_addrs = "";
 		Map result = new HashMap();
 		Neighbor n = neighborDAO.getNbrByWcIdName(wcid,n_name);
 		if(n == null){
@@ -363,6 +424,8 @@ public class CustomerServiceImpl implements CustomerService {
 			
 			List<Customer> clist = customerDao.getCustomerListByNLDH(n.getPid()+"",cm.getLouNum(),cm.getDyNum(),cm.getHuNum());
 			if(clist.size() == 0){
+				c_add++;
+				m_add++;
 				//全新的用户 全新的表
 				c = new Customer();
 				try {
@@ -382,12 +445,14 @@ public class CustomerServiceImpl implements CustomerService {
 				c.setValid("1");
 				c.setNeighbor(n);
 				c.setApid(cm.getC_apid());
-				c.setCustomerId("..");
+				c.setCustomerId("0");
 				customerDao.addCustomer(c);
 				
 				addMeter(c, cm, n, g);
 			}else{
 				//Oh  已经有这个用户了
+				c_added++;
+				c_nums = c_nums + cm.getLouNum()+"-"+cm.getDyNum()+"-"+cm.getHuNum()+"  ";
 				c = clist.get(0);
 				List<Meter> mlist = customerDao.getMeterListByCid(c.getPid()+"");
 				boolean done = false;
@@ -435,10 +500,20 @@ public class CustomerServiceImpl implements CustomerService {
 				}
 				if(!done){
 					//add the meter
+					m_add++;
 					addMeter(c, cm, n, g);
+				}else{
+					m_addrs = m_addrs + cm.getCollectorAddr()+"-"+cm.getMeterAddr()+"  ";
+					m_added++;
 				}
 			}
 		}
+		result.put("c_add", c_add);
+		result.put("c_added", c_added);
+		result.put("m_add", m_add);
+		result.put("m_added", m_added);
+		result.put("c_nums", c_nums);
+		result.put("m_addrs", m_addrs);
 		result.put("success", true);
 		result.put("reason", "");
 		return result;
@@ -496,6 +571,63 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		//单元
 		return customerDao.getCustomerOwe(n_id,lou,dy,pre,low);
+		
+	}
+
+	@Override
+	public String check_capid(String c_apid) {
+		
+		return customerDao.getCustomerByAPID(c_apid);
+	}
+
+	@Override
+	public String check_mapid(String m_apid) {
+		
+		return customerDao.getMeterByAPID(m_apid);
+	}
+
+	@Override
+	public String check_maddr(String maddr, String caddr, int gprs_id) {
+		
+		Gprs g = gprsDAO.getById(gprs_id);
+		
+		return customerDao.check_maddr(maddr,caddr,g);
+	}
+
+	@Override
+	public String changemeter(String new_maddr, int end, int meterid) {
+		Meter m = customerDao.getMeterByPid(meterid);
+		
+		m.setMeterAddr(new_maddr);
+		m.setChangend(end);
+		
+		Wastelog waste = new Wastelog();
+		waste.setNeighbor(m.getNeighbor());
+		waste.setActionTime(new Date());
+		//楼的总表的id  或者是小区总表的id  如果没有总表    则为当前表
+		int mainmeterid = customerDao.getMainMeterid(m);
+		if(mainmeterid == 0){
+			waste.setMeterid(meterid);
+		}else{
+			waste.setMeterid(mainmeterid);
+		}
+//		customerDao.getMainMeters(m.getNeighbor().getPid());
+//		waste.setMeterid(meterid);
+		
+		waste.setRemark("换表");
+		waste.setValid('1');
+		waste.setReadLogId(readLogDao.getMaxReadlogNonSettle(meterid).getPid());
+		waste.setSalveSum(0);
+		waste.setLouNum(m.getCustomer().getLouNum());
+		waste.setMeterRead(0);
+		waste.setWaste(end);
+		
+		wasteLogDao.addchangeMeter(waste);
+		if(waste.getPid() > 0){
+			return "true";
+		}else{
+			return "false";
+		}
 		
 	}
 

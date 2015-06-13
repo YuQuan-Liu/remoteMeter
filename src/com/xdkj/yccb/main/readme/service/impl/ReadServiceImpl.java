@@ -177,6 +177,45 @@ public class ReadServiceImpl implements ReadService {
 		return list;
 	}
 
+	@Override
+	public String addreadlog(int adminid,int n_id) {
+		//先检查当前小区下是否有远传表  
+		JSONObject jo = new JSONObject();
+		List<ReadView> list = readDao.getRemoteMeters(n_id+"");
+		if(list.size() > 0){
+			jo.put("success", false);
+			jo.put("reason", "有远传表");
+			return jo.toJSONString();
+		}else{
+			//没有远传表添加抄表记录
+			Readlog readlog = new Readlog();
+			Admininfo admin = new Admininfo();
+			admin.setPid(adminid);
+			readlog.setAdmininfo(admin);
+			
+			readlog.setCompleteTime(new Date());
+			readlog.setFailReason("");
+			readlog.setIp("");
+			readlog.setObjectId(n_id);
+			readlog.setReadObject(1);
+			readlog.setReadStatus(100);
+			readlog.setReadType(3);
+			readlog.setRemote(0);
+			readlog.setResult("");
+			readlog.setSettle(0);
+			readlog.setStartTime(new Date());
+			
+			if(readLogDao.addReadLog(readlog) > 0){
+				jo.put("success", true);
+				return jo.toJSONString();
+			}else{
+				jo.put("success", false);
+				jo.put("reason", "添加失败");
+				return jo.toJSONString();
+			}
+		}
+	}
+
 	
 	
 }

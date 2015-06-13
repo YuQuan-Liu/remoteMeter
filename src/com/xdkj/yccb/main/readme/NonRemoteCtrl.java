@@ -58,25 +58,32 @@ public class NonRemoteCtrl {
 		return "/readme/nonremote";
 	}
 	
-	@RequestMapping(value="/readme/read/listnonremote",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/readme/nonremote/listnonremote",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String ListNonRemote(String n_id){
 		
 		return JSON.toJSONString(readService.getNonRemoteMeters(n_id));
 	}
 	
-	@RequestMapping(value="/readme/read/readloglist",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/readme/nonremote/readloglist",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String ListNonSettleReadlog(String n_id){
 		
 		return readlogDao.getReadLogNeighborsNonSettle(n_id);
 	}
 	
-	@RequestMapping(value="/readme/read/addnonremote",produces="application/json;charset=UTF-8")
+	@RequestMapping(value="/readme/nonremote/addnonremote",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String AddNonRemote(int m_id,int newread,int readlogid){
 		
 		return readService.addNonRemoteRead(m_id, newread, readlogid);
+	}
+	
+	@RequestMapping(value="/readme/nonremote/addreadlog",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String addreadlog(HttpServletRequest request,int n_id){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return readService.addreadlog(admin.getPid(),n_id);
 	}
 	
 	@RequestMapping(value="/readme/nonremote/download")
@@ -88,7 +95,7 @@ public class NonRemoteCtrl {
 		return new ModelAndView("export_default", map);
 	}
 	
-	@RequestMapping(value="/readme/read/uploadPage")
+	@RequestMapping(value="/readme/nonremote/uploadPage")
 	public String addCustomerPages(){
 		return "/readme/uploadnonremote";
 	}

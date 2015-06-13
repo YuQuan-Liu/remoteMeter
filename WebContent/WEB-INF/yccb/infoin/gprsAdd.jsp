@@ -26,12 +26,12 @@ function submitForm(){
 		success: function(data){
 			if(data=="succ"){
 				$.messager.show({
-					title:"更新小区",
-					msg:"更新成功",
+					title:"添加集中器",
+					msg:"添加成功",
 					showType:'slide'
 				});
-				$('#updateNeighborWin').window('close');
-				$('#neighborListTab').datagrid('reload');
+				$('#addGprsWin').window('close');
+				$('#ddv-${neighborid }').datagrid('reload');
 			}
 		}	
 	});
@@ -56,9 +56,6 @@ function checkGPRSAddr(){
 			}
 		}
 	});
-}
-function clearForm(){
-	$('#addGprsForm').form('clear');
 }
 </script>
 <form action="${path}/infoin/neighbor/addGprs.do" id="addGprsForm" method="post">
@@ -103,7 +100,6 @@ function clearForm(){
 		</div>
 		 <div style="text-align:center;padding:5px">
 			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
 		</div>
 	</form>
 </body>

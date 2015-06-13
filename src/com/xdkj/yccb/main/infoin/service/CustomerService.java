@@ -50,7 +50,7 @@ public interface CustomerService {
 	 * @param cv
 	 * @return
 	 */
-	public Map<String, String> updateCustomer(CustomerView cv);
+	public String updateCustomer(CustomerView cv);
 
 	/**
 	 * 更新用户的  姓名  手机  邮箱  身份证
@@ -63,7 +63,7 @@ public interface CustomerService {
 
 	public MeterView getMeterViewbyMid(int mid);
 
-	public Map<String, String> updateMeter(MeterView mv);
+	public String updateMeter(MeterView mv);
 
 	/**
 	 * map 中包含上传excel的所有的数据
@@ -72,5 +72,37 @@ public interface CustomerService {
 	public Map addCustomers(Map map);
 
 	public List<ControlWarnView> getOwes(int n_id, String lou, String dy, int pre, double low);
+
+	/**
+	 * 检测数据库中是否已经包含此用户的关联ID
+	 * @param c_apid
+	 * @return
+	 */
+	public String check_capid(String c_apid);
+
+	/**
+	 * 检测数据库中是否已经包含此表的关联ID
+	 * @param m_apid
+	 * @return
+	 */
+	public String check_mapid(String m_apid);
+
+	/**
+	 * 检测集中器下是否已经有表地址了
+	 * @param maddr
+	 * @param caddr
+	 * @param gprs_id
+	 * @return
+	 */
+	public String check_maddr(String maddr, String caddr, int gprs_id);
+
+	/**
+	 * 换表
+	 * @param new_maddr
+	 * @param new_read
+	 * @param meterid
+	 * @return
+	 */
+	public String changemeter(String new_maddr, int end, int meterid);
 
 }

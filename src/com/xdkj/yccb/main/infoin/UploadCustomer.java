@@ -50,7 +50,7 @@ public class UploadCustomer {
 			row = sheet.getRow(i);
 			Map map = new HashMap<>();
 			for(int j = 0;j < 32;j++){
-				System.out.println(getCellString(row, j));
+//				System.out.println(getCellString(row, j));
 				switch (j) {
 				case 0:
 					map.put("customerName", getCellString(row, j));

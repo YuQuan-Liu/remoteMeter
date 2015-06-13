@@ -29,7 +29,7 @@ public class Wastelog implements java.io.Serializable {
 	private Date actionTime;
 	private int waste;
 	private int meterRead;
-	private int salveRead;
+	private int salveSum;
 	private String louNum;
 	private char valid;
 	private String remark;
@@ -84,13 +84,14 @@ public class Wastelog implements java.io.Serializable {
 		this.meterRead = meterRead;
 	}
 
-	@Column(name = "SalveRead")
-	public int getSalveRead() {
-		return salveRead;
+	
+	@Column(name = "SalveSum")
+	public int getSalveSum() {
+		return salveSum;
 	}
 
-	public void setSalveRead(int salveRead) {
-		this.salveRead = salveRead;
+	public void setSalveSum(int salveSum) {
+		this.salveSum = salveSum;
 	}
 
 	@Column(name = "LouNum")
