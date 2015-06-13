@@ -35,6 +35,30 @@
 		<property name="maxUploadSize" value="10485760"></property>
 	</bean>
 	
+	<bean id="startAllTimer" class="com.xdkj.yccb.main.readme.quartz.StartAllTimer"></bean>
+	<bean id="startJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="startAllTimer"></property>
+		<property name="targetMethod" value="startAll"></property>
+	</bean>
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="startJob"></property>
+<!-- 		<property name="startDelay" value="120000"></property> -->
+		<property name="startDelay" value="10000"></property>
+		<property name="repeatInterval" value="5000"></property>
+		<property name="repeatCount" value="0"></property>
+	</bean>
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="simpleTrigger"/>
+			</list>
+		</property>
+	</bean>
+<!-- 	<bean id="quartzManager" class="com.xdkj.yccb.main.readme.quartz.QuartzManager"> -->
+<!-- 		<property name="sche" ref="schedulerFactoryBean"></property> -->
+<!-- 	</bean> -->
+
+	
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">

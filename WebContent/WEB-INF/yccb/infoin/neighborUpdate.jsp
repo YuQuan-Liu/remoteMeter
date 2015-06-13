@@ -12,6 +12,42 @@
 function submitForm(){
 	$('#updateNeighborForm').form('submit', {	
 		onSubmit:function(){
+			var switch_ = $("#timerSwitch").combobox("getValue");
+			var timer = $("#timer").textbox("getValue");
+			if(switch_ != 0){
+				//判断timer 
+				if(timer == ""){
+					$.messager.show({
+						title:"Info",
+						msg:"定时不可以空",
+						showType:'slide'
+					});
+					return false;
+				}else{
+					var d_h = timer.split(/[-]/);
+					if(d_h.length != 2){
+						$.messager.show({
+							title:"Info",
+							msg:"定时格式为:几号(1-31)-几点(0-23)",
+							showType:'slide'
+						});
+						return false;
+					}else{
+						var d = d_h[0];
+						var h = d_h[1];
+						if((d >= 1) && (d <= 31) && (h >=0) && (h<=23)){
+							//is good
+						}else{
+							$.messager.show({
+								title:"Info",
+								msg:"定时格式为:几号(1-31)-几点(0-23)",
+								showType:'slide'
+							});
+							return false;
+						}
+					}
+				}
+			}
 			return $('#updateNeighborForm').form('validate');
 		},
 		success: function(data){
@@ -55,7 +91,14 @@ $.extend($.fn.validatebox.defaults.rules, {
         }
     }
 });
-
+function timeswitchChange(){
+	var switch_ = $("#timerSwitch").combobox("getValue");
+	if(switch_ == 0){
+		$("#timer").textbox("disable");
+	}else{
+		$("#timer").textbox("enable");
+	}
+}
 function clearForm(){
 	$('#updateNeighborForm').form('clear');
 }
@@ -87,7 +130,7 @@ function clearForm(){
 				<tr>
 					<td>定时抄表开关：</td>
 					<td>
-						<select class="easyui-combobox" name="timerSwitch" data-options="panelHeight:'auto'" style="width: 80px">
+						<select class="easyui-combobox" name="timerSwitch" id="timerSwitch" data-options="panelHeight:'auto',onSelect:timeswitchChange" style="width: 80px">
 							<option value="1" <c:if test="${neighbor.timerSwitch==1 }">selected="selected"</c:if>>开</option>
 							<option value="0" <c:if test="${neighbor.timerSwitch==0 }">selected="selected"</c:if>>关</option>
 						</select>
@@ -95,7 +138,7 @@ function clearForm(){
 				</tr>
 				<tr>
 					<td>定时抄表时间：</td>
-					<td><input class="easyui-textbox" type="text" name="timer" value="${neighbor.timer }" data-options="required:true" value="01 00 00"/></td>
+					<td><input class="easyui-textbox" type="text" name="timer" id="timer" value="${neighbor.timer }" data-options="required:true,<c:if test="${neighbor.timerSwitch == 0}">disabled:true</c:if>"/></td>
 				</tr>
 				<tr>
 					<td>抄表IP：</td>

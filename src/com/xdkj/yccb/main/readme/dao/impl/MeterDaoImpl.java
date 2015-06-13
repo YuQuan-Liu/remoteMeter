@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.readme.dao.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,13 @@ public class MeterDaoImpl extends HibernateDAO<Meter> implements MeterDao {
 		
 		return getSession().createSQLQuery(hql).setInteger("deread", waste)
 			.setInteger("meterId", m_id).executeUpdate();
+	}
+
+	@Override
+	public List<Meter> getTimerList() {
+		
+		Query q = getSession().createQuery("from Meter m where m.valid = 1 and m.timerSwitch = 1");
+		return q.list();
 	}
 
 }

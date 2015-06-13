@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
@@ -22,7 +23,7 @@ public interface NeighborService {
 	
 	String addNeighbor(int adid,int wcid,int depart_id,Neighbor nbr);
 	
-	String updateNeighbor(Neighbor nv);
+	String updateNeighbor(Admininfo admin,Neighbor nv);
 	String deleteNbrById(int nbrId);
 	int getCount(Neighbor nv, PageBase pb);
 	

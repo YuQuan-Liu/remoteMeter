@@ -34,7 +34,7 @@ public interface CustomerService {
 	 * @param mv
 	 * @return
 	 */
-	public Map<String, String> addMeter(MeterView mv);
+	public Map<String, String> addMeter(int adminid,MeterView mv);
 	
 	/**
 	 * 根据用户cid 删除用户
@@ -63,7 +63,7 @@ public interface CustomerService {
 
 	public MeterView getMeterViewbyMid(int mid);
 
-	public String updateMeter(MeterView mv);
+	public String updateMeter(int adminid,MeterView mv);
 
 	/**
 	 * map 中包含上传excel的所有的数据

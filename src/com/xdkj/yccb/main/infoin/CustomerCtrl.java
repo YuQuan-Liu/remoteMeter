@@ -168,8 +168,10 @@ public class CustomerCtrl {
 	
 	@RequestMapping(value="/infoin/meter/add")
 	@ResponseBody
-	public String addMeter(MeterView mv){
-		return JSON.toJSONString(customerService.addMeter(mv));
+	public String addMeter(HttpServletRequest request,MeterView mv){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		
+		return JSON.toJSONString(customerService.addMeter(admin.getPid(),mv));
 	}
 	@RequestMapping(value="/infoin/meter/delete")
 	@ResponseBody
@@ -195,8 +197,9 @@ public class CustomerCtrl {
 	}
 	@RequestMapping(value="/infoin/meter/update")
 	@ResponseBody
-	public String updateMeter(MeterView mv){
-		return customerService.updateMeter(mv);
+	public String updateMeter(HttpServletRequest request,MeterView mv){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return customerService.updateMeter(admin.getPid(),mv);
 	}
 	
 	@RequestMapping(value="/infoin/customer/check_capid",produces="application/json;charset=UTF-8")

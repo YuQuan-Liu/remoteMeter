@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
@@ -368,9 +369,20 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 		return "true";
 	}
 
-	
-	
-	
+	@Override
+	public List<Neighbor> getTimerList() {
+		
+		Query q = getSession().createQuery("from Neighbor n where n.valid='1' and n.timerSwitch=1");
+		return q.list();
+	}
+
+	@Override
+	public Admininfo getAdmin(Neighbor n) {
+		Query q = getSession().createQuery("from Admininfo a where a.watercompany.pid = :wcid and a.valid = 1 order by a.pid desc ");
+		q.setInteger("wcid", n.getWatercompany().getPid());
+		return (Admininfo) q.list().get(0);
+	}
+
 	
 
 }

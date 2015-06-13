@@ -127,6 +127,30 @@
 		$("#meter").form('submit',{
 			url:"${path}/infoin/meter/update.do",
 			onSubmit:function(){
+				var switch_ = $("#timerSwitch").combobox("getValue");
+				var timer = $("#timer").textbox("getValue");
+				if(switch_ != 0){
+					//判断timer 
+					if(timer == ""){
+						$.messager.show({
+							title:"Info",
+							msg:"定时不可以空",
+							showType:'slide'
+						});
+						return false;
+					}else{
+						if(timer >= 1){
+							//good
+						}else{
+							$.messager.show({
+								title:"Info",
+								msg:"定时格式为每隔多少分钟",
+								showType:'slide'
+							});
+							return false;
+						}
+					}
+				}
 				return $('#meter').form('validate');
 			},
 			success:function(data){

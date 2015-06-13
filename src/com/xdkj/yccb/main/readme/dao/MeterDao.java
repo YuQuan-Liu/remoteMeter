@@ -14,6 +14,12 @@ public interface MeterDao {
 	int updateMeterPrice(int meterId,int priceId);
 
 	public int updateDeread(int m_id, int waste);
+
+	/**
+	 * 获取全部需要定时抄表的表
+	 * @return
+	 */
+	public List<Meter> getTimerList();
 	
 	//sList<Meter> getList(SettlementView sv,PageBase pageInfo);
 }

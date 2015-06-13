@@ -3,6 +3,7 @@ package com.xdkj.yccb.main.infoin.dao;
 import java.util.List;
 
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.statistics.dto.ChargeRate;
@@ -60,6 +61,19 @@ public interface NeighborDAO {
 	public String checkn_name(int wcid, String n_name);
 
 	public String checkGPRSAddr(String gprsaddr);
+
+	/**
+	 * 获取全部需要定时抄表的小区
+	 * @return
+	 */
+	public List<Neighbor> getTimerList();
+
+	/**
+	 * 获取小区所在自来水  pid 最靠前的管理员   用于自动抄表启动时
+	 * @param pid
+	 * @return
+	 */
+	public Admininfo getAdmin(Neighbor n);
 
 	
 }

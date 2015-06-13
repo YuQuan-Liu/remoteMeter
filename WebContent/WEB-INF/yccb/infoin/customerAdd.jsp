@@ -199,7 +199,7 @@
 							</select>
 						</td>
 						<td><label>检测时间</label></td>
-						<td><input type="text" name="timer" id="timer" class="easyui-textbox" data-options="disabled:true"/></td>
+						<td><input type="text" name="timer" id="timer" class="easyui-textbox" data-options="disabled:true" value="60"/></td>
 						<td><label>用水超量值</label></td>
 						<td><input type="text" name="overflow" class="easyui-textbox" value="50"/></td>
 					</tr>
@@ -243,6 +243,31 @@
 				}else{
 					$.messager.alert("提示","请选择用户");
 					return false;
+				}
+				
+				var switch_ = $("#timerSwitch").combobox("getValue");
+				var timer = $("#timer").textbox("getValue");
+				if(switch_ != 0){
+					//判断timer 
+					if(timer == ""){
+						$.messager.show({
+							title:"Info",
+							msg:"定时不可以空",
+							showType:'slide'
+						});
+						return false;
+					}else{
+						if(timer >= 1){
+							//good
+						}else{
+							$.messager.show({
+								title:"Info",
+								msg:"定时格式为每隔多少分钟",
+								showType:'slide'
+							});
+							return false;
+						}
+					}
 				}
 			},
 			success:function(data){

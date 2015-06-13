@@ -14,11 +14,14 @@ import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.common.WebUtil;
+import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.readme.quartz.QuartzManager;
 import com.xdkj.yccb.security.UserForSession;
 
 @Controller
@@ -31,6 +34,8 @@ public class NeighborCtrl {
 	
 	@Autowired
 	private NeighborService neighborService;
+	@Autowired
+	private AdministratorDAO administratorDAO;
 	
 	@RequestMapping(value="/infoin/neighbor/list")
 	public String neighborList(){
@@ -72,11 +77,22 @@ public class NeighborCtrl {
 	
 	@RequestMapping(value="/infoin/neighbor/update",method=RequestMethod.POST)
 	@ResponseBody
-	public String update(Neighbor nv,@RequestParam("wcid") String wcid){
+	public String update(HttpServletRequest request,Neighbor nv,@RequestParam("wcid") String wcid){
+		UserForSession admin = WebUtil.getCurrUser(request);
+		Admininfo a = administratorDAO.getById(admin.getPid());
 		Watercompany wc = new Watercompany();
 		wc.setPid(Integer.parseInt(wcid));
 		nv.setWatercompany(wc);
-		return neighborService.updateNeighbor(nv);
+		
+//		String r = neighborService.updateNeighbor(a,nv);
+//		
+//		if(nv.getTimerSwitch() == 0){
+//			QuartzManager.removeNeighbor(neighborService.getNbrById(nv.getPid()));
+//		}else{
+//			QuartzManager.modifyNeighborJobTime(neighborService.getNbrById(nv.getPid()), a);
+//		}
+		
+		return neighborService.updateNeighbor(a,nv);
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/delete",method=RequestMethod.POST)

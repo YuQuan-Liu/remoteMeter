@@ -16,7 +16,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.DetaildepartDAO;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Department;
 import com.xdkj.yccb.main.entity.Detaildepart;
 import com.xdkj.yccb.main.entity.Gprs;
@@ -27,6 +29,7 @@ import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.readme.quartz.QuartzManager;
 import com.xdkj.yccb.main.statistics.dto.ChargeRate;
 import com.xdkj.yccb.main.statistics.dto.MonthSettled;
 import com.xdkj.yccb.main.statistics.dto.MonthWaste;
@@ -42,6 +45,8 @@ public class NeighborServiceImpl implements NeighborService {
 	private GprsDAO gprsDAO;
 	@Autowired
 	private DetaildepartDAO detaildepartDAO;
+	@Autowired
+	private AdministratorDAO administratorDAO;
 	
 	public List<NeighborView> getList(int depart_id,int wcid){
 		List<Neighbor> list = neighborDAO.getList(depart_id, wcid);
@@ -86,6 +91,10 @@ public class NeighborServiceImpl implements NeighborService {
 				detail.setValid("1");
 				detaildepartDAO.addDetaildepart(detail);
 			}
+			if(nbr.getTimerSwitch() == 1){
+				QuartzManager.addJobNeighbor(nbr, administratorDAO.getById(adid));
+			}
+			
 			return "succ";
 		}
 		return "fail";
@@ -107,8 +116,18 @@ public class NeighborServiceImpl implements NeighborService {
 
 	
 	@Override
-	public String updateNeighbor(Neighbor nbr) {
+	public String updateNeighbor(Admininfo admin,Neighbor nbr) {
+		if(nbr.getTimerSwitch() == 0){
+			nbr.setTimer("");
+		}
 		neighborDAO.update(nbr);
+		
+		if(nbr.getTimerSwitch() == 0){
+			QuartzManager.removeNeighbor(nbr);
+		}else{
+			QuartzManager.modifyNeighborJobTime(nbr, admin);
+		}
+		
 		return "succ";
 	}
 

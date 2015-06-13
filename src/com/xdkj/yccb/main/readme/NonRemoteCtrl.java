@@ -42,8 +42,6 @@ public class NonRemoteCtrl {
 	@Autowired
 	private AdministratorDAO adminDao;
 	@Autowired
-	private ReadMeter readMeter;
-	@Autowired
 	private MeterService meterService;
 	
 	@Autowired

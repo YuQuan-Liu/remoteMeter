@@ -19,6 +19,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.MeterKindDao;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
@@ -39,6 +40,7 @@ import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.WasteLogDao;
+import com.xdkj.yccb.main.readme.quartz.QuartzManager;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -55,6 +57,8 @@ public class CustomerServiceImpl implements CustomerService {
 	private ReadLogDao readLogDao;
 	@Autowired
 	private WasteLogDao wasteLogDao;
+	@Autowired
+	private AdministratorDAO administratorDAO;
 	
 	@Override
 	public List<CustomerView> getCustomerby(String n_id, String c_num) {
@@ -168,7 +172,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return map;
 	}
 	@Override
-	public Map<String, String> addMeter(MeterView mv) {
+	public Map<String, String> addMeter(int adminid,MeterView mv) {
 		Map<String, String> map = new HashMap<>();
 		
 		//检测是否已经包含此表了
@@ -258,7 +262,14 @@ public class CustomerServiceImpl implements CustomerService {
 			if(mv.getTimer() == null){
 				m.setTimer("");
 			}
+			if(mv.getTimerSwitch() == 1){
+				m.setTimer(Integer.parseInt(mv.getTimer())+"");
+				
+			}
 			customerDao.addMeter(m);
+			if(m.getPid() > 0 && m.getTimerSwitch() == 1){
+				QuartzManager.addJobMeter(m, administratorDAO.getById(adminid));
+			}
 			map.put("add", m.getPid()+"");
 		}
 		map.put("success", "true");
@@ -357,7 +368,7 @@ public class CustomerServiceImpl implements CustomerService {
 		return mv;
 	}
 	@Override
-	public String updateMeter(MeterView mv) {
+	public String updateMeter(int adminid,MeterView mv) {
 		
 		Meter m = customerDao.getMeterByPid(mv.getPid());
 		m.setSteelNum(mv.getSteelNum());
@@ -378,7 +389,15 @@ public class CustomerServiceImpl implements CustomerService {
 		m.setDeductionStyle(mv.getDeductionStyle());
 		m.setValveOffthre(mv.getValveOffthre());
 		m.setTimerSwitch(mv.getTimerSwitch());
-		m.setTimer(mv.getTimer());
+		
+		
+		if(mv.getTimerSwitch() == 1){
+			m.setTimer(mv.getTimer());
+			QuartzManager.modifyMeterJobTime(m, administratorDAO.getById(adminid));
+		}else{
+			m.setTimer("");
+			QuartzManager.removeMeter(m);
+		}
 		m.setOverflow(mv.getOverflow());
 		
 		JSONObject jo = new JSONObject();
