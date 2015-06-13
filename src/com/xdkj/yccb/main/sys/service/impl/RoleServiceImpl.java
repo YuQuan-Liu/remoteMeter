@@ -160,7 +160,7 @@ public class RoleServiceImpl implements RoleService {
 			JSONArray children = new JSONArray();
 			List<Authority> clist = authorityDAO.getList(au.getPid());
 			for (Authority auc : clist) {
-				if(auc.getPid() == 6 || auc.getPid() == 7){
+				if(auc.getPid() == 6 || auc.getPid() == 7 || auc.getPid() == 10){
 					continue;
 				}
 				JSONObject o = new JSONObject();
@@ -202,7 +202,7 @@ public class RoleServiceImpl implements RoleService {
 			JSONArray children = new JSONArray();
 			List<Authority> clist = authorityDAO.getList(au.getPid());
 			for (Authority auc : clist) {
-				if(auc.getPid() == 6 || auc.getPid() == 7){
+				if(auc.getPid() == 6 || auc.getPid() == 7 || auc.getPid() == 10){
 					continue;
 				}
 				JSONObject o = new JSONObject();

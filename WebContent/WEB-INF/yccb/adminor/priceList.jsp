@@ -25,10 +25,12 @@ $(function(){
 // 	        {field:'watercompany',title:'自来水公司',width:100},
 	        {field:'remark',title:'备注',width:100,halign:'center'},
 	        {field:'action',title:'操作',width:100,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'>查看</a> "+
-				"<a href='#' class='operateHref' onclick='deleteprice("+row.pid+","+index+")'>删除</a> ";
+				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'>查看</a> " 
+				<c:if test="${menus['basicprice']=='t'}">+
+				"<a href='#' class='operateHref' onclick='deleteprice("+row.pid+","+index+")'>删除</a> "</c:if>;
 			}}
 	    ]],
+	    <c:if test="${menus['basicprice']=='t'}">
 	    toolbar: [{ 
 	        text: '<fmt:message key="common.add"/>', 
 	        iconCls: 'icon-add', 
@@ -56,6 +58,7 @@ $(function(){
 	    		});
 	        }
 	    }]
+		</c:if>
 	});
 })
 

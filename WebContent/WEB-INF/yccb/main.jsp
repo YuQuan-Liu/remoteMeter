@@ -22,14 +22,14 @@ var _menus = {
 					"url" : "${path}/admin/watcom/list.do"
 				}, 
 			</c:if>
-			<c:if test="${menus['adminor']=='t'}">
+			
 				{
 					"menuid" : "113",
 					"menuname" : "<fmt:message key='menu.admin'/>",
 					"icon" : "micon-nav",
-					"url" : "${path}/admin/list.do"
+					"url" : <c:if test="${menus['adminor']=='t'}">"${path}/admin/list.do"</c:if><c:if test="${menus['adminor']!='t'}">"${path}/admin/updatePage.do?pid=${userInfo.pid}"</c:if>
 				},
-			</c:if>
+			
 			<c:if test="${menus['role']=='t'}">
 				{
 					"menuid" : "115",
@@ -38,22 +38,21 @@ var _menus = {
 					"url" : "${path}/sys/role/list.do"
 				},
 			</c:if>
-			<c:if test="${menus['areas']=='t'}">
+			
 				{
 					"menuid" : "117",
 					"menuname" : "<fmt:message key='menu.areas'/>",
 					"icon" : "micon-nav",
-					"url" : "${path}/admin/dep/list.do"
+					"url" : <c:if test="${menus['areas']=='t'}">"${path}/admin/dep/list.do"</c:if><c:if test="${menus['areas']!='t'}">"${path}/admin/dep/detail.do?depId=${userInfo.depart_id}"</c:if>
 				},
-			</c:if>
-			<c:if test="${menus['basicprice']=='t'}">
+				
 				{
 					"menuid" : "118",
 					"menuname" : "<fmt:message key='menu.basicprice'/>",
 					"icon" : "micon-nav",
 					"url" : "${path}/admin/price/list.do"
 				},
-			</c:if>]
+			]
 		}],
 		info : [{
 			"menuid" : "20",

@@ -21,10 +21,12 @@ $(function(){
 	    columns:[[
 	        {field:'pid',title:'ID',width:50,hidden:true},   
 	        {field:'neighborName',title:'小区名',width:100},   
-	        {field:'neighborAddr',title:'地址',width:150},
+	        {field:'neighborAddr',title:'地址',width:150}
+	        <c:if test="${menus['areas']=='t'}">,
 	        {field:'action',title:'操作',width:150,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a href='#' class='operateHref' onclick='deleteDetail("+${dep.pid}+","+row.pid+","+index+")'>删除</a> ";
 			}}
+	        </c:if>
 	    ]]
 	});
 });
@@ -96,6 +98,7 @@ function addNbr(dep_id){
 				<td>备注：</td>
 				<td><input class="easyui-textbox" name="remark" type="text" data-options="disabled:true" readonly="readonly" value="${dep.remark }" /></td>
 			</tr>
+			<c:if test="${menus['areas']=='t'}">
 			<tr>
 				<td>小区名</td>
 				<td>
@@ -109,6 +112,7 @@ function addNbr(dep_id){
 				<td></td>
 				<td><a href="javascript:void(0)" class="easyui-linkbutton" id="addNbr" onclick="addNbr(${dep.pid})">添加小区</a></td>
 			</tr>
+			</c:if>
 		</table>
 	</div>
 	<table id="neibourListTab"></table>

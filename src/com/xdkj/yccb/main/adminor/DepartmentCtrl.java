@@ -108,7 +108,16 @@ public class DepartmentCtrl {
 	
 	@RequestMapping(value="/admin/dep/detail")
 	public String depDetail(@RequestParam("depId")String depId, Model model,HttpServletRequest request){
-		model.addAttribute("dep", departmentService.getById(depId));
+		if(depId.equals("0")){
+			Department dep = new Department();
+			dep.setPid(0);
+			dep.setDepartmentName("全部小区");
+			dep.setRemark("");
+			model.addAttribute("dep", dep);
+		}else{
+			model.addAttribute("dep", departmentService.getById(depId));
+		}
+		
 		
 		//自来水下的全部小区
 		int wcid = WebUtil.getCurrUser(request).getWaterComId();
