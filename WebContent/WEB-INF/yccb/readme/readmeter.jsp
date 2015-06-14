@@ -117,10 +117,8 @@ $(function(){
 							if(row.valveState == 1){
 								action = "关阀";
 							}
-							var tt = " "<c:if test="${menus['readvalve']=='t'}">"<a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a>"</c:if>;
 							
-							return "<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'> 抄表 </a>"+tt+
-							"<a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'> 修改 </a>";
+							return "<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'> 抄表 </a><c:if test="${menus['readvalve']=='t'}"><a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a></c:if><a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'> 修改 </a>";
 				  }}
 		      ]]
 	});
