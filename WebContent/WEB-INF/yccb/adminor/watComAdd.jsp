@@ -34,7 +34,7 @@ function submitForm(){
 	       if(data=="succ"){
 	    	   $('#watComAddWin').window('close');
 	    	   $.messager.show({
-					title:'添加自来水公司',
+					title:'Info',
 					msg:'添加成功',
 					showType:'slide',
 					timeout:3000

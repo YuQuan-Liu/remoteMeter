@@ -333,7 +333,7 @@ $(function(){
 					success : function(data) {
 						if (data > 0) {
 							$.messager.show({
-								title : '预后付费转换',
+								title : 'Info',
 								msg : '转换成功！',
 								showType : 'slide'
 							});
@@ -374,7 +374,7 @@ $(function(){
 						success : function(data) {
 							if (data.balance > 0) {
 								$.messager.show({
-									title : '交费',
+									title : 'Info',
 									msg : '交费成功！',
 									showType : 'slide'
 								});
@@ -382,7 +382,7 @@ $(function(){
 								$('#customerBalance').textbox('setValue',data.balance);
 							}else{
 								$.messager.show({
-									title : '交费',
+									title : 'Info',
 									msg : '交费失败！',
 									showType : 'slide',
 									timeout : 0
@@ -472,15 +472,15 @@ $(function(){
 					success : function(data) {
 						if (data == 1) {
 							$.messager.show({
-								title : '更新单价',
-								msg : '操作成功！',
+								title : 'Info',
+								msg : '更新成功！',
 								showType : 'slide'
 							});
 							$("#custMeters").datagrid('updateRow', {index:index,row:{pk:priceName}});
 						} else {
 							$.messager.show({
-								title : '更新单价',
-								msg : '操作失败！',
+								title : 'Info',
+								msg : '更新失败！',
 								showType : 'slide',
 								timeout : 0
 							});
@@ -507,7 +507,7 @@ $(function(){
 //	 						alert(data.id+data.read);
 							if(data == 1){
 								$.messager.show({
-									title : '水费减免',
+									title : 'Info',
 									msg : '操作成功！',
 									showType : 'slide'
 								});
@@ -555,8 +555,8 @@ $(function(){
 					success : function(data) {
 						if (data.state == "succ") {
 							$.messager.show({
-								title : '撤销交费',
-								msg : '操作成功！',
+								title : 'Info',
+								msg : '撤销成功！',
 								showType : 'slide',
 								timeout : 3000
 							});
@@ -565,8 +565,8 @@ $(function(){
 							
 						} else {
 							$.messager.show({
-								title : '撤销交费',
-								msg : '操作失败！',
+								title : 'Info',
+								msg : '撤销失败！',
 								showType : 'slide',
 								timeout : 0
 							});
@@ -593,8 +593,8 @@ $(function(){
 					success : function(data) {
 						if (data.state == "succ") {
 							$.messager.show({
-								title : '撤销扣费',
-								msg : '操作成功！',
+								title : 'Info',
+								msg : '撤销成功！',
 								showType : 'slide'
 							});
 							$('#costInfoTab').datagrid("deleteRow",index_);
@@ -602,8 +602,8 @@ $(function(){
 							
 						} else {
 							$.messager.show({
-								title : '撤销扣费',
-								msg : '操作失败！',
+								title : 'Info',
+								msg : '撤销失败！',
 								showType : 'slide',
 								timeout : 0
 							});

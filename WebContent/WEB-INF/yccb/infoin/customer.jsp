@@ -232,7 +232,7 @@ function searchCustomer_(){
 	var c_num = $("#c_num").textbox("getValue");
 	
 	if(n_id == ''){
-		$.messager.alert('提示','请选择小区！');
+		$.messager.alert('Info','请选择小区！');
 		return;
 	}
 	if(check_c_num_(c_num)){
@@ -299,7 +299,7 @@ function refreshRow(index){
 	});	
 }
 	function deleteCustomer(cid, index) {
-		$.messager.confirm('提示', '确定要删除选中记录吗？', function(r) {
+		$.messager.confirm('Info', '确定要删除选中记录吗？', function(r) {
 			if (r) {
 				$.ajax({
 					url : '${path}/infoin/customer/delete.do',
@@ -329,7 +329,7 @@ function refreshRow(index){
 	}
 	function deleteMeter(mid,index,index_) {
 // 		$("#customerTab").datagrid('getRowDetail',0).find('table.ddv').datagrid('deleteRow', 0);
-		$.messager.confirm('提示', '确定要删除选中记录吗？', function(r){
+		$.messager.confirm('Info', '确定要删除选中记录吗？', function(r){
 			if(r){
 				$.ajax({
 					url:'${path}/infoin/meter/delete.do',

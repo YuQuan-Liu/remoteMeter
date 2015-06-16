@@ -225,7 +225,7 @@
 					var gprs_id = $("#gprs_id").combobox("getValue");
 					if(gprs_id == ""){
 						$.messager.show({
-							title:"请选择集中器",
+							title:"Info",
 							msg:"请选择集中器",
 							showType:'slide'
 						});
@@ -234,14 +234,14 @@
 					var pk_id = $("#pk_id").combobox("getValue");
 					if(pk_id == ""){
 						$.messager.show({
-							title:"请选择单价",
+							title:"Info",
 							msg:"请选择单价",
 							showType:'slide'
 						});
 						return false;
 					}
 				}else{
-					$.messager.alert("提示","请选择用户");
+					$.messager.alert("Info","请选择用户");
 					return false;
 				}
 				
@@ -276,7 +276,7 @@
 					$("#customer").form('reset');
 					$("#meter").form('reset');
 					$("#c_id").val();
-					$.messager.alert("提示","添加成功");
+					$.messager.alert("Info","添加成功");
 				}
 			}
 		});
@@ -293,7 +293,7 @@
 				if(data.success == "true"){
 					$("#customer").form('reset');
 					$("#c_id").val(data.add);
-					$.messager.alert("提示","添加成功");
+					$.messager.alert("Info","添加成功");
 				}
 			}
 		});
@@ -385,7 +385,7 @@
 		
 		if(gprs_id == ""){
 			$.messager.show({
-				title:"请选择集中器",
+				title:"Info",
 				msg:"请选择集中器",
 				showType:'slide'
 			});
@@ -458,7 +458,7 @@
 		//我操  这个c_num  和母页面中的c_num 冲突。。。   实在一个页面里面   如果在不同的iframe中就没事了
 		
 		if(n_id == ''){
-			$.messager.alert('提示','请选择小区！');
+			$.messager.alert('Info','请选择小区！');
 			return;
 		}
 		if(!check_c_num(c_num)){

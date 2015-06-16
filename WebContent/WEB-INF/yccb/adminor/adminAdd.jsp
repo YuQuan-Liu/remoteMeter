@@ -14,7 +14,7 @@ function submitForm(){
 	var rid = $("#roleid").combobox("getValue");
 	if(did == ""){
 		$.messager.show({
-			title:'添加管理员',
+			title:'Info',
 			msg:'请选择片区！',
 			showType:'slide',
 			timeout:3000
@@ -23,7 +23,7 @@ function submitForm(){
 	}
 	if(rid == ""){
 		$.messager.show({
-			title:'添加管理员',
+			title:'Info',
 			msg:'请选择权限！',
 			showType:'slide',
 			timeout:3000

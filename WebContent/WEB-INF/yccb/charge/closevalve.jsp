@@ -336,7 +336,7 @@ function checkcontroling(valvelogid,index){
 			if(data.status == 100){
 				clearInterval(interval);
 				$.messager.progress("close");
-				$.messager.alert('操作结果',"完成个数:"+data.completecount+"\r\n异常个数:"+data.errorcount,'info'); 
+				$.messager.alert('Result',"完成个数:"+data.completecount+"</br>异常个数:"+data.errorcount,'info'); 
 				
 				if(data.completecount+data.errorcount == 1){
 					//单个表

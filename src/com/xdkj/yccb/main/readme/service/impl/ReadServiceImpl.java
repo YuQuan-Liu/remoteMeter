@@ -92,8 +92,8 @@ public class ReadServiceImpl implements ReadService {
 				String result = "";
 				for(int i = 0;list!= null && i < list.size();i++){
 					readlog_ = list.get(i);
-					failreason += (readlog_.getFailReason()+"\r\n");
-					result += (readlog_.getResult()+"\r\n");
+					failreason += (readlog_.getFailReason()+"</br>");
+					result += (readlog_.getResult()+"</br>");
 				}
 				jo.put("pid", readlog.getPid());
 				jo.put("readStatus", 100);

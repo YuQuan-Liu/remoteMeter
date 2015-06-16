@@ -55,7 +55,7 @@ function submitForm(){
 		success: function(data){
 			if(data=="succ"){
 				$.messager.show({
-					title:"添加小区",
+					title:"Info",
 					msg:"添加成功",
 					showType:'slide'
 				});

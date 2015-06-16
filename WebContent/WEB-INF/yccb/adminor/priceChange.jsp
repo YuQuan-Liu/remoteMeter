@@ -42,7 +42,7 @@ function changePrice(){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"调整单价",
+							title:"Info",
 							msg:"调整成功",
 							showType:'slide'
 						});

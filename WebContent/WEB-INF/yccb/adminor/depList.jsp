@@ -51,7 +51,7 @@ function deleteDep(pid,index_){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"删除片区",
+							title:"Info",
 							msg:"删除成功",
 							showType:'slide'
 						});

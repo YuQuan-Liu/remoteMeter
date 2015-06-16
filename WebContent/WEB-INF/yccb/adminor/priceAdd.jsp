@@ -69,7 +69,7 @@ $(function(){
 		        	bpTab.datagrid('deleteRow', rowIndex);  
 	        	}else{
 	        		$.messager.show({
-						title:'删除单价',
+						title:'Info',
 						msg:'请选择一条记录！',
 						showType:'slide',
 						timeout:3000
@@ -92,7 +92,7 @@ function submitForm(){
 		       if(data=="succ"){
 		    	   $('#priceAddWin').window('close');
 		    	   $.messager.show({
-						title:'添加单价',
+						title:'Info',
 						msg:'添加成功！',
 						showType:'slide',
 						timeout:3000

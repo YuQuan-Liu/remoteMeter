@@ -80,9 +80,9 @@ $(function(){
 					});
 					
 				}else if(leng>1){
-					$.messager.alert('提示','请选择一条记录！');
+					$.messager.alert('Info','请选择一条记录！');
 				}else{
-					$.messager.alert('提示','未选中任何记录！');
+					$.messager.alert('Info','未选中任何记录！');
 				}
 			}
 		}, '-',{ 
@@ -91,18 +91,18 @@ $(function(){
 			handler: function(){
 				var rows = $('#neighborListTab').datagrid('getSelections');
 				if(rows.length==0){
-					$.messager.alert('提示','请选择记录！');
+					$.messager.alert('Info','请选择记录！');
 					return;
 				}else{
 					if(rows.length > 1){
-						$.messager.alert('提示','请选择一条记录！');
+						$.messager.alert('Info','请选择一条记录！');
 						return;
 					}
 					var pid = rows[0].pid;
 					var index_ = $('#neighborListTab').datagrid('getRowIndex',rows[0]);
 					var name = rows[0].neighborName;
 					
-					$.messager.confirm('提示','确定要删除'+name+'吗？',function(r){	
+					$.messager.confirm('Info','确定要删除'+name+'吗？',function(r){	
 						if (r){	
 							$.ajax({
 								url:'delete.do',
@@ -111,7 +111,7 @@ $(function(){
 								success:function(data){
 									if(data=="succ"){
 										$.messager.show({
-											title:"删除小区",
+											title:"Info",
 											msg:"删除成功",
 											showType:'slide'
 										});
@@ -206,7 +206,7 @@ function updatePageGprs(pid){
 
 //删除单个集中器
 function deleteGprsById(id,nid,index){
-	$.messager.confirm('提示', '确定要删除选中记录吗？', function(r){
+	$.messager.confirm('Info', '确定要删除选中记录吗？', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/infoin/neighbor/deleteGprsById.do',
@@ -216,7 +216,7 @@ function deleteGprsById(id,nid,index){
 					if(typ=="succ"){
 						
 						$.messager.show({
-							title:"删除集中器",
+							title:"Info",
 							msg:"删除成功",
 							showType:'slide'
 						});

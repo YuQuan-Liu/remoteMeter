@@ -53,7 +53,7 @@ function submitForm(){
 		success: function(data){
 			if(data=="succ"){
 				$.messager.show({
-					title:"更新小区",
+					title:"Info",
 					msg:"更新成功",
 					showType:'slide'
 				});
@@ -98,9 +98,6 @@ function timeswitchChange(){
 	}else{
 		$("#timer").textbox("enable");
 	}
-}
-function clearForm(){
-	$('#updateNeighborForm').form('clear');
 }
 </script>
 	<form action="${path}/infoin/neighbor/update.do" id="updateNeighborForm" method="post">
@@ -154,7 +151,6 @@ function clearForm(){
 		</div>
 		 <div style="text-align:center;padding:5px">
 			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">更新</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清空</a>
 		</div>
 	</form>
 </body>

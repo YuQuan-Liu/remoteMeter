@@ -48,7 +48,7 @@ function deleteDetail(dep_id,n_id,index_){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"删除小区",
+							title:"Info",
 							msg:"删除成功",
 							showType:'slide'
 						});
@@ -78,7 +78,7 @@ function addNbr(dep_id){
 		success:function(data){
 			if(data > 0){
 				$.messager.show({
-					title:"添加小区",
+					title:"Info",
 					msg:"添加成功",
 					showType:'slide'
 				});

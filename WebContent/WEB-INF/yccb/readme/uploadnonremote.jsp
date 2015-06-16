@@ -28,7 +28,7 @@
 	function submitUpload(){
 		
 		var readlogid = $("#readlog").combobox("getValue");
-		$.messager.progress();
+		$.messager.progress({title:"上传中...",text:"",interval:100});
 		$("#uploadreads").form("submit",{
 			url:"${path}/readme/nonremote/upload.do",
 			onSubmit:function(param){
@@ -40,7 +40,7 @@
 			},
 			success:function(data){
 				$.messager.progress('close');
-				alert(data);
+// 				alert(data);
 			}
 		})
 	}

@@ -26,7 +26,7 @@ function submitForm(){
 		       if(data=="succ"){
 		    	   $('#depUpdateWin').window('close');
 		    	   $.messager.show({
-						title:'修改片区',
+						title:'Info',
 						msg:'修改成功！',
 						showType:'slide',
 						timeout:3000

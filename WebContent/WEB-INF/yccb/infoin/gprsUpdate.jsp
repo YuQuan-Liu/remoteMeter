@@ -18,7 +18,7 @@ function submitForm(){
 		success: function(data){
 			if(data=="succ"){
 				$.messager.show({
-					title:"修改集中器",
+					title:"Info",
 					msg:"修改成功！",
 					showType:'slide'
 				});

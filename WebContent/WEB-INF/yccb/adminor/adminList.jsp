@@ -72,7 +72,7 @@ function deleteadmin(pid,index_){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"删除管理员",
+							title:"Info",
 							msg:"删除成功",
 							showType:'slide'
 						});

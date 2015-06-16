@@ -16,7 +16,7 @@ function submitForm(){
 	    success: function(data){  
 	    	if(data == "true"){
 	    		$.messager.show({
-					title:'修改信息',
+					title:'Info',
 					msg:'修改成功！',
 					showType:'slide',
 					timeout:3000
@@ -83,14 +83,14 @@ function changepwd(){
 			success:function(data){
 				if(data == 'true'){
 					$.messager.show({
-						title:'修改密码',
+						title:'Info',
 						msg:'修改成功！',
 						showType:'slide',
 						timeout:3000
 					});
 				}else{
 					$.messager.show({
-						title:'修改密码',
+						title:'Info',
 						msg:'旧密码输入错误！',
 						showType:'slide',
 						timeout:3000
@@ -115,7 +115,7 @@ function resetpwd(){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"重置密码",
+							title:"Info",
 							msg:"重置成功",
 							showType:'slide'
 						});
@@ -131,7 +131,7 @@ function changerole(){
 	var pid = $("#adminid").val();
 	if(rid == ""){
 		$.messager.show({
-			title:'修改权限',
+			title:'Info',
 			msg:'请选择权限！',
 			showType:'slide',
 			timeout:3000
@@ -150,7 +150,7 @@ function changerole(){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"更改角色",
+							title:"Info",
 							msg:"更改成功",
 							showType:'slide'
 						});
@@ -166,7 +166,7 @@ function changedep(){
 	var pid = $("#adminid").val();
 	if(did == ""){
 		$.messager.show({
-			title:'修改片区',
+			title:'Info',
 			msg:'请选择片区！',
 			showType:'slide',
 			timeout:3000
@@ -185,7 +185,7 @@ function changedep(){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"更改片区",
+							title:"Info",
 							msg:"更改成功",
 							showType:'slide'
 						});

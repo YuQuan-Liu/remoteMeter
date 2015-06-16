@@ -84,7 +84,7 @@ function deleteprice(pid,index_){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"删除单价",
+							title:"Info",
 							msg:"删除成功",
 							showType:'slide'
 						});
