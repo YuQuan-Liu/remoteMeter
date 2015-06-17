@@ -27,7 +27,7 @@ function submitForm(){
 			if(data=="succ"){
 				$.messager.show({
 					title:"Info",
-					msg:"添加成功",
+					msg:"<fmt:message key='common.addok'/>",
 					showType:'slide'
 				});
 				$('#addGprsWin').window('close');
@@ -63,43 +63,43 @@ function checkGPRSAddr(){
  <div style="padding:10px;">
 			<table style="margin:0px auto">
 	    		<tr>
-	    			<td>SIM卡号：</td>
+	    			<td><fmt:message key='g.sim'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="gprstel" id="gprstel" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>集中器地址：</td>
+	    			<td><fmt:message key='g.addr'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="gprsaddr" id="gprsaddr" 
 						data-options="required:true,novalidate:true,onChange:checkGPRSAddr,invalidMessage:'集中器已存在！'" validType="nonValidate[]"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>安装地址:</td>
+	    			<td><fmt:message key='g.installaddr'/>:</td>
 	    			<td><input class="easyui-textbox" type="text" name="installAddr" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>使用协议：</td>
+	    			<td><fmt:message key='g.protocol'/>：</td>
 	    			<td>
 	    				<select class="easyui-combobox" name="gprsprotocol" data-options="panelHeight:'auto'" style="width: 80px">
-							<option value="1">自主协议</option>
-							<option value="2" selected="selected">188协议</option>
+							<option value="1"><fmt:message key='g.hdeg'/></option>
+							<option value="2" selected="selected"><fmt:message key='g.188'/></option>
 						</select>
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>监听IP：</td>
+	    			<td><fmt:message key='g.ip'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" id="ip" name="ip" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>监听端口：</td>
+	    			<td><fmt:message key='g.port'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" id="port" name="port" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>备注：</td>
+	    			<td><fmt:message key='common.remark'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="remark"/></td>
 	    		</tr>
 	    	</table>
 		</div>
 		 <div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 		</div>
 	</form>
 </body>

@@ -5,19 +5,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%@include file="/commonjsp/top.jsp" %>
 <c:set var="menus" scope="session" value="${userInfo.menus}"/>
-<title><fmt:message key="main.title"/></title>
+<title><fmt:message key="main.index"/></title>
 <script type="text/javascript" src="${path}/resource/js/main.js"></script>
 <script type="text/javascript">
 var _menus = {
 		admin : [ {
 			"menuid" : "10",
 			"icon" : "micon-sys",
-			"menuname" :"<fmt:message key='menu.admin'/>",
+			"menuname" :"<fmt:message key='admin'/>",
 			"menus" : [ 
 			<c:if test="${menus['watcom']=='t'}">
 				 {
 					"menuid" : "111",
-					"menuname" : "<fmt:message key='menu.watcom'/>",
+					"menuname" : "<fmt:message key='watcom'/>",
 					"icon" : "micon-nav",
 					"url" : "${path}/admin/watcom/list.do"
 				}, 
@@ -25,7 +25,7 @@ var _menus = {
 			
 				{
 					"menuid" : "113",
-					"menuname" : "<fmt:message key='menu.admin'/>",
+					"menuname" : "<fmt:message key='admin'/>",
 					"icon" : "micon-nav",
 					"url" : <c:if test="${menus['adminor']=='t'}">"${path}/admin/list.do"</c:if><c:if test="${menus['adminor']!='t'}">"${path}/admin/updatePage.do?pid=${userInfo.pid}"</c:if>
 				},
@@ -33,7 +33,7 @@ var _menus = {
 			<c:if test="${menus['role']=='t'}">
 				{
 					"menuid" : "115",
-					"menuname" : "<fmt:message key='menu.role'/>",
+					"menuname" : "<fmt:message key='role'/>",
 					"icon" : "micon-nav",
 					"url" : "${path}/sys/role/list.do"
 				},
@@ -41,14 +41,14 @@ var _menus = {
 			
 				{
 					"menuid" : "117",
-					"menuname" : "<fmt:message key='menu.areas'/>",
+					"menuname" : "<fmt:message key='areas'/>",
 					"icon" : "micon-nav",
 					"url" : <c:if test="${menus['areas']=='t'}">"${path}/admin/dep/list.do"</c:if><c:if test="${menus['areas']!='t'}">"${path}/admin/dep/detail.do?depId=${userInfo.depart_id}"</c:if>
 				},
 				
 				{
 					"menuid" : "118",
-					"menuname" : "<fmt:message key='menu.basicprice'/>",
+					"menuname" : "<fmt:message key='basicprice'/>",
 					"icon" : "micon-nav",
 					"url" : "${path}/admin/price/list.do"
 				},
@@ -58,12 +58,12 @@ var _menus = {
 		info : [{
 			"menuid" : "20",
 			"icon" : "micon-inf",
-			"menuname" : "<fmt:message key='menu.info'/>",
+			"menuname" : "<fmt:message key='info'/>",
 			"menus" : [ 
 			<c:if test="${menus['community']=='t'}">
 			 {
 				"menuid" : "211",
-				"menuname" : "<fmt:message key='menu.community'/>",
+				"menuname" : "<fmt:message key='community'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/infoin/neighbor/list.do",
 			},
@@ -71,7 +71,7 @@ var _menus = {
 			<c:if test="${menus['userinfo']=='t'}">
 			{
 				"menuid" : "213",
-				"menuname" : "<fmt:message key='menu.user'/>",
+				"menuname" : "<fmt:message key='userinfo'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/infoin/customer/list.do"
 			} ,
@@ -83,12 +83,12 @@ var _menus = {
 		read : [{
 			"menuid" : "30",
 			"icon" : "micon-read",
-			"menuname" : "<fmt:message key='menu.read'/>",
+			"menuname" : "<fmt:message key='readmeter'/>",
 			"menus" : [ 
 			<c:if test="${menus['readmeter']=='t'}"> 
 			  {
 				"menuid" : "311",
-				"menuname" : "<fmt:message key='menu.readmeter'/>",
+				"menuname" : "<fmt:message key='readmeter'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/readme/read/remotelist.do"
 			}, 
@@ -96,7 +96,7 @@ var _menus = {
 			<c:if test="${menus['unremote']=='t'}">
 			{
 				"menuid" : "313",
-				"menuname" : "<fmt:message key='menu.unremote'/>",
+				"menuname" : "<fmt:message key='unremote'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/readme/read/unremotelist.do"
 			}, </c:if>]
@@ -109,10 +109,10 @@ var _menus = {
 		   {
 			"menuid" : "40",
 			"icon" : "micon-charge",
-			"menuname" : "<fmt:message key='menu.charge'/>",
+			"menuname" : "<fmt:message key='charge'/>",
 			"menus" : [ {
 				"menuid" : "411",
-				"menuname" : "<fmt:message key='menu.charge'/>",
+				"menuname" : "<fmt:message key='charge'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/charge/charge.do"
 			}, 
@@ -120,7 +120,7 @@ var _menus = {
 			<c:if test="${menus['settle']=='t'}">
 			{
 				"menuid" : "412",
-				"menuname" : "<fmt:message key='menu.calcost'/>",
+				"menuname" : "<fmt:message key='settle'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/charge/settle.do"
 			} ,
@@ -128,7 +128,7 @@ var _menus = {
 			<c:if test="${menus['postpay']=='t'}">
 			{
 				"menuid" : "413",
-				"menuname" : "<fmt:message key='menu.chargelat'/>",
+				"menuname" : "<fmt:message key='postpay'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/charge/postpay.do"
 			},
@@ -136,7 +136,7 @@ var _menus = {
 			<c:if test="${menus['closevalve']=='t'}">
 			{
 				"menuid" : "414",
-				"menuname" : "<fmt:message key='menu.closetap'/>",
+				"menuname" : "<fmt:message key='closevalve'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/charge/closevalve.do"
 			} ,
@@ -144,7 +144,7 @@ var _menus = {
 			<c:if test="${menus['vavlelog']=='t'}">
 			{
 				"menuid" : "415",
-				"menuname" : "<fmt:message key='menu.domaintap'/>",
+				"menuname" : "<fmt:message key='vavlelog'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/charge/valvelog.do"
 			},</c:if>]
@@ -155,12 +155,12 @@ var _menus = {
 		statis : [{
 			"menuid" : "50",
 			"icon" : "micon-stat",
-			"menuname" : "<fmt:message key='menu.statis'/>",
+			"menuname" : "<fmt:message key='statis'/>",
 			"menus" : [ 
 			<c:if test="${menus['chargestat']=='t'}">
 			 {
 				"menuid" : "511",
-				"menuname" : "<fmt:message key='menu.chargestat'/>",
+				"menuname" : "<fmt:message key='chargestat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/payinfo.do"
 			},
@@ -168,7 +168,7 @@ var _menus = {
 			<c:if test="${menus['settlelogstat']=='t'}">
 			{
 				"menuid" : "512",
-				"menuname" : "<fmt:message key='menu.chargedstat'/>",
+				"menuname" : "<fmt:message key='settlelogstat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/settlelog.do"
 			},
@@ -176,7 +176,7 @@ var _menus = {
 			<c:if test="${menus['settlelogwaterstat']=='t'}">
 			{
 				"menuid" : "513",
-				"menuname" : "<fmt:message key='menu.chargewaterstat'/>",
+				"menuname" : "<fmt:message key='settlelogwaterstat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/settlelogwater.do"
 			}, 
@@ -184,7 +184,7 @@ var _menus = {
 			<c:if test="${menus['loustat']=='t'}">
 			{
 				"menuid" : "514",
-				"menuname" : "<fmt:message key='menu.buildingstat'/>",
+				"menuname" : "<fmt:message key='loustat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/lou.do"
 			},
@@ -192,7 +192,7 @@ var _menus = {
 			<c:if test="${menus['owestat']=='t'}">
 			{
 				"menuid" : "514",
-				"menuname" : "<fmt:message key='menu.owedstat'/>",
+				"menuname" : "<fmt:message key='owestat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/owe.do"
 			},
@@ -200,7 +200,7 @@ var _menus = {
 			<c:if test="${menus['vipstat']=='t'}">
 			{
 				"menuid" : "516",
-				"menuname" : "<fmt:message key='menu.maincustmonitor'/>",
+				"menuname" : "<fmt:message key='vipstat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/vip.do"
 			}, 
@@ -208,14 +208,14 @@ var _menus = {
 			<c:if test="${menus['wastestat']=='t'}">
 			{
 				"menuid" : "517",
-				"menuname" : "<fmt:message key='menu.waterlossanaly'/>",
+				"menuname" : "<fmt:message key='wastestat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/waste.do"
 			},</c:if>
 			<c:if test="${menus['chargeratestat']=='t'}">
 			{
 				"menuid" : "515",
-				"menuname" : "<fmt:message key='menu.chargeratestat'/>",
+				"menuname" : "<fmt:message key='chargeratestat'/>",
 				"icon" : "micon-nav",
 				"url" : "${path}/statistics/chargerate.do"
 			},
@@ -242,27 +242,27 @@ var _menus = {
 		<div class="logo"><a href="http://www.xcxdtech.com" target="_blank"><img width="465" height="95" src="${path}/resource/images/logo.jpg"></a></div>
 <%-- 		<span id="clock"><fmt:message key="currenttime"/>：<span id="bgclock"></span></span> --%>
 		<ul id="topmenu">
-				<li class="nav_ico1"><a class="active" name="index" href="javascript:;" title="<fmt:message key='menu.index'/>">
-				<fmt:message key='menu.index'/></a></li>
+				<li class="nav_ico1"><a class="active" name="index" href="javascript:;" title="<fmt:message key='main.index'/>">
+				<fmt:message key='main.index'/></a></li>
 <%-- 			<c:if test="${menus['admin']=='t'}"> --%>
-				<li class="nav_ico2"><a name="admin" href="javascript:;" title="<fmt:message key='menu.admin'/>">
-				<fmt:message key="menu.admin"/></a></li>
+				<li class="nav_ico2"><a name="admin" href="javascript:;" title="<fmt:message key='admin'/>">
+				<fmt:message key="admin"/></a></li>
 <%-- 			</c:if> --%>
 			<c:if test="${menus['infoin']=='t'}">
-				<li class="nav_ico3"><a name="info" href="javascript:;" title="<fmt:message key='menu.info'/>">
-				<fmt:message key='menu.info'/></a></li>
+				<li class="nav_ico3"><a name="info" href="javascript:;" title="<fmt:message key='info'/>">
+				<fmt:message key='info'/></a></li>
 			</c:if>
 			<c:if test="${menus['readview']=='t'}">
-				<li class="nav_ico4"><a name="read" href="javascript:;" title="<fmt:message key='menu.read'/>">
-				<fmt:message key='menu.read'/></a></li>
+				<li class="nav_ico4"><a name="read" href="javascript:;" title="<fmt:message key='read'/>">
+				<fmt:message key='read'/></a></li>
 			</c:if>
 			<c:if test="${menus['chargeview']=='t'}">
-				<li class="nav_ico5"><a name="charge" href="javascript:;" title="<fmt:message key='menu.charge'/>">
-				<fmt:message key='menu.charge'/></a></li>
+				<li class="nav_ico5"><a name="charge" href="javascript:;" title="<fmt:message key='charge'/>">
+				<fmt:message key='charge'/></a></li>
 			</c:if>
 			<c:if test="${menus['statisticview']=='t'}">
-				<li class="nav_ico6"><a name="statis" href="javascript:;" title="<fmt:message key='menu.statis'/>">
-				<fmt:message key='menu.statis'/></a></li>
+				<li class="nav_ico6"><a name="statis" href="javascript:;" title="<fmt:message key='statis'/>">
+				<fmt:message key='statis'/></a></li>
 			</c:if>
 		</ul>
 		<span id="userInfo" style="color:rgb(199, 199, 224)">

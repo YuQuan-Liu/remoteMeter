@@ -15,7 +15,7 @@ function submitForm(){
 	if(did == ""){
 		$.messager.show({
 			title:'Info',
-			msg:'请选择片区！',
+			msg:'<fmt:message key='admin.choosedep'/>',
 			showType:'slide',
 			timeout:3000
 		});
@@ -24,7 +24,7 @@ function submitForm(){
 	if(rid == ""){
 		$.messager.show({
 			title:'Info',
-			msg:'请选择权限！',
+			msg:'<fmt:message key='admin.chooserole'/>',
 			showType:'slide',
 			timeout:3000
 		});
@@ -78,35 +78,35 @@ function checkLoginName(){
 	    	<input type="hidden" name="watercompany.pid" value="${wcid}"/>
 	    	<table style="margin:0px auto;">
 	    		<tr>
-	    			<td>用户名：</td>
+	    			<td><fmt:message key='common.username'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminName" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>登录名：</td>
+	    			<td><fmt:message key='admin.loginName'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="loginName" id="loginName" 
-	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'登录名已存在！'" validType="nonValidate[]"></input></td>
+	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'<fmt:message key='admin.loginNameexit'/>'" validType="nonValidate[]"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>手机：</td>
+	    			<td><fmt:message key='common.mobile'/>：</td>
 	    			<td><input class="easyui-numberbox" type="text" name="adminMobile"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>固话：</td>
+	    			<td><fmt:message key='common.tel'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminTel"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>邮箱：</td>
+	    			<td><fmt:message key='common.email'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminEmail"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>地址：</td>
+	    			<td><fmt:message key='common.addr'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminAddr"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>权限角色:</td>
+	    			<td><fmt:message key='admin.role'/>:</td>
 	    			<td>
 	    				<select class="easyui-combobox" id="roleid" name="roleid" data-options="panelHeight:'auto',required:true" style="width:100px;">
-							<option value="">请选择权限</option>
+							<option value=""><fmt:message key='admin.chooserole'/></option>
 							<c:forEach var="r" items="${role_list }">
 							<option value="${r.pid }">${r.roleName }</option>
 							</c:forEach>
@@ -114,10 +114,10 @@ function checkLoginName(){
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>管辖片区:</td>
+	    			<td><fmt:message key='areas'/>:</td>
 	    			<td>
 	    				<select class="easyui-combobox" id="depid" name="department.pid" data-options="anelHeight:'auto',required:true" style="width:100px;">
-							<option value="">请选择片区</option>
+							<option value=""><fmt:message key='admin.choosedep'/></option>
 							<c:forEach var="d" items="${dep_list }">
 							<option value="${d.pid }">${d.departmentName }</option>
 							</c:forEach>
@@ -125,11 +125,11 @@ function checkLoginName(){
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>人员类型:</td>
+	    			<td><fmt:message key='admin.admintype'/>:</td>
 	    			<td>
 	    				<select class="easyui-combobox" id="nowc" name="nowc" data-options="anelHeight:'auto',required:true" style="">
-							<option value="0">自来水公司</option>
-							<option value="1">物业</option>
+							<option value="0"><fmt:message key='watcom'/></option>
+							<option value="1"><fmt:message key='common.property'/></option>
 						</select>
 	    			</td>
 	    		</tr>

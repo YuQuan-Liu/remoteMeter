@@ -29,8 +29,8 @@ function getChecked(){
 function submitForm(){
 	if(!getChecked()){
 		$.messager.show({
-			title:'请选择权限',
-			msg:'请选择权限！',
+			title:'Info',
+			msg:'<fmt:message key='common.addok'/>',
 			showType:'slide',
 			timeout:3000
 		});
@@ -53,7 +53,7 @@ function submitForm(){
 			success:function(data){
 				if(data == "succ"){
 					$.messager.show({
-						title:'添加角色',
+						title:'Info',
 						msg:'添加成功！',
 						showType:'slide',
 						timeout:3000
@@ -98,11 +98,11 @@ $.extend($.fn.validatebox.defaults.rules, {
 	<div style="padding: 10px">
 		<table style="margin:0px auto;">
 			<tr>
-				<td>角色名称：</td>
+				<td><fmt:message key='role.name'/>：</td>
 	    		<td><input class="easyui-textbox" type="text" name="roleName" id="roleName" 
-	    		data-options="required:true,novalidate:true,onChange:checkRoleName,invalidMessage:'角色已存在！'" validType="nonValidate[]" /></td>
+	    		data-options="required:true,novalidate:true,onChange:checkRoleName,invalidMessage:'<fmt:message key='role.exist'/>'" validType="nonValidate[]" /></td>
 				
-				<td>备注：</td>
+				<td><fmt:message key='common.remark'/>：</td>
 				<td><input class="easyui-textbox" name="remark" id="remark" type="text" />
 				</td>
 			</tr>
@@ -110,9 +110,9 @@ $.extend($.fn.validatebox.defaults.rules, {
 	</div>
 </form>
 <div style="text-align: center; padding: 5px">
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 </div>
-<div class="easyui-panel" title="选择权限" style="padding:5px;height:250px;">
+<div class="easyui-panel" title="<fmt:message key='role.choose'/>" style="padding:5px;height:250px;">
 	<ul id="authTree" class="easyui-tree" data-options="url:'${path}/sys/role/tree.do',method:'get',animate:true,checkbox:true"></ul>
 </div>
 </body>

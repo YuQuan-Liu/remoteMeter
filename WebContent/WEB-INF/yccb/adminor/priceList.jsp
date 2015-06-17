@@ -21,13 +21,13 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'priceKindName',title:'单价名',width:100,halign:'center'},
+	        {field:'priceKindName',title:'<fmt:message key='price.name'/>',width:100,halign:'center'},
 // 	        {field:'watercompany',title:'自来水公司',width:100},
-	        {field:'remark',title:'备注',width:100,halign:'center'},
-	        {field:'action',title:'操作',width:100,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'>查看</a> " 
+	        {field:'remark',title:'<fmt:message key='common.remark'/>',width:100,halign:'center'},
+	        {field:'action',title:'<fmt:message key='common.action'/>',width:100,halign:'center',align:'center',formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'><fmt:message key='common.action'/></a> " 
 				<c:if test="${menus['basicprice']=='t'}">+
-				"<a href='#' class='operateHref' onclick='deleteprice("+row.pid+","+index+")'>删除</a> "</c:if>;
+				"<a href='#' class='operateHref' onclick='deleteprice("+row.pid+","+index+")'><fmt:message key='common.delete'/></a> "</c:if>;
 			}}
 	    ]],
 	    <c:if test="${menus['basicprice']=='t'}">
@@ -41,11 +41,11 @@ $(function(){
 	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加单价'
+	    		    title: '<fmt:message key='price.add'/>'
 	    		}); 
 	        } 
 	    }, '-', { 
-	        text: '调整单价', 
+	        text: '<fmt:message key='price.changeprice'/>', 
 	        iconCls: 'icon-edit', 
 	        handler: function() { 
 	        	$('#priceChangeWin').window({   
@@ -54,7 +54,7 @@ $(function(){
 	    		    height:250,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '更新单价'
+	    		    title: '<fmt:message key='price.changeprice'/>'
 	    		});
 	        }
 	    }]
@@ -69,13 +69,13 @@ function priceDetail(priceId){
 	    height:350,
 	    minimizable:false,
 	    maximizable:false,
-	    title: '单价信息' 
+	    title: 'Detail' 
 	}); 
 }
 
 function deleteprice(pid,index_){
 	
-	$.messager.confirm('提示', '确定要删除选中单价吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='common.confirmdelete'/>?', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/admin/price/deletepk.do',
@@ -85,7 +85,7 @@ function deleteprice(pid,index_){
 					if(data=="true"){
 						$.messager.show({
 							title:"Info",
-							msg:"删除成功",
+							msg:"<fmt:message key='common.deleteok'/>",
 							showType:'slide'
 						});
 						$('#priceListTab').datagrid('deleteRow',index_);

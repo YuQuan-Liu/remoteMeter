@@ -21,12 +21,12 @@ $(function(){
 		},
 	    columns:[[
 // 	        {field:'pid',title:'',width:80,checkbox:true},
-	        {field:'basicPriceName',title:'基本单价名',width:80},   
-	        {field:'basicPriceFirst',title:'一阶单价',width:80},   
-	        {field:'basicFirstOver',title:'一阶超量',width:80},
-	        {field:'basicPriceSecond',title:'二阶单价',width:80},
-	        {field:'basicSecondOver',title:'二阶超量',width:80},
-	        {field:'basicPriceThird',title:'三阶单价',width:80}
+	        {field:'basicPriceName',title:'<fmt:message key='price.basicname'/>',width:80},   
+	        {field:'basicPriceFirst',title:'<fmt:message key='price.first'/>',width:80},   
+	        {field:'basicFirstOver',title:'<fmt:message key='price.firstover'/>',width:80},
+	        {field:'basicPriceSecond',title:'<fmt:message key='price.second'/>',width:80},
+	        {field:'basicSecondOver',title:'<fmt:message key='price.secondover'/>',width:80},
+	        {field:'basicPriceThird',title:'<fmt:message key='price.third'/>',width:80}
 	    ]],
 	});
 })
@@ -39,9 +39,9 @@ function closeWin(){
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table>
 	    		<tr>
-	    			<td>单价名：</td>
+	    			<td><fmt:message key='price.name'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="priceKindName" data-options="disabled:true" readonly="readonly" value="${price.priceKindName }"/></td>
-	    			<td>备注：</td>
+	    			<td><fmt:message key='common.remark'/>：</td>
 	    			<td>
 	    			<input class="easyui-textbox" name="remark" type="text" data-options="disabled:true" readonly="readonly" value="${price.remark }"/>
 	    			</td>

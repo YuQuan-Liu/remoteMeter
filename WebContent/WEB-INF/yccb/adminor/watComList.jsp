@@ -21,16 +21,15 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'companyName',title:'公司名',width:100},   
-	        {field:'companyAddr',title:'公司地址',width:100},
-	        {field:'mark',title:'公司标识',width:100},
+	        {field:'companyName',title:'<fmt:message key='watcom.name'/>',width:100},   
+	        {field:'companyAddr',title:'<fmt:message key='watcom.addr'/>',width:100},
+	        {field:'mark',title:'<fmt:message key='watcom.mark'/>',width:100},
+	        {field:'emailHost',title:'<fmt:message key='watcom.emailHost'/>',width:100},
+	        {field:'emailUser',title:'<fmt:message key='watcom.emailUser'/>',width:100},	
+	        {field:'telephone',title:'<fmt:message key='watcom.payaddr'/>',width:100},
+	        {field:'payAddr',title:'<fmt:message key='watcom.tel'/>',width:100},
 	        
-	        {field:'emailHost',title:'邮箱主机',width:100},
-	        {field:'emailUser',title:'邮箱用户名',width:100},	
-	        {field:'telephone',title:'查询电话',width:100},
-	        {field:'payAddr',title:'交费地址',width:100},
-	        
-	        {field:'remark',title:'备注',width:100}
+	        {field:'remark',title:'<fmt:message key='common.remark'/>',width:100}
 	    ]],
 	    toolbar: [{ 
 	        text: '<fmt:message key="common.add"/>', 
@@ -42,7 +41,7 @@ $(function(){
 	    		    height:600,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加自来水公司'
+	    		    title: '<fmt:message key="watcom.add"/>'
 	    		}); 
 	        } 
 	    }, '-', { 
@@ -59,13 +58,11 @@ $(function(){
 		    		    height:400,
 		    		    minimizable:false,
 		    		    maximizable:false,
-		    		    title: '更新自来水公司'
+		    		    title: '<fmt:message key="watcom.update"/>'
 		    		}); 
 	        		
-	        	}else if(leng>1){
-	        		$.messager.alert('更新自来水公司','Single selected!','info');
 	        	}else{
-	        		$.messager.alert('更新自来水公司','Select needed!','info');
+	        		$.messager.alert('Info','Select one record!','info');
 	        	}
 	        } 
 	    }]

@@ -18,14 +18,14 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'departmentName',title:'片区名',width:100},
-	        {field:'action',title:'操作',width:150,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='depDetail("+row.pid+")'>查看</a> "+
-				"<a href='#' class='operateHref' onclick='deleteDep("+row.pid+","+index+")'>删除</a> ";
+	        {field:'departmentName',title:'<fmt:message key='areas'/>',width:100},
+	        {field:'action',title:'<fmt:message key='common.action'/>',width:150,halign:'center',align:'center',formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='depDetail("+row.pid+")'><fmt:message key='common.look'/></a> "+
+				"<a href='#' class='operateHref' onclick='deleteDep("+row.pid+","+index+")'><fmt:message key='common.delete'/></a> ";
 			}}
 	    ]],
 	    toolbar: [{ 
-	        text: '添加', 
+	        text: '<fmt:message key='common.add'/>', 
 	        iconCls: 'icon-add', 
 	        handler: function() { 
 	        	$('#depAddWin').window({   
@@ -34,7 +34,7 @@ $(function(){
 	    		    height:500,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加片区'
+	    		    title: '<fmt:message key='dep.add'/>'
 	    		}); 
 	        } 
 	    }]
@@ -42,7 +42,7 @@ $(function(){
 })
 
 function deleteDep(pid,index_){
-	$.messager.confirm('提示', '确定要删除选中片区吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='common.confirmdelete'/>?', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/admin/dep/deletedep.do',
@@ -52,7 +52,7 @@ function deleteDep(pid,index_){
 					if(data=="true"){
 						$.messager.show({
 							title:"Info",
-							msg:"删除成功",
+							msg:"<fmt:message key='common.deleteok'/>",
 							showType:'slide'
 						});
 						$('#depListTab').datagrid('deleteRow',index_);
@@ -70,7 +70,7 @@ function depDetail(depId){
 	    height:500,
 	    minimizable:false,
 	    maximizable:false,
-	    title: '片区详情' 
+	    title: 'Detail' 
 	}); 
 }
 </script>

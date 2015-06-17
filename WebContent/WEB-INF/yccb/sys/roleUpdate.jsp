@@ -23,7 +23,7 @@ function getChecked(){
 	$("#childauth").val(s);
 }
 function submitForm(){
-	$.messager.confirm('提示', '确定更新角色吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='common.confirmupdate'/>？', function(r){
 		if(r){
 			getChecked();
 			var childauth = $("#childauth").val();
@@ -38,8 +38,8 @@ function submitForm(){
 				success:function(data){
 					if(data=="true"){
 						$.messager.show({
-							title:"更新角色",
-							msg:"更新成功",
+							title:"Info",
+							msg:"<fmt:message key='common.updateok'/>",
 							showType:'slide'
 						});
 						$('#authTree').tree('reload');
@@ -56,10 +56,10 @@ function submitForm(){
 <div style="padding: 10px">
 	<table style="margin:0px auto;">
 		<tr>
-			<td>角色名称：</td>
+			<td><fmt:message key='role.name'/>：</td>
     		<td><input class="easyui-textbox" type="text" name="roleName" id="roleName" data-options="disabled:true" value="${role.roleName}" /></td>
 			
-			<td>备注：</td>
+			<td><fmt:message key='common.remark'/>：</td>
 			<td><input class="easyui-textbox" name="remark" id="remark" data-options="disabled:true" value="${role.remark}" />
 			</td>
 		</tr>
@@ -69,11 +69,11 @@ function submitForm(){
 <c:if test="${role.pid != 1}">
 <c:if test="${role.systemRole == '0'}">
 	<div style="text-align: center; padding: 5px">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">更新</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.update'/></a>
 	</div>
 </c:if>
 </c:if>
-<div class="easyui-panel" title="选择权限" style="padding:5px;height:250px;">
+<div class="easyui-panel" title="<fmt:message key='role.choose'/>" style="padding:5px;height:250px;">
 	<ul id="authTree" class="easyui-tree" data-options="url:'${path}/sys/role/tree_detail.do?pid=${role.pid }',method:'get',animate:true,checkbox:true"></ul>
 </div>
 

@@ -17,7 +17,7 @@ function submitForm(){
 	    	if(data == "true"){
 	    		$.messager.show({
 					title:'Info',
-					msg:'修改成功！',
+					msg:'<fmt:message key='common.updateok'/>',
 					showType:'slide',
 					timeout:3000
 				});
@@ -61,7 +61,7 @@ $.extend($.fn.validatebox.defaults.rules, {
         validator: function(value,param){
             return value == $(param[0]).textbox("getValue");
         },
-        message: '两次密码不相同.'
+        message: '<fmt:message key='admin.pwdnotequal'/>'
     }
 });
 
@@ -84,14 +84,14 @@ function changepwd(){
 				if(data == 'true'){
 					$.messager.show({
 						title:'Info',
-						msg:'修改成功！',
+						msg:'<fmt:message key='common.updateok'/>',
 						showType:'slide',
 						timeout:3000
 					});
 				}else{
 					$.messager.show({
 						title:'Info',
-						msg:'旧密码输入错误！',
+						msg:'<fmt:message key='admin.oldpwderror'/>',
 						showType:'slide',
 						timeout:3000
 					});
@@ -104,7 +104,7 @@ function resetpwd(){
 	
 	var pid = $("#adminid").val();
 	
-	$.messager.confirm('提示', '确定要重置吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='admin.confirmresetpwd'/>', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/admin/admin/resetpwd.do',
@@ -116,7 +116,7 @@ function resetpwd(){
 					if(data=="true"){
 						$.messager.show({
 							title:"Info",
-							msg:"重置成功",
+							msg:"<fmt:message key='common.resetok'/>",
 							showType:'slide'
 						});
 					}
@@ -132,13 +132,13 @@ function changerole(){
 	if(rid == ""){
 		$.messager.show({
 			title:'Info',
-			msg:'请选择权限！',
+			msg:'<fmt:message key='admin.chooserole'/>',
 			showType:'slide',
 			timeout:3000
 		});
 		return;
 	}
-	$.messager.confirm('提示', '确定要更改角色吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='common.confirmupdate'/><fmt:message key='role'/>', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/admin/admin/changerole.do',
@@ -151,7 +151,7 @@ function changerole(){
 					if(data=="true"){
 						$.messager.show({
 							title:"Info",
-							msg:"更改成功",
+							msg:"<fmt:message key='common.updateok'/>",
 							showType:'slide'
 						});
 					}
@@ -167,13 +167,13 @@ function changedep(){
 	if(did == ""){
 		$.messager.show({
 			title:'Info',
-			msg:'请选择片区！',
+			msg:'<fmt:message key='admin.choosedep'/>',
 			showType:'slide',
 			timeout:3000
 		});
 		return;
 	}
-	$.messager.confirm('提示', '确定要更改片区吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='common.confirmupdate'/><fmt:message key='areas'/>', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/admin/admin/changedep.do',
@@ -186,7 +186,7 @@ function changedep(){
 					if(data=="true"){
 						$.messager.show({
 							title:"Info",
-							msg:"更改成功",
+							msg:"<fmt:message key='common.updateok'/>",
 							showType:'slide'
 						});
 					}
@@ -203,68 +203,68 @@ function changedep(){
 	    	<input type="hidden" name="pid" id="adminid" value="${admin.pid }"/>
 	    	<table style="margin:0px auto;">
 	    		<tr>
-	    			<td>用户名：</td>
+	    			<td><fmt:message key='common.username'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminName" value="${admin.adminName}" data-options="required:true"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>登录名：</td>
+	    			<td><fmt:message key='admin.loginName'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="loginName" id="loginName" value="${admin.loginName }"
-	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'登录名已存在！'" validType="nonValidate[]"></input></td>
+	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'<fmt:message key='admin.loginNameexit'/>'" validType="nonValidate[]"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>手机：</td>
+	    			<td><fmt:message key='common.mobile'/>：</td>
 	    			<td><input class="easyui-numberbox" type="text" name="adminMobile" value="${admin.adminMobile }"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>固话：</td>
+	    			<td><fmt:message key='common.tel'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminTel" value="${admin.adminTel }"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>邮箱：</td>
+	    			<td><fmt:message key='common.email'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminEmail" value="${admin.adminEmail }"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>地址：</td>
+	    			<td><fmt:message key='common.addr'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminAddr" value="${admin.adminAddr }"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>权限角色:</td>
+	    			<td><fmt:message key='admin.role'/>:</td>
 	    			<td><input class="easyui-textbox" type="text" name="roleName" data-options="disabled:true" value="${admin.roleName }"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>管辖片区:</td>
+	    			<td><fmt:message key='areas'/>:</td>
 	    			<td><input class="easyui-textbox" type="text" name="roleName" data-options="disabled:true" value="${admin.depName }"></input></td>
 	    		</tr>
 	    		<tr>
-	    			<td>人员类型:</td>
-	    			<td><input class="easyui-textbox" type="text" name="nowc" data-options="disabled:true"  value="<c:if test="${admin.nowc ==0}">自来水</c:if><c:if test="${admin.nowc ==1}">物业</c:if> "></input></td>
+	    			<td><fmt:message key='admin.admintype'/>:</td>
+	    			<td><input class="easyui-textbox" type="text" name="nowc" data-options="disabled:true"  value="<c:if test="${admin.nowc ==0}"><fmt:message key='watcom'/></c:if><c:if test="${admin.nowc ==1}"><fmt:message key='common.property'/></c:if> "></input></td>
 	    		</tr>
 	    	</table>
 	    </form>
 	</div>
 
 	<div style="text-align:center;padding:5px">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 	</div>
 	
 	<div style="padding:10px;margin-top:10px;">
 			<form id="changePwd" method="post" action="${path}/admin/admin/changepwd.do">
 			<table style="margin:0px auto;">
 				<tr>
-	    			<td>旧密码：</td>
+	    			<td><fmt:message key='admin.oldpwd'/>：</td>
 	    			<td><input class="easyui-textbox" type="password" name="old" id="old" data-options="required:true" validType="length[6,10]"/></td>
 	    		</tr>
 				<tr>
-	    			<td>新密码：</td>
+	    			<td><fmt:message key='admin.newpwd'/>：</td>
 	    			<td><input class="easyui-textbox" type="password" name="new1" id="p1" data-options="required:true" validType="length[6,10]"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>重复密码：</td>
+	    			<td><fmt:message key='admin.againpwd'/>：</td>
 	    			<td><input class="easyui-textbox" type="password" name="new2" id="p2" data-options="required:true" validType="equals['#p1']"/></td>
 	    		</tr>
 				<tr>
 					<td colspan="2"style="text-align:center">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changepwd()">修改密码</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changepwd()"><fmt:message key='admin.updatepwd'/></a>
 					</td>
 				</tr>
 			</table>
@@ -274,10 +274,10 @@ function changedep(){
 		<div style="padding:10px;margin-top:10px;">
 			<table style="margin:0px auto;">
 				<tr>
-	    			<td>权限角色:</td>
+	    			<td><fmt:message key='admin.role'/>:</td>
 	    			<td>
 	    				<select class="easyui-combobox" id="roleid" name="roleid" data-options="panelHeight:'auto',required:true" style="width:100px;">
-							<option value="">请选择权限</option>
+							<option value=""><fmt:message key='admin.chooserole'/></option>
 							<c:forEach var="r" items="${role_list }">
 							<option value="${r.pid }">${r.roleName }</option>
 							</c:forEach>
@@ -285,10 +285,10 @@ function changedep(){
 	    			</td>
 	    		</tr>
 				<tr>
-	    			<td>管辖片区:</td>
+	    			<td><fmt:message key='areas'/>:</td>
 	    			<td>
 	    				<select class="easyui-combobox" id="depid" name="department.pid" data-options="anelHeight:'auto',required:true" style="width:100px;">
-							<option value="">请选择片区</option>
+							<option value=""><fmt:message key='admin.choosedep'/></option>
 							<c:forEach var="d" items="${dep_list }">
 							<option value="${d.pid }">${d.departmentName }</option>
 							</c:forEach>
@@ -297,9 +297,9 @@ function changedep(){
 	    		</tr>
 				<tr>
 					<td colspan="2"style="text-align:center">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetpwd()">重置密码</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changerole()">修改权限</a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changedep()">修改片区</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetpwd()"><fmt:message key='admin.resetpwd'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changerole()"><fmt:message key='admin.changerole'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changedep()"><fmt:message key='admin.changedep'/></a>
 					</td>
 				</tr>
 			</table>

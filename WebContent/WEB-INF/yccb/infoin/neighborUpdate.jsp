@@ -19,7 +19,7 @@ function submitForm(){
 				if(timer == ""){
 					$.messager.show({
 						title:"Info",
-						msg:"定时不可以空",
+						msg:"<fmt:message key='n.timernull'/>",
 						showType:'slide'
 					});
 					return false;
@@ -28,7 +28,7 @@ function submitForm(){
 					if(d_h.length != 2){
 						$.messager.show({
 							title:"Info",
-							msg:"定时格式为:几号(1-31)-几点(0-23)",
+							msg:"<fmt:message key='n.timerstyle'/>",
 							showType:'slide'
 						});
 						return false;
@@ -40,7 +40,7 @@ function submitForm(){
 						}else{
 							$.messager.show({
 								title:"Info",
-								msg:"定时格式为:几号(1-31)-几点(0-23)",
+								msg:"<fmt:message key='n.timerstyle'/>",
 								showType:'slide'
 							});
 							return false;
@@ -54,7 +54,7 @@ function submitForm(){
 			if(data=="succ"){
 				$.messager.show({
 					title:"Info",
-					msg:"更新成功",
+					msg:"<fmt:message key='common.updateok'/>",
 					showType:'slide'
 				});
 				$('#updateNeighborWin').window('close');
@@ -107,42 +107,42 @@ function timeswitchChange(){
 	 	<div style="padding:10px">
 			<table style="margin:0px auto;">
 				<tr>
-					<td>小区名：</td>
+					<td><fmt:message key='n.name'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="neighborName" id="neighborName" value="${neighbor.neighborName }"
-						data-options="required:true,novalidate:true,onChange:checkNbrName,invalidMessage:'小区已存在！'" validType="nonValidate[]"/></td>
+						data-options="required:true,novalidate:true,onChange:checkNbrName,invalidMessage:'<fmt:message key='n.name'/>'" validType="nonValidate[]"/></td>
 				</tr>
 				<tr>
-					<td>地址：</td>
+					<td><fmt:message key='common.addr'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="neighborAddr" value="${neighbor.neighborAddr }" data-options="required:true"/></td>
 				</tr>
 				<tr>
-					<td>有无管理表：</td>
+					<td><fmt:message key='n.main'/>：</td>
 					<td>
 					<select class="easyui-combobox" name="mainMeter" data-options="panelHeight:'auto'" style="width: 80px">
-							<option value="1" <c:if test="${neighbor.mainMeter==1 }">selected="selected"</c:if>>有</option>
-							<option value="0" <c:if test="${neighbor.mainMeter==0 }">selected="selected"</c:if>>无</option>
+							<option value="1" <c:if test="${neighbor.mainMeter==1 }">selected="selected"</c:if>><fmt:message key='common.have'/></option>
+							<option value="0" <c:if test="${neighbor.mainMeter==0 }">selected="selected"</c:if>><fmt:message key='common.nothave'/></option>
 					</select>
 					 </td>
 				</tr>
 				<tr>
-					<td>定时抄表开关：</td>
+					<td><fmt:message key='n.switch'/>：</td>
 					<td>
 						<select class="easyui-combobox" name="timerSwitch" id="timerSwitch" data-options="panelHeight:'auto',onSelect:timeswitchChange" style="width: 80px">
-							<option value="1" <c:if test="${neighbor.timerSwitch==1 }">selected="selected"</c:if>>开</option>
-							<option value="0" <c:if test="${neighbor.timerSwitch==0 }">selected="selected"</c:if>>关</option>
+							<option value="1" <c:if test="${neighbor.timerSwitch==1 }">selected="selected"</c:if>><fmt:message key='common.open'/></option>
+							<option value="0" <c:if test="${neighbor.timerSwitch==0 }">selected="selected"</c:if>><fmt:message key='common.close'/></option>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<td>定时抄表时间：</td>
+					<td><fmt:message key='n.timer'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="timer" id="timer" value="${neighbor.timer }" data-options="required:true,<c:if test="${neighbor.timerSwitch == 0}">disabled:true</c:if>"/></td>
 				</tr>
 				<tr>
-					<td>抄表IP：</td>
+					<td><fmt:message key='n.ip'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="ip" value="${neighbor.ip }" data-options="required:true" value=""/></td>
 				</tr>
 				<tr>
-					<td>备注：</td>
+					<td><fmt:message key='common.remark'/>：</td>
 					<td>
 					<input class="easyui-textbox" name="remark" value="${neighbor.remark }" data-options="multiline:true" style="height:60px">
 					</td>
@@ -150,7 +150,7 @@ function timeswitchChange(){
 			</table>
 		</div>
 		 <div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">更新</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.update'/></a>
 		</div>
 	</form>
 </body>

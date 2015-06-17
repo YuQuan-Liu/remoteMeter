@@ -21,20 +21,20 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'adminName',title:'用户名',width:100},   
-	        {field:'loginName',title:'登录名',width:100},
-	        {field:'adminMobile',title:'手机',width:100},
-	        {field:'adminTel',title:'固话',width:100},   
-	        {field:'adminEmail',title:'邮箱',width:100},
-	        {field:'adminAddr',title:'地址',width:100},
-	        {field:'depName',title:'片区',width:100},
-	        {field:'action',title:'操作',width:150,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='adminDetail("+row.pid+")'>修改</a> "+
-				"<a href='#' class='operateHref' onclick='deleteadmin("+row.pid+","+index+")'>删除</a> ";
+	        {field:'adminName',title:'<fmt:message key='common.username'/>',width:100},   
+	        {field:'loginName',title:'<fmt:message key='admin.loginName'/>',width:100},
+	        {field:'adminMobile',title:'<fmt:message key='common.mobile'/>',width:100},
+	        {field:'adminTel',title:'<fmt:message key='common.tel'/>',width:100},   
+	        {field:'adminEmail',title:'<fmt:message key='common.email'/>',width:100},
+	        {field:'adminAddr',title:'<fmt:message key='common.addr'/>',width:100},
+	        {field:'depName',title:'<fmt:message key='areas'/>',width:100},
+	        {field:'action',title:'<fmt:message key='common.action'/>',width:150,halign:'center',align:'center',formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='adminDetail("+row.pid+")'><fmt:message key='common.update'/></a> "+
+				"<a href='#' class='operateHref' onclick='deleteadmin("+row.pid+","+index+")'><fmt:message key='common.delete'/></a> ";
 			}}
 	    ]],
 	    toolbar: [{
-	        text: '添加', 
+	        text: '<fmt:message key='common.add'/>', 
 	        iconCls: 'icon-add', 
 	        handler: function() { 
 	        	$('#addWin').window({   
@@ -43,7 +43,7 @@ $(function(){
 	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加管理员'
+	    		    title: '<fmt:message key='admin.addadmin'/>'
 	    		}); 
 	        } 
 	    }]
@@ -56,12 +56,12 @@ function adminDetail(pid){
 	    height:700,
 	    minimizable:false,
 	    maximizable:false,
-	    title: '管理员信息'
+	    title: '<fmt:message key='admin.admininfo'/>'
 	}); 
 }
 function deleteadmin(pid,index_){
 	var adminName = $('#adminListTab').datagrid('getRows')[index_]["adminName"];
-	$.messager.confirm('提示', '确定要删除'+adminName+'吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='common.confirmdelete'/>'+adminName+'？', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/admin/admin/delete.do',
@@ -73,7 +73,7 @@ function deleteadmin(pid,index_){
 					if(data=="true"){
 						$.messager.show({
 							title:"Info",
-							msg:"删除成功",
+							msg:"<fmt:message key='common.deleteok'/>",
 							showType:'slide'
 						});
 						$('#adminListTab').datagrid('deleteRow',index_);

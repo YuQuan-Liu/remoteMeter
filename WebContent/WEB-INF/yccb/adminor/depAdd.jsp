@@ -20,8 +20,8 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'nid',title:'ID',width:100,checkbox:true},   
-	        {field:'name',title:'小区名',width:100},
-	        {field:'addr',title:'小区地址',width:100}
+	        {field:'name',title:'<fmt:message key='common.neighborName'/>',width:100},
+	        {field:'addr',title:'<fmt:message key='common.addr'/>',width:100}
 	    ]]
 	});
 });
@@ -55,10 +55,10 @@ function submitForm(){
 				}
 			});
 		}else{
-			$.messager.alert('Info','请选择记录');
+			$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
 		}
 	}else{
-		$.messager.alert('Info','请填入信息');
+		$.messager.alert('Info','<fmt:message key='common.enterinfo'/>');
 	}
 }
 
@@ -96,10 +96,10 @@ $.extend($.fn.validatebox.defaults.rules, {
 			<input type="hidden" name="valid" value="1" />
 			<table style="margin:0px auto;">
 				<tr>
-					<td>片区名：</td>
+					<td><fmt:message key='areas'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="departmentName" id="departmentName" 
-					data-options="required:true,novalidate:true,onChange:checkDepName,invalidMessage:'片区已存在！'" validType="nonValidate[]" /></td>
-					<td>备注：</td>
+					data-options="required:true,novalidate:true,onChange:checkDepName,invalidMessage:'<fmt:message key='dep.exist'/>'" validType="nonValidate[]" /></td>
+					<td><fmt:message key='common.remark'/>：</td>
 					<td><input class="easyui-textbox" name="remark" id="remark" type="text" />
 					</td>
 				</tr>
@@ -108,7 +108,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 	</form>
 
 	<div style="text-align: center; padding: 5px">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 	</div>
 	<table id="allNbrTab" style="width:500px;height:500px;"></table>
 </body>

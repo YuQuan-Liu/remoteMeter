@@ -13,7 +13,7 @@ $.extend($.fn.validatebox.defaults.rules, {
         validator: function(value,param){
             return value == $(param[0]).val();
         },
-        message: '两次密码不相同.'
+        message: '<fmt:message key='admin.pwdnotequal'/>'
     }
 });
 
@@ -35,7 +35,7 @@ function submitForm(){
 	    	   $('#watComAddWin').window('close');
 	    	   $.messager.show({
 					title:'Info',
-					msg:'添加成功',
+					msg:'<fmt:message key='common.addok'/>',
 					showType:'slide',
 					timeout:3000
 				});
@@ -66,73 +66,69 @@ function checkLoginName(){
 		}
 	});
 }
-function clearForm(){
-	$('#watAddForm').form('clear');
-}
 </script>
 		<div style="padding:10px 0 ;">
 	    <form id="watAddForm" method="post" action="${path}/admin/watcom/add.do">
 	    	<input type="hidden" name="valid" value="1"/>
 	    	<table style="margin:0px auto;">
 	    		<tr>
-	    			<td>自来水公司名：</td>
+	    			<td><fmt:message key='watcom.name'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true" missingMessage="请输入自来水公司" invalidMessage=""/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水公司地址：</td>
+	    			<td><fmt:message key='watcom.addr'/>：</td>
 	    			<td> <input class="easyui-textbox" type="text" name="companyAddr" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水公司标识：</td>
+	    			<td><fmt:message key='watcom.mark'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="mark" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>邮箱主机：</td>
+	    			<td><fmt:message key='watcom.emailHost'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="emailHost" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>邮箱用户名：</td>
+	    			<td><fmt:message key='watcom.emailUser'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="emailUser" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>邮箱密码：</td>
+	    			<td><fmt:message key='watcom.pwd'/>：</td>
 	    			<td><input class="easyui-textbox" type="password" name="emailPassword" id="p1" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>重复密码：</td>
+	    			<td><fmt:message key='admin.againpwd'/>：</td>
 	    			<td><input class="easyui-textbox" type="password" name="emailPassword2" id="p2" data-options="required:true" validType="equals['#p1']"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>交费地址：</td>
+	    			<td><fmt:message key='watcom.payaddr'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="payAddr" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>查询电话：</td>
+	    			<td><fmt:message key='watcom.tel'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="telephone" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>备注：</td>
+	    			<td><fmt:message key='common.remark'/>：</td>
 	    			<td>
 	    			<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px">
 	    			</td>
 	    		</tr>
 	    		
 	    		<tr>
-	    			<td>管理员姓名：</td>
+	    			<td><fmt:message key='watcom.adminname'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="adminName" data-options="required:true"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>管理员登陆名：</td>
+	    			<td><fmt:message key='watcom.loginName'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="loginName" id="loginName" 
-	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'登录名已存在！'" validType="nonValidate[]"/></td>
+	    			data-options="required:true,novalidate:true,onChange:checkLoginName,invalidMessage:'<fmt:message key='admin.loginNameexit'/>'" validType="nonValidate[]"/></td>
 	    		</tr>
 	    		
 	    	</table>
 	    </form>
 	    </div>
 	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">清空</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 	    </div>
 </body>
 </html>

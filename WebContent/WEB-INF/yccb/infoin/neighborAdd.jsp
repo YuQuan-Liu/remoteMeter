@@ -20,7 +20,7 @@ function submitForm(){
 				if(timer == ""){
 					$.messager.show({
 						title:"Info",
-						msg:"定时不可以空",
+						msg:"<fmt:message key='n.timernull'/>",
 						showType:'slide'
 					});
 					return false;
@@ -29,7 +29,7 @@ function submitForm(){
 					if(d_h.length != 2){
 						$.messager.show({
 							title:"Info",
-							msg:"定时格式为:几号(1-31) 几点(0-23)",
+							msg:"<fmt:message key='n.timerstyle'/>",
 							showType:'slide'
 						});
 						return false;
@@ -41,7 +41,7 @@ function submitForm(){
 						}else{
 							$.messager.show({
 								title:"Info",
-								msg:"定时格式为:几号(1-31) 几点(0-23)",
+								msg:"<fmt:message key='n.timerstyle'/>",
 								showType:'slide'
 							});
 							return false;
@@ -56,7 +56,7 @@ function submitForm(){
 			if(data=="succ"){
 				$.messager.show({
 					title:"Info",
-					msg:"添加成功",
+					msg:"<fmt:message key='common.addok'/>",
 					showType:'slide'
 				});
 				$('#addNeighborWin').window('close');
@@ -101,51 +101,48 @@ function timeswitchChange(){
 		$("#timer").textbox("enable");
 	}
 }
-function clearForm(){
-	$('#addNeighborForm').form('clear');
-}
 </script>
 	<form action="${path}/infoin/neighbor/add.do" id="addNeighborForm" method="post">
 	 	<div style="padding:10px;">
 			<table style="margin:0px auto;">
 				<tr>
-					<td>小区名：</td>
+					<td><fmt:message key='n.name'/>：</td>
 <!-- 					<td><input class="easyui-textbox" type="text" name="neighborName" id="neighborName" data-options="required:true,delay:2500" validType="checkNbrName['#neighborName']"/></td> -->
 						<td><input class="easyui-textbox" type="text" name="neighborName" id="neighborName" 
-						data-options="required:true,novalidate:true,onChange:checkNbrName,invalidMessage:'小区已存在！'" validType="nonValidate[]"/></td>
+						data-options="required:true,novalidate:true,onChange:checkNbrName,invalidMessage:'<fmt:message key='n.exist'/>'" validType="nonValidate[]"/></td>
 				</tr>
 				<tr>
-					<td>地址：</td>
+					<td><fmt:message key='common.addr'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="neighborAddr" data-options="required:true"/></td>
 				</tr>
 				<tr>
-					<td>有无管理表：</td>
+					<td><fmt:message key='n.main'/>：</td>
 					<td>
 					<select class="easyui-combobox" name="mainMeter" data-options="panelHeight:'auto'" style="width: 80px">
-							<option value="1" selected="selected">有</option>
-							<option value="0">无</option>
+							<option value="1" selected="selected"><fmt:message key='common.have'/></option>
+							<option value="0"><fmt:message key='common.nothave'/></option>
 					</select>
 					 </td>
 				</tr>
 				<tr>
-					<td>定时抄表开关：</td>
+					<td><fmt:message key='n.switch'/>：</td>
 					<td>
 						<select class="easyui-combobox" name="timerSwitch" id="timerSwitch" data-options="panelHeight:'auto',onSelect:timeswitchChange" style="width: 80px">
-							<option value="1" >开</option>
-							<option value="0" selected="selected">关</option>
+							<option value="1" ><fmt:message key='common.open'/></option>
+							<option value="0" selected="selected"><fmt:message key='common.close'/></option>
 						</select>
 					</td>
 				</tr>
 				<tr>
-					<td>定时抄表时间：</td>
+					<td><fmt:message key='n.timer'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="timer" id="timer" data-options="required:true,disabled:true" value="01 00"/></td>
 				</tr>
 				<tr>
-					<td>抄表IP：</td>
+					<td><fmt:message key='n.ip'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="ip" data-options="required:true" value=""/></td>
 				</tr>
 				<tr>
-					<td>备注：</td>
+					<td><fmt:message key='common.remark'/>：</td>
 					<td>
 					<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px">
 					</td>
@@ -153,8 +150,7 @@ function clearForm(){
 			</table>
 		</div>
 		 <div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 		</div>
 	</form>
 </body>

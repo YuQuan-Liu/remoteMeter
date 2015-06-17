@@ -42,16 +42,16 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'',width:80,checkbox:true},
-	        {field:'basicPriceName',title:'基本单价名',width:80,editor:{type:'validatebox'}},
-	        {field:'basicPriceFirst',title:'一阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},   
-	        {field:'basicFirstOver',title:'一阶超量',width:80,editor:{type:'numberbox',options:{precision:0}}},
-	        {field:'basicPriceSecond',title:'二阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}},
-	        {field:'basicSecondOver',title:'二阶超量',width:80,editor:{type:'numberbox',options:{precision:0}}},
-	        {field:'basicPriceThird',title:'三阶单价',width:80,editor:{type:'numberbox',options:{precision:2}}}
+	        {field:'basicPriceName',title:'<fmt:message key='price.basicname'/>',width:80,editor:{type:'validatebox'}},
+	        {field:'basicPriceFirst',title:'<fmt:message key='price.first'/>',width:80,editor:{type:'numberbox',options:{precision:2}}},   
+	        {field:'basicFirstOver',title:'<fmt:message key='price.firstover'/>',width:80,editor:{type:'numberbox',options:{precision:0}}},
+	        {field:'basicPriceSecond',title:'<fmt:message key='price.second'/>',width:80,editor:{type:'numberbox',options:{precision:2}}},
+	        {field:'basicSecondOver',title:'<fmt:message key='price.secondover'/>',width:80,editor:{type:'numberbox',options:{precision:0}}},
+	        {field:'basicPriceThird',title:'<fmt:message key='price.third'/>',width:80,editor:{type:'numberbox',options:{precision:2}}}
 	    ]],
 	    data:[{"basicPriceName":"","basicPriceFirst":0,"basicFirstOver":0,"basicPriceSecond":0,"basicSecondOver":0,"basicSecondOver":0,"basicPriceThird":0}],
 	    toolbar: [{
-	        text: '添加', 
+	        text: '<fmt:message key='common.add'/>', 
 	        iconCls: 'icon-add', 
 	        handler: function() {
 	        	$('#basicPriceTab').datagrid('insertRow',{
@@ -60,7 +60,7 @@ $(function(){
 	        } 
 	    },
 	    '-',{ 
-	        text: '删除', 
+	        text: '<fmt:message key='common.delete'/>', 
 	        iconCls: 'icon-remove', 
 	        handler: function(){
 	        	var row = bpTab.datagrid('getSelected');
@@ -70,7 +70,7 @@ $(function(){
 	        	}else{
 	        		$.messager.show({
 						title:'Info',
-						msg:'请选择一条记录！',
+						msg:'<fmt:message key='common.chooserecord'/>',
 						showType:'slide',
 						timeout:3000
 					});
@@ -93,7 +93,7 @@ function submitForm(){
 		    	   $('#priceAddWin').window('close');
 		    	   $.messager.show({
 						title:'Info',
-						msg:'添加成功！',
+						msg:'<fmt:message key='common.addok'/>',
 						showType:'slide',
 						timeout:3000
 					});
@@ -148,7 +148,7 @@ function getBasicData(){
 			if(row.basicPriceName == ""){
 				$.messager.show({
 					title : 'Info',
-					msg : '基本单价名不可为空！',
+					msg : '<fmt:message key='price.basicnamenull'/>',
 					showType : 'slide',
 					timeout:0
 				});
@@ -158,7 +158,7 @@ function getBasicData(){
 			if(row.basicPriceFirst == 0){
 				$.messager.show({
 					title : 'Info',
-					msg : '一阶单价不可为空！',
+					msg : '<fmt:message key='price.firstnull'/>',
 					showType : 'slide',
 					timeout:0
 				});
@@ -168,7 +168,7 @@ function getBasicData(){
 			if(row.basicFirstOver < row.basicSecondOver){
 				$.messager.show({
 					title : 'Info',
-					msg : '二阶超量要大于一阶超量！',
+					msg : '<fmt:message key='price.secondoversmall'/>',
 					showType : 'slide',
 					timeout:0
 				});
@@ -223,10 +223,10 @@ function getBasicData(){
 			<input type="hidden" name="basicPriceThird" value="" id="basicPriceThird" />
 			<table>
 				<tr>
-					<td>单价名：</td>
+					<td><fmt:message key='price.name'/>：</td>
 					<td><input class="easyui-textbox" type="text" name="priceKindName" id="priceKindName" 
-					data-options="required:true,novalidate:true,onChange:checkPKName,invalidMessage:'单价名已存在！'" validType="nonValidate[]" /></td>
-					<td>备注：</td>
+					data-options="required:true,novalidate:true,onChange:checkPKName,invalidMessage:'<fmt:message key='price.exist'/>'" validType="nonValidate[]" /></td>
+					<td><fmt:message key='common.remark'/>：</td>
 					<td><input class="easyui-textbox" name="remark" type="text" />
 					</td>
 				</tr>
@@ -234,7 +234,7 @@ function getBasicData(){
 		</form>
 	</div>
 
-	<div style="padding: 10px 10px 0 10px">
+	<div style="padding: 10px">
 		<table id="basicPriceTab"></table>
 	</div>
 	<div style="text-align: center; padding: 5px; margin-bottom: 20px;">

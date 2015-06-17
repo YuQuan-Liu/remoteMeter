@@ -18,19 +18,19 @@ function changePrice(){
 	var new_s = $("#pk_new").combobox("getText");
 
 	if(old_ == ""){
-		$.messager.alert("提示","旧单价不可为空！");
+		$.messager.alert("Info","<fmt:message key='price.oldnull'/>");
 		return;
 	}
 	if(new_ == ""){
-		$.messager.alert("提示","新单价不可为空！");
+		$.messager.alert("Info","<fmt:message key='price.newnull'/>");
 		return;
 	}
 	
 	if(old_ == new_){
-		$.messager.alert("提示","新旧单价不可相同");
+		$.messager.alert("Info","<fmt:message key='price.oldequalsnew'/>");
 		return;
 	}
-	$.messager.confirm('提示', '确定要调整单价'+old_s+'到'+new_s+'吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='price.confirmchange'/>？', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/admin/price/changepk.do',
@@ -43,7 +43,7 @@ function changePrice(){
 					if(data=="true"){
 						$.messager.show({
 							title:"Info",
-							msg:"调整成功",
+							msg:"<fmt:message key='common.updateok'/>",
 							showType:'slide'
 						});
 						$('#priceChangeWin').window('close');
@@ -57,19 +57,19 @@ function changePrice(){
 		<div style="padding:10px ">
 	    	<table style="margin:0px auto;">
 	    		<tr>
-	    			<td>原单价：</td>
+	    			<td><fmt:message key='price.old'/>：</td>
 	    			<td>
 	    				<select class="easyui-combobox" name="pk_old" id="pk_old" data-options="panelHeight:'auto'" style="width:148px;">
-							<option value="" >请选择旧单价</option>
+							<option value="" ><fmt:message key='price.chooseprice'/></option>
 							<c:forEach var="pk" items="${pk_list }">
 							<option value="${pk.pid }">${pk.priceKindName }</option>
 							</c:forEach>
 						</select>
 	    			</td>
-	    			<td>新单价：</td>
+	    			<td><fmt:message key='price.new'/>：</td>
 	    			<td>
 	    				<select class="easyui-combobox" name="pk_new" id="pk_new" data-options="panelHeight:'auto'" style="width:148px;">
-							<option value="" >请选择新单价</option>
+							<option value="" ><fmt:message key='price.chooseprice'/></option>
 							<c:forEach var="pk" items="${pk_list }">
 							<option value="${pk.pid }">${pk.priceKindName }</option>
 							</c:forEach>
@@ -80,7 +80,7 @@ function changePrice(){
 	    </div>
 	  
 	   <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePrice()">调整单价</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePrice()"><fmt:message key='price.changeprice'/></a>
 	    </div>
 </body>
 </html>

@@ -12,18 +12,18 @@
 	<div style="margin:10px;">
 		<form id="search_customer" method="post">
 			<div>
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto'">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
 	    		<div style="display:inline;padding:0 10px;">
-		    		<label>用户号</label>
+		    		<label><fmt:message key='c.num'/></label>
 					<input type="text" id="c_num" name="c_num" class="easyui-textbox"/>
 				</div>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="searchCustomer_()" >Submit</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="searchCustomer_()" ><fmt:message key='common.submit'/></a>
 			</div>
 		</form>
 	</div>
@@ -34,15 +34,15 @@
 	<div id="addCustomerWins"></div>
 	<div id="updateCustomerWin"></div>
 	<div id="updateMeterWin"></div>
-	<div class="easyui-dialog" title="换表" id="changedialog" data-options="closed:true" style="width:500px;height:300px;padding:10px;">
+	<div class="easyui-dialog" title="<fmt:message key='m.changemeter'/>" id="changedialog" data-options="closed:true" style="width:500px;height:300px;padding:10px;">
 		<form id="changemeterform" method="post">
 		<table style="margin:0px auto;padding-top:20px;">
 			<tr>
-				<td><lable>新表地址：</lable></td>
+				<td><lable><fmt:message key='m.newaddr'/>：</lable></td>
 				<td><input type="text" class="easyui-textbox" name="new_maddr" id="new_maddr" data-options="required:true,onChange:check_maddr"/></td>
 			</tr>
 			<tr>
-				<td><lable>换表底数</lable></td>
+				<td><lable><fmt:message key='m.changeend'/></lable></td>
 				<td><input type="text" class="easyui-numberbox" name="end" id="end" data-options="min:0,max:9999"/>
 					<input type="hidden" name="meterid" id="meterid"/>
 				</td>
@@ -50,7 +50,7 @@
 		</table>
 		</form>
 		<div style="text-align:center;padding-top:10px;">
-			<a href="javascript:void(0)" class="easyui-linkbutton" id="changeMeter" onclick="changeMeter()">Submit</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" id="changeMeter" onclick="changeMeter()"><fmt:message key='common.submit'/></a>
 		</div>
 	</div>
 </body>
@@ -74,55 +74,55 @@ $(function(){
 		columns:[[
 		          {field:'pid',title:'ID',width:60,checkbox:true},
 // 				  {field:'n_name',title:'小区',width:80},
-		          {field:'c_num',title:'用户号',width:80},
-		          {field:'customerName',title:'用户名',width:80},
-		          {field:'customerId',title:'用户ID',width:80},
-		          {field:'apid',title:'关联ID',width:80},
-		          {field:'customerMobile',title:'手机',width:80},
-		          {field:'customerEmail',title:'邮箱',width:80},
-		          {field:'nationalId',title:'身份证',width:80},
-		          {field:'customerAddr',title:'地址',width:225},
-		          {field:'hk',title:'用水类型',width:60,editor:'text'},
-		          {field:'customerBalance',title:'余额',width:60,styler:function(value,row,index){
+		          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
+		          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+		          {field:'customerId',title:'<fmt:message key='c.customerid'/>',width:80},
+		          {field:'apid',title:'<fmt:message key='c.apid'/>',width:80},
+		          {field:'customerMobile',title:'<fmt:message key='common.mobile'/>',width:80},
+		          {field:'customerEmail',title:'<fmt:message key='common.email'/>',width:80},
+		          {field:'nationalId',title:'<fmt:message key='c.nationalid'/>',width:80},
+		          {field:'customerAddr',title:'<fmt:message key='common.addr'/>',width:225},
+		          {field:'hk',title:'<fmt:message key='c.hk'/>',width:60,editor:'text'},
+		          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:60,styler:function(value,row,index){
 		        	  if(value <= 0){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          }},
-		          {field:'prePaySign',title:'预付费',width:60,formatter:function(value,row,index){
+		          {field:'prePaySign',title:'<fmt:message key='c.prestyle'/>',width:60,formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "预";
+		        		  return "<fmt:message key='c.pre'/>";
 		        	  }else{
-		        		  return "后";
+		        		  return "<fmt:message key='c.post'/>";
 		        	  }
 		          }},
-		          {field:'warnThre',title:'余额阀值',width:60},
-		          {field:'warnStyle',title:'提醒方式',width:60,editor:'text',formatter:function(value,row,index){
+		          {field:'warnThre',title:'<fmt:message key='c.warnthre'/>',width:60},
+		          {field:'warnStyle',title:'<fmt:message key='c.warnstyle'/>',width:60,editor:'text',formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "短信";
+		        		  return "<fmt:message key='c.sms'/>";
 		        	  }else{
-		        		  return "邮件";
+		        		  return "<fmt:message key='c.email'/>";
 		        	  }
 		          }},
-		          {field:'warnSwitch',title:'提醒开关',width:60,editor:'text',formatter:function(value,row,index){
+		          {field:'warnSwitch',title:'<fmt:message key='c.warnswitch'/>',width:60,editor:'text',formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "开";
+		        		  return "<fmt:message key='common.open'/>";
 		        	  }else{
-		        		  return "关";
+		        		  return "<fmt:message key='common.close'/>";
 		        	  }
 		          }},
-		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
+		          {field:'action',title:'<fmt:message key='common.action'/>',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
 							var id = row.pid;
-							return "<a href='#' class='operateHref' onclick='updateCustomer("+id+","+index+")'> 修改 </a>"
-							+"<a href='#' class='operateHref' onclick='deleteCustomer("+id+","+index+")'> 删除 </a>";
+							return "<a href='#' class='operateHref' onclick='updateCustomer("+id+","+index+")'><fmt:message key='common.update'/></a>"
+							+"<a href='#' class='operateHref' onclick='deleteCustomer("+id+","+index+")'><fmt:message key='common.delete'/></a>";
 				  }}
 		      ]],
 		      toolbar:[{
-		    	  text: "添加用户",
+		    	  text: "<fmt:message key='c.add'/>",
 		    	  iconCls: 'icon-add',
 		    	  handler: addCustomer
 		      },'-',{
-		    	  text: "批量添加",
+		    	  text: "<fmt:message key='c.adds'/>",
 		    	  iconCls:'icon-add',
 		    	  handler: addCustomers
 		      }],
@@ -144,60 +144,60 @@ $(function(){
 	                  height:'auto',
 	                  columns:[[
 							{field:'pid',title:'ID',width:60,checkbox:true},
-							{field:'apid',title:'关联ID',width:60},
-							{field:'gprs',title:'集中器',width:60},
-	                      	{field:'qfh',title:'铅封号',width:60},
-				          	{field:'steelNum',title:'钢印号',width:60},
-				          	{field:'suppleMode',title:'供水方式',width:60,formatter:function(value,row,index){
+							{field:'apid',title:'<fmt:message key='m.apid'/>',width:60},
+							{field:'gprs',title:'<fmt:message key='gprs'/>',width:60},
+	                      	{field:'qfh',title:'<fmt:message key='m.qfh'/>',width:60},
+				          	{field:'steelNum',title:'<fmt:message key='m.steel'/>',width:60},
+				          	{field:'suppleMode',title:'<fmt:message key='m.supplemode'/>',width:60,formatter:function(value,row,index){
 					        	  if(value == 1){
-					        		  return "一次供水";
+					        		  return "<fmt:message key='m.firstsupple'/>";
 					        	  }else{
-					        		  return "二次供水";
+					        		  return "<fmt:message key='m.secondsupple'/>";
 					        	  }
 					        }},
-				          	{field:'collectorAddr',title:'采集器地址',width:60},
-				          	{field:'meterAddr',title:'表地址',width:60},
-				          	{field:'meterSolid',title:'虚实表',width:60,formatter:function(value,row,index){
+				          	{field:'collectorAddr',title:'<fmt:message key='m.caddr'/>',width:60},
+				          	{field:'meterAddr',title:'<fmt:message key='m.maddr'/>',width:60},
+				          	{field:'meterSolid',title:'<fmt:message key='m.solid'/>',width:60,formatter:function(value,row,index){
 					        	  if(value == 1){
-					        		  return "实表";
+					        		  return "<fmt:message key='m.solidyes'/>";
 					        	  }else{
-					        		  return "虚表";
+					        		  return "<fmt:message key='m.solidno'/>";
 					        	  }
 					        }},
-				          	{field:'mk',title:'表类型',width:60},
-				          	{field:'pk',title:'单价',width:60},
-				          	{field:'isValve',title:'阀门',width:60,formatter:function(value,row,index){
+				          	{field:'mk',title:'<fmt:message key='m.mk'/>',width:60},
+				          	{field:'pk',title:'<fmt:message key='m.pk'/>',width:60},
+				          	{field:'isValve',title:'<fmt:message key='m.valve'/>',width:60,formatter:function(value,row,index){
 					        	  if(value == 1){
-					        		  return "有";
+					        		  return "<fmt:message key='common.have'/>";
 					        	  }else{
-					        		  return "无";
+					        		  return "<fmt:message key='common.nothave'/>";
 					        	  }
 					        }},
-				          	{field:'deductionStyle',title:'有阀结算方式',width:50,formatter:function(value,row,index){
+				          	{field:'deductionStyle',title:'<fmt:message key='m.destyle'/>',width:50,formatter:function(value,row,index){
 					        	  if(value == 1){
-					        		  return "抄表后结算";
+					        		  return "<fmt:message key='m.deread'/>";
 					        	  }else{
-					        		  return "抄表后不结算";
+					        		  return "<fmt:message key='m.noderead'/>";
 					        	  }
 					        }},
-				          	{field:'valveOffthre',title:'关阀余额',width:50},
-				          	{field:'timerSwitch',title:'定时检测',width:50,formatter:function(value,row,index){
+				          	{field:'valveOffthre',title:'<fmt:message key='m.valveoffthre'/>',width:50},
+				          	{field:'timerSwitch',title:'<fmt:message key='m.switch'/>',width:50,formatter:function(value,row,index){
 					        	  if(value == 1){
-					        		  return "开";
+					        		  return "<fmt:message key='common.open'/>";
 					        	  }else{
-					        		  return "关";
+					        		  return "<fmt:message key='common.close'/>";
 					        	  }
 					        }},
-				          	{field:'timer',title:'定时时间',width:50},
-				          	{field:'overflow',title:'用量阀值',width:50},
-				          	{field:'changend',title:'换表读数',width:50},
-				          	{field:'changestart',title:'起始读数',width:50},
-				          	{field:'action',title:'操作',width:90,halign:'center',align:'center',formatter: function(value,row_,index_){
+				          	{field:'timer',title:'<fmt:message key='m.timer'/>',width:50},
+				          	{field:'overflow',title:'<fmt:message key='m.overflow'/>',width:50},
+				          	{field:'changend',title:'<fmt:message key='m.changeend'/>',width:50},
+// 				          	{field:'changestart',title:'起始读数',width:50},
+				          	{field:'action',title:'<fmt:message key='common.action'/>',width:90,halign:'center',align:'center',formatter: function(value,row_,index_){
 								var c_id = row.pid;
 								var m_id = row_.pid;
-								return "<a href='#' class='operateHref' onclick='updateMeter("+c_id+","+index+","+m_id+")'> 修改 </a>"
-								+"<a href='#' class='operateHref' onclick='deleteMeter("+m_id+","+index+","+index_+")'> 删除 </a>"
-								+"<a href='#' class='operateHref' onclick='changemeter("+m_id+","+index+","+index_+")'> 换表 </a>";
+								return "<a href='#' class='operateHref' onclick='updateMeter("+c_id+","+index+","+m_id+")'><fmt:message key='common.update'/></a>"
+								+"<a href='#' class='operateHref' onclick='deleteMeter("+m_id+","+index+","+index_+")'><fmt:message key='common.delete'/></a>"
+								+"<a href='#' class='operateHref' onclick='changemeter("+m_id+","+index+","+index_+")'><fmt:message key='m.changemeter'/></a>";
 					  		}}
 				          	
 	                  ]],
@@ -232,7 +232,7 @@ function searchCustomer_(){
 	var c_num = $("#c_num").textbox("getValue");
 	
 	if(n_id == ''){
-		$.messager.alert('Info','请选择小区！');
+		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 		return;
 	}
 	if(check_c_num_(c_num)){
@@ -253,7 +253,7 @@ function addCustomer(){
 		minimizable:false,
 		maximizable:false,
 		collapsible:false,
-		title: '添加用户'
+		title: '<fmt:message key='c.add'/>'
 	}); 
 }
 function addCustomers(){
@@ -264,7 +264,7 @@ function addCustomers(){
 		minimizable:false,
 		maximizable:false,
 		collapsible:false,
-		title: '批量添加用户'
+		title: '<fmt:message key='c.adds'/>'
 	});
 }
 
@@ -280,7 +280,7 @@ function updateCustomer(cid,index){
 		minimizable:false,
 		maximizable:false,
 		collapsible:false,
-		title: '修改用户',
+		title: '<fmt:message key='c.update'/>',
 		onClose:refreshRow
 	}); 
 }
@@ -299,7 +299,7 @@ function refreshRow(index){
 	});	
 }
 	function deleteCustomer(cid, index) {
-		$.messager.confirm('Info', '确定要删除选中记录吗？', function(r) {
+		$.messager.confirm('Info', '<fmt:message key='common.confirmdelete'/>？', function(r) {
 			if (r) {
 				$.ajax({
 					url : '${path}/infoin/customer/delete.do',
@@ -324,12 +324,12 @@ function refreshRow(index){
 			minimizable:false,
 			maximizable:false,
 			collapsible:false,
-			title: '修改表',
+			title: '<fmt:message key='m.update'/>',
 		});
 	}
 	function deleteMeter(mid,index,index_) {
 // 		$("#customerTab").datagrid('getRowDetail',0).find('table.ddv').datagrid('deleteRow', 0);
-		$.messager.confirm('Info', '确定要删除选中记录吗？', function(r){
+		$.messager.confirm('Info', '<fmt:message key='common.confirmdelete'/>？', function(r){
 			if(r){
 				$.ajax({
 					url:'${path}/infoin/meter/delete.do',
@@ -373,7 +373,7 @@ function refreshRow(index){
 						$("#new_maddr").textbox("setValue","");
 						$.messager.show({
 							title:"Info",
-							msg:"表地址已存在",
+							msg:"<fmt:message key='m.exist'/>",
 							showType:'slide'
 						});
 					}
@@ -394,7 +394,7 @@ function refreshRow(index){
 				if(end == ''){
 					$.messager.show({
 						title:"Info",
-						msg:"请输入旧表底数",
+						msg:"<fmt:message key='m.oldend'/>",
 						showType:'slide'
 					});
 					return false;

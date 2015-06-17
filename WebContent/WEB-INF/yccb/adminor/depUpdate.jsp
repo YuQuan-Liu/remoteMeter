@@ -27,7 +27,7 @@ function submitForm(){
 		    	   $('#depUpdateWin').window('close');
 		    	   $.messager.show({
 						title:'Info',
-						msg:'修改成功！',
+						msg:'<fmt:message key='common.updateok'/>',
 						showType:'slide',
 						timeout:3000
 					});
@@ -37,9 +37,6 @@ function submitForm(){
 		});  
 	}
 }
-function clearForm(){
-	$('#depAddForm').form('clear');
-	}
 </script>
 <form id="depAddForm" method="post" action="${path}/admin/dep/update.do">
 		<div style="padding:10px 0 10px 60px">
@@ -48,23 +45,22 @@ function clearForm(){
 	    	<%-- <input type="hidden" name="watercompany.pid" value="${dep.watercompany.pid }"/> --%>
 	    	<table>
 	    		<tr>
-	    			<td>片区名：</td>
+	    			<td><fmt:message key='areas'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="departmentName" value="${dep.departmentName }" data-options="required:true"/></td>
-	    			<td>备注：</td>
+	    			<td><fmt:message key='common.remark'/>：</td>
 	    			<td>
 	    			<input class="easyui-textbox" name="remark" type="text" value="${dep.remark }"/>
 	    			</td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水下的小区：</td>
+	    			<td><fmt:message key='common.neighborName'/>：</td>
 	    			<td><input id="neighborCombo" name="neighbors"></td>
 	    		</tr>
 	    	</table>
 	    </div>
  </form>	    
 	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()">Clear</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 	    </div>
 </body>
 </html>

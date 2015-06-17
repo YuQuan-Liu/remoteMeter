@@ -21,12 +21,12 @@ $(function(){
 		},
 	    columns:[[
 	        {field:'pid',title:'ID',width:100,checkbox:true},   
-	        {field:'roleName',title:'角色名称',width:100},   
+	        {field:'roleName',title:'<fmt:message key='role.name'/>',width:100},   
 // 	        {field:'watercompany',title:'自来水公司',width:100},
-	        {field:'systemRole',title:'系统角色',width:100,formatter:TFFormatter},
-	        {field:'remark',title:'备注',width:100},
-	        {field:'action',title:'操作',width:100,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='roleDetail("+row.pid+")'>查看</a> ";
+	        {field:'systemRole',title:'<fmt:message key='role.system'/>',width:100,formatter:TFFormatter},
+	        {field:'remark',title:'<fmt:message key='common.remark'/>',width:100},
+	        {field:'action',title:'<fmt:message key='common.action'/>',width:100,halign:'center',align:'center',formatter: function(value,row,index){
+				return "<a href='#' class='operateHref' onclick='roleDetail("+row.pid+")'><fmt:message key='common.look'/></a> ";
 			}}
 	    ]],
 	    toolbar: [{ 
@@ -39,7 +39,7 @@ $(function(){
 	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,
-	    		    title: '添加角色'
+	    		    title: '<fmt:message key='role.add'/>'
 	    		}); 
 	        }
 	    }]
@@ -59,7 +59,7 @@ function roleDetail(role_id){
 	    height:400,
 	    minimizable:false,
 	    maximizable:false,
-	    title: '角色详情' 
+	    title: 'Detail' 
 	}); 
 }
 </script>

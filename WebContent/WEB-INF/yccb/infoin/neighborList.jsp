@@ -25,28 +25,28 @@ $(function(){
 		},
 		columns:[[
 			{field:'pid',title:'ID',width:100,checkbox:true},	
-			{field:'neighborName',title:'小区名',width:100,halign:'center',align:'left'},	
-			{field:'neighborAddr',title:'地址',width:100,halign:'center',align:'left'},
-			{field:'mainMeter',title:'有无管理表',width:100,halign:'center',align:'center',formatter:function(value,row,index){
+			{field:'neighborName',title:'<fmt:message key='n.name'/>',width:100,halign:'center',align:'left'},	
+			{field:'neighborAddr',title:'<fmt:message key='common.addr'/>',width:100,halign:'center',align:'left'},
+			{field:'mainMeter',title:'<fmt:message key='n.main'/>',width:100,halign:'center',align:'center',formatter:function(value,row,index){
 				if(value == 1){
-					return "有";
+					return "<fmt:message key='common.have'/>";
 				}else{
-					return "无";
+					return "<fmt:message key='common.nothave'/>";
 				}
 			}},
-			{field:'timerSwitch',title:'定时抄表开关',width:100,halign:'center',align:'center',formatter:function(value,row,index){
+			{field:'timerSwitch',title:'<fmt:message key='n.switch'/>',width:100,halign:'center',align:'center',formatter:function(value,row,index){
 				if(value == 1){
-					return "开";
+					return "<fmt:message key='common.open'/>";
 				}else{
-					return "关";
+					return "<fmt:message key='common.close'/>";
 				}
 			}},
-			{field:'timer',title:'定时抄表时间',width:100,halign:'center',align:'center'},
-			{field:'ip',title:'抄表IP',width:100,halign:'center',align:'left'},
-			{field:'remark',title:'备注',width:100,halign:'center',align:'left'},
-			{field:'action',title:'操作',width:100,halign:'center',align:'center',formatter: function(value,row,index){
+			{field:'timer',title:'<fmt:message key='n.timer'/>',width:100,halign:'center',align:'center'},
+			{field:'ip',title:'<fmt:message key='n.ip'/>',width:100,halign:'center',align:'left'},
+			{field:'remark',title:'<fmt:message key='common.remark'/>',width:100,halign:'center',align:'left'},
+			{field:'action',title:'<fmt:message key='common.action'/>',width:100,halign:'center',align:'center',formatter: function(value,row,index){
 					var id = row.pid;
-					return "<a href='#' class='operateHref' onclick='addGprs("+id+")'>添加集中器</a> ";
+					return "<a href='#' class='operateHref' onclick='addGprs("+id+")'><fmt:message key='g.add'/></a> ";
 			}}
 		]],
 		toolbar: [{ 
@@ -59,7 +59,7 @@ $(function(){
 					height:350,
 					minimizable:false,
 					maximizable:false,
-					title: '添加小区'
+					title: '<fmt:message key='n.add'/>'
 				});
 			}
 		}, '-', {
@@ -76,13 +76,11 @@ $(function(){
 						height:350,
 						minimizable:false,
 						maximizable:false,
-						title: '更新小区'
+						title: '<fmt:message key='n.update'/>'
 					});
 					
-				}else if(leng>1){
-					$.messager.alert('Info','请选择一条记录！');
 				}else{
-					$.messager.alert('Info','未选中任何记录！');
+					$.messager.alert('Info','<fmt:message key='common.selectsingle'/>');
 				}
 			}
 		}, '-',{ 
@@ -90,19 +88,12 @@ $(function(){
 			iconCls: 'icon-remove',
 			handler: function(){
 				var rows = $('#neighborListTab').datagrid('getSelections');
-				if(rows.length==0){
-					$.messager.alert('Info','请选择记录！');
-					return;
-				}else{
-					if(rows.length > 1){
-						$.messager.alert('Info','请选择一条记录！');
-						return;
-					}
+				if(rows.length==1){
 					var pid = rows[0].pid;
 					var index_ = $('#neighborListTab').datagrid('getRowIndex',rows[0]);
 					var name = rows[0].neighborName;
 					
-					$.messager.confirm('Info','确定要删除'+name+'吗？',function(r){	
+					$.messager.confirm('Info','<fmt:message key='common.confirmdelete'/>？',function(r){	
 						if (r){	
 							$.ajax({
 								url:'delete.do',
@@ -112,7 +103,7 @@ $(function(){
 									if(data=="succ"){
 										$.messager.show({
 											title:"Info",
-											msg:"删除成功",
+											msg:"<fmt:message key='common.deleteok'/>",
 											showType:'slide'
 										});
 										$('#neighborListTab').datagrid('deleteRow',index_);
@@ -121,6 +112,9 @@ $(function(){
 							});	
 						}	
 					}); 
+				}else{
+					$.messager.alert('Info','<fmt:message key='common.selectsingle'/>');
+					return;
 				}
 			} 
 		}]
@@ -140,29 +134,29 @@ $(function(){
 				loadMsg:'',
 				height:'auto',
 				columns:[[
-					{field:'gprstel',title:'集中器SIM',width:100,halign:'center'},
-					{field:'gprsaddr',title:'集中器地址',width:100,halign:'center'},
-					{field:'installAddr',title:'安装地址',width:100,halign:'center'},
-					{field:'gprsprotocol',title:'使用协议',width:100,halign:'center',formatter:function(value,row,index){
+					{field:'gprstel',title:'<fmt:message key='g.sim'/>',width:100,halign:'center'},
+					{field:'gprsaddr',title:'<fmt:message key='g.addr'/>',width:100,halign:'center'},
+					{field:'installAddr',title:'<fmt:message key='g.installaddr'/>',width:100,halign:'center'},
+					{field:'gprsprotocol',title:'<fmt:message key='g.protocol'/>',width:100,halign:'center',formatter:function(value,row,index){
 						if(value == 1){
-							return "自主协议";
+							return "<fmt:message key='g.hdeg'/>";
 						}else{
 							if(value == 2){
-								return "188协议";
+								return "<fmt:message key='g.188'/>";
 							}else{
-								return "异常";
+								return "<fmt:message key='common.exception'/>";
 							}
 						}
 					}},
-					{field:'ip',title:'监听IP',width:100,halign:'center'},
-					{field:'port',title:'监听端口',width:100,halign:'center'},
-					{field:'remark',title:'备注',width:100,halign:'center'},
-					{field:'action',title:'操作',width:100,halign:'center',align:'center',
+					{field:'ip',title:'<fmt:message key='g.ip'/>',width:100,halign:'center'},
+					{field:'port',title:'<fmt:message key='g.port'/>',width:100,halign:'center'},
+					{field:'remark',title:'<fmt:message key='common.remark'/>',width:100,halign:'center'},
+					{field:'action',title:'<fmt:message key='common.action'/>',width:100,halign:'center',align:'center',
 						formatter: function(value,row_,index){
 							var id = row_.pid;
 							var nid = row.pid;
-							return "<a href='#' class='operateHref' onclick='updatePageGprs("+id+")'>修改</a>"
-							+"<a href='#' class='operateHref' onclick='deleteGprsById("+id+","+nid+","+index+")'>删除</a>";
+							return "<a href='#' class='operateHref' onclick='updatePageGprs("+id+")'><fmt:message key='common.update'/></a>"
+							+"<a href='#' class='operateHref' onclick='deleteGprsById("+id+","+nid+","+index+")'><fmt:message key='common.delete'/></a>";
 						}
 					}
 				]],
@@ -188,7 +182,7 @@ function addGprs(pid){
 		height:300,
 		minimizable:false,
 		maximizable:false,
-		title:'添加集中器'
+		title:'<fmt:message key='g.add'/>'
 	}); 
 }
 
@@ -200,13 +194,13 @@ function updatePageGprs(pid){
 		height:300,
 		minimizable:false,
 		maximizable:false,
-		title: '修改集中器'
+		title: '<fmt:message key='g.update'/>'
 	}); 
 }
 
 //删除单个集中器
 function deleteGprsById(id,nid,index){
-	$.messager.confirm('Info', '确定要删除选中记录吗？', function(r){
+	$.messager.confirm('Info', '<fmt:message key='common.confirmdelete'/>？', function(r){
 		if(r){
 			$.ajax({
 				url:'${path}/infoin/neighbor/deleteGprsById.do',
@@ -217,7 +211,7 @@ function deleteGprsById(id,nid,index){
 						
 						$.messager.show({
 							title:"Info",
-							msg:"删除成功",
+							msg:"'<fmt:message key='common.deleteok'/>'",
 							showType:'slide'
 						});
 						$('#ddv-'+nid).datagrid('deleteRow',index);

@@ -8,9 +8,6 @@
 </head>
 <body>
 <script type="text/javascript">
-$(function(){
-	
-})
 function submitForm(){
 	$('#watUpdateForm').form('submit', {
 		onSubmit:function(){
@@ -20,8 +17,8 @@ function submitForm(){
 	       if(data=="succ"){
 	    	   $('#watComUpdateWin').window('close');
 	    	   $.messager.show({
-					title:'更新自来水公司',
-					msg:'更新成功！',
+					title:'Info',
+					msg:'<fmt:message key='common.updateok'/>',
 					showType:'slide',
 					timeout:3000
 				});
@@ -38,35 +35,35 @@ function submitForm(){
 	    	<input type="hidden" name="pid" value="${watcom.pid }"/>
 	    	<table>
 	    		<tr>
-	    			<td>自来水公司名：</td>
+	    			<td><fmt:message key='watcom.name'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="companyName" data-options="required:true" value="${watcom.companyName }"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水公司地址：</td>
+	    			<td><fmt:message key='watcom.addr'/>：</td>
 	    			<td> <input class="easyui-textbox" type="text" name="companyAddr" data-options="required:true" value="${watcom.companyAddr }"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>自来水公司标识：</td>
+	    			<td><fmt:message key='watcom.mark'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="mark" data-options="required:true" value="${watcom.mark }"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>邮箱主机：</td>
+	    			<td><fmt:message key='watcom.emailHost'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="emailHost" data-options="required:true" value="${watcom.emailHost }"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>邮箱用户名：</td>
+	    			<td><fmt:message key='watcom.emailUser'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="emailUser" data-options="required:true" value="${watcom.emailUser }"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>交费地址：</td>
+	    			<td><fmt:message key='watcom.payaddr'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="payAddr" data-options="required:true" value="${watcom.payAddr }"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>查询电话：</td>
+	    			<td><fmt:message key='watcom.tel'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="telephone" data-options="required:true" value="${watcom.telephone }"/></td>
 	    		</tr>
 	    		<tr>
-	    			<td>备注：</td>
+	    			<td><fmt:message key='common.remark'/>：</td>
 	    			<td>
 	    			<input class="easyui-textbox" name="remark" data-options="multiline:true" style="height:60px" value="${watcom.remark }">
 	    			</td>
@@ -75,7 +72,7 @@ function submitForm(){
 	    </form>
 	    </div>
 	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()">Submit</a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 	    </div>
 </body>
 </html>

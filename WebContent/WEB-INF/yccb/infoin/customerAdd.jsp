@@ -12,66 +12,66 @@
 	<form id="customer" method="post">
 		<div style="padding:0px 10px;">
 			<fieldset style="padding-left: 20px;">
-				<legend>用户信息</legend>
+				<legend><fmt:message key='c.info'/></legend>
 				<table style="margin:0px auto" >
 					<tr>
-						<td><lable>小区</lable></td>
+						<td><lable><fmt:message key='common.neighborName'/></lable></td>
 						<td>
 							<select class="easyui-combobox" id="n_id" name="n_id" data-options="onSelect:listGPRS,panelHeight:'auto'" style="width:148px;">
-								<option value="">请选择小区</option>
+								<option value=""><fmt:message key='common.choosenei'/></option>
 								<c:forEach var="n" items="${neighbor_list }">
 								<option value="${n.pid }">${n.neighborName }</option>
 								</c:forEach>
 							</select>
 						</td>
-						<td><label>住宅类型</label></td>
+						<td><label><fmt:message key='c.hk'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="hk_id" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="1" selected="selected">多层</option>
-								<option value="2" >高层</option>
-								<option value="3" >商业</option>
+								<option value="1" selected="selected"><fmt:message key='c.hkduo'/></option>
+								<option value="2" ><fmt:message key='c.hkgao'/></option>
+								<option value="3" ><fmt:message key='c.hkbus'/></option>
 							</select>
 						</td>
-						<td><label>用户标识</label></td>
+						<td><label><fmt:message key='c.customerid'/></label></td>
 						<td><input type="text" name="customerId" class="easyui-textbox" data-options="disabled:true"/></td>
 					</tr>
 					<tr>
-						<td><label>用户号</label></td>
+						<td><label><fmt:message key='c.num'/></label></td>
 <!-- 						<td><input type="text" id="c_num_" name="c_num" class="easyui-validate" onblur="check_cnum()"/></td> -->
 						<td><input class="easyui-textbox" type="text" name="c_num" id="c_num_" 
-						data-options="required:true,novalidate:true,onChange:check_cnum,invalidMessage:'用户号格式不正确'" validType="nonValidate[]"/></td>
-						<td><label>用户名</label></td>
+						data-options="required:true,novalidate:true,onChange:check_cnum,invalidMessage:'<fmt:message key='c.numerror'/>'" validType="nonValidate[]"/></td>
+						<td><label><fmt:message key='c.name'/></label></td>
 						<td><input type="text" name="customerName" class="easyui-textbox"/></td>
-						<td><label>关联ID</label></td>
+						<td><label><fmt:message key='c.apid'/></label></td>
 						<td><input type="text" name="apid" class="easyui-textbox" id="c_apid" 
-						data-options="required:true,novalidate:true,onChange:check_capid,invalidMessage:'关联ID重复'" validType="nonValidate[]"/></td>
+						data-options="required:true,novalidate:true,onChange:check_capid,invalidMessage:'<fmt:message key='c.apidexist'/>'" validType="nonValidate[]"/></td>
 					</tr>
 					<tr>
-						<td><label>手机</label></td>
+						<td><label><fmt:message key='common.mobile'/></label></td>
 						<td><input type="text" name="customerMobile" class="easyui-textbox"/></td>
-						<td><label>邮箱</label></td>
+						<td><label><fmt:message key='common.email'/></label></td>
 						<td><input type="text" name="customerEmail" class="easyui-textbox"/></td>
-						<td><label>身份证</label></td>
+						<td><label><fmt:message key='c.nationalid'/></label></td>
 						<td><input type="text" name="nationalId" class="easyui-textbox"/></td>
 					</tr>
 					<tr>
-						<td><label>地址</label></td>
+						<td><label><fmt:message key='common.addr'/></label></td>
 						<td colspan="5"><input type="text" name="customerAddr" id="customerAddr" class="easyui-textbox" style="width:100%"/></td>
 					</tr>
 					<tr>
-						<td><label>后付费</label></td>
+						<td><label><fmt:message key='c.prestyle'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="prePaySign" id="prePaySign" data-options="panelHeight:'auto',onSelect:prepayChange" style="width:148px;">
-								<option value="1" selected="selected">预付费</option>
-								<option value="0" >后付费</option>
+								<option value="1" selected="selected"><fmt:message key='c.pre'/></option>
+								<option value="0" ><fmt:message key='c.post'/></option>
 							</select>
 						</td>
-						<td><label>金额</label></td>
+						<td><label><fmt:message key='c.balance'/></label></td>
 						<td><input type="text" name="customerBalance" id="customerBalance" class="easyui-textbox" value="0"
-						data-options="required:true,novalidate:true,onChange:check_balance,invalidMessage:'金额不正确'" validType="nonValidate[]"/></td>
+						data-options="required:true,novalidate:true,onChange:check_balance,invalidMessage:'<fmt:message key='c.balanceerror'/>'" validType="nonValidate[]"/></td>
 					</tr>
 					<tr>
-						<td><label>提醒余额阀值</label></td>
+						<td><label><fmt:message key='c.warnthre'/></label></td>
 						<td><input type="text" name="warnThre" class="easyui-textbox" value="20"/></td>
 <!-- 						<td><label>提醒开关</label></td> -->
 <!-- 						<td> -->
@@ -80,17 +80,17 @@
 <!-- 								<option value="0" selected="selected">关</option> -->
 <!-- 							</select> -->
 <!-- 						</td> -->
-						<td><label>提醒方式</label></td>
+						<td><label><fmt:message key='c.warnstyle'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="warnStyle" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="1" >短信</option>
-								<option value="0" selected="selected">邮件</option>
+								<option value="1" ><fmt:message key='c.sms'/></option>
+								<option value="0" selected="selected"><fmt:message key='c.email'/></option>
 							</select>
 						</td>
 					</tr>
 				</table>
 				<div style="text-align:center;padding-top:10px;">
-					<a href="javascript:void(0)" class="easyui-linkbutton" id="customersubmit" onclick="submitCustomer()">Submit</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" id="customersubmit" onclick="submitCustomer()"><fmt:message key='common.submit'/></a>
 				</div>
 			</fieldset>
 		</div>
@@ -98,57 +98,57 @@
 	<form id="meter" method="post">
 		<div style="padding:0px 10px;">
 			<fieldset style="padding-left: 20px;">
-				<legend>表信息</legend>
+				<legend><fmt:message key='m.info'/></legend>
 				<table style="margin:0px auto">
 					<tr>
-						<td><lable>集中器</lable></td>
+						<td><lable><fmt:message key='gprs'/></lable></td>
 						<td>
 							<select class="easyui-combobox" id="gprs_id" name="gprs_id" data-options="panelHeight:'auto',valueField:'pid',textField:'gprsaddr'" style="width:148px;">
-								<option value="" >请选择集中器</option>
+								<option value="" ><fmt:message key='m.selectgprs'/></option>
 							</select>
 						</td>
-						<td><label>钢印号</label></td>
+						<td><label><fmt:message key='m.steel'/></label></td>
 						<td><input type="text" name="steelNum" class="easyui-textbox"/></td>
-						<td><label>铅封号</label></td>
+						<td><label><fmt:message key='m.qfh'/></label></td>
 						<td><input type="text" name="qfh" class="easyui-textbox"/></td>
 					</tr>
 					<tr>
-						<td><label>采集器地址</label></td>
+						<td><label><fmt:message key='m.caddr'/></label></td>
 						<td><input type="text" name="collectorAddr" id="collectorAddr" class="easyui-textbox" data-options="required:true"/></td>
-						<td><label>表地址</label></td>
+						<td><label><fmt:message key='m.maddr'/></label></td>
 						<td><input type="text" name="meterAddr" id="meterAddr" class="easyui-textbox" data-options="required:true,onChange:check_maddr"/></td>
-						<td><label>关联ID</label></td>
+						<td><label><fmt:message key='m.apid'/></label></td>
 						<td><input type="text" name="apid" class="easyui-textbox" id="m_apid" 
-						data-options="required:true,novalidate:true,onChange:check_mapid,invalidMessage:'关联ID重复'" validType="nonValidate[]"/></td>
+						data-options="required:true,novalidate:true,onChange:check_mapid,invalidMessage:'<fmt:message key='c.apidexist'/>'" validType="nonValidate[]"/></td>
 					</tr>
 					<tr>
-						<td><label>单价</label></td>
+						<td><label><fmt:message key='m.pk'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="pk_id" id="pk_id" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="" >请选择单价</option>
+								<option value="" ><fmt:message key='common.selectprice'/></option>
 								<c:forEach var="pk" items="${pk_list }">
 								<option value="${pk.pid }">${pk.priceKindName }</option>
 								</c:forEach>
 							</select>
 						</td>
-						<td><label>管理表</label></td>
+						<td><label><fmt:message key='m.main'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="mainMeter" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="0" selected="selected">普通表</option>
-								<option value="1" >小区总表</option>
-								<option value="2" >楼总表</option>
+								<option value="0" selected="selected"><fmt:message key='m.putong'/></option>
+								<option value="1" ><fmt:message key='m.nmain'/></option>
+								<option value="2" ><fmt:message key='m.loumain'/></option>
 							</select>
 						</td>
-						<td><label>供水方式</label></td>
+						<td><label><fmt:message key='m.supplemode'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="suppleMode" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="1" selected="selected">一次供水</option>
-								<option value="2" >二次供水</option>
+								<option value="1" selected="selected"><fmt:message key='m.firstsupple'/></option>
+								<option value="2" ><fmt:message key='m.secondsupple'/></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td><label>水表类型</label></td>
+						<td><label><fmt:message key='m.mk'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="mk_id" data-options="panelHeight:'auto'" style="width:148px;">
 <!-- 								<option value="" >请选择水表类型</option> -->
@@ -157,56 +157,56 @@
 								</c:forEach>
 							</select>
 						</td>
-						<td><label>虚实表</label></td>
+						<td><label><fmt:message key='m.solid'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="meterSolid" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="0" >虚表</option>
-								<option value="1" selected="selected" >实表</option>
+								<option value="0" ><fmt:message key='m.solidno'/></option>
+								<option value="1" selected="selected" ><fmt:message key='m.solidyes'/></option>
 							</select>
 						</td>
-						<td><label>立户表</label></td>
+						<td><label><fmt:message key='m.lihu'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="lihu" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="0" selected="selected" >非立户表</option>
-								<option value="1" >立户表</option>
+								<option value="0" selected="selected" ><fmt:message key='m.nolihu'/></option>
+								<option value="1" ><fmt:message key='m.lihu'/></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
-						<td><label>阀门</label></td>
+						<td><label><fmt:message key='m.valve'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="isValve" id="isValve" data-options="panelHeight:'auto',onSelect:valveChange" style="width:148px;">
-								<option value="0" selected="selected" >无</option>
-								<option value="1" >有</option>
+								<option value="0" selected="selected" ><fmt:message key='common.nothave'/></option>
+								<option value="1" ><fmt:message key='common.have'/></option>
 							</select>
 						</td>
-						<td><label>有阀结算方式</label></td>
+						<td><label><fmt:message key='m.destyle'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="deductionStyle" id="deductionStyle" data-options="panelHeight:'auto',disabled:true" style="width:148px;">
-								<option value="0" selected="selected" >抄表后不结算</option>
-								<option value="1" >抄表后结算</option>
+								<option value="0" selected="selected" ><fmt:message key='m.noderead'/></option>
+								<option value="1" ><fmt:message key='m.deread'/></option>
 							</select>
 						</td>
-						<td><label>关阀余额阀值</label></td>
+						<td><label><fmt:message key='m.valveoffthre'/></label></td>
 						<td><input type="text" name="valveOffthre" class="easyui-textbox" value="0"/></td>
 					</tr>
 					<tr>
-						<td><label>定时检测</label></td>
+						<td><label><fmt:message key='m.switch'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="timerSwitch" id="timerSwitch" style="width:148px;" data-options="panelHeight:'auto',onSelect:timeswitchChange">
-								<option value="1" >开</option>
-								<option value="0" selected="selected">关</option>
+								<option value="1" ><fmt:message key='common.open'/></option>
+								<option value="0" selected="selected"><fmt:message key='common.close'/></option>
 							</select>
 						</td>
-						<td><label>检测时间</label></td>
+						<td><label><fmt:message key='m.timer'/></label></td>
 						<td><input type="text" name="timer" id="timer" class="easyui-textbox" data-options="disabled:true" value="60"/></td>
-						<td><label>用水超量值</label></td>
+						<td><label><fmt:message key='m.overflow'/></label></td>
 						<td><input type="text" name="overflow" class="easyui-textbox" value="50"/></td>
 					</tr>
 				</table>
 				<div style="text-align:center;padding-top:10px;">
 					<input type="hidden" id="c_id" name="c_id"/>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitMeter()">Submit</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitMeter()"><fmt:message key='common.submit'/></a>
 				</div>
 			</fieldset>
 		</div>
@@ -226,7 +226,7 @@
 					if(gprs_id == ""){
 						$.messager.show({
 							title:"Info",
-							msg:"请选择集中器",
+							msg:"<fmt:message key='m.selectgprs'/>",
 							showType:'slide'
 						});
 						return false;
@@ -235,13 +235,13 @@
 					if(pk_id == ""){
 						$.messager.show({
 							title:"Info",
-							msg:"请选择单价",
+							msg:"<fmt:message key='common.selectprice'/>",
 							showType:'slide'
 						});
 						return false;
 					}
 				}else{
-					$.messager.alert("Info","请选择用户");
+					$.messager.alert("Info","<fmt:message key='common.selectcustomer'/>");
 					return false;
 				}
 				
@@ -252,7 +252,7 @@
 					if(timer == ""){
 						$.messager.show({
 							title:"Info",
-							msg:"定时不可以空",
+							msg:"<fmt:message key='m.timernull'/>",
 							showType:'slide'
 						});
 						return false;
@@ -262,7 +262,7 @@
 						}else{
 							$.messager.show({
 								title:"Info",
-								msg:"定时格式为每隔多少分钟",
+								msg:"<fmt:message key='m.timerstyle'/>",
 								showType:'slide'
 							});
 							return false;
@@ -276,7 +276,7 @@
 					$("#customer").form('reset');
 					$("#meter").form('reset');
 					$("#c_id").val();
-					$.messager.alert("Info","添加成功");
+					$.messager.alert("Info","<fmt:message key='common.addok'/>");
 				}
 			}
 		});
@@ -293,7 +293,7 @@
 				if(data.success == "true"){
 					$("#customer").form('reset');
 					$("#c_id").val(data.add);
-					$.messager.alert("Info","添加成功");
+					$.messager.alert("Info","<fmt:message key='common.addok'/>");
 				}
 			}
 		});
@@ -386,7 +386,7 @@
 		if(gprs_id == ""){
 			$.messager.show({
 				title:"Info",
-				msg:"请选择集中器",
+				msg:"<fmt:message key='m.selectgprs'/>",
 				showType:'slide'
 			});
 			return;
@@ -399,7 +399,7 @@
 			$("#meterAddr").textbox("setValue","");
 			$.messager.show({
 				title:"Info",
-				msg:"输入采集器",
+				msg:"<fmt:message key='m.caddrnull'/>",
 				showType:'slide'
 			});
 			return;
@@ -419,7 +419,7 @@
 						$("#meterAddr").textbox("setValue","");
 						$.messager.show({
 							title:"Info",
-							msg:"表地址已存在",
+							msg:"<fmt:message key='m.exist'/>",
 							showType:'slide'
 						});
 					}
@@ -442,7 +442,7 @@
 			if(len == 3){
 				//这个地方还可以加上判断是不是全是数字
 				var n_name = $("#n_id").combobox("getText");
-				$("#customerAddr").textbox("setValue",n_name+ldh[0]+"号楼"+ldh[1]+"单元"+ldh[2]);
+				$("#customerAddr").textbox("setValue",n_name+ldh[0]+"<fmt:message key='c.lou'/>"+ldh[1]+"<fmt:message key='c.dy'/>"+ldh[2]);
 				$("#c_num_").textbox("disableValidation");
 				return true;
 			}else{
@@ -458,7 +458,7 @@
 		//我操  这个c_num  和母页面中的c_num 冲突。。。   实在一个页面里面   如果在不同的iframe中就没事了
 		
 		if(n_id == ''){
-			$.messager.alert('Info','请选择小区！');
+			$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 			return;
 		}
 		if(!check_c_num(c_num)){
@@ -483,7 +483,7 @@
 					$('#customersubmit').linkbutton('enable');
 					$.messager.show({
 						title:"Info",
-						msg:"无此用户信息",
+						msg:"<fmt:message key='c.nocustomer'/>",
 						showType:'slide'
 					});
 				}
