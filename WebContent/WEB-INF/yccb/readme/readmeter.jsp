@@ -13,25 +13,25 @@
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<span style="width:400px;">
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:showMeterdata">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
-	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbor()" >抄当前小区</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" >抄全部小区</a>
+	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbor()" ><fmt:message key='read.this'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" ><fmt:message key='read.all'/></a>
 			</span>
 			<span style="margin-left:200px;">
 				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'auto'">
 					<c:forEach var="e" items="${export_list }">
 					<option value="${e.pid }">${e.exportName }</option>
 					</c:forEach>
-					<option value="0">默认导出格式</option>
+					<option value="0"><fmt:message key='read.exportdefault'/></option>
 				</select>
-				<a href="javascript:void(0)" class="easyui-linkbutton " onclick="exportsingle()" >导出当前小区</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton " onclick="exportall()" >导出全部</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton " onclick="exportsingle()" ><fmt:message key='read.exportthis'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton " onclick="exportall()" ><fmt:message key='read.exportall'/></a>
 			</span>
 		</form>
 	</div>
@@ -63,62 +63,62 @@ $(function(){
 		},
 		columns:[[
 		          {field:'m_id',title:'ID',width:60,checkbox:true},
-		          {field:'c_num',title:'用户号',width:80},
-		          {field:'customerName',title:'用户名',width:80},
-		          {field:'customerBalance',title:'余额',width:80,styler:function(value,row,index){
+		          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
+		          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+		          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:80,styler:function(value,row,index){
 		        	  if(value <= 0){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          }},
-		          {field:'n_name',title:'小区',width:80},
-		          {field:'g_addr',title:'集中器',width:80},
-		          {field:'collectorAddr',title:'采集器',width:80},
-		          {field:'meterAddr',title:'表地址',width:80},
-		          {field:'meterState',title:'表状态',width:80,styler:function(value,row,index){
+		          {field:'n_name',title:'<fmt:message key='common.neighborName'/>',width:80},
+		          {field:'g_addr',title:'<fmt:message key='gprs'/>',width:80},
+		          {field:'collectorAddr',title:'<fmt:message key='m.caddr'/>',width:80},
+		          {field:'meterAddr',title:'<fmt:message key='m.maddr'/>',width:80},
+		          {field:'meterState',title:'<fmt:message key='m.mstate'/>',width:80,styler:function(value,row,index){
 		        	  if(value != 1){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          },formatter:function(value,row,index){
 						if(value == 1){
-							return "正常";
+							return "<fmt:message key='m.mstateok'/>";
 						}
 						if(value == 2){
-							return "数据错误";
+							return "<fmt:message key='m.mstateerror'/>";
 						}
 						if(value == 3){
-							return "线路故障";
+							return "<fmt:message key='m.mstatebreak'/>";
 						}
 						if(value == 4){
-							return "超时";
+							return "<fmt:message key='m.mstatetimeout'/>";
 						}
 						if(value == 5){
-							return "人工修改";
+							return "<fmt:message key='m.mstatechange'/>";
 						}
 		          }},
-		          {field:'valveState',title:'阀门状态',width:80,editor:'text',formatter:function(value,row,index){
+		          {field:'valveState',title:'<fmt:message key='m.vstate'/>',width:80,editor:'text',formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "开";
+		        		  return "<fmt:message key='common.open'/>";
 		        	  }else{
 		        		  if(value == 0){
-		        			  return "关";
+		        			  return "<fmt:message key='common.close'/>";
 		        		  }else{
-		        			  return "异常";
+		        			  return "<fmt:message key='common.exception'/>";
 		        		  }
 		        		 
 		        	  }
 		          }},
-		          {field:'deread',title:'扣费读数',width:80},
-		          {field:'readdata',title:'表读数',width:80},
-		          {field:'readtime',title:'抄表时间',width:80,editor:'text'},
-		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
+		          {field:'deread',title:'<fmt:message key='m.deread'/>',width:80},
+		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
+		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80,editor:'text'},
+		          {field:'action',title:'<fmt:message key='common.action'/>',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
 							var id = row.m_id;
-							var action = "开阀";
+							var action = "<fmt:message key='m.open'/>";
 							if(row.valveState == 1){
-								action = "关阀";
+								action = "<fmt:message key='m.close'/>";
 							}
 							
-							return "<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'> 抄表 </a><c:if test="${menus['readvalve']=='t'}"><a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a></c:if><a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'> 修改 </a>";
+							return "<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'><fmt:message key='read'/></a><c:if test="${menus['readvalve']=='t'}"><a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a></c:if><a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'><fmt:message key='common.update'/></a>";
 				  }}
 		      ]]
 	});
@@ -137,14 +137,14 @@ $(function(){
 // 		singleSelect:true,
 		columns:[[
 				  {field:'pid',title:'ID',width:60,hidden:true},
-		          {field:'louNum',title:'楼',width:60},
-		          {field:'wasted',title:'已计入水损',width:100},
-		          {field:'waste',title:'本次水损',width:80},
-		          {field:'meterRead',title:'管理表读数',width:100},
-		          {field:'salveSum',title:'用户表和',width:80},
-		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
+		          {field:'louNum',title:'<fmt:message key='lou'/>',width:60},
+		          {field:'wasted',title:'<fmt:message key='read.wasted'/>',width:100},
+		          {field:'waste',title:'<fmt:message key='read.waste'/>',width:80},
+		          {field:'meterRead',title:'<fmt:message key='read.meterread'/>',width:100},
+		          {field:'salveSum',title:'<fmt:message key='read.slavesum'/>',width:80},
+		          {field:'action',title:'<fmt:message key='common.action'/>',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
-							return "<a href='#' class='operateHref' onclick='addwaste("+row.pid+","+index+")'>记入水损</a>";
+							return "<a href='#' class='operateHref' onclick='addwaste("+row.pid+","+index+")'><fmt:message key='read.addwaste'/></a>";
 				  }}
 		      ]]
 	});
@@ -176,10 +176,10 @@ function readNeighbor(){
 			},
 			success:function(data){
 				if(data.result == "success"){
-					$.messager.progress({title:"抄表中...",text:"",interval:100});
+					$.messager.progress({title:"<fmt:message key='read.reading'/>",text:"",interval:100});
 					interval = setInterval(function(){checkreading(data.pid,-1);},1000);
 				}else{
-					$.messager.alert('Error','抄表失败,请稍后再试');
+					$.messager.alert('Error','<fmt:message key='read.fail'/>');
 				}
 			}
 		});
@@ -192,10 +192,10 @@ function readNeighbors(){
 		dataType:"json",
 		success:function(data){
 			if(data.result == "success"){
-				$.messager.progress({title:"抄表中...",text:"",interval:100});
+				$.messager.progress({title:"<fmt:message key='read.reading'/>",text:"",interval:100});
 				interval = setInterval(function(){checkreading(data.pid,-1);},1000);
 			}else{
-				$.messager.alert('Error','抄表失败,请稍后再试');
+				$.messager.alert('Error','<fmt:message key='read.fail'/>');
 			}
 		}
 	});
@@ -210,16 +210,16 @@ function readMeter(mid,index){
 		},
 		success:function(data){
 			if(data.result == "success"){
-				$.messager.progress({title:"抄表中...",text:"",interval:100});
+				$.messager.progress({title:"<fmt:message key='read.reading'/>",text:"",interval:100});
 				interval = setInterval(function(){checkreading(data.pid,index);},1000);
 			}else{
-				$.messager.alert('Error','抄表失败,请稍后再试');
+				$.messager.alert('Error','<fmt:message key='read.fail'/>');
 			}
 		}
 	});
 }
 function readMeterManual(mid,index){
-	$.messager.prompt('修改表读数', '请输入正确的表读数', function(r){
+	$.messager.prompt('<fmt:message key='read.readchange'/>', '<fmt:message key='read.readright'/>', function(r){
         if (r){
 			if(r > 0 && r < 9999){
 				$.ajax({
@@ -238,14 +238,14 @@ function readMeterManual(mid,index){
 					}
 				});
 			}else{
-				 $.messager.alert('Error','表数错误：'+r+',请重新输入');
+				 $.messager.alert('Error','<fmt:message key='read.readerror'/>');
 			}
         }
     });
 }
 
 function addwaste(wid,index){
-	$.messager.prompt('记入水损', '请输入水损原因', function(r){
+	$.messager.prompt('<fmt:message key='read.addwaste'/>', '<fmt:message key='read.addwastereason'/>', function(r){
         if (r){
         	$.ajax({
 				type:"POST",
@@ -278,7 +278,7 @@ function checkreading(readlogid,index){
 			if(data.readStatus == 100){
 				clearInterval(interval);
 				$.messager.progress("close");
-				$.messager.alert('Result',"结果:"+data.result+"</br>失败原因:"+data.failReason,'info');  
+				$.messager.alert('Result',"<fmt:message key='result'/>:"+data.result+"</br><fmt:message key='failreason'/>:"+data.failReason,'info');  
 				if(data.readobject == 1){
 					//单个小区  
 					$('#readmeterTab').datagrid({
@@ -333,7 +333,7 @@ function openValve(mid,index_){
 				$.messager.progress({text:"",interval:100});
 				interval = setInterval(function(){checkcontroling(data.pid,index_);},1000);
 			}else{
-				$.messager.alert('Error','操作失败,请稍后再试');
+				$.messager.alert('Error','<fmt:message key='read.valvefail'/>');
 			}
 		}
 	});
@@ -350,7 +350,7 @@ function checkcontroling(valvelogid,index){
 			if(data.status == 100){
 				clearInterval(interval);
 				$.messager.progress("close");
-				$.messager.alert('Result',"完成个数:"+data.completecount+"</br>异常个数:"+data.errorcount,'info'); 
+				$.messager.alert('Result',"<fmt:message key='read.valvefinished'/>:"+data.completecount+"</br><fmt:message key='read.valveerror'/>:"+data.errorcount,'info'); 
 				
 				if(data.completecount+data.errorcount == 1){
 					//单个表
@@ -375,7 +375,7 @@ function exportsingle(){
 			url:"${path}/readme/read/downloadsingle.do",
 		});
 	}else{
-		$.messager.alert('Info','请选择小区');
+		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 	}
 }
 function exportall(){

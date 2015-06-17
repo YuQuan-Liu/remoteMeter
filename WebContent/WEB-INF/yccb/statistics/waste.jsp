@@ -12,18 +12,18 @@
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto'">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
 	    		
-	    		<label style="margin-left:20px;">年</label>
+	    		<label style="margin-left:20px;"><fmt:message key='year'/></label>
 	    		<input class="easyui-numberspinner" style="width:100px;" id="year_" name="year_" data-options="min:2015,max:2099" value=""/>
 	    		
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" >查找</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
 			</div>
 		</form>
 	</div>
@@ -39,10 +39,10 @@
 				loadMsg:'<fmt:message key="main.loading"/>',
 				rownumbers:true,
 				columns:[[
-				          {field:'settleTime',title:'结算日期',width:100},
-				          {field:'nread',title:'总表',width:100},
-				          {field:'slaveSum',title:'户表和',width:100},
-				          {field:'c',title:'差值',width:100,formatter:function(value,row,index){
+				          {field:'settleTime',title:'<fmt:message key='waste.settleTime'/>',width:100},
+				          {field:'nread',title:'<fmt:message key='waste.mainread'/>',width:100},
+				          {field:'slaveSum',title:'<fmt:message key='waste.salveSum'/>',width:100},
+				          {field:'c',title:'<fmt:message key='waste.c'/>',width:100,formatter:function(value,row,index){
 				        	  return row.nread-row.slaveSum;
 				          }}
 				      ]]

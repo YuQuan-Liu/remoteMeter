@@ -12,20 +12,20 @@
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:searchSettle">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
 	    		
 	    		<select class="easyui-combobox" id="settlelog" name="settlelog" style="width:200px" data-options="panelHeight:'auto',valueField:'pid',textField:'startTime',onSelect:searchCustomer">
-					<option value="">请选择结算</option>
+					<option value=""><fmt:message key='selectsettlelog'/></option>
 	    		</select>
 	    		
 	    		<span style="margin-left:20px;">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printstatistic()">打印扣费统计</a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printstatistic()"><fmt:message key='printdestatistic'/></a>
 	    		</span>
 			</div>
 		</form>
@@ -40,12 +40,12 @@
 <!-- 		<p>总用水量：</p><p id="allYL"></p> -->
 <!-- 	</div> -->
 	<div style="margin:10px;">
-		<p>用水量</p>
+		<p><fmt:message key='yl'/></p>
 	</div>
 	<table id="ylTab" style="width:400px;height:200px;"></table>
 	<div style="margin:10px;">
-		<label>阀门开关异常日志</label>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printControlError()" >导出日志</a>
+		<label><fmt:message key='close.log'/></label>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="printControlError()" ><fmt:message key='close.export'/></a>
 	</div>
 	<table id="controlErrorTab" style="width:100%;height:200px;"></table>
 <script>
@@ -67,49 +67,54 @@ $(function(){
 		columns:[[
 		          {field:'c_id',title:'ID',width:60,checkbox:true},
 		          {field:'m_id',title:'MID',width:60,hidden:true},
-		          {field:'c_num',title:'用户号',width:80},
-		          {field:'customerName',title:'用户名',width:80},
-		          {field:'customerAddr',title:'地址',width:80},
-		          {field:'customerMobile',title:'手机',width:80},
-		          {field:'customerEmail',title:'邮箱',width:80},
-		          {field:'customerBalance',title:'余额',width:80,styler:function(value,row,index){
+		          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
+		          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+		          {field:'customerAddr',title:'<fmt:message key='common.addr'/>',width:80},
+		          {field:'customerMobile',title:'<fmt:message key='common.mobile'/>',width:80},
+		          {field:'customerEmail',title:'<fmt:message key='common.email'/>',width:80},
+		          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:80,styler:function(value,row,index){
 		        	  if(value <= row.warnThre){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          }},
-		          {field:'warnThre',title:'提醒阀值',width:80},
-		          {field:'collectorAddr',title:'采集器',width:80},
-		          {field:'meterAddr',title:'表地址',width:80},
-		          {field:'steelNum',title:'钢印号',width:80},
-		          {field:'meterState',title:'表状态',width:80,styler:function(value,row,index){
+		          {field:'warnThre',title:'<fmt:message key='c.warnthre'/>',width:80},
+		          {field:'collectorAddr',title:'<fmt:message key='m.caddr'/>',width:80},
+		          {field:'meterAddr',title:'<fmt:message key='m.maddr'/>',width:80},
+		          {field:'steelNum',title:'<fmt:message key='m.steel'/>',width:80},
+		          {field:'meterState',title:'<fmt:message key='m.mstate'/>',width:80,styler:function(value,row,index){
 		        	  if(value != 1){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          },formatter:function(value,row,index){
 						if(value == 1){
-							return "正常";
+							return "<fmt:message key='m.mstateok'/>";
 						}
 						if(value == 2){
-							return "数据错误";
+							return "<fmt:message key='m.mstateerror'/>";
 						}
 						if(value == 3){
-							return "线路故障";
+							return "<fmt:message key='m.mstatebreak'/>";
 						}
 						if(value == 4){
-							return "超时";
+							return "<fmt:message key='m.mstatetimeout'/>";
 						}
 						if(value == 5){
-							return "人工修改";
+							return "<fmt:message key='m.mstatechange'/>";
 						}
 		          }},
-		          {field:'pricekindname',title:'扣费单价',width:80},
-		          {field:'lastderead',title:'上次读数',width:80},
-		          {field:'meterread',title:'本次读数',width:80},
-		          {field:'meterreadtime',title:'抄表时间',width:80},
-		          {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
-						return row.meterread-row.lastderead;
+		          {field:'pricekindname',title:'<fmt:message key='m.pk'/>',width:80},
+		          {field:'lastderead',title:'<fmt:message key='m.deread'/>',width:80},
+		          {field:'meterread',title:'<fmt:message key='m.readdata'/>',width:80},
+		          {field:'changeend',title:'<fmt:message key='m.changeend'/>',width:80},
+		          {field:'meterreadtime',title:'<fmt:message key='m.readtime'/>',width:80},
+		          {field:'yl',title:'<fmt:message key='yl'/>',width:80,formatter:function(value,row,index){
+		        	  if(row.changeend > 0){
+		        		  return row.meterread+row.changeend-row.lastderead;
+		        	  }else{
+		        		  return row.meterread-row.lastderead;
+		        	  }
 		          }},
-		          {field:'demoney',title:'扣费金额',width:80},
+		          {field:'demoney',title:'<fmt:message key='demoney'/>',width:80},
 		          {field:'printed',title:'printed',width:60,hidden:true},
 		          {field:'payed',title:'payed',width:60,hidden:true}
 		      ]]
@@ -120,9 +125,9 @@ $(function(){
 		loadMsg:'<fmt:message key="main.loading"/>',
 		rownumbers:true,
 		columns:[[
-		          {field:'pricekindname',title:'单价',width:100},
-		          {field:'yl',title:'用水量',width:100},
-		          {field:'demoney',title:'用水量',width:100}
+		          {field:'pricekindname',title:'<fmt:message key='m.pk'/>',width:100},
+		          {field:'yl',title:'<fmt:message key='yl'/>',width:100},
+		          {field:'demoney',title:'<fmt:message key='demoney'/>',width:100}
 		      ]]
 	});
 	$("#controlErrorTab").datagrid({
@@ -139,56 +144,57 @@ $(function(){
 		columns:[[
 		          {field:'m_id',title:'ID',width:60,checkbox:true},
 		          {field:'c_id',title:'CID',width:60,hidden:true},
-		          {field:'c_num',title:'用户号',width:80},
-		          {field:'customerName',title:'用户名',width:80},
-		          {field:'customerAddr',title:'地址',width:80},
-		          {field:'customerMobile',title:'手机',width:80},
-		          {field:'customerBalance',title:'余额',width:80,styler:function(value,row,index){
+		          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
+		          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+		          {field:'customerAddr',title:'<fmt:message key='common.addr'/>',width:80},
+		          {field:'customerMobile',title:'<fmt:message key='common.mobile'/>',width:80},
+		          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:80,styler:function(value,row,index){
 		        	  if(value <= row.warnThre){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          }},
-		          {field:'g_addr',title:'集中器',width:80},
-		          {field:'collectorAddr',title:'采集器',width:80},
-		          {field:'meterAddr',title:'表地址',width:80},
-		          {field:'meterState',title:'表状态',width:80,styler:function(value,row,index){
+		          {field:'g_addr',title:'<fmt:message key='gprs'/>',width:80},
+		          {field:'collectorAddr',title:'<fmt:message key='m.caddr'/>',width:80},
+		          {field:'meterAddr',title:'<fmt:message key='m.maddr'/>',width:80},
+		          {field:'meterState',title:'<fmt:message key='m.mstate'/>',width:80,styler:function(value,row,index){
 		        	  if(value != 1){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          },formatter:function(value,row,index){
-						if(value == 1){
-							return "正常";
+		        	  if(value == 1){
+							return "<fmt:message key='m.mstateok'/>";
 						}
 						if(value == 2){
-							return "数据错误";
+							return "<fmt:message key='m.mstateerror'/>";
 						}
 						if(value == 3){
-							return "线路故障";
+							return "<fmt:message key='m.mstatebreak'/>";
 						}
 						if(value == 4){
-							return "超时";
+							return "<fmt:message key='m.mstatetimeout'/>";
 						}
 						if(value == 5){
-							return "人工修改";
+							return "<fmt:message key='m.mstatechange'/>";
 						}
 		          }},
-		          {field:'valveState',title:'阀门状态',width:80,editor:'text',formatter:function(value,row,index){
+		          {field:'valveState',title:'<fmt:message key='m.vstate'/>',width:80,editor:'text',formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "开";
+		        		  return "<fmt:message key='common.open'/>";
 		        	  }else{
 		        		  if(value == 0){
-		        			  return "关";
+		        			  return "<fmt:message key='common.close'/>";
 		        		  }else{
-		        			  return "异常";
+		        			  return "<fmt:message key='common.exception'/>";
 		        		  }
+		        		 
 		        	  }
 		          }},
-		          {field:'switch_',title:'阀门操作',width:80},
-		          {field:'errorReason',title:'异常原因',width:80},
-		          {field:'completeTime',title:'操作时间',width:80},
-		          {field:'action',title:'操作',width:80,halign:'center',align:'center',
+		          {field:'switch_',title:'<fmt:message key='close.valvecontrol'/>',width:80},
+		          {field:'errorReason',title:'<fmt:message key='close.reason'/>',width:80},
+		          {field:'completeTime',title:'<fmt:message key='close.actiontime'/>',width:80},
+		          {field:'action',title:'<fmt:message key='common.action'/>',width:80,halign:'center',align:'center',
 						formatter: function(value,row,index){
-							return "<a href='#' class='operateHref' onclick='resolveError("+row.conf_id+","+index+")'>解除异常</a>";
+							return "<a href='#' class='operateHref' onclick='resolveError("+row.conf_id+","+index+")'><fmt:message key='close.resolveerror'/></a>";
 				  }}
 		      ]]
 	});
@@ -232,7 +238,7 @@ function searchCustomer(){
 }
 
 function resolveError(conf_id,index_){
-	$.messager.prompt('解除阀控异常', '请输入异常原因', function(r){
+	$.messager.prompt('<fmt:message key='close.resolveerror'/>', '<fmt:message key='close.reason'/>', function(r){
         if (r){
         	$.ajax({
 				type:"POST",
@@ -264,7 +270,7 @@ function printControlError(){
 			url:"${path}/charge/valve/downloaderror.do",
 		});
 	}else{
-		$.messager.alert('Info','请选择小区');
+		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 	}
 }
 </script>

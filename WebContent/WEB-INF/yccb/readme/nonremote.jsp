@@ -12,15 +12,15 @@
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:showMeterdata">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
-	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="upload_()" >Excel上传</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="download_()" >手持导出</a>
+	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="upload_()" ><fmt:message key='readnon.upload'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="download_()" ><fmt:message key='readnon.download'/></a>
 				
 			</div>
 		</form>
@@ -31,11 +31,11 @@
 	</div>
 	<div id="uploadWin"></div>
 	<div style="margin:10px;">
-		<label>抄表批次</label>
+		<label><fmt:message key='readnon.readlog'/></label>
 		<select class="easyui-combobox" id="readlog" name="readlog" style="width:200px" data-options="panelHeight:'auto',valueField:'pid',textField:'completetime'">
-			<option value="">请选择批次</option>
+			<option value=""><fmt:message key='common.selectreadlog'/></option>
 	    </select>
-	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addreadlog()" >添加批次</a><span style="color:red;margin-left:20px;">"添加批次"仅用于没有远传表的小区使用</span>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addreadlog()" ><fmt:message key='readnon.addreadlog'/></a><span style="color:red;margin-left:20px;"><fmt:message key='readnon.addreadlogremark'/></span>
 	</div>
 	<table id="nonRemoteTab" style="width:100%;height:400px;"></table>
 <script>
@@ -57,55 +57,55 @@ $(function(){
 		onClickRow: onClickRow,
 		columns:[[
 		          {field:'m_id',title:'ID',width:60,checkbox:true},
-		          {field:'c_num',title:'用户号',width:80},
-		          {field:'customerName',title:'用户名',width:80},
-		          {field:'customerBalance',title:'余额',width:80,styler:function(value,row,index){
+		          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
+		          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+		          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:80,styler:function(value,row,index){
 		        	  if(value <= 0){
 		        		  return 'background-color:#ffee00;color:red;';
 		        	  }
 		          }},
-		          {field:'prePaySign',title:'付费',width:40,formatter:function(value,row,index){
+		          {field:'prePaySign',title:'<fmt:message key='c.prestyle'/>',width:40,formatter:function(value,row,index){
 		        	  if(value == 1){
-		        		  return "预";
+		        		  return "<fmt:message key='c.pre'/>";
 		        	  }else{
-		        		  return "后";
+		        		  return "<fmt:message key='c.post'/>";
 		        	  }
 		          }},
-		          {field:'g_addr',title:'集中器',width:80},
-		          {field:'collectorAddr',title:'采集器',width:80},
-		          {field:'meterAddr',title:'表地址',width:80},
-		          {field:'meterState',title:'表状态',width:80,formatter:function(value,row,index){
-						if(value == 1){
-							return "正常";
+		          {field:'g_addr',title:'<fmt:message key='gprs'/>',width:80},
+		          {field:'collectorAddr',title:'<fmt:message key='m.caddr'/>',width:80},
+		          {field:'meterAddr',title:'<fmt:message key='m.maddr'/>',width:80},
+		          {field:'meterState',title:'<fmt:message key='m.mstate'/>',width:80,formatter:function(value,row,index){
+		        	  if(value == 1){
+							return "<fmt:message key='m.mstateok'/>";
 						}
 						if(value == 2){
-							return "数据错误";
+							return "<fmt:message key='m.mstateerror'/>";
 						}
 						if(value == 3){
-							return "线路故障";
+							return "<fmt:message key='m.mstatebreak'/>";
 						}
 						if(value == 4){
-							return "超时";
+							return "<fmt:message key='m.mstatetimeout'/>";
 						}
 						if(value == 5){
-							return "人工修改";
+							return "<fmt:message key='m.mstatechange'/>";
 						}
 		          }},
-		          {field:'deread',title:'扣费读数',width:80},
-		          {field:'readdata',title:'上次表读数',width:80},
-		          {field:'readtime',title:'上次抄表时间',width:80},
-		          {field:'newread',title:'表读数',width:70,editor:{type:'numberbox'}},
-		          {field:'yl',title:'用量',width:70,styler:function(value,row,index){
+		          {field:'deread',title:'<fmt:message key='m.deread'/>',width:80},
+		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
+		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},
+		          {field:'newread',title:'<fmt:message key='readnon.newread'/>',width:70,editor:{type:'numberbox'}},
+		          {field:'yl',title:'<fmt:message key='yl'/>',width:70,styler:function(value,row,index){
 		        	  if(value > 30){
 		        		  return 'color:red;';
 		        	  }
 		          },formatter: function(value,row,index){
 						return row.readdata-row.deread;
 				  }},
-		          {field:'action',title:'操作',width:200,halign:'center',align:'center',
+		          {field:'action',title:'<fmt:message key='common.action'/>',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
 							var id = row.m_id;
-							return "<a href='#' class='operateHref' onclick='readManual("+id+","+index+")'> 录入 </a>";
+							return "<a href='#' class='operateHref' onclick='readManual("+id+","+index+")'><fmt:message key='readnon.enter'/></a>";
 				  }}
 		      ]]
 	});
@@ -175,7 +175,7 @@ function readManual(id,index){
     	    	});
         	}else{
         		if(readlogid == ""){
-            		$.messager.alert('Error','请选择抄表批次');
+            		$.messager.alert('Error','<fmt:message key='common.selectreadlog'/>');
         		}
         	}
         }
@@ -195,7 +195,7 @@ function download_(){
 			url:"${path}/readme/nonremote/download.do",
 		});
 	}else{
-		$.messager.alert('Info','请选择小区');
+		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 	}
 	
 }
@@ -203,7 +203,7 @@ function download_(){
 function upload_(){
 	var readlog = $("#readlog").combobox("getValue");
 	if(readlog == ""){
-		$.messager.alert('Info','请选择抄表批次');
+		$.messager.alert('Info','<fmt:message key='common.selectreadlog'/>');
 		return;
 	}
 	
@@ -214,7 +214,7 @@ function upload_(){
 		minimizable:false,
 		maximizable:false,
 		collapsible:false,
-		title: '上传非远传表具'
+		title: 'Upload'
 	});
 }
 
@@ -243,7 +243,7 @@ function addreadlog(){
     		}
     	});
 	}else{
-		$.messager.alert('Info','请选择小区');
+		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 	}
 }
 </script>

@@ -12,18 +12,18 @@
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto'">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
 	    		
-	    		<label>日期</label>
+	    		<label><fmt:message key='month'/></label>
 				<input class="easyui-datetimespinner" id="month" data-options="highlight:1,formatter:formatter2,parser:parser2,selections:[[0,4],[5,7]]"  style="width:100px"/>
 				
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" >查找</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
 			</div>
 		</form>
 	</div>
@@ -139,7 +139,7 @@
         			}
         		});
         	}else{
-        		$.messager.alert('Info', '请选择小区！');
+        		$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
 				return;
         	}
         }

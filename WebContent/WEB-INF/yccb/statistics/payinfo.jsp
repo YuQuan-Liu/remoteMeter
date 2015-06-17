@@ -12,9 +12,9 @@
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto'">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
@@ -23,22 +23,22 @@
 	    		<input class="easyui-datebox" id="from"></input>
 	    		<input class="easyui-datebox" id="to"></input> 
 	    		<select class="easyui-combobox" id="pre" name="pre" data-options="panelHeight:'auto'" style="width: 148px;">
-					<option value="1" selected="selected">预付费</option>
-					<option value="0">后付费</option>
-					<option value="2">全部</option>
+					<option value="1" selected="selected"><fmt:message key='statis.pre'/></option>
+					<option value="0"><fmt:message key='statis.post'/></option>
+					<option value="2"><fmt:message key='statis.all'/></option>
 				</select> 
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" >查找</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="print()" >打印</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="print()" ><fmt:message key='print'/></a>
 			</div>
 		</form>
 	</div>
 	<table id="paylogTab" style="width:100%;height:400px;"></table>
 	<div style="margin:10px;float:left;">
-		<p>管理员统计</p>
+		<p><fmt:message key='payinfo.admin'/></p>
 		<table id="adminSumTab" style="width:400px;height:200px;"></table>
 	</div>
 	<div style="margin:10px;float:left;">
-		<p>小区金额</p>
+		<p><fmt:message key='neighborbalance'/></p>
 		<table id="nbalanceTab" style="width:400px;height:200px;"></table>
 	</div>
 	<script type="text/javascript">
@@ -58,25 +58,25 @@
 					
 				},
 				columns:[[
-				          {field:'c_num',title:'用户号',width:80},
-				          {field:'customerName',title:'用户名',width:80},
-				          {field:'customerAddr',title:'地址',width:80},
-				          {field:'customerBalance',title:'余额',width:80,styler:function(value,row,index){
+				          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
+				          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+				          {field:'customerAddr',title:'<fmt:message key='common.addr'/>',width:80},
+				          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:80,styler:function(value,row,index){
 				        	  if(value <= row.warnThre){
 				        		  return 'background-color:#ffee00;color:red;';
 				        	  }
 				          }},
-				          {field:'customerMobile',title:'手机',width:80},
-				          {field:'prePaySign',title:'付费方式',width:80,formatter:function(value,row,index){
-				        	  if(row.prePaySign==1){
-				        		  return "预";
+				          {field:'customerMobile',title:'<fmt:message key='common.mobile'/>',width:80},
+				          {field:'prePaySign',title:'<fmt:message key='c.prestyle'/>',width:60,formatter:function(value,row,index){
+				        	  if(value == 1){
+				        		  return "<fmt:message key='c.pre'/>";
 				        	  }else{
-				        		  return "后";
+				        		  return "<fmt:message key='c.post'/>";
 				        	  }
 				          }},
-				          {field:'amount',title:'交费金额',width:80},
-				          {field:'adminName',title:'管理员',width:80},
-				          {field:'actionTime',title:'收费时间',width:80}
+						  {field:'amount',title:'<fmt:message key='charge.amount'/>',width:60},
+						  {field:'actionTime',title:'<fmt:message key='charge.paytime'/>',width:60},
+						  {field:'adminName',title:'<fmt:message key='charge.payadmin'/>',width:60}
 				      ]]
 			});
 			$("#adminSumTab").datagrid({
@@ -85,8 +85,8 @@
 				loadMsg:'<fmt:message key="main.loading"/>',
 				rownumbers:true,
 				columns:[[
-				          {field:'adminName',title:'管理员',width:100},
-				          {field:'amount',title:'收费合计',width:100}
+				          {field:'adminName',title:'<fmt:message key='admin'/>',width:100},
+				          {field:'amount',title:'<fmt:message key='payinfo.sum'/>',width:100}
 				      ]]
 			});
 			$("#nbalanceTab").datagrid({
@@ -95,8 +95,8 @@
 				loadMsg:'<fmt:message key="main.loading"/>',
 				rownumbers:true,
 				columns:[[
-				          {field:'pre',title:'付费',width:100},
-				          {field:'balance',title:'余额',width:100}
+				          {field:'pre',title:'<fmt:message key='payinfo.paystyle'/>',width:100},
+				          {field:'balance',title:'<fmt:message key='balance'/>',width:100}
 				      ]]
 			});
 		});
@@ -110,15 +110,15 @@
 
 			if (n_id == "") {
 
-				$.messager.alert('Info', '请选择小区');
+				$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
 				return;
 			}
 			if (start == "") {
-				$.messager.alert('Info', '请选择开始时间！');
+				$.messager.alert('Info', '<fmt:message key='payinfo.start'/>');
 				return;
 			}
 			if (end == "") {
-				$.messager.alert('Info', '请选择截止时间！');
+				$.messager.alert('Info', '<fmt:message key='payinfo.end'/>');
 				return;
 			}
 			$('#paylogTab').datagrid({
@@ -160,7 +160,7 @@
 
 			if (n_id == "") {
 
-				$.messager.alert('Info', '请选择小区');
+				$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
 				return;
 				$("#n_id").val(n_id);
 				$("#n_name").val(n_name);
@@ -170,11 +170,11 @@
 				});
 			}
 			if (start == "") {
-				$.messager.alert('Info', '请选择开始时间！');
+				$.messager.alert('Info', '<fmt:message key='payinfo.start'/>');
 				return;
 			}
 			if (end == "") {
-				$.messager.alert('Info', '请选择截止时间！');
+				$.messager.alert('Info', '<fmt:message key='payinfo.end'/>');
 				return;
 			}
 			// 			var url = encodeURI();

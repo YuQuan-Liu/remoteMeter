@@ -13,10 +13,10 @@
 		<form id="" method="post">
 			<div>
 				
-	    		<label style="margin-right:10px;">年</label>
+	    		<label style="margin-right:10px;"><fmt:message key='year'/></label>
 	    		<input class="easyui-numberspinner" style="width:100px;" id="year_" name="year_" data-options="min:2015,max:2099" value=""/>
 	    		
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" >查找</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
 			</div>
 		</form>
 	</div>
@@ -39,14 +39,14 @@
 				singleSelect:true,
 				columns:[[
 				          {field:'n_id',title:'ID',width:60,hidden:true},
-				          {field:'n_name',title:'小区',width:80},
-				          {field:'owecount',title:'欠费户数',width:80},
-				          {field:'allcount',title:'总用户数',width:80},
-				          {field:'owebalance',title:'欠费金额',width:80},
-				          {field:'demoney',title:'应收金额',width:80},
-				          {field:'balance',title:'小区余额',width:80},
-				          {field:'owerate',title:'欠费用户比例',width:80},
-				          {field:'chargerate',title:'收费率',width:80}
+				          {field:'n_name',title:'<fmt:message key='common.neighborName'/>',width:80},
+				          {field:'owecount',title:'<fmt:message key="rate.owecount"/>',width:80},
+				          {field:'allcount',title:'<fmt:message key="rate.allcount"/>',width:80},
+				          {field:'owebalance',title:'<fmt:message key="rate.owebalance"/>',width:80},
+				          {field:'demoney',title:'<fmt:message key="rate.demoney"/>',width:80},
+				          {field:'balance',title:'<fmt:message key="rate.balance"/>',width:80},
+				          {field:'owerate',title:'<fmt:message key="rate.owerate"/>',width:80},
+				          {field:'chargerate',title:'<fmt:message key="rate.chargerate"/>',width:80}
 				      ]]
 			});
 			

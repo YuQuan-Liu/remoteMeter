@@ -13,19 +13,19 @@
 		<form id="" method="post">
 			<div>
 				
-	    		<label style="margin-right:10px;">年</label>
+	    		<label style="margin-right:10px;"><fmt:message key='year'/></label>
 	    		<input class="easyui-numberspinner" style="width:100px;" id="year_" name="year_" data-options="min:2015,max:2099" value=""/>
 	    		
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" >查找</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
 			</div>
 		</form>
 	</div>
 	<div style="margin-top:10px;float:left;">
-		<p>小区结算记录</p>
+		<p><fmt:message key='settlelog.settlelogs'/></p>
 		<table id="settlewaterTab" style="width:700px;height:300px;"></table>
 	</div>
 	<div style="margin-top:10px;margin-left:10px;float:left;">
-		<p>小区结算统计</p>
+		<p><fmt:message key='settlelog.settlestatis'/></p>
 		<table id="settlewaterNTab" style="width:700px;height:300px;"></table>
 	</div>
 	
@@ -44,13 +44,13 @@
 				singleSelect:true,
 				columns:[[
 				          {field:'n_id',title:'ID',width:60,hidden:true},
-				          {field:'n_name',title:'小区',width:80},
-				          {field:'yl',title:'用量',width:80},
-				          {field:'demoney',title:'金额',width:80},
-				          {field:'startTime',title:'结算月',width:80},
-				          {field:'action',title:'操作',width:100,halign:'center',align:'center',
+				          {field:'n_name',title:'<fmt:message key="common.neighborName"/>',width:80},
+				          {field:'yl',title:'<fmt:message key="yl"/>',width:80},
+				          {field:'demoney',title:'<fmt:message key="amount"/>',width:80},
+				          {field:'startTime',title:'<fmt:message key="settlelog.month"/>',width:80},
+				          {field:'action',title:'<fmt:message key="common.action"/>',width:100,halign:'center',align:'center',
 								formatter: function(value,row,index){
-									return "<a href='#' class='operateHref' onclick='draw("+row.n_id+","+index+")'>绘制小区曲线</a>";
+									return "<a href='#' class='operateHref' onclick='draw("+row.n_id+","+index+")'><fmt:message key="settlelog.draw"/></a>";
 						  }}
 				      ]]
 			});
@@ -64,9 +64,9 @@
 				singleSelect:true,
 				columns:[[
 				          {field:'n_id',title:'ID',width:60,hidden:true},
-				          {field:'n_name',title:'小区',width:80},
-				          {field:'yl',title:'用量',width:80},
-				          {field:'demoney',title:'金额',width:80}
+				          {field:'n_name',title:'<fmt:message key="common.neighborName"/>',width:80},
+				          {field:'yl',title:'<fmt:message key="yl"/>',width:80},
+				          {field:'demoney',title:'<fmt:message key="amount"/>',width:80}
 				      ]]
 			});
 		});

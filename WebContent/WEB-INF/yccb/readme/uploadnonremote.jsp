@@ -11,11 +11,11 @@
 <body>
 	<form id="uploadreads" method="post" enctype="multipart/form-data">
 		<div style="margin:10px;">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chooseFile()">选择文件...</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chooseFile()"><fmt:message key='c.choosefile'/></a>
 			<input type="file" id="file" name="file" accept=".xls" hidden="true" onchange="updateName()"/>
 			<input type="text" id="name" name="name" hidden="true"/>
 <!-- 			<input class="easyui-filebox" style="width:300px;"/> -->
-			<a href="javascript:void(0)" class="easyui-linkbutton" id="upload" onclick="submitUpload()">上传</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" id="upload" onclick="submitUpload()"><fmt:message key='common.upload'/></a>
 		</div>
 	</form>
 	<script>
@@ -28,7 +28,7 @@
 	function submitUpload(){
 		
 		var readlogid = $("#readlog").combobox("getValue");
-		$.messager.progress({title:"上传中...",text:"",interval:100});
+		$.messager.progress({title:"<fmt:message key='common.uploading'/>",text:"",interval:100});
 		$("#uploadreads").form("submit",{
 			url:"${path}/readme/nonremote/upload.do",
 			onSubmit:function(param){

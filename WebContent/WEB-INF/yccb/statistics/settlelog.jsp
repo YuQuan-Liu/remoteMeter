@@ -12,36 +12,36 @@
 	<div style="margin:10px;">
 		<form id="" method="post">
 			<div>
-				<label>小区</label>
+				<label><fmt:message key='common.neighborName'/></label>
 				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:searchSettle">
-					<option value="">请选择小区</option>
+					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
 	    		
-	    		<label>结算</label>
+	    		<label><fmt:message key='settle'/></label>
 				<select class="easyui-combobox" id="settlelog" name="settlelog" style="width:200px" data-options="panelHeight:'auto',valueField:'pid',textField:'startTime'">
-					<option value="">请选择结算</option>
+					<option value=""><fmt:message key='selectsettlelog'/></option>
 	    		</select>
 	    		
 	    		<select class="easyui-combobox" id="pre" name="pre" data-options="panelHeight:'auto'" style="width: 148px;">
-					<option value="1" selected="selected">预付费</option>
-					<option value="0">后付费</option>
-					<option value="2">全部</option>
+					<option value="1" selected="selected"><fmt:message key='statis.pre'/></option>
+					<option value="0"><fmt:message key='statis.post'/></option>
+					<option value="2"><fmt:message key='statis.all'/></option>
 				</select> 
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" >查找</a>
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="print()" >打印</a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="print()" ><fmt:message key='print'/></a>
 			</div>
 		</form>
 	</div>
 	<table id="delogTab" style="width:100%;height:400px;"></table>
 	<div style="margin:10px;float:left;">
-		<p>水量统计</p>
+		<p><fmt:message key='settlelog.yl'/></p>
 		<table id="ylTab" style="width:400px;height:200px;"></table>
 	</div>
 	<div style="margin:10px;float:left;">
-		<p>小区金额</p>
+		<p><fmt:message key='neighborbalance'/></p>
 		<table id="nbalanceTab" style="width:400px;height:200px;"></table>
 	</div>
 	<script type="text/javascript">
@@ -63,50 +63,54 @@
 				columns:[[
 				          {field:'c_id',title:'ID',width:60,checkbox:true},
 				          {field:'m_id',title:'MID',width:60,hidden:true},
-				          {field:'c_num',title:'用户号',width:80},
-				          {field:'customerName',title:'用户名',width:80},
-				          {field:'customerAddr',title:'地址',width:80},
-				          {field:'customerMobile',title:'手机',width:80},
-				          {field:'customerEmail',title:'邮箱',width:80},
-				          {field:'customerBalance',title:'余额',width:80,styler:function(value,row,index){
+				          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
+				          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+				          {field:'customerAddr',title:'<fmt:message key='common.addr'/>',width:80},
+				          {field:'customerMobile',title:'<fmt:message key='common.mobile'/>',width:80},
+				          {field:'customerEmail',title:'<fmt:message key='common.email'/>',width:80},
+				          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:80,styler:function(value,row,index){
 				        	  if(value <= row.warnThre){
 				        		  return 'background-color:#ffee00;color:red;';
 				        	  }
 				          }},
-				          {field:'warnThre',title:'提醒阀值',width:80},
-				          {field:'collectorAddr',title:'采集器',width:80},
-				          {field:'meterAddr',title:'表地址',width:80},
-				          {field:'steelNum',title:'钢印号',width:80},
-				          {field:'meterState',title:'表状态',width:80,formatter:function(value,row,index){
+				          {field:'warnThre',title:'<fmt:message key='c.warnthre'/>',width:80},
+				          {field:'collectorAddr',title:'<fmt:message key='m.caddr'/>',width:80},
+				          {field:'meterAddr',title:'<fmt:message key='m.maddr'/>',width:80},
+				          {field:'steelNum',title:'<fmt:message key='m.steel'/>',width:80},
+				          {field:'meterState',title:'<fmt:message key='m.mstate'/>',width:80,styler:function(value,row,index){
+				        	  if(value != 1){
+				        		  return 'background-color:#ffee00;color:red;';
+				        	  }
+				          },formatter:function(value,row,index){
 								if(value == 1){
-									return "正常";
+									return "<fmt:message key='m.mstateok'/>";
 								}
 								if(value == 2){
-									return "数据错误";
+									return "<fmt:message key='m.mstateerror'/>";
 								}
 								if(value == 3){
-									return "线路故障";
+									return "<fmt:message key='m.mstatebreak'/>";
 								}
 								if(value == 4){
-									return "超时";
+									return "<fmt:message key='m.mstatetimeout'/>";
 								}
 								if(value == 5){
-									return "人工修改";
+									return "<fmt:message key='m.mstatechange'/>";
 								}
 				          }},
-				          {field:'pricekindname',title:'扣费单价',width:80},
-				          {field:'lastderead',title:'上次读数',width:80},
-				          {field:'meterread',title:'本次读数',width:80},
-				          {field:'changeend',title:'换表底数',width:80},
-				          {field:'meterreadtime',title:'抄表时间',width:80},
-				          {field:'yl',title:'用量',width:80,formatter:function(value,row,index){
+				          {field:'pricekindname',title:'<fmt:message key='m.pk'/>',width:80},
+				          {field:'lastderead',title:'<fmt:message key='m.deread'/>',width:80},
+				          {field:'meterread',title:'<fmt:message key='m.readdata'/>',width:80},
+				          {field:'changeend',title:'<fmt:message key='m.changeend'/>',width:80},
+				          {field:'meterreadtime',title:'<fmt:message key='m.readtime'/>',width:80},
+				          {field:'yl',title:'<fmt:message key='yl'/>',width:80,formatter:function(value,row,index){
 				        	  if(row.changeend > 0){
 				        		  return row.meterread+row.changeend-row.lastderead;
 				        	  }else{
 				        		  return row.meterread-row.lastderead;
 				        	  }
 				          }},
-				          {field:'demoney',title:'扣费金额',width:80},
+				          {field:'demoney',title:'<fmt:message key='demoney'/>',width:80},
 				          {field:'printed',title:'printed',width:60,hidden:true},
 				          {field:'payed',title:'payed',width:60,hidden:true}
 				      ]]
@@ -117,9 +121,9 @@
 				loadMsg:'<fmt:message key="main.loading"/>',
 				rownumbers:true,
 				columns:[[
-				          {field:'pricekindname',title:'单价',width:100},
-				          {field:'yl',title:'用水量',width:100},
-				          {field:'demoney',title:'金额',width:100}
+				          {field:'pricekindname',title:'<fmt:message key='m.pk'/>',width:100},
+				          {field:'yl',title:'<fmt:message key='yl'/>',width:100},
+				          {field:'demoney',title:'<fmt:message key='demoney'/>',width:100}
 				      ]]
 			});
 			$("#nbalanceTab").datagrid({
@@ -128,8 +132,8 @@
 				loadMsg:'<fmt:message key="main.loading"/>',
 				rownumbers:true,
 				columns:[[
-				          {field:'pre',title:'付费',width:100},
-				          {field:'balance',title:'余额',width:100}
+				          {field:'pre',title:'<fmt:message key='payinfo.paystyle'/>',width:100},
+				          {field:'balance',title:'<fmt:message key='balance'/>',width:100}
 				      ]]
 			});
 		});
@@ -140,11 +144,11 @@
 			var settle_id = $("#settlelog").combobox("getValue");
 
 			if (n_id == "") {
-				$.messager.alert('Info', '请选择小区！');
+				$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
 				return;
 			}
 			if (settle_id == "") {
-				$.messager.alert('Info', '请选择结算！');
+				$.messager.alert('Info', '<fmt:message key='selectsettlelog'/>');
 				return;
 			}
 			$('#delogTab').datagrid({
@@ -181,11 +185,11 @@
 			var settle_time = $("#settlelog").combobox("getText");
 
 			if (n_id == "") {
-				$.messager.alert('Info', '请选择小区！');
+				$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
 				return;
 			}
 			if (settle_id == "") {
-				$.messager.alert('Info', '请选择结算！');
+				$.messager.alert('Info', '<fmt:message key='selectsettlelog'/>');
 				return;
 			}
 			window.open("${path}/statistics/settlelog/print.do?n_id=" + n_id
