@@ -29,15 +29,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.RoleAuthority;
+import com.xdkj.yccb.main.logger.ActionLogService;
 @Controller
 public class LoginCtrl {
 	@Autowired
 	private AdministratorService administratorService;
+	@Autowired
+	private ActionLogService actionLogService;
 	
 	@RequestMapping(value="/resource/login")
 	public String login(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -83,6 +87,8 @@ public class LoginCtrl {
 				menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
 			}
 			ufs.setMenus(menus);
+			//log
+			actionLogService.addActionlog(admin.getPid(), 99, "login:adminid"+admin.getPid());
 			
 			request.getSession().setAttribute("curuser", ufs);
 			
@@ -93,6 +99,9 @@ public class LoginCtrl {
 	
 	@RequestMapping(value="logout")
 	public String logout(HttpServletRequest request){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 100, "logout:adminid"+WebUtil.getCurrUser(request).getPid());
 		
 		HttpSession session = request.getSession();
 		session.removeAttribute("curuser");

@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.adminor;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.PriceService;
 import com.xdkj.yccb.main.entity.Pricekind;
 import com.xdkj.yccb.main.entity.Watercompany;
+import com.xdkj.yccb.main.logger.ActionLogService;
 import com.xdkj.yccb.security.UserForSession;
 /**
  * 单价
@@ -31,6 +33,8 @@ import com.xdkj.yccb.security.UserForSession;
 public class PriceCtrl {
 	@Autowired
 	private PriceService priceService;
+	@Autowired
+	private ActionLogService actionLogService;
 	
 	public static final String priceList = "/adminor/priceList";
 	public static final String priceAdd = "/adminor/priceAdd";
@@ -74,6 +78,9 @@ public class PriceCtrl {
 	@ResponseBody
 	public String addPriceKind(Pricekind pk,BasicpriceValues bpv,HttpServletRequest request){
 		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 7, "pricekindname:"+pk.getPriceKindName());
+		
 		int wcid = WebUtil.getCurrUser(request).getWaterComId();
 		pk.setWatercompany(new Watercompany(wcid));
 		return priceService.addPriceKind(pk,bpv);
@@ -88,7 +95,9 @@ public class PriceCtrl {
 
 	@RequestMapping(value="/admin/price/deletepk",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String deletePK(int pid){
+	public String deletePK(HttpServletRequest request,int pid){
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 8, "pricekindid:"+pid);
 		return JSON.toJSONString(priceService.deletePK(pid));
 	}
 	
@@ -104,8 +113,10 @@ public class PriceCtrl {
 	
 	@RequestMapping(value="/admin/price/changepk",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String changepk(int old_,int new_){
+	public String changepk(HttpServletRequest request,int old_,int new_){
 		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 9, "old_:"+old_+"new_:"+new_);
 		return JSON.toJSONString(priceService.changepk(old_,new_));
 	}
 }

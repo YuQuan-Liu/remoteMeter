@@ -27,7 +27,7 @@ public interface CustomerService {
 	 * @param cv
 	 * @return
 	 */
-	public Map<String, String> addCustomer(CustomerView cv);
+	public Map<String, String> addCustomer(CustomerView cv,int adminid);
 	
 	/**
 	 * 根据传入的MeterView 添加用户

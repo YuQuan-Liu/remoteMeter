@@ -37,6 +37,7 @@ import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.logger.ActionLogService;
 import com.xdkj.yccb.main.statistics.dto.MeterdeductionlogView;
 import com.xdkj.yccb.security.UserForSession;
 
@@ -59,6 +60,9 @@ public class ChargeCtrl {
 	private PriceService priceService; 
 	@Autowired
 	private WaterCompanyService waterCompanyService;
+	@Autowired
+	private ActionLogService actionLogService;
+	
 	/**
 	 * 跳转收费页面
 	 * @param request
@@ -127,7 +131,11 @@ public class ChargeCtrl {
 	 */
 	@RequestMapping(value="/charge/updatePrepaySign")
 	@ResponseBody
-	public String changePay(int custId,int prePaySign){
+	public String changePay(HttpServletRequest request,int custId,int prePaySign){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 22, "cid:"+custId+"~prepaySign:"+prePaySign);
+		
 		return chargeService.updatePayment(custId, prePaySign);
 	}
 
@@ -161,27 +169,39 @@ public class ChargeCtrl {
 	
 	@RequestMapping(value ="/charge/updatePrice")
 	@ResponseBody
-	public String updatePrice(@RequestParam("priceId") String priceId,
+	public String updatePrice(HttpServletRequest request,@RequestParam("priceId") String priceId,
 			@RequestParam("meterId") String meterId){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 23, "mid:"+meterId+"~newpriceId:"+priceId);
+		
 		return chargeService.updatePrice(meterId, priceId);
 	}
 	
 	@RequestMapping(value="/cahrge/canclePay")
 	@ResponseBody
-	public String canclePay(@RequestParam("custPayId") String custPayId){
+	public String canclePay(HttpServletRequest request,@RequestParam("custPayId") String custPayId){
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 25, "custPayId:"+custPayId);
+		
 		return chargeService.cancleCustPay(custPayId);
 	}
 	@RequestMapping(value="/charge/cancleCost")
 	@ResponseBody
-	public String cancleCost(@RequestParam("meterDeLogId") String meterDeLogId){
+	public String cancleCost(HttpServletRequest request,@RequestParam("meterDeLogId") String meterDeLogId){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 26, "meterDeLogId:"+meterDeLogId);
 		
 		return chargeService.cancleCost(meterDeLogId);
 	}
 	
 	@RequestMapping(value="/charge/waterwaste")
 	@ResponseBody
-	public String waterwaste(int m_id,int waste){
-		
+	public String waterwaste(HttpServletRequest request,int m_id,int waste){
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 24, "mid:"+m_id+"~waste:"+waste);
+				
 		return chargeService.addwaterwaste(m_id,waste);
 	}
 	

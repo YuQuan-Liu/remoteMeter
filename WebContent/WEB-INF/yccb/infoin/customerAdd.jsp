@@ -275,7 +275,7 @@
 				if(data.success == "true"){
 					$("#customer").form('reset');
 					$("#meter").form('reset');
-					$("#c_id").val();
+					$("#c_id").val("");
 					$.messager.alert("Info","<fmt:message key='common.addok'/>");
 				}
 			}
@@ -286,14 +286,23 @@
 			url:"${path}/infoin/customer/add.do",
 			onSubmit:function(){
 				//check the data ,bad data return false
-				return $('#customer').form('validate');
+				if(!$('#customer').form('validate')){
+					return false;
+				}
 			},
 			success:function(data){
 				var data = eval('(' + data + ')'); // change the JSON string to javascript object 
-				if(data.success == "true"){
+				if(data.add > 0){
 					$("#customer").form('reset');
 					$("#c_id").val(data.add);
-					$.messager.alert("Info","<fmt:message key='common.addok'/>");
+					$.messager.show({
+						title:"Info",
+						msg:"<fmt:message key='common.addok'/>",
+						showType:'slide'
+					});
+					if(data.cplid > 0){
+						window.open("${path}/charge/charge/printcharge.do?cplid="+data.cplid,"_blank");
+					}
 				}
 			}
 		});

@@ -228,8 +228,7 @@ public class Admininfo implements java.io.Serializable {
 				+ ", loginName=" + loginName + ", loginKey=" + loginKey
 				+ ", adminEmail=" + adminEmail + ", adminAddr=" + adminAddr
 				+ ", adminMobile=" + adminMobile + ", adminTel=" + adminTel
-				+ ", noWc=" + noWc + ", valid=" + valid + ", remark=" + remark
-				+ ", adminRoles=" + adminRoles + "]";
+				+ ", noWc=" + noWc + ", valid=" + valid + ", remark=" + remark + "]";
 	}
 
 	

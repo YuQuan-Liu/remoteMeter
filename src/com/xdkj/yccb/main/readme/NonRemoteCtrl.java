@@ -27,6 +27,7 @@ import com.xdkj.yccb.main.entity.Readmeterlog;
 import com.xdkj.yccb.main.infoin.UploadCustomer;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.logger.ActionLogService;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.service.MeterService;
 import com.xdkj.yccb.main.readme.service.ReadService;
@@ -43,7 +44,8 @@ public class NonRemoteCtrl {
 	private AdministratorDAO adminDao;
 	@Autowired
 	private MeterService meterService;
-	
+	@Autowired
+	private ActionLogService actionLogService;
 	@Autowired
 	private ReadLogDao readlogDao;
 	
@@ -107,6 +109,11 @@ public class NonRemoteCtrl {
 			try {
 				byte[] bytes = file.getBytes();
 				String excelPath = "D:/Excels/"+name.substring(name.lastIndexOf("\\")+1)+Calendar.getInstance().getTimeInMillis();
+				
+				//log
+				actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 21, "excelPath:"+excelPath);
+				
+				
 				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
 				
 				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f));

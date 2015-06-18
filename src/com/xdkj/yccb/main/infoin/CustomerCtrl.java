@@ -28,6 +28,7 @@ import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.logger.ActionLogService;
 import com.xdkj.yccb.security.UserForSession;
 
 @Controller
@@ -40,6 +41,8 @@ public class CustomerCtrl {
 	private PriceService priceService;
 	@Autowired
 	private MeterkindService meterKindService;
+	@Autowired
+	private ActionLogService actionLogService;
 	
 	@RequestMapping(value="/infoin/customer/list")
 	public String customerList(HttpServletRequest request,Model model){
@@ -98,6 +101,10 @@ public class CustomerCtrl {
 				byte[] bytes = file.getBytes();
 				long time = Calendar.getInstance().getTimeInMillis();
 				String excelPath = "D:/Excels/"+time+name.substring(name.lastIndexOf("\\")+1);
+				
+				//log
+				actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 18, "excelPath:"+excelPath);
+				
 //				System.out.println(excelPath);
 				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
 				
@@ -136,13 +143,21 @@ public class CustomerCtrl {
 	
 	@RequestMapping(value="/infoin/customer/add")
 	@ResponseBody
-	public String addCustomer(CustomerView cv){
-		return JSON.toJSONString(customerService.addCustomer(cv));
+	public String addCustomer(HttpServletRequest request,CustomerView cv){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 14, "cnum:"+cv.getC_num());
+		
+		return JSON.toJSONString(customerService.addCustomer(cv,WebUtil.getCurrUser(request).getPid()));
 	}
 	
 	@RequestMapping(value="/infoin/customer/delete")
 	@ResponseBody
-	public String deleteCustomer(int cid){
+	public String deleteCustomer(HttpServletRequest request,int cid){
+
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 15, "cpid:"+cid);
+		 
 		return customerService.deleteCustomer(cid);
 	}
 	
@@ -170,12 +185,17 @@ public class CustomerCtrl {
 	@ResponseBody
 	public String addMeter(HttpServletRequest request,MeterView mv){
 		UserForSession admin = WebUtil.getCurrUser(request);
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 16, "maddr:"+mv.getCollectorAddr()+"-"+mv.getMeterAddr());
 		
 		return JSON.toJSONString(customerService.addMeter(admin.getPid(),mv));
 	}
 	@RequestMapping(value="/infoin/meter/delete")
 	@ResponseBody
-	public String deleteMeter(int mid){
+	public String deleteMeter(HttpServletRequest request,int mid){
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 17, "mpid:"+mid);
+		
 		return customerService.deleteMeter(mid);
 	}
 	@RequestMapping(value="/infoin/meter/updatePage")
@@ -223,10 +243,13 @@ public class CustomerCtrl {
 	
 	@RequestMapping(value="/infoin/customer/changemeter",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String changemeter(String new_maddr,int end,int meterid){
+	public String changemeter(HttpServletRequest request,String new_maddr,int end,int meterid){
 		
 //		System.out.println(new_maddr+"~"+new_read+"~"+meterid);
 //		return JSON.toJSONString();
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 27, "changemeter~mid:"+meterid+"newaddr:"+new_maddr+"end:"+end);
+		
 		return customerService.changemeter(new_maddr,end,meterid);
 	}
 }

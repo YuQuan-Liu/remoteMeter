@@ -26,8 +26,8 @@ $(function(){
 	        {field:'mark',title:'<fmt:message key='watcom.mark'/>',width:100},
 	        {field:'emailHost',title:'<fmt:message key='watcom.emailHost'/>',width:100},
 	        {field:'emailUser',title:'<fmt:message key='watcom.emailUser'/>',width:100},	
-	        {field:'telephone',title:'<fmt:message key='watcom.payaddr'/>',width:100},
-	        {field:'payAddr',title:'<fmt:message key='watcom.tel'/>',width:100},
+	        {field:'telephone',title:'<fmt:message key='watcom.tel'/>',width:100},
+	        {field:'payAddr',title:'<fmt:message key='watcom.payaddr'/>',width:100},
 	        
 	        {field:'remark',title:'<fmt:message key='common.remark'/>',width:100}
 	    ]],

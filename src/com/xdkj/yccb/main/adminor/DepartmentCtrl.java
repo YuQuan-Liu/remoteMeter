@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.adminor;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +26,7 @@ import com.xdkj.yccb.main.entity.Department;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.logger.ActionLogService;
 /**
  * 片区
  * @author SGR
@@ -41,6 +43,8 @@ public class DepartmentCtrl {
 	private DepartmentService departmentService;
 	@Autowired
 	private NeighborService neighborService;
+	@Autowired
+	private ActionLogService actionLogService;
 	
 	@RequestMapping(value="/admin/dep/list")
 	public String depList(){
@@ -94,6 +98,10 @@ public class DepartmentCtrl {
 		
 		//自来水公司id
 		int wcid = WebUtil.getCurrUser(request).getWaterComId();
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 5, Arrays.toString(nbr_ids));
+		
 		return JSON.toJSONString(departmentService.add(wcid,name,remark,nbr_ids));
 	}
 	
@@ -137,7 +145,10 @@ public class DepartmentCtrl {
 	
 	@RequestMapping(value="/admin/dep/deletedep",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String deletedep(int pid){
+	public String deletedep(HttpServletRequest request,int pid){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 6, "depid:"+pid);
 		
 		return JSON.toJSONString(departmentService.deletedep(pid));
 	}

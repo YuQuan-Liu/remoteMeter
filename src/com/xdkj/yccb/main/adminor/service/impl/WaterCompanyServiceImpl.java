@@ -66,7 +66,7 @@ public class WaterCompanyServiceImpl implements WaterCompanyService {
 			admin.setWatercompany(watcom);
 			
 			//自来水公司自动添加的角色的pid 为1
-			return administratorService.addAdmin(admin, 1);
+			return administratorService.addAdmin(admin, 2);
 		}
 		return "fail";
 	}

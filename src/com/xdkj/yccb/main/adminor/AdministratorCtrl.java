@@ -23,6 +23,7 @@ import com.xdkj.yccb.main.adminor.service.DepartmentService;
 import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Roles;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
+import com.xdkj.yccb.main.logger.ActionLogService;
 import com.xdkj.yccb.main.sys.dto.RoleView;
 import com.xdkj.yccb.main.sys.service.RoleService;
 /**
@@ -38,6 +39,8 @@ public class AdministratorCtrl {
 	private RoleService roleService;
 	@Autowired
 	private DepartmentService departmentService;
+	@Autowired
+	private ActionLogService actionLogService;
 	
 	public static final String adminorList = "/adminor/adminList";//管理员列表页面
 	public static final String addAdminor = "/adminor/adminAdd";//管理员添加页面
@@ -80,8 +83,11 @@ public class AdministratorCtrl {
 	
 	@RequestMapping(value="admin/admin/add",method = RequestMethod.POST)
 	@ResponseBody
-	public String add(Admininfo admin,int roleid){
+	public String add(HttpServletRequest request,Admininfo admin,int roleid){
 		admin.setLoginKey("96e79218965eb72c92a549dd5a330112");
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 1, admin.toString()+"roleid"+roleid);
 		
 		return adminstratorService.addAdmin(admin,roleid);
 	}
@@ -119,7 +125,9 @@ public class AdministratorCtrl {
 	
 	@RequestMapping(value="/admin/admin/delete",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String delete(int pid){
+	public String delete(HttpServletRequest request,int pid){
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 2, "adminid:"+pid);
 		
 		return JSON.toJSONString(adminstratorService.removeById(pid)+"");
 	}
@@ -140,15 +148,18 @@ public class AdministratorCtrl {
 	
 	@RequestMapping(value="/admin/admin/changerole",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String changerole(int pid,int rid){
+	public String changerole(HttpServletRequest request,int pid,int rid){
 		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 3, "adminid:"+pid+"roleid:"+rid);
 		return JSON.toJSONString(adminstratorService.changerole(pid,rid));
 	}
 	
 	@RequestMapping(value="/admin/admin/changedep",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String changedep(int pid,int did){
-		
+	public String changedep(HttpServletRequest request,int pid,int did){
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 4, "adminid:"+pid+"depid:"+did);
 		return JSON.toJSONString(adminstratorService.changedep(pid,did));
 	}
 }

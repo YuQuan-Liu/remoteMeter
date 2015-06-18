@@ -23,6 +23,7 @@ import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.MeterKindDao;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
+import com.xdkj.yccb.main.charge.service.ChargeService;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Housekind;
@@ -59,6 +60,8 @@ public class CustomerServiceImpl implements CustomerService {
 	private WasteLogDao wasteLogDao;
 	@Autowired
 	private AdministratorDAO administratorDAO;
+	@Autowired
+	private ChargeService chargeService;
 	
 	@Override
 	public List<CustomerView> getCustomerby(String n_id, String c_num) {
@@ -128,7 +131,7 @@ public class CustomerServiceImpl implements CustomerService {
 		}
 	}
 	@Override
-	public Map<String, String> addCustomer(CustomerView cv) {
+	public Map<String, String> addCustomer(CustomerView cv,int adminid) {
 		
 		//check CustomerView 
 		Map<String, String> map = cv.check_view();
@@ -153,6 +156,12 @@ public class CustomerServiceImpl implements CustomerService {
 			c.setHousekind(hk);
 			c.setWarnSwitch(0);
 			c.setLoginName("");
+			BigDecimal balance = new BigDecimal(0);
+			c.setCustomerBalance(balance);
+			
+			if(cv.getPrePaySign() == 1){
+				balance= cv.getCustomerBalance();
+			}
 			c.setLoginKey("96e79218965eb72c92a549dd5a330112");
 			c.setValid("1");
 			c.setCustomerId("0");
@@ -161,6 +170,11 @@ public class CustomerServiceImpl implements CustomerService {
 			if(clist.size() == 0){
 				if(customerDao.addCustomer(c) > 0){
 					map.put("add", c.getPid()+"");
+					if(balance.doubleValue() >0){
+						String x = chargeService.addpay(adminid, c.getPid(), balance);
+						JSONObject jo = JSONObject.fromObject(x);
+						map.put("cplid", jo.getString("cplid"));
+					}
 				}else{
 					map.put("add", "0");
 				}
