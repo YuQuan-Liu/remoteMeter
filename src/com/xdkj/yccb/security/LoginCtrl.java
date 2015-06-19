@@ -88,7 +88,7 @@ public class LoginCtrl {
 			}
 			ufs.setMenus(menus);
 			//log
-			actionLogService.addActionlog(admin.getPid(), 99, "login:adminid"+admin.getPid());
+			actionLogService.addActionlog(admin.getPid(), 28, "login:adminid"+admin.getPid());
 			
 			request.getSession().setAttribute("curuser", ufs);
 			
@@ -101,7 +101,7 @@ public class LoginCtrl {
 	public String logout(HttpServletRequest request){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 100, "logout:adminid"+WebUtil.getCurrUser(request).getPid());
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 29, "logout:adminid"+WebUtil.getCurrUser(request).getPid());
 		
 		HttpSession session = request.getSession();
 		session.removeAttribute("curuser");

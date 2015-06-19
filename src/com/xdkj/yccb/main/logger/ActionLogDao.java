@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.logger;
 
 import java.util.Date;
 
+import org.hibernate.FlushMode;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
@@ -23,6 +24,7 @@ public class ActionLogDao extends HibernateDAO {
 		admin.setPid(adminid);
 		log.setAdmininfo(admin);
 		
+		this.getSession().setFlushMode(FlushMode.AUTO);
 		this.getHibernateTemplate().save(log);
 		
 	}
