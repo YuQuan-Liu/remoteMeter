@@ -92,7 +92,7 @@
 					show : true
 				},
 				legend:{
-					data : ['欠费金额','正常金额']
+					data : ['欠费金额','小区余额']
 				},
 				xAxis:[{
 		            	type : 'category',

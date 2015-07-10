@@ -59,7 +59,7 @@
 	<columnHeader>
 		<band height="21">
 			<staticText>
-				<reportElement uuid="adbfbe90-91cb-488b-ab3a-d44b6511741b" x="0" y="1" width="39" height="20"/>
+				<reportElement uuid="adbfbe90-91cb-488b-ab3a-d44b6511741b" x="0" y="1" width="47" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -73,7 +73,7 @@
 				<text><![CDATA[用户号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="61201487-46dc-4ddf-8510-097760a4dafd" x="39" y="1" width="50" height="20"/>
+				<reportElement uuid="61201487-46dc-4ddf-8510-097760a4dafd" x="47" y="1" width="50" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -87,7 +87,7 @@
 				<text><![CDATA[用户名]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7b7f3dfc-b835-440a-b96c-768a6e5b0d5a" x="89" y="1" width="80" height="20"/>
+				<reportElement uuid="7b7f3dfc-b835-440a-b96c-768a6e5b0d5a" x="97" y="1" width="72" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -217,7 +217,7 @@
 	<detail>
 		<band height="21" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="4400f4e0-c749-4a47-bd8c-c2eb1aae7f96" x="0" y="0" width="39" height="20"/>
+				<reportElement uuid="4400f4e0-c749-4a47-bd8c-c2eb1aae7f96" x="0" y="0" width="47" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -231,7 +231,7 @@
 				<textFieldExpression><![CDATA[$F{c_num}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="692f30a7-8ad1-4fff-8f95-2b5b29c6c23e" x="39" y="0" width="50" height="20"/>
+				<reportElement uuid="692f30a7-8ad1-4fff-8f95-2b5b29c6c23e" x="47" y="0" width="50" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -245,7 +245,7 @@
 				<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="380998cd-d452-4878-993e-c54fce2edec0" x="89" y="0" width="80" height="20"/>
+				<reportElement uuid="380998cd-d452-4878-993e-c54fce2edec0" x="97" y="0" width="72" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>

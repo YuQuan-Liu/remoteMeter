@@ -24,7 +24,7 @@ $(function(){
 	        {field:'neighborAddr',title:'<fmt:message key='common.addr'/>',width:150}
 	        <c:if test="${menus['areas']=='t'}">,
 	        {field:'action',title:'<fmt:message key='common.action'/>',width:150,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='deleteDetail("+${dep.pid}+","+row.pid+","+index+")'><fmt:message key='common.action'/></a> ";
+				return "<a href='#' class='operateHref' onclick='deleteDetail("+${dep.pid}+","+row.pid+","+index+")'><fmt:message key='common.delete'/></a> ";
 			}}
 	        </c:if>
 	    ]]

@@ -56,7 +56,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{pre}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="62329410-2644-4400-99c7-7ec82ae43ff0" x="100" y="0" width="100" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>

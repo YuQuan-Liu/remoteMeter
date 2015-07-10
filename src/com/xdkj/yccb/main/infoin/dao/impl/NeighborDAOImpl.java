@@ -193,7 +193,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				"on s.pid = mdl.settlelogid " +
 				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend = 0 " +
 				"group by s.pid " +
-				"union " +
+				"union all " +
 				"select s.pid,sum(meterread+mdl.changend-lastderead) yl,sum(demoney) demoney  from settlelog s " +
 				"join  meterdeductionlog mdl " +
 				"on s.pid = mdl.settlelogid " +
@@ -204,7 +204,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				"on sum_.pid = s.pid " +
 				"join neighbor n " +
 				"on s.objectid = n.pid " +
-				"where n.pid in (:ids) " +
+				"where n.pid in ("+ids+") " +
 				"group by s.pid,s.starttime,n.pid,n.neighborname";
 		
 		Query q = getSession().createSQLQuery(SQL)
@@ -215,7 +215,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				.addScalar("demoney", Hibernate.BIG_DECIMAL)
 				.addScalar("startTime", Hibernate.STRING);
 		q.setInteger("year", year);
-		q.setString("ids", ids);
+//		q.setString("ids", ids);
 		q.setResultTransformer(Transformers.aliasToBean(SettledWater.class));
 		
 		List<SettledWater> list = new ArrayList<>();
@@ -234,7 +234,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				"join  meterdeductionlog mdl " +
 				"on s.pid = mdl.settlelogid " +
 				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend = 0 and s.ObjectID = :n_id " +
-				"union " +
+				"union all " +
 				"select s.objectid,s.starttime,meterread+mdl.changend-lastderead yl,mdl.demoney from settlelog s " +
 				"join  meterdeductionlog mdl " +
 				"on s.pid = mdl.settlelogid " +
@@ -287,7 +287,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				"on s.pid = mdl.settlelogid " +
 				"where year(startTime) = :year and objecttype = 1 and mdl.valid = 1 and mdl.changend = 0 " +
 				"group by s.pid " +
-				"union " +
+				"union all " +
 				"select s.pid,sum(meterread+mdl.changend-lastderead) yl,sum(demoney) demoney  from settlelog s " +
 				"join  meterdeductionlog mdl " +
 				"on s.pid = mdl.settlelogid " +
@@ -298,7 +298,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				"on sum_.pid = s.pid " +
 				"join neighbor n " +
 				"on s.objectid = n.pid " +
-				"where n.pid in (:ids) " +
+				"where n.pid in ("+ids+") " +
 				"group by n.pid,n.neighborname";
 		
 		Query q = getSession().createSQLQuery(SQL)
@@ -307,7 +307,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				.addScalar("yl", Hibernate.INTEGER)
 				.addScalar("demoney", Hibernate.BIG_DECIMAL);
 		q.setInteger("year", year);
-		q.setString("ids", ids);
+//		q.setString("ids", ids);
 		q.setResultTransformer(Transformers.aliasToBean(SettledWaterN.class));
 		
 		List<SettledWaterN> list = new ArrayList<>();
@@ -326,12 +326,13 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				"count(*) allcount, sum( case when c.customerbalance < 0 then 1 else 0 end)/count(*) owerate," +
 				"sum( case when c.customerbalance < 0 then -c.customerbalance else 0 end) owebalance,sum(c.customerbalance) balance from customer c " +
 				"join neighbor n on n.pid = c.neighborid " +
-				"where c.neighborid = :ids and c.valid = 1) cc " +
+				"where c.neighborid in ("+ids+") and c.valid = 1 " +
+				"group by c.neighborid) cc " +
 				"join ( " +
 				"select m.neighborid,sum(mdl.demoney) demoney from meterdeductionlog mdl " +
 				"join meter m " +
 				"on mdl.meterid = m.pid " +
-				"where m.neighborid = :ids and mdl.valid = 1 and m.valid = 1 " +
+				"where m.neighborid in ("+ids+") and mdl.valid = 1 and m.valid = 1 " +
 				"group by m.neighborid ) mm " +
 				"on cc.neighborid = mm.neighborid";
 		
@@ -345,7 +346,7 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 				.addScalar("balance", Hibernate.BIG_DECIMAL)
 				.addScalar("demoney", Hibernate.BIG_DECIMAL)
 				.addScalar("chargerate", Hibernate.DOUBLE);
-		q.setString("ids", ids);
+//		q.setString("ids", ids);
 		q.setResultTransformer(Transformers.aliasToBean(ChargeRate.class));
 		
 		List<ChargeRate> list = new ArrayList<>();

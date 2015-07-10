@@ -25,7 +25,7 @@ $(function(){
 // 	        {field:'watercompany',title:'自来水公司',width:100},
 	        {field:'remark',title:'<fmt:message key='common.remark'/>',width:100,halign:'center'},
 	        {field:'action',title:'<fmt:message key='common.action'/>',width:100,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'><fmt:message key='common.action'/></a> " 
+				return "<a href='#' class='operateHref' onclick='priceDetail("+row.pid+")'><fmt:message key='common.look'/></a> " 
 				<c:if test="${menus['basicprice']=='t'}">+
 				"<a href='#' class='operateHref' onclick='deleteprice("+row.pid+","+index+")'><fmt:message key='common.delete'/></a> "</c:if>;
 			}}
