@@ -217,7 +217,7 @@ BEGIN
 			end if;
 			
 			#计算扣费
-			if(yl >= 0) then
+			if(yl >= 0 and yl < 9000) then
 			begin
 				declare first_ decimal(19,4);
 				declare first_over int;
@@ -382,7 +382,7 @@ BEGIN
 			end if;
 			
 			#计算扣费
-			if(yl >= 0) then
+			if(yl >= 0 and yl < 9000) then
 			begin
 				declare first_ decimal(19,4);
 				declare first_over int;
@@ -545,7 +545,7 @@ BEGIN
 			end if;
 			
 			#计算扣费
-			if(yl >= 0) then
+			if(yl >= 0 and yl < 9000) then
 			begin
 				declare first_ decimal(19,4);
 				declare first_over int;
