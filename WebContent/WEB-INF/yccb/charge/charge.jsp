@@ -145,7 +145,7 @@ $(function(){
 	        	  }
 	        }},
 	      	{field:'timer',title:'<fmt:message key='m.timer'/>',width:40},
-	      	 {field:'deread',title:'<fmt:message key='m.deread'/>',width:40},
+	      	 {field:'deRead',title:'<fmt:message key='m.deread'/>',width:40},
 	      	{field:'readdata',title:'<fmt:message key='m.readdata'/>',width:40},
 	        {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:40},
 	      	{field:'changend',title:'<fmt:message key='m.changeend'/>',width:40},
@@ -174,9 +174,7 @@ $(function(){
 	      	{field:'actionTime',title:'<fmt:message key='charge.paytime'/>',width:60},
 	      	{field:'adminName',title:'<fmt:message key='charge.payadmin'/>',width:60},
 	      	{field:'action',title:'<fmt:message key='common.action'/>',width:90,halign:'center',align:'center',formatter: function(value,row,index){
-				return <c:if test="${menus['undo']=='t'}"> 
-				"<a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' ><fmt:message key='undo'/></a>"</c:if>
-				"<a href='#' class='operateHref' onclick='chargeprint("+row.pid+")' ><fmt:message key='charge.chargeprint'/></a>"+
+				return  "<c:if test="${menus['undo']=='t'}"><a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' ><fmt:message key='undo'/></a></c:if><a href='#' class='operateHref' onclick='chargeprint("+row.pid+")' ><fmt:message key='charge.chargeprint'/></a>"+
 				"<a href='#' class='operateHref' onclick='chargedetailprint("+row.pid+")'><fmt:message key='charge.detailprint'/></a>";
 	  		}}
 	    ]]

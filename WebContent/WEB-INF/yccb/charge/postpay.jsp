@@ -13,14 +13,14 @@
 		<form id="" method="post">
 			<div>
 				<label><fmt:message key='common.neighborName'/></label>
-				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:searchSettle">
+				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'200',onSelect:searchSettle">
 					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
 	    		
-	    		<select class="easyui-combobox" id="settlelog" name="settlelog" style="width:200px" data-options="panelHeight:'auto',valueField:'pid',textField:'startTime',onSelect:searchCustomer">
+	    		<select class="easyui-combobox" id="settlelog" name="settlelog" style="width:200px" data-options="panelHeight:'200',valueField:'pid',textField:'startTime',onSelect:searchCustomer">
 					<option value=""><fmt:message key='selectsettlelog'/></option>
 	    		</select>
 	    		<span style="margin-left:20px;">

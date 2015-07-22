@@ -102,7 +102,7 @@ function addNbr(dep_id){
 			<tr>
 				<td><fmt:message key='common.neighborName'/></td>
 				<td>
-					<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100%" data-options="panelHeight:'auto'">
+					<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100%" data-options="panelHeight:'200'">
 					<option value=""><fmt:message key='dep.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>

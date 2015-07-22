@@ -16,7 +16,7 @@ $(function(){
 		valueField:'id',
 		textField:'text',
 		multiple:true,
-		panelHeight:'auto'
+		panelHeight:'200'
 	});  
 })
 function submitForm(){

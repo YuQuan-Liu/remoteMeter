@@ -17,7 +17,7 @@
 					<tr>
 						<td><lable><fmt:message key='common.neighborName'/></lable></td>
 						<td>
-							<select class="easyui-combobox" id="n_id" name="n_id" data-options="onSelect:listGPRS,panelHeight:'auto'" style="width:148px;">
+							<select class="easyui-combobox" id="n_id" name="n_id" data-options="onSelect:listGPRS,panelHeight:'200'" style="width:148px;">
 								<option value=""><fmt:message key='common.choosenei'/></option>
 								<c:forEach var="n" items="${neighbor_list }">
 								<option value="${n.pid }">${n.neighborName }</option>
@@ -103,7 +103,7 @@
 					<tr>
 						<td><lable><fmt:message key='gprs'/></lable></td>
 						<td>
-							<select class="easyui-combobox" id="gprs_id" name="gprs_id" data-options="panelHeight:'auto',valueField:'pid',textField:'gprsaddr'" style="width:148px;">
+							<select class="easyui-combobox" id="gprs_id" name="gprs_id" data-options="panelHeight:'200',valueField:'pid',textField:'gprsaddr'" style="width:148px;">
 								<option value="" ><fmt:message key='m.selectgprs'/></option>
 							</select>
 						</td>
@@ -124,7 +124,7 @@
 					<tr>
 						<td><label><fmt:message key='m.pk'/></label></td>
 						<td>
-							<select class="easyui-combobox" name="pk_id" id="pk_id" data-options="panelHeight:'auto'" style="width:148px;">
+							<select class="easyui-combobox" name="pk_id" id="pk_id" data-options="panelHeight:'200'" style="width:148px;">
 								<option value="" ><fmt:message key='common.selectprice'/></option>
 								<c:forEach var="pk" items="${pk_list }">
 								<option value="${pk.pid }">${pk.priceKindName }</option>
@@ -150,7 +150,7 @@
 					<tr>
 						<td><label><fmt:message key='m.mk'/></label></td>
 						<td>
-							<select class="easyui-combobox" name="mk_id" data-options="panelHeight:'auto'" style="width:148px;">
+							<select class="easyui-combobox" name="mk_id" data-options="panelHeight:'200'" style="width:148px;">
 <!-- 								<option value="" >请选择水表类型</option> -->
 								<c:forEach var="mk" items="${mk_list }">
 								<option value="${mk.pid }">${mk.meterTypeName }</option>

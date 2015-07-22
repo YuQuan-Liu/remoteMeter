@@ -34,7 +34,7 @@
 					<tr>
 <!-- 						<td><label>单价</label></td> -->
 <!-- 						<td> -->
-<!-- 							<select class="easyui-combobox" name="pk_id" data-options="panelHeight:'auto'" style="width:148px;"> -->
+<!-- 							<select class="easyui-combobox" name="pk_id" data-options="panelHeight:'200'" style="width:148px;"> -->
 <%-- 								<c:forEach var="pk" items="${pk_list }"> --%>
 <%-- 								<option value="${pk.pid }" >${pk.priceKindName }</option> --%>
 <%-- 								</c:forEach> --%>
@@ -59,7 +59,7 @@
 					<tr>
 						<td><label><fmt:message key='m.mk'/></label></td>
 						<td>
-							<select class="easyui-combobox" name="mk_id" data-options="panelHeight:'auto'" style="width:148px;">
+							<select class="easyui-combobox" name="mk_id" data-options="panelHeight:'200'" style="width:148px;">
 								<c:forEach var="mk" items="${mk_list }">
 								<option value="${mk.pid }">${mk.meterTypeName }</option>
 								</c:forEach>

@@ -105,7 +105,7 @@ function checkLoginName(){
 	    		<tr>
 	    			<td><fmt:message key='admin.role'/>:</td>
 	    			<td>
-	    				<select class="easyui-combobox" id="roleid" name="roleid" data-options="panelHeight:'auto',required:true" style="width:100px;">
+	    				<select class="easyui-combobox" id="roleid" name="roleid" data-options="panelHeight:'200',required:true" style="width:100px;">
 							<option value=""><fmt:message key='admin.chooserole'/></option>
 							<c:forEach var="r" items="${role_list }">
 							<option value="${r.pid }">${r.roleName }</option>
@@ -116,7 +116,7 @@ function checkLoginName(){
 	    		<tr>
 	    			<td><fmt:message key='areas'/>:</td>
 	    			<td>
-	    				<select class="easyui-combobox" id="depid" name="department.pid" data-options="anelHeight:'auto',required:true" style="width:100px;">
+	    				<select class="easyui-combobox" id="depid" name="department.pid" data-options="panelHeight:'200',required:true" style="width:100px;">
 							<option value=""><fmt:message key='admin.choosedep'/></option>
 							<c:forEach var="d" items="${dep_list }">
 							<option value="${d.pid }">${d.departmentName }</option>
@@ -127,7 +127,7 @@ function checkLoginName(){
 	    		<tr>
 	    			<td><fmt:message key='admin.admintype'/>:</td>
 	    			<td>
-	    				<select class="easyui-combobox" id="nowc" name="nowc" data-options="anelHeight:'auto',required:true" style="">
+	    				<select class="easyui-combobox" id="nowc" name="nowc" data-options="panelHeight:'auto',required:true" style="">
 							<option value="0"><fmt:message key='watcom'/></option>
 							<option value="1"><fmt:message key='common.property'/></option>
 						</select>

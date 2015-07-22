@@ -13,7 +13,7 @@
 		<form id="" method="post">
 			<div>
 				<label><fmt:message key='common.neighborName'/></label>
-				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:searchSettle">
+				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'200',onSelect:searchSettle">
 					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
@@ -21,12 +21,12 @@
 	    		</select>
 	    		
 	    		<label><fmt:message key='lou'/></label>
-				<select class="easyui-combobox" id="lou" name="lou" style="width:200px" data-options="panelHeight:'auto',valueField:'id',textField:'lou',onSelect:searchDy">
+				<select class="easyui-combobox" id="lou" name="lou" style="width:200px" data-options="panelHeight:'200',valueField:'id',textField:'lou',onSelect:searchDy">
 					<option value=""><fmt:message key='lou.selectlou'/></option>
 	    		</select>
 	    		
 	    		<label><fmt:message key='dy'/></label>
-				<select class="easyui-combobox" id="dy" name="dy" style="width:200px" data-options="panelHeight:'auto',valueField:'id',textField:'dy'">
+				<select class="easyui-combobox" id="dy" name="dy" style="width:200px" data-options="panelHeight:'200',valueField:'id',textField:'dy'">
 					<option value=""><fmt:message key='selectdy'/></option>
 	    		</select>
 	    		

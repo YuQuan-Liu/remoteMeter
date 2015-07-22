@@ -13,7 +13,7 @@
 		<form id="" method="post">
 			<div>
 				<label><fmt:message key='common.neighborName'/></label>
-				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:showMeterdata">
+				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'200',onSelect:showMeterdata">
 					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
@@ -32,7 +32,7 @@
 	<div id="uploadWin"></div>
 	<div style="margin:10px;">
 		<label><fmt:message key='readnon.readlog'/></label>
-		<select class="easyui-combobox" id="readlog" name="readlog" style="width:200px" data-options="panelHeight:'auto',valueField:'pid',textField:'completetime'">
+		<select class="easyui-combobox" id="readlog" name="readlog" style="width:200px" data-options="panelHeight:'200',valueField:'pid',textField:'completetime'">
 			<option value=""><fmt:message key='common.selectreadlog'/></option>
 	    </select>
 	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addreadlog()" ><fmt:message key='readnon.addreadlog'/></a><span style="color:red;margin-left:20px;"><fmt:message key='readnon.addreadlogremark'/></span>

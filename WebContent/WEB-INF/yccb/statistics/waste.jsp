@@ -13,7 +13,7 @@
 		<form id="" method="post">
 			<div>
 				<label><fmt:message key='common.neighborName'/></label>
-				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto'">
+				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'200'">
 					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>

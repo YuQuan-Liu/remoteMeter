@@ -59,7 +59,7 @@ function changePrice(){
 	    		<tr>
 	    			<td><fmt:message key='price.old'/>：</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="pk_old" id="pk_old" data-options="panelHeight:'auto'" style="width:148px;">
+	    				<select class="easyui-combobox" name="pk_old" id="pk_old" data-options="panelHeight:'200'" style="width:148px;">
 							<option value="" ><fmt:message key='price.chooseprice'/></option>
 							<c:forEach var="pk" items="${pk_list }">
 							<option value="${pk.pid }">${pk.priceKindName }</option>
@@ -68,7 +68,7 @@ function changePrice(){
 	    			</td>
 	    			<td><fmt:message key='price.new'/>：</td>
 	    			<td>
-	    				<select class="easyui-combobox" name="pk_new" id="pk_new" data-options="panelHeight:'auto'" style="width:148px;">
+	    				<select class="easyui-combobox" name="pk_new" id="pk_new" data-options="panelHeight:'200'" style="width:148px;">
 							<option value="" ><fmt:message key='price.chooseprice'/></option>
 							<c:forEach var="pk" items="${pk_list }">
 							<option value="${pk.pid }">${pk.priceKindName }</option>

@@ -14,7 +14,7 @@
 		<form id="" method="post">
 			<span style="width:400px;">
 				<label><fmt:message key='common.neighborName'/></label>
-				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'auto',onSelect:showMeterdata">
+				<select class="easyui-combobox" id="neighbor" name="neighbor" style="width:100px" data-options="panelHeight:'200',onSelect:showMeterdata">
 					<option value=""><fmt:message key='common.choosenei'/></option>
 					<c:forEach var="n" items="${neighbor_list }">
 					<option value="${n.pid }">${n.neighborName }</option>
@@ -24,7 +24,7 @@
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" ><fmt:message key='read.all'/></a>
 			</span>
 			<span style="margin-left:200px;">
-				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'auto'">
+				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'200'">
 					<c:forEach var="e" items="${export_list }">
 					<option value="${e.pid }">${e.exportName }</option>
 					</c:forEach>
