@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.common.encoder.Base64Pwd;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.WaterCompanyDAO;
 import com.xdkj.yccb.main.adminor.dto.WaterCompanyView;
@@ -49,6 +50,7 @@ public class WaterCompanyServiceImpl implements WaterCompanyService {
 
 	@Override
 	public String addWatcom(Watercompany watcom,String adminName,String loginName) {
+		watcom.setEmailPassword(Base64Pwd.encode(watcom.getEmailPassword()));
 		int wid = waterCompanyDAO.addWatcom(watcom);
 		if(wid>0){
 			//add the super admin
