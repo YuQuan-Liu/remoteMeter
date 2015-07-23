@@ -571,7 +571,13 @@ $(function(){
 								showType : 'slide',
 								timeout : 3000
 							});
-							$('#payInfoTab').datagrid("deleteRow",index_);
+// 							$('#payInfoTab').datagrid("deleteRow",index_);
+							$('#payInfoTab').datagrid({
+								url:"${path}/charge/payInfoContent.do",
+								queryParams: {
+									custId:pid
+								}
+							});
 							$('#customerBalance').textbox('setValue',$('#customerBalance').textbox('getValue')-amount);
 							
 						} else {
@@ -608,7 +614,13 @@ $(function(){
 								msg : '<fmt:message key='common.undook'/>',
 								showType : 'slide'
 							});
-							$('#costInfoTab').datagrid("deleteRow",index_);
+// 							$('#costInfoTab').datagrid("deleteRow",index_);
+							$('#costInfoTab').datagrid({
+								url:"${path}/charge/costInfoContent.do",
+								queryParams: {
+									custId:pid
+								}
+							});
 							$('#customerBalance').textbox('setValue',$('#customerBalance').textbox('getValue')+demoney);
 							
 						} else {
