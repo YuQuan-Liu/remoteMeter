@@ -110,8 +110,7 @@
 
 			if (n_id == "") {
 
-				$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
-				return;
+				n_id = 0;
 			}
 			if (start == "") {
 				$.messager.alert('Info', '<fmt:message key='payinfo.start'/>');
@@ -142,13 +141,14 @@
 					n_name:n_name
 				}
 			});
-			
-			$('#nbalanceTab').datagrid({
-				url:"${path}/statistics/payinfo/neighborbalance.do",
-				queryParams: {
-					n_id:n_id
-				}
-			});
+			if(n_id != 0){
+				$('#nbalanceTab').datagrid({
+					url:"${path}/statistics/payinfo/neighborbalance.do",
+					queryParams: {
+						n_id:n_id
+					}
+				});
+			}
 		}
 		
 		function print() {
@@ -160,14 +160,7 @@
 
 			if (n_id == "") {
 
-				$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
-				return;
-				$("#n_id").val(n_id);
-				$("#n_name").val(n_name);
-
-				$("#exportform").form('submit', {
-					url : "${path}/readme/read/download.do",
-				});
+				n_id = 0;
 			}
 			if (start == "") {
 				$.messager.alert('Info', '<fmt:message key='payinfo.start'/>');

@@ -94,29 +94,58 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 	
 	public List<PayInfo> getCustomerPayLogs(int n_id, String start, String end, int pre){
 		
-		String SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
-				"c.prepaysign,cpl.amount,cpl.actionTime,cpl.prepaysign payPre,ad.adminName from customer c " +
-				"join ( " +
-				"select * from customerpaylog cpl " +
-				"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
-				")cpl " +
-				"on c.pid = cpl.customerid " +
-				"join admininfo ad " +
-				"on cpl.adminid = ad.pid " +
-				"where c.valid = 1 and c.neighborid = :n_id and c.prepaysign = :pre ";
-		if(pre == 2){
+		String SQL = "";
+		if(n_id == 0){
 			SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
 					"c.prepaysign,cpl.amount,cpl.actionTime,cpl.prepaysign payPre,ad.adminName from customer c " +
 					"join ( " +
 					"select * from customerpaylog cpl " +
-					"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
+					"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 and cpl.prepaysign = :pre " +
+					")cpl " +
+					"on c.pid = cpl.customerid " +
+					"join admininfo ad " +
+					"on cpl.adminid = ad.pid " +
+					"where c.valid = 1 ";
+			if(pre == 2){
+				SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
+						"c.prepaysign,cpl.amount,cpl.actionTime,cpl.prepaysign payPre,ad.adminName from customer c " +
+						"join ( " +
+						"select * from customerpaylog cpl " +
+						"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
+						")cpl " +
+						"on c.pid = cpl.customerid " +
+						"join admininfo ad " +
+						"on cpl.adminid = ad.pid " +
+						"where c.valid = 1 ";
+				
+			}
+			
+		}else{
+			SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
+					"c.prepaysign,cpl.amount,cpl.actionTime,cpl.prepaysign payPre,ad.adminName from customer c " +
+					"join ( " +
+					"select * from customerpaylog cpl " +
+					"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 and cpl.prepaysign = :pre " +
 					")cpl " +
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
 					"where c.valid = 1 and c.neighborid = :n_id ";
-			
+			if(pre == 2){
+				SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
+						"c.prepaysign,cpl.amount,cpl.actionTime,cpl.prepaysign payPre,ad.adminName from customer c " +
+						"join ( " +
+						"select * from customerpaylog cpl " +
+						"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
+						")cpl " +
+						"on c.pid = cpl.customerid " +
+						"join admininfo ad " +
+						"on cpl.adminid = ad.pid " +
+						"where c.valid = 1 and c.neighborid = :n_id ";
+				
+			}
 		}
+		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("customerName",Hibernate.STRING)
 				.addScalar("customerMobile",Hibernate.STRING)
@@ -130,7 +159,9 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 				.addScalar("adminName",Hibernate.STRING);
 		q.setString("start", start);
 		q.setString("end", end);
-		q.setInteger("n_id", n_id);
+		if(n_id != 0){
+			q.setInteger("n_id", n_id);
+		}
 		if(pre != 2){
 			q.setInteger("pre", pre);
 		}
@@ -142,36 +173,65 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 	@Override
 	public List<AdminSum> getAdminSum(int n_id, String start, String end,
 			int pre) {
-		
-		String SQL = "select adminName,sum(amount) amount from customer c " +
-				"join ( " +
-				"select * from customerpaylog cpl " +
-				"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
-				")cpl " +
-				"on c.pid = cpl.customerid " +
-				"join admininfo ad " +
-				"on cpl.adminid = ad.pid " +
-				"where c.valid = 1 and c.neighborid = :n_id and c.prepaysign = :pre " +
-				"group by ad.pid,ad.adminName";
-		if(pre == 2){
+		String SQL = "";
+		if(n_id != 0){
 			SQL = "select adminName,sum(amount) amount from customer c " +
 					"join ( " +
 					"select * from customerpaylog cpl " +
-					"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
+					"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 and cpl.prepaysign = :pre " +
 					")cpl " +
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
 					"where c.valid = 1 and c.neighborid = :n_id " +
 					"group by ad.pid,ad.adminName";
-			
+			if(pre == 2){
+				SQL = "select adminName,sum(amount) amount from customer c " +
+						"join ( " +
+						"select * from customerpaylog cpl " +
+						"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
+						")cpl " +
+						"on c.pid = cpl.customerid " +
+						"join admininfo ad " +
+						"on cpl.adminid = ad.pid " +
+						"where c.valid = 1 and c.neighborid = :n_id " +
+						"group by ad.pid,ad.adminName";
+				
+			}
+		}else{
+			SQL = "select adminName,sum(amount) amount from customer c " +
+					"join ( " +
+					"select * from customerpaylog cpl " +
+					"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 and cpl.prepaysign = :pre " +
+					")cpl " +
+					"on c.pid = cpl.customerid " +
+					"join admininfo ad " +
+					"on cpl.adminid = ad.pid " +
+					"where c.valid = 1 " +
+					"group by ad.pid,ad.adminName";
+			if(pre == 2){
+				SQL = "select adminName,sum(amount) amount from customer c " +
+						"join ( " +
+						"select * from customerpaylog cpl " +
+						"where actiontime > :start and actiontime < date_add(:end,interval 1 day) and cpl.valid = 1 " +
+						")cpl " +
+						"on c.pid = cpl.customerid " +
+						"join admininfo ad " +
+						"on cpl.adminid = ad.pid " +
+						"where c.valid = 1 " +
+						"group by ad.pid,ad.adminName";
+				
+			}
 		}
+		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("amount",Hibernate.BIG_DECIMAL)
 				.addScalar("adminName",Hibernate.STRING);
 		q.setString("start", start);
 		q.setString("end", end);
-		q.setInteger("n_id", n_id);
+		if(n_id != 0){
+			q.setInteger("n_id", n_id);
+		}
 		if(pre != 2){
 			q.setInteger("pre", pre);
 		}

@@ -66,7 +66,10 @@ public class PayInfoCtrl {
 		map.put("adminsum", new JRBeanCollectionDataSource(admin_sum));
 		map.put("sub_dir", request.getServletContext().getRealPath("/WEB-INF/yccb/reports/")+"\\");
 		
-		List<NeighborBalance> neighborBalance = neighborService.getNeighborBalance(n_id);
+		List<NeighborBalance> neighborBalance = new ArrayList<>();
+		if(n_id != 0){
+			neighborBalance = neighborService.getNeighborBalance(n_id);
+		}
 		map.put("neighborbalance", new JRBeanCollectionDataSource(neighborBalance));
 		return new ModelAndView("payinfo",map);
 	}
