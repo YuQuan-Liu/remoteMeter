@@ -134,7 +134,30 @@ public class WarnSender {
 		 * 3、短信内容不允许双签名，即短信内容里只有一个“【】”
 		 * 
 		 */
-		para.put("con", "【"+wc.getCompanyName()+"】尊敬的"+c.getCustomerName()+"用户您好，您的水费余额为"+c.getCustomerBalance().doubleValue()+",请您及时交费。谢谢合作。");
+//		para.put("con", "【西岛仪表】尊敬的"+c.getCustomerName()+"您好，您的水费余额为"+c.getCustomerBalance().doubleValue()+",请您及时交费。谢谢合作。"+wc.getCompanyName()+"。");
+		
+		/**
+         * 短信模板cid，通过微米后台创建，由在线客服审核。必须设置好短信签名，签名规范： 
+         * 1、模板内容一定要带签名，签名放在模板内容的最前面；
+         * 2、签名格式：【***】，签名内容为三个汉字以上（包括三个）；
+         * 3、短信内容不允许双签名，即短信内容里只有一个“【】”
+         */
+        para.put("cid", "fxPLFfO74Vik");
+        /**
+         * 传入模板参数。
+         * 
+         * 短信模板示例：
+         * 【微米】您的验证码是：%P%，%P%分钟内有效。如非您本人操作，可忽略本消息。
+         * 
+         * 传入两个参数：
+         * p1：610912
+         * p2：3
+         * 最终发送内容：
+         * 【微米】您的验证码是：610912，3分钟内有效。如非您本人操作，可忽略本消息。
+         */
+        para.put("p1", c.getCustomerName());
+        para.put("p2", c.getCustomerBalance().doubleValue()+"");
+        para.put("p3", wc.getCompanyName());
 		
 		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
 				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
