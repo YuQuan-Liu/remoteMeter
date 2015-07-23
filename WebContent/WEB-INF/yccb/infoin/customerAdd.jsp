@@ -83,8 +83,8 @@
 						<td><label><fmt:message key='c.warnstyle'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="warnStyle" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="1" ><fmt:message key='c.sms'/></option>
-								<option value="0" selected="selected"><fmt:message key='c.email'/></option>
+								<option value="1" selected="selected"><fmt:message key='c.sms'/></option>
+								<option value="2" ><fmt:message key='c.email'/></option>
 							</select>
 						</td>
 					</tr>

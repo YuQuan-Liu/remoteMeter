@@ -74,7 +74,7 @@
 						<td>
 							<select class="easyui-combobox" name="warnStyle" data-options="panelHeight:'auto'" style="width:148px;">
 								<option value="1" <c:if test="${cv.warnStyle == '1' }">selected="selected"</c:if>><fmt:message key='c.sms'/></option>
-								<option value="0" <c:if test="${cv.warnStyle == '0' }">selected="selected"</c:if>><fmt:message key='c.email'/></option>
+								<option value="0" <c:if test="${cv.warnStyle == '2' }">selected="selected"</c:if>><fmt:message key='c.email'/></option>
 							</select>
 						</td>
 					</tr>
@@ -126,7 +126,7 @@
 					$('#updateCustomerWin').window('close');
 					$.messager.show({
 						title:"Info",
-						msg:"<fmt:message key='common.addok'/>",
+						msg:"<fmt:message key='common.updateok'/>",
 						showType:'slide'
 					});
 				}

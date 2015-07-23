@@ -152,13 +152,15 @@ public class WarnSender {
 		Customer c = new Customer();
 		wc.setCompanyName("西岛");
 		wc.setEmailHost("smtp.163.com");
-		wc.setEmailUser("avenger0422@163.com");
-		wc.setEmailPassword("bGw4ODAzMTlsbA==");
+		wc.setEmailUser("zffyxdkj@163.com");
+		wc.setEmailPassword("YWJjMTIzNDU2");
 		
+		c.setCustomerMobile("13176868783");
 		c.setCustomerEmail("582615540@qq.com");
 		c.setCustomerBalance(new BigDecimal(100.00));
 		c.setCustomerName("haha");
 		new WarnSender().sendMail(wc, c);
+		new WarnSender().sendSMS(wc, c);
 	}
 
 
