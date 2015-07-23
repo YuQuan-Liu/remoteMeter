@@ -45,8 +45,8 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="58" splitType="Stretch">
+	<pageHeader>
+		<band height="58">
 			<textField>
 				<reportElement uuid="6a0279ec-f51c-46d4-8b03-267f26100ed9" x="97" y="14" width="360" height="30"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -55,7 +55,7 @@
 				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
+	</pageHeader>
 	<columnHeader>
 		<band height="21">
 			<staticText>
@@ -373,9 +373,9 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="151" splitType="Stretch">
+		<band height="113" splitType="Stretch">
 			<subreport>
-				<reportElement uuid="382b57ce-4f8f-436e-adb5-b1ac626a707f" x="19" y="24" width="501" height="48"/>
+				<reportElement uuid="382b57ce-4f8f-436e-adb5-b1ac626a707f" x="19" y="24" width="240" height="59"/>
 				<dataSourceExpression><![CDATA[$P{settlesum}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{sub_dir} + "deductionlog_sub.jasper"]]></subreportExpression>
 			</subreport>
@@ -387,14 +387,14 @@
 				<text><![CDATA[用量统计]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="c385081c-c364-4687-8c8e-9956216cd734" positionType="Float" x="19" y="72" width="100" height="20"/>
+				<reportElement uuid="c385081c-c364-4687-8c8e-9956216cd734" positionType="Float" x="288" y="4" width="100" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{lou}!=null?"":"小区余额"]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement uuid="1d0b7ea5-fcc6-47ab-b267-0706689e3efb" positionType="Float" x="19" y="92" width="501" height="59"/>
+				<reportElement uuid="1d0b7ea5-fcc6-47ab-b267-0706689e3efb" positionType="Float" x="288" y="24" width="239" height="59"/>
 				<dataSourceExpression><![CDATA[$P{neighborbalance}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{sub_dir} + "neighborbalance.jasper"]]></subreportExpression>
 			</subreport>
