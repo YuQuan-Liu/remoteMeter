@@ -18,6 +18,7 @@ public class ReadView {
 //	private String hu;
 //	private String customerId;
 	private String customerName;
+	private String customerAddr;
 	private String customerMobile;
 	private BigDecimal customerBalance;
 	private String collectorAddr;
@@ -28,11 +29,24 @@ public class ReadView {
 	private int readdata;
 	private String readtime;
 	
+	private String steelNum;
 	private Byte prePaySign;
 	private String meterTypeName;
 	private int remote;
 	
 	
+	public String getCustomerAddr() {
+		return customerAddr;
+	}
+	public void setCustomerAddr(String customerAddr) {
+		this.customerAddr = customerAddr;
+	}
+	public String getSteelNum() {
+		return steelNum;
+	}
+	public void setSteelNum(String steelNum) {
+		this.steelNum = steelNum;
+	}
 	public String getM_apid() {
 		return m_apid;
 	}

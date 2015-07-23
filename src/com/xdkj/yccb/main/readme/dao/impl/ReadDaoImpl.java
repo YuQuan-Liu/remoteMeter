@@ -108,8 +108,8 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 
 	@Override
 	public List<ReadView> getAllRemoteMeters(List<Integer> nid_list) {
-		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName,c.prePaySign,c.CustomerMobile,c.CustomerBalance, " +
-				"m.pid m_id,m.apid m_apid,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime, " +
+		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName,c.prePaySign,c.CustomerMobile,c.CustomerBalance,c.CustomerAddr, " +
+				"m.pid m_id,m.apid m_apid,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime,m.steelNum, " +
 				"mk.MeterTypeName,mk.Remote, " +
 				"n.pid n_id,n.NeighborName n_name,g.pid g_id,g.GPRSAddr g_addr from customer c " +
 				"left join meter m " +
@@ -132,6 +132,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				.addScalar("c_num",Hibernate.STRING)
 				.addScalar("customerName",Hibernate.STRING)
 				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerAddr",Hibernate.STRING)
 				.addScalar("customerBalance",Hibernate.BIG_DECIMAL)
 				.addScalar("prePaySign",Hibernate.BYTE)
 				.addScalar("meterTypeName",Hibernate.STRING)
@@ -142,7 +143,8 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				.addScalar("deread",Hibernate.INTEGER)
 				.addScalar("readdata",Hibernate.INTEGER)
 				.addScalar("readtime",Hibernate.STRING)
-				.addScalar("meterState",Hibernate.BYTE);
+				.addScalar("meterState",Hibernate.BYTE)
+				.addScalar("steelNum",Hibernate.STRING);
 
 		
 		q.setResultTransformer(Transformers.aliasToBean(ReadView.class));
