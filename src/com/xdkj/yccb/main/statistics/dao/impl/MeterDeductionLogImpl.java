@@ -458,7 +458,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"join pricekind pk " +
 				"on m.pricekindid = pk.pid " +
 				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and c.pid = :c_id and mdl.actiontime between :start and :end " +
-				"order by mdl.pid desc ";
+				"order by mdl.actiontime desc ";
 		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("c_id",Hibernate.INTEGER)

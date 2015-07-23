@@ -270,7 +270,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 
 	@Override
 	public List<Customerpaylog> getPaylogLimit2(int cid,int cplid) {
-		String SQL = "select * from customerpaylog where customerID = :cid and pid <= :cplid and valid = 1 order by pid desc limit 2";
+		String SQL = "select * from customerpaylog where customerID = :cid and pid >= :cplid and valid = 1 order by pid asc limit 2";
 		Query q = getSession().createSQLQuery(SQL).addEntity(Customerpaylog.class);
 		q.setInteger("cid", cid);
 		q.setInteger("cplid", cplid);

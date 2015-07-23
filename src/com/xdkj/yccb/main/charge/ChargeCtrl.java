@@ -257,7 +257,7 @@ public class ChargeCtrl {
 			/**
 			 * 获取用户下  两条交费记录之间的扣费信息
 			 */
-			list = chargeService.getMeterDeLog(cid,paylogs.get(1).getActionTime(),paylogs.get(0).getActionTime());
+			list = chargeService.getMeterDeLog(cid,paylogs.get(0).getActionTime(),paylogs.get(1).getActionTime());
 			SettledView view = null;
 			for(int i = 0;i < list.size();i++){
 				view = list.get(i);
