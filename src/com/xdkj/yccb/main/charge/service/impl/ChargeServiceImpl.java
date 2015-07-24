@@ -59,6 +59,14 @@ public class ChargeServiceImpl implements ChargeService {
 	public List<Customerpaylog> getPaylogLimit2(int cid,int cplid) {
 		return custompaylogDAO.getPaylogLimit2(cid,cplid);
 	}
+	
+
+	@Override
+	public BigDecimal sumAfterPay(int cid, int cplid) {
+		return custompaylogDAO.getsumAfterPay(cid,cplid);
+	}
+
+	
 
 	@Override
 	public List<SettledView> getMList(int c_id, int count) {
@@ -153,6 +161,5 @@ public class ChargeServiceImpl implements ChargeService {
 		jo.put("yl", ja_n);
 		return jo.toJSONString();
 	}
-
 	
 }

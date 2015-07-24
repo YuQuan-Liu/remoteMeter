@@ -107,4 +107,12 @@ public interface ChargeService {
 	 */
 	String getDrawMeter(int mid);
 
+
+	/**
+	 * 获取当前交费记录之后的所有的交费之和  用在打印详单
+	 * @param cid
+	 * @param cplid
+	 * @return
+	 */
+	public BigDecimal sumAfterPay(int cid, int cplid);
 }

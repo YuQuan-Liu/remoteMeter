@@ -2,7 +2,9 @@ package com.xdkj.yccb.main.charge;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -250,25 +252,35 @@ public class ChargeCtrl {
 
 		//根据交费记录  获取  本次交费记录  上一次交费记录  的信息  获取时间   打印详单使用
 		List<Customerpaylog> paylogs = chargeService.getPaylogLimit2(cid,cplid);
-		
-		List<SettledView> list = new ArrayList<>();
-		BigDecimal sumDemoney = new BigDecimal(0);
-		if(paylogs.size() >= 2){
-			/**
-			 * 获取用户下  两条交费记录之间的扣费信息
-			 */
-			list = chargeService.getMeterDeLog(cid,paylogs.get(0).getActionTime(),paylogs.get(1).getActionTime());
-			SettledView view = null;
-			for(int i = 0;i < list.size();i++){
-				view = list.get(i);
-				sumDemoney = sumDemoney.add(view.getDemoney());
-			}
+		if(paylogs.size() == 1){
+			//如果只有一条  则添加一个当前日期当选择扣费信息的结束
+			Customerpaylog cpl = new Customerpaylog();
+			cpl.setActionTime(new Date());
+			paylogs.add(cpl);
 		}
+		List<SettledView> list = new ArrayList<>();
+		
+		BigDecimal sumDemoney = new BigDecimal(0);
+		/**
+		 * 获取用户下  两条交费记录之间的扣费信息
+		 */
+		list = chargeService.getMeterDeLog(cid,paylogs.get(0).getActionTime(),paylogs.get(1).getActionTime());
+		SettledView view = null;
+		for(int i = 0;i < list.size();i++){
+			view = list.get(i);
+			sumDemoney = sumDemoney.add(view.getDemoney());
+		}
+		
+		BigDecimal sumafterpay = chargeService.sumAfterPay(cid,cplid);
+
+		CustomerView cv = custService.getCustomerViewbyCid(cid);
+		BigDecimal customerBalance = cv.getCustomerBalance();
+		customerBalance = customerBalance.subtract(sumafterpay);
+		
 		map.put("sumDemoney", sumDemoney.doubleValue());
 		map.put("list",list);
 		map.put("amount", paylogs.get(0).getAmount().doubleValue());
-		CustomerView cv = custService.getCustomerViewbyCid(cid);
-		map.put("customerBalance", cv.getCustomerBalance().doubleValue());
+		map.put("customerBalance", customerBalance.doubleValue());
 		map.put("c_num", cv.getC_num());
 		map.put("customerName", cv.getCustomerName());
 		map.put("customerAddr", cv.getCustomerAddr());

@@ -52,4 +52,12 @@ public interface CustompaylogDAO {
 	 * @return
 	 */
 	List<Customerpaylog> getPaylogLimit2(int cid,int cplid);
+
+	/**
+	 * 获取当前交费记录之后的所有的交费之和  用在打印详单
+	 * @param cid
+	 * @param cplid
+	 * @return
+	 */
+	BigDecimal getsumAfterPay(int cid, int cplid);
 }

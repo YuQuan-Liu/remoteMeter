@@ -278,4 +278,15 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 	}
 
 
+	@Override
+	public BigDecimal getsumAfterPay(int cid, int cplid) {
+		String SQL = "select sum(amount) sumamount from customerpaylog where customerID = :cid and pid > :cplid and valid = 1 ";
+		Query q = getSession().createSQLQuery(SQL).addScalar("sumamount",Hibernate.BIG_DECIMAL);
+		
+		q.setInteger("cid", cid);
+		q.setInteger("cplid", cplid);
+		return q.uniqueResult()==null?new BigDecimal(0):(BigDecimal) q.uniqueResult();
+	}
+
+
 }

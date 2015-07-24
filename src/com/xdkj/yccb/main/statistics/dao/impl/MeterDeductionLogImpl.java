@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.statistics.dao.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -493,7 +494,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		q.setInteger("c_id", cid);
 		
 		q.setString("start", start.toString());
-		q.setString("end", end.toString());
+		//如果打印的是最前面一条交费记录   则将当前日期插入   但是格式需要format一下
+		q.setString("end", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(end)); 
 		q.setResultTransformer(Transformers.aliasToBean(SettledView.class));
 		
 		List<SettledView> list = new ArrayList<>();

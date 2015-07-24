@@ -371,12 +371,12 @@
 				<text><![CDATA[本次交费：]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="613c594a-8e18-4772-9c95-30c75d42ff4b" positionType="Float" x="21" y="16" width="58" height="14"/>
+				<reportElement uuid="613c594a-8e18-4772-9c95-30c75d42ff4b" positionType="Float" x="16" y="16" width="77" height="14"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[用户余额：]]></text>
+				<text><![CDATA[本次交费余额：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="0b3c831d-a4c0-48f8-b9cb-a7d82ad6d236" positionType="Float" x="308" y="16" width="60" height="14"/>
@@ -403,7 +403,7 @@
 				<textFieldExpression><![CDATA[$P{amount}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="70cf858c-4c6a-434e-bc47-414a7078e43c" positionType="Float" x="79" y="16" width="62" height="14"/>
+				<reportElement uuid="70cf858c-4c6a-434e-bc47-414a7078e43c" positionType="Float" x="93" y="16" width="62" height="14"/>
 				<box leftPadding="2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
