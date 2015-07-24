@@ -72,6 +72,10 @@ public class WarnSender {
 	private boolean sendMail(Watercompany wc, Customer c){
 		//mail
 		boolean done = false;
+		if(c.getCustomerEmail() == null || c.getCustomerEmail().equals("")){
+			return false;
+		}
+		
 		try {
 			mailSender.setHost(wc.getEmailHost());
 			mailSender.setUsername(wc.getEmailUser());
@@ -107,6 +111,9 @@ public class WarnSender {
 		boolean done = false;
 		Map<String, String> para = new HashMap<String, String>();
 
+		if(c.getCustomerMobile()==null || c.getCustomerMobile().equals("") || c.getCustomerMobile().length() != 11){
+			return false;
+		}
 		/**
 		 * 目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
 		 */
