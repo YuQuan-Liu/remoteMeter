@@ -84,7 +84,8 @@ public class ReadExportDefault extends AbstractExcelView{
 					setText(cell, readView.getMeterAddr());
 					break;
 				case 8:
-					setText(cell, readView.getReaddata()+"");
+//					setText(cell, readView.getReaddata()+"");
+					cell.setCellValue(readView.getReaddata());
 					break;
 				case 9:
 					setText(cell, readView.getReadtime());
