@@ -58,7 +58,7 @@ public class YT2ExportReadImpl implements ExportRead {
 			// Write data to DBF
 			ReadView view = null;
 			String cbbz = "1";
-			SimpleDateFormat dfyf = new SimpleDateFormat("yyMMdd");
+			SimpleDateFormat dfyf = new SimpleDateFormat("yyyyMM");
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			for(int i =0;i<list.size();i++){
 				view = list.get(i);
