@@ -22,4 +22,9 @@ public class Base64Pwd {
 		}
 		return password;
 	}
+	
+	public static void main(String[] args) {
+		System.out.println(encode("ll880319ll"));
+		System.out.println(encode("avenger0422@163.com"));
+	}
 }
