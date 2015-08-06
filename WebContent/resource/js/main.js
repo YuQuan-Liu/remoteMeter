@@ -2,7 +2,6 @@ window.onload = function(){
 	$('#loading-mask').fadeOut();
 };
 $(function() {
-	clockon();
 	tabClose();
 	tabCloseEven();
 	
@@ -12,6 +11,8 @@ $(function() {
 		var name = $(this).attr('name');
 		if(name=='index'){
 			$('body').layout('collapse','west');  
+			Clearnav();
+			$('#tabs').tabs('select', 0);
 			return;
 		}else{
 			if($('.layout-panel-west').is(":hidden")){
@@ -29,10 +30,7 @@ $(function() {
 	$("#wnav").accordion( {
 		animate : false
 	});
-
-	//var firstMenuName = $('#topmenu a:first').attr('name');
-	//addNav(_menus[firstMenuName]);
-	//InitLeftMenu();
+	
 });
 
 function Clearnav() {
@@ -81,6 +79,13 @@ function addNav(data) {
 // 初始化左侧
 function InitLeftMenu() {
 	hoverMenuItem();
+	
+	var firstsub = $('#wnav li a')[0];
+//	console.log($(firstsub).attr("rel"));
+	
+	addTab($(firstsub).children('.nav').text(), $(firstsub).attr("rel"), getIcon($(firstsub).attr("ref")));
+	$(firstsub).parent().addClass("selected");
+	
 	$('#wnav li a').click( function() {
 		var tabTitle = $(this).children('.nav').text();
 
@@ -122,17 +127,16 @@ function getIcon(menuid) {
 }
 
 function addTab(subtitle, url, icon) {
-	if (!$('#tabs').tabs('exists', subtitle)) {
-		$('#tabs').tabs('add', {
-			title : subtitle,
-			content : createFrame(url),
-			closable : true,
-			icon : icon
-		});
-	} else {
-		$('#tabs').tabs('select', subtitle);
-		$('#mm-tabupdate').click();
+	if ($('#tabs').tabs('exists', subtitle)) {
+		$('#tabs').tabs('close', subtitle);
 	}
+	
+	$('#tabs').tabs('add', {
+		title : subtitle,
+		content : createFrame(url),
+		closable : true,
+		icon : icon
+	});
 	tabClose();
 }
 
@@ -249,40 +253,3 @@ function closeTab(action){
 }
 
 
-// 弹出信息窗口 title:标题 msgString:提示信息 msgType:信息类型 [error,info,question,warning]
-function msgShow(title, msgString, msgType) {
-	$.messager.alert(title, msgString, msgType);
-}
-
-// 本地时钟
-function clockon() {
-	var now = new Date();
-	var year = now.getFullYear();
-	var month = now.getMonth();
-	var date = now.getDate();
-	var day = now.getDay();
-	var hour = now.getHours();
-	var minu = now.getMinutes();
-	var sec = now.getSeconds();
-	var week;
-	month = month + 1;
-	if (month < 10)
-		month = "0" + month;
-	if (date < 10)
-		date = "0" + date;
-	if (hour < 10)
-		hour = "0" + hour;
-	if (minu < 10)
-		minu = "0" + minu;
-	if (sec < 10)
-		sec = "0" + sec;
-	var arr_week = new Array("SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT");
-	week = arr_week[day];
-	var time = "";
-	time = year + "-" + month + "-" + date + " " + hour + ":" + minu
-			+ ":" + sec + " " + week;
-
-	$("#bgclock").html(time);
-
-	setTimeout("clockon()", 1000);
-}
