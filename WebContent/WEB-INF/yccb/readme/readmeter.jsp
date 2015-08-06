@@ -278,7 +278,8 @@ function checkreading(readlogid,index){
 			if(data.readStatus == 100){
 				clearInterval(interval);
 				$.messager.progress("close");
-				$.messager.alert('Result',"<fmt:message key='result'/>:"+data.result+"</br><fmt:message key='failreason'/>:"+data.failReason,'info');  
+// 				$.messager.alert('Result',"<fmt:message key='result'/>:"+data.result+"</br><fmt:message key='failreason'/>:"+data.failReason,'info');
+				$.messager.alert('Result',"<fmt:message key='result'/>:"+data.result,'info'); 
 				if(data.readobject == 1){
 					//单个小区  
 					$('#readmeterTab').datagrid({

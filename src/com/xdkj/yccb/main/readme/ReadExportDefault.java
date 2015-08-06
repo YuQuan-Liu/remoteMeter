@@ -30,27 +30,20 @@ public class ReadExportDefault extends AbstractExcelView{
 		sheet = workbook.createSheet("水表信息");
 		sheet.setDefaultColumnWidth(20);
 		
+		
 		cell = getCell(sheet, 0, 0);
-		setText(cell, "用户ID");
-		cell = getCell(sheet, 0, 1);
 		setText(cell, "用户名");
-		cell = getCell(sheet, 0, 2);
+		cell = getCell(sheet, 0, 1);
 		setText(cell, "地址");
-		cell = getCell(sheet, 0, 3);
+		cell = getCell(sheet, 0, 2);
 		setText(cell, "手机");
-		cell = getCell(sheet, 0, 4);
+		cell = getCell(sheet, 0, 3);
 		setText(cell, "楼-单元-户");
+		cell = getCell(sheet, 0, 4);
+		setText(cell, "给水号");
 		cell = getCell(sheet, 0, 5);
-		setText(cell, "水表ID");
-		cell = getCell(sheet, 0, 6);
-		setText(cell, "集中器地址");
-		cell = getCell(sheet, 0, 7);
-		setText(cell, "采集器地址");
-		cell = getCell(sheet, 0, 8);
-		setText(cell, "表地址");
-		cell = getCell(sheet, 0, 9);
 		setText(cell, "表读数");
-		cell = getCell(sheet, 0, 10);
+		cell = getCell(sheet, 0, 6);
 		setText(cell, "抄表时间");
 		
 		
@@ -62,37 +55,25 @@ public class ReadExportDefault extends AbstractExcelView{
 				cell = getCell(sheet, i+1, j);
 				switch (j) {
 				case 0:
-					setText(cell, readView.getC_id()+"");
-					break;
-				case 1:
 					setText(cell, readView.getCustomerName());
 					break;
-				case 2:
+				case 1:
 					setText(cell, readView.getCustomerAddr());
 					break;
-				case 3:
+				case 2:
 					setText(cell, readView.getCustomerMobile());
 					break;
-				case 4:
+				case 3:
 					setText(cell, readView.getC_num());
 					break;
+				case 4:
+					setText(cell, readView.getM_apid());
+					break;
 				case 5:
-					setText(cell, readView.getM_id()+"");
-					break;
-				case 6:
-					setText(cell, readView.getG_addr());
-					break;
-				case 7:
-					setText(cell, readView.getCollectorAddr());
-					break;
-				case 8:
-					setText(cell, readView.getMeterAddr());
-					break;
-				case 9:
 //					setText(cell, readView.getReaddata()+"");
 					cell.setCellValue(readView.getReaddata());
 					break;
-				case 10:
+				case 6:
 					setText(cell, readView.getReadtime());
 					break;
 				default:
