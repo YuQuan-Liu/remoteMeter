@@ -75,8 +75,9 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 		if(q.uniqueResult() != null){
 			maxpid = (int) q.uniqueResult();
 		}
-		q = getSession().createQuery("from Readlog log order by log.pid desc " +
-				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.pid > "+maxpid+" and log.readStatus = 100 ");
+		q = getSession().createQuery("from Readlog log " +
+				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.pid > "+maxpid+" and log.readStatus = 100 and log.completeTime is not null " +
+						"order by log.pid desc ");
 		q.setFirstResult(0);
 		q.setMaxResults(20);
 		List<Readlog> list = q.list();
@@ -106,7 +107,7 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 	public Readlog getMaxReadlogNonSettle(int n_id) {
 		
 		Query q = getSession().createQuery("from Readlog log " +
-				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.readStatus = 100 order by log.pid desc ");
+				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.readStatus = 100 and log.completeTime is not null order by log.pid desc ");
 		q.setFirstResult(0);
 		q.setMaxResults(1);
 		return (Readlog) q.uniqueResult();

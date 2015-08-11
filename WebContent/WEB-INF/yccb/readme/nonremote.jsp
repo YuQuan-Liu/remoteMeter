@@ -29,7 +29,17 @@
 			<input type="hidden" name="n_name" id="n_name"/>
 		</form>
 	</div>
-	<div id="uploadWin"></div>
+	<div id="uploadDialog" class="easyui-dialog" title="Upload" data-options="closed:true,modal:true" style="width:467px;height:300px">
+		<form id="uploadreads" method="post" enctype="multipart/form-data">
+			<div style="margin:10px;">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chooseFile()"><fmt:message key='c.choosefile'/></a>
+				<input type="file" id="file" name="file" accept=".xls" hidden="true" onchange="updateName()"/>
+				<input type="text" id="name" name="name" hidden="true"/>
+	<!-- 			<input class="easyui-filebox" style="width:300px;"/> -->
+				<a href="javascript:void(0)" class="easyui-linkbutton" id="upload" onclick="submitUpload()"><fmt:message key='common.upload'/></a>
+			</div>
+		</form>
+	</div>
 	<div style="margin:10px;">
 		<label><fmt:message key='readnon.readlog'/></label>
 		<select class="easyui-combobox" id="readlog" name="readlog" style="width:200px" data-options="panelHeight:'200',valueField:'pid',textField:'completetime'">
@@ -207,15 +217,34 @@ function upload_(){
 		return;
 	}
 	
-	$('#uploadWin').window({	
-		href:'${path}/readme/nonremote/uploadPage.do',
-		width:467,	
-		height:300,
-		minimizable:false,
-		maximizable:false,
-		collapsible:false,
-		title: 'Upload'
-	});
+	$('#uploadDialog').dialog('open');
+}
+
+function updateName(){
+	$("#name").val($("#file").val());
+}
+function chooseFile(){
+	$("#file").trigger("click");
+}
+function submitUpload(){
+	
+	var readlogid = $("#readlog").combobox("getValue");
+	$.messager.progress({title:"<fmt:message key='common.uploading'/>",text:"",interval:100});
+	$("#uploadreads").form("submit",{
+		url:"${path}/readme/nonremote/upload.do",
+		onSubmit:function(param){
+			if($("#name").val() == ""){
+				$.messager.progress('close');
+				return false;
+			}
+			param.readlogid = readlogid;
+		},
+		success:function(data){
+			$.messager.progress('close');
+			$('#uploadDialog').dialog('close');
+			showMeterdata();
+		}
+	})
 }
 
 function addreadlog(){

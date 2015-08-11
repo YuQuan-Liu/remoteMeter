@@ -92,7 +92,7 @@ public class NonRemoteCtrl {
 		map.put("n_id", n_id);
 		map.put("n_name", n_name);
 		map.put("list", readService.getNonRemoteMeters(n_id+""));
-		return new ModelAndView("export_default", map);
+		return new ModelAndView("export_nonremote_default", map);
 	}
 	
 	@RequestMapping(value="/readme/nonremote/uploadPage")
@@ -108,7 +108,7 @@ public class NonRemoteCtrl {
 		if(!file.isEmpty()){
 			try {
 				byte[] bytes = file.getBytes();
-				String excelPath = "D:/Excels/"+name.substring(name.lastIndexOf("\\")+1)+Calendar.getInstance().getTimeInMillis();
+				String excelPath = "D:/Excels/"+Calendar.getInstance().getTimeInMillis()+name.substring(name.lastIndexOf("\\")+1);
 				
 				//log
 				actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 21, "excelPath:"+excelPath);

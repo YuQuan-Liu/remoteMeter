@@ -17,6 +17,7 @@ import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettleView;
+import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Readmeterlog;
 import com.xdkj.yccb.main.entity.Valveconflog;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
@@ -45,23 +46,19 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 	public Map addReadMeterLogs(List<Readmeterlog> list) {
 		int error = 0;
 		String reason = "";
-		Session session = getSession();
 		//事务交由spring管理   再开事务的话  Hibernate 会报事务启动不成功异常
 //		Transaction tr = session.beginTransaction();
 		Readmeterlog readmeterlog = null;
+		Query q = getSession().createSQLQuery("{call addreadmeterlog(?,?,?,?,?,?)}");
 		for(int i = 0;i < list.size();i++){
 			readmeterlog = list.get(i);
-			session.save(readmeterlog);
-			if(readmeterlog.getPid() > 0){
-//				good++;
-			}else{
-				error++;
-				reason += (readmeterlog.getMeter().getPid()+"~");
-			}
-			if(i/20==0){
-				session.flush();
-				session.clear();
-			}
+			q.setInteger(0, readmeterlog.getMeter().getPid());
+			q.setInteger(1, readmeterlog.getActionType());
+			q.setInteger(2, readmeterlog.getActionResult());
+			q.setInteger(3, 1);
+			q.setInteger(4, readmeterlog.getReadlog().getPid());
+			q.setString(5, "");
+			q.executeUpdate();
 		}
 //		tr.commit();
 		Map map = new HashMap();

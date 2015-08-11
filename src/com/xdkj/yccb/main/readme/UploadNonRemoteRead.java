@@ -39,21 +39,15 @@ public class UploadNonRemoteRead {
 		for(int i = 1;i <= sheet.getLastRowNum();i++){
 			row = sheet.getRow(i);
 			int mid = Integer.parseInt(getCellString(row, 4));
-			int result = Integer.parseInt(getCellString(row, 8));
-			Date date = null;
-			try {
-				date = SimpleDateFormat.getInstance().parse(getCellString(row, 9));
-			} catch (ParseException e) {
-				date = new Date();
-			}
+			int result = Integer.parseInt(getCellString(row, 7));
+			
 			
 			Meter m = new Meter();
 			m.setPid(mid);
 			
 			readmeterlog = new Readmeterlog();
 			readmeterlog.setActionResult(result);
-			readmeterlog.setActionTime(date);
-			readmeterlog.setActionType((byte)6);
+			readmeterlog.setActionType((byte)1);
 			readmeterlog.setMeter(m);
 			readmeterlog.setReadlog(readlog);
 			readmeterlog.setRemark("");
