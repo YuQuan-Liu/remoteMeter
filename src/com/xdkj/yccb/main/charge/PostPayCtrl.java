@@ -53,9 +53,9 @@ public class PostPayCtrl {
 	
 	@RequestMapping(value="/charge/postpay/listpostpay",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String listPostPay(int n_id, int settle_id){
+	public String listPostPay(int n_id, int settle_id,String lou){
 		
-		return JSON.toJSONString(settleService.getSettledDataPostPay(n_id,settle_id));
+		return JSON.toJSONString(settleService.getSettledDataPostPay(n_id,settle_id,lou));
 	}
 	
 	@RequestMapping(value="/charge/postpay/chargepostpay",produces="application/json;charset=UTF-8")
@@ -71,6 +71,27 @@ public class PostPayCtrl {
 		//根据小区ID  时间  预付费标识  获取用户的交费信息
 		Map map = new HashMap();
 		List<PostCharge> list = meterDeductionLogService.getPostCharge(ids);
+
+		PostCharge postCharge = null;
+		for(int i = 0;list != null && i < list.size();i++){
+			postCharge = list.get(i);
+			postCharge.setCnDemoney(TransRMB.transform(postCharge.getDemoney()+""));
+		}
+		map.put("list", list);
+		UserForSession admin = WebUtil.getCurrUser(request);
+		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+		map.put("header",wc.getCompanyName()+"收费单");
+		map.put("tel",wc.getTelephone());
+		
+		return new ModelAndView("postcharge",map);
+	}
+	
+	@RequestMapping(value="/charge/postpay/printchargeall")
+	public ModelAndView postchargePrintAll(HttpServletRequest request,Model model,int n_id,int settle_id,String lou) throws Exception{
+		
+		//根据小区ID  时间  预付费标识  获取用户的交费信息
+		Map map = new HashMap();
+		List<PostCharge> list = meterDeductionLogService.getPostChargeLou(n_id,settle_id,lou);
 
 		PostCharge postCharge = null;
 		for(int i = 0;list != null && i < list.size();i++){

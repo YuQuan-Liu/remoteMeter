@@ -20,9 +20,19 @@
 					</c:forEach>
 	    		</select>
 	    		
-	    		<select class="easyui-combobox" id="settlelog" name="settlelog" style="width:200px" data-options="panelHeight:'200',valueField:'pid',textField:'startTime',onSelect:searchCustomer">
+	    		<select class="easyui-combobox" id="settlelog" name="settlelog" style="width:200px" data-options="panelHeight:'200',valueField:'pid',textField:'startTime'">
 					<option value=""><fmt:message key='selectsettlelog'/></option>
 	    		</select>
+	    		
+	    		<label><fmt:message key='lou'/></label>
+				<select class="easyui-combobox" id="lou" name="lou" style="width:200px" data-options="panelHeight:'200',valueField:'id',textField:'lou'">
+					<option value=""><fmt:message key='lou.selectlou'/></option>
+	    		</select>
+	    		
+	    		<span style="margin-left:20px;">
+	    			<a href="javascript:void(0)" class="easyui-linkbutton" id="settleall" onclick="searchCustomer()" ><fmt:message key='search'/></a>
+	    		</span>
+	    		
 	    		<span style="margin-left:20px;">
 	    			<a href="javascript:void(0)" class="easyui-linkbutton" id="settleall" onclick="printAll()" ><fmt:message key='allprint'/></a>
 	    		</span>
@@ -37,10 +47,10 @@
 	<div style="margin:10px;background-color:#ffee00;">
 		<p><fmt:message key='postpay.remark'/></p>
 	</div>
-	<div style="margin:10px;">
-		<p><fmt:message key='yl'/></p>
-	</div>
-	<table id="ylTab" style="width:400px;height:200px;"></table>
+<!-- 	<div style="margin:10px;"> -->
+<%-- 		<p><fmt:message key='yl'/></p> --%>
+<!-- 	</div> -->
+<!-- 	<table id="ylTab" style="width:400px;height:200px;"></table> -->
 <script>
 $(function(){
 	$("#postpayTab").datagrid({
@@ -119,17 +129,17 @@ $(function(){
 		          {field:'demoney',title:'<fmt:message key='demoney'/>',width:80}
 		      ]]
 	});
-	$("#ylTab").datagrid({
-		striped:true,
-		method:'post',
-		loadMsg:'<fmt:message key="main.loading"/>',
-		rownumbers:true,
-		columns:[[
-		          {field:'pricekindname',title:'<fmt:message key='m.pk'/>',width:100},
-		          {field:'yl',title:'<fmt:message key='yl'/>',width:100},
-		          {field:'demoney',title:'<fmt:message key='demoney'/>',width:100}
-		      ]]
-	});
+// 	$("#ylTab").datagrid({
+// 		striped:true,
+// 		method:'post',
+// 		loadMsg:'<fmt:message key="main.loading"/>',
+// 		rownumbers:true,
+// 		columns:[[
+// 		          {field:'pricekindname',title:'<fmt:message key='m.pk'/>',width:100},
+// 		          {field:'yl',title:'<fmt:message key='yl'/>',width:100},
+// 		          {field:'demoney',title:'<fmt:message key='demoney'/>',width:100}
+// 		      ]]
+// 	});
 });
 
 function searchSettle(){
@@ -137,28 +147,47 @@ function searchSettle(){
 	
 	if(n_id != "" ){
 		$('#settlelog').combobox('reload','${path}/charge/settle/listsettlelog.do?n_id='+n_id);
+		$('#lou').combobox('reload','${path}/statistics/lou/listlou.do?n_id='+n_id);
 	}
 }
 
 function searchCustomer(){
 	var n_id = $("#neighbor").combobox("getValue");
 	var settle_id = $("#settlelog").combobox("getValue");
+	var lou = $("#lou").combobox("getText");
+	
+	if (n_id == "") {
+		$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
+		return;
+	}
+	if (settle_id == "") {
+		$.messager.alert('Info', '<fmt:message key='selectsettlelog'/>');
+		return;
+	}
+	if (lou == "") {
+		$.messager.alert('Info', '<fmt:message key='lou.selectlou'/>');
+		return;
+	}
+	
 	$('#postpayTab').datagrid({
 		url:"${path}/charge/postpay/listpostpay.do",
 		queryParams: {
 			n_id:n_id,  		
-			settle_id:settle_id
+			settle_id:settle_id,
+			lou:lou
 		}
 	});
 
-	$('#ylTab').datagrid({
-		url:"${path}/charge/settle/settleallyl.do",
-		queryParams: {
-			n_id:n_id,  		
-			settle_id:settle_id,
-			pre:0
-		}
-	});
+	
+// 	$('#ylTab').datagrid({
+// 		url:"${path}/charge/settle/settleallyl.do",
+// 		queryParams: {
+// 			n_id:n_id,  		
+// 			settle_id:settle_id,
+// 			lou:lou,
+// 			pre:0
+// 		}
+// 	});
 }
 
 function chargePost(){
@@ -194,19 +223,37 @@ function chargePost(){
 }
 
 function printAll(){
-	var mdl_ids = [];
-	var rows = $('#postpayTab').datagrid('getSelections');
+// 	var mdl_ids = [];
+// 	var rows = $('#postpayTab').datagrid('getSelections');
+	var n_id = $("#neighbor").combobox("getValue");
+	var settle_id = $("#settlelog").combobox("getValue");
+	var lou = $("#lou").combobox("getText");
 	
-	for(var i=0; i<rows.length; i++){
-		var row = rows[i];
-		mdl_ids.push(row.mdl_id);
+	if (n_id == "") {
+		$.messager.alert('Info', '<fmt:message key='common.choosenei'/>');
+		return;
+	}
+	if (settle_id == "") {
+		$.messager.alert('Info', '<fmt:message key='selectsettlelog'/>');
+		return;
+	}
+	if (lou == "") {
+		$.messager.alert('Info', '<fmt:message key='lou.selectlou'/>');
+		return;
 	}
 	
-	var len = mdl_ids.length;
-	var ids = mdl_ids.join(",");
+	window.open("${path}/charge/postpay/printchargeall.do?n_id="+n_id+"&settle_id="+settle_id+"&lou="+lou,"_blank");
 	
-	if(len != 0){
-		window.open("${path}/charge/postpay/printcharge.do?ids="+ids,"_blank");
+// 	for(var i=0; i<rows.length; i++){
+// 		var row = rows[i];
+// 		mdl_ids.push(row.mdl_id);
+// 	}
+	
+// 	var len = mdl_ids.length;
+// 	var ids = mdl_ids.join(",");
+	
+// 	if(len != 0){
+// 		window.open("${path}/charge/postpay/printcharge.do?ids="+ids,"_blank");
 // 		$.ajax({
 // 			type:"POST",
 // 			url:"${path}/charge/postpay/printcharge.do",
@@ -219,9 +266,9 @@ function printAll(){
 				
 // 			}
 // 		});
-	}else{
-		$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
-	}
+// 	}else{
+// 		$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
+// 	}
 }
 
 function printSingle(mdl_id,index){

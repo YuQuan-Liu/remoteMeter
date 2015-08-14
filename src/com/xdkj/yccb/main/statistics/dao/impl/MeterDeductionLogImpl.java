@@ -51,7 +51,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		this.updateBase(mdl);
 	}
 	@Override
-	public List<SettledView> getLogPostPay(int n_id, int settle_id) {
+	public List<SettledView> getLogPostPay(int n_id, int settle_id,String lou) {
 		
 		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
 				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
@@ -63,7 +63,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
 				"on m.pricekindid = pk.pid " +
-				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
+				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.LouNum = :lou ";
 		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("c_id",Hibernate.INTEGER)
@@ -97,6 +97,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		
 		q.setInteger("n_id", n_id);
 		q.setInteger("settle_id", settle_id);
+		q.setString("lou", lou);
 		q.setResultTransformer(Transformers.aliasToBean(SettledView.class));
 		List<SettledView> list = new ArrayList<>();
 		try {
@@ -203,6 +204,47 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					.addScalar("readTime",Hibernate.STRING)
 					.addScalar("pkName",Hibernate.STRING)
 					.addScalar("steelNum",Hibernate.STRING);
+			q.setResultTransformer(Transformers.aliasToBean(PostCharge.class));
+			list = q.list();
+		}
+		
+		
+		return list;
+	}
+	
+
+	@Override
+	public List<PostCharge> getPostChargeLou(int n_id, int settle_id, String lou) {
+		List<PostCharge> list = null;
+		if(!lou.trim().equals("") && n_id > 0 && settle_id > 0){
+			String SQL = "select mdl.MeterRead thisread,mdl.LastDeRead lastread,mdl.MeterReadTime readTime,mdl.changend changeend,mdl.demoney demoney,ad.AdminName,pk.pricekindname pkName," +
+					"c.CustomerAddr,c.CustomerName,c.CustomerID,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num," +
+					"case when mdl.changend > 0 then mdl.MeterRead+mdl.changend - mdl.LastDeRead else mdl.MeterRead-mdl.LastDeRead end yl,m.steelNum from meterdeductionlog mdl " +
+					"join meter m on mdl.meterid = m.pid " +
+					"join customer c on m.customerid = c.pid " +
+					"join settlelog settle on settle.pid = mdl.settlelogid " +
+					"join admininfo ad on settle.adminid = ad.pid " +
+					"join pricekind pk on pk.pid = mdl.pricekindid " +
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.demoney > 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.LouNum = :lou ";
+			
+			Query q = getSession().createSQLQuery(SQL)
+					.addScalar("adminName",Hibernate.STRING)
+					.addScalar("customerAddr",Hibernate.STRING)
+					.addScalar("customerName",Hibernate.STRING)
+					.addScalar("c_num",Hibernate.STRING)
+					.addScalar("customerID",Hibernate.STRING)
+					.addScalar("yl",Hibernate.STRING)
+					.addScalar("lastread",Hibernate.STRING)
+					.addScalar("thisread",Hibernate.STRING)
+					.addScalar("changeend",Hibernate.STRING)
+					.addScalar("demoney",Hibernate.DOUBLE)
+					.addScalar("readTime",Hibernate.STRING)
+					.addScalar("pkName",Hibernate.STRING)
+					.addScalar("steelNum",Hibernate.STRING);
+			
+			q.setInteger("n_id", n_id);
+			q.setInteger("settle_id", settle_id);
+			q.setString("lou", lou);
 			q.setResultTransformer(Transformers.aliasToBean(PostCharge.class));
 			list = q.list();
 		}
@@ -527,5 +569,6 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		}
 		return list;
 	}
+
 	
 }

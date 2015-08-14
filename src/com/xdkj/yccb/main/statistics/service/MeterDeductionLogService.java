@@ -19,4 +19,6 @@ public interface MeterDeductionLogService {
 	public String chargepostpay(int adminid, int[] mdl_ids);
 
 	public List<PostCharge> getPostCharge(String ids);
+
+	public List<PostCharge> getPostChargeLou(int n_id, int settle_id, String lou);
 }

@@ -37,6 +37,12 @@ public class MeterDeductionLogServiceImpl implements MeterDeductionLogService {
 		return meterDeductionLogDao.getPostCharge(ids);
 	}
 
+	@Override
+	public List<PostCharge> getPostChargeLou(int n_id, int settle_id, String lou) {
+		
+		return meterDeductionLogDao.getPostChargeLou(n_id,settle_id,lou);
+	}
+
 	
 
 	

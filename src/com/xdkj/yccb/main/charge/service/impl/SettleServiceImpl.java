@@ -101,9 +101,9 @@ public class SettleServiceImpl implements SettleService {
 	}
 
 	@Override
-	public List<SettledView> getSettledDataPostPay(int n_id, int settle_id) {
+	public List<SettledView> getSettledDataPostPay(int n_id, int settle_id,String lou) {
 		
-		return meterDeductionLogDao.getLogPostPay(n_id,settle_id); 
+		return meterDeductionLogDao.getLogPostPay(n_id,settle_id,lou); 
 	}
 
 	@Override

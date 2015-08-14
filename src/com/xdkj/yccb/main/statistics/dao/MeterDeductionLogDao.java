@@ -25,7 +25,7 @@ public interface MeterDeductionLogDao {
 	
 	void updateMeterductionLog(Meterdeductionlog mdl);
 	
-	List<SettledView> getLogPostPay(int n_id, int settle_id);
+	List<SettledView> getLogPostPay(int n_id, int settle_id,String lou);
 	
 	List<SettledView> getLogAuto(int n_id, int settle_id);
 	
@@ -42,6 +42,16 @@ public interface MeterDeductionLogDao {
 	 * @return
 	 */
 	List<PostCharge> getPostCharge(String ids);
+	
+	/**
+	 * 获取后付费用户的扣费信息 根据楼  &&  demoney>0  进行打印
+	 * @param n_id
+	 * @param settle_id
+	 * @param lou
+	 * @return
+	 */
+	List<PostCharge> getPostChargeLou(int n_id, int settle_id, String lou);
+	
 	/**
 	 * 获取当前结算  的所有记录显示  根据pre 
 	 * @param n_id
@@ -81,4 +91,7 @@ public interface MeterDeductionLogDao {
 	List<SettledView> getLogDetail(int cid, Date start, Date end);
 
 	List<MeterDereadMonth> getMeterDeread(int mid);
+
+
+
 }

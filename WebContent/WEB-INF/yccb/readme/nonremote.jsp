@@ -165,7 +165,7 @@ function readManual(id,index){
         if (endEditing()){
         	var readlogid = $("#readlog").combobox("getValue");
         	var newread = $('#nonRemoteTab').datagrid('getRows')[index]["newread"];
-        	if(readlogid > 0 && newread >0){
+        	if(readlogid > 0 && newread >=0){
             	$.ajax({
             		type:"POST",
     	    		url:"${path}/readme/nonremote/addnonremote.do",

@@ -39,7 +39,7 @@ public interface SettleService {
 	 * @param settle_id
 	 * @return
 	 */
-	List<SettledView> getSettledDataPostPay(int n_id, int settle_id);
+	List<SettledView> getSettledDataPostPay(int n_id, int settle_id,String lou);
 
 	/**
 	 * 阀控表自动结算过的信息
