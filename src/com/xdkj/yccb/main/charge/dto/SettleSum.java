@@ -1,11 +1,13 @@
 package com.xdkj.yccb.main.charge.dto;
 
+import java.math.BigDecimal;
+
 
 public class SettleSum {
 	
 	private String pricekindname;
 	private int yl;
-	private double demoney;
+	private BigDecimal demoney;
 	public String getPricekindname() {
 		return pricekindname;
 	}
@@ -18,10 +20,10 @@ public class SettleSum {
 	public void setYl(int yl) {
 		this.yl = yl;
 	}
-	public double getDemoney() {
+	public BigDecimal getDemoney() {
 		return demoney;
 	}
-	public void setDemoney(double demoney) {
+	public void setDemoney(BigDecimal demoney) {
 		this.demoney = demoney;
 	}
 	public SettleSum() {

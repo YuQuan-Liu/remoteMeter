@@ -128,7 +128,7 @@ public class SettleServiceImpl implements SettleService {
 			yl += sum.getYl();
 		}
 		sum = new SettleSum();
-		sum.setDemoney(0);
+		sum.setDemoney(new BigDecimal(0));
 		sum.setYl(yl);
 		sum.setPricekindname("总水量");
 		list.add(sum);
@@ -139,12 +139,12 @@ public class SettleServiceImpl implements SettleService {
 	public List<SettleSum> getSettledYL(int n_id, int settle_id,int pre) {
 		List<SettleSum> list = readMeterLogDao.getSettledSum(n_id,settle_id,pre);
 		int yl = 0;
-		double demoney = 0;
+		BigDecimal demoney = new BigDecimal(0);
 		SettleSum sum = null;
 		for(int i = 0;i < list.size();i++){
 			sum = list.get(i);
 			yl += sum.getYl();
-			demoney += sum.getDemoney();
+			demoney  = demoney.add(sum.getDemoney());
 		}
 		sum = new SettleSum();
 		sum.setDemoney(demoney);
@@ -172,12 +172,12 @@ public class SettleServiceImpl implements SettleService {
 			String lou) {
 		List<SettleSum> list = readMeterLogDao.getLouSettledSum(n_id,settle_id,pre,lou);
 		int yl = 0;
-		double demoney = 0;
+		BigDecimal demoney = new BigDecimal(0);
 		SettleSum sum = null;
 		for(int i = 0;i < list.size();i++){
 			sum = list.get(i);
 			yl += sum.getYl();
-			demoney += sum.getDemoney();
+			demoney  = demoney.add(sum.getDemoney());
 		}
 		sum = new SettleSum();
 		sum.setDemoney(demoney);

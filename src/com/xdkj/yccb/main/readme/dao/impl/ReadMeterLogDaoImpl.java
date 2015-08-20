@@ -179,29 +179,33 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 					"join pricekind pk " +
 					"on mdl.pricekindid = pk.PID " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and changend = 0 " +
-					"union " +
+					"group by mdl.pricekindid " +
+					"union all " +
 					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+changend-lastderead) yl from meterdeductionlog mdl " +
 					"join pricekind pk " +
 					"on mdl.pricekindid = pk.PID " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and changend > 0 " +
-					") sum_";
+					"group by mdl.pricekindid " +
+					") sum_ group by pricekindname ";
 		}else{
 			SQL = "select pricekindname,sum(demoney) demoney,sum(yl) yl from ( " +
 					"select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
 					"join pricekind pk " +
 					"on mdl.pricekindid = pk.PID " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and changend = 0 " +
-					"union " +
+					"group by mdl.pricekindid " +
+					"union all " +
 					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+changend-lastderead) yl from meterdeductionlog mdl " +
 					"join pricekind pk " +
 					"on mdl.pricekindid = pk.PID " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and changend > 0 " +
-					") sum_";
+					"group by mdl.pricekindid " +
+					") sum_ group by pricekindname ";
 		}
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("pricekindname",Hibernate.STRING)
 				.addScalar("yl",Hibernate.INTEGER)
-				.addScalar("demoney",Hibernate.DOUBLE);
+				.addScalar("demoney",Hibernate.BIG_DECIMAL);
 		
 		q.setInteger("settlelogid", settle_id);
 		if(pre != 2){
@@ -233,14 +237,16 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 					"join meter m on mdl.meterid = m.pid " +
 					"join customer c on c.pid = m.customerid " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.changend = 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
-					"union " +
+					"group by mdl.pricekindid " +
+					"union all " +
 					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+mdl.changend-lastderead) yl from meterdeductionlog mdl " +
 					"join pricekind pk " +
 					"on mdl.pricekindid = pk.PID " +
 					"join meter m on mdl.meterid = m.pid " +
 					"join customer c on c.pid = m.customerid " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.changend > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
-					") sum_";
+					"group by mdl.pricekindid " +
+					") sum_ group by pricekindname ";
 		}else{
 			SQL = "select pricekindname,sum(demoney) demoney,sum(yl) yl from ( " +
 					"select pk.pricekindname,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
@@ -249,19 +255,21 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 					"join meter m on mdl.meterid = m.pid " +
 					"join customer c on c.pid = m.customerid " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and mdl.changend = 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
-					"union " +
+					"group by mdl.pricekindid " +
+					"union all " +
 					"select pk.pricekindname,sum(demoney) demoney,sum(meterread+mdl.changend-lastderead) yl from meterdeductionlog mdl " +
 					"join pricekind pk " +
 					"on mdl.pricekindid = pk.PID " +
 					"join meter m on mdl.meterid = m.pid " +
 					"join customer c on c.pid = m.customerid " +
 					"where settlelogid = :settlelogid and mdl.valid = 1 and mdl.paytype = :pre and mdl.changend > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
-					") sum_";
+					"group by mdl.pricekindid " +
+					") sum_ group by pricekindname ";
 		}
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("pricekindname",Hibernate.STRING)
 				.addScalar("yl",Hibernate.INTEGER)
-				.addScalar("demoney",Hibernate.DOUBLE);
+				.addScalar("demoney",Hibernate.BIG_DECIMAL);
 		
 		q.setInteger("settlelogid", settle_id);
 		q.setString("lou", lou);
