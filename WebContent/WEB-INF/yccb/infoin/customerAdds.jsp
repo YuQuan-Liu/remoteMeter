@@ -62,7 +62,7 @@
 		$("#file").trigger("click");
 	}
 	function submitUpload(){
-		$.messager.progress();
+		$.messager.progress({text:""});
 		$("#uploadcustomers").form("submit",{
 			url:"${path}/infoin/customer/upload.do",
 			onSubmit:function(){

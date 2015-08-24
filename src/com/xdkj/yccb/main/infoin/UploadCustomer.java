@@ -180,6 +180,12 @@ public class UploadCustomer {
 			case Cell.CELL_TYPE_NUMERIC:
 				str = String.valueOf((long)cell.getNumericCellValue());
 				break;
+			case Cell.CELL_TYPE_FORMULA:
+				str = cell.getStringCellValue();
+				break;
+				default:
+				str = cell.getStringCellValue();
+				break;
 			}
 		}
 		return str;
