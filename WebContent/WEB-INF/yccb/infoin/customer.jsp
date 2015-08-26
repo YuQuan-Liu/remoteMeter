@@ -39,7 +39,7 @@
 		<table style="margin:0px auto;padding-top:20px;">
 			<tr>
 				<td><lable><fmt:message key='m.newaddr'/>：</lable></td>
-				<td><input type="text" class="easyui-textbox" name="new_maddr" id="new_maddr" data-options="required:true,onChange:check_maddr"/></td>
+				<td><input type="text" class="easyui-textbox" name="new_maddr" id="new_maddr" data-options="required:true"/></td>
 			</tr>
 			<tr>
 				<td><lable><fmt:message key='m.changeend'/></lable></td>
