@@ -26,7 +26,18 @@ public interface ReadLogDao {
 
 	public void updateException(Readlog readlog, Admininfo admin, Exception e);
 
+	/**
+	 * 结算时
+	 * @param n_id
+	 * @return
+	 */
 	public Readlog getMaxReadlogNonSettle(int n_id);
+	/**
+	 * 结算过的  最大的抄表id
+	 * @param n_id
+	 * @return
+	 */
+	public Readlog getMaxReadlogSettle(int n_id);
 
 	public void settleAll(int n_id, int adminid, int readlogid);
 

@@ -107,7 +107,17 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 	public Readlog getMaxReadlogNonSettle(int n_id) {
 		
 		Query q = getSession().createQuery("from Readlog log " +
-				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.readStatus = 100 and log.completeTime is not null order by log.pid desc ");
+				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.readStatus = 100 and log.settle = 0 and log.completeTime is not null order by log.pid desc ");
+		q.setFirstResult(0);
+		q.setMaxResults(1);
+		return (Readlog) q.uniqueResult();
+	}
+	
+	@Override
+	public Readlog getMaxReadlogSettle(int n_id) {
+		
+		Query q = getSession().createQuery("from Readlog log " +
+				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.readStatus = 100 and log.settle = 1 and log.completeTime is not null order by log.pid desc ");
 		q.setFirstResult(0);
 		q.setMaxResults(1);
 		return (Readlog) q.uniqueResult();

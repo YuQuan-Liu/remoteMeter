@@ -647,9 +647,10 @@ public class CustomerServiceImpl implements CustomerService {
 //		customerDao.getMainMeters(m.getNeighbor().getPid());
 //		waste.setMeterid(meterid);
 		
+		
 		waste.setRemark("换表");
 		waste.setValid('1');
-		waste.setReadLogId(readLogDao.getMaxReadlogNonSettle(meterid).getPid());
+		waste.setReadLogId(readLogDao.getMaxReadlogSettle(m.getNeighbor().getPid()).getPid());
 		waste.setSalveSum(0);
 		waste.setLouNum(m.getCustomer().getLouNum());
 		waste.setMeterRead(0);
