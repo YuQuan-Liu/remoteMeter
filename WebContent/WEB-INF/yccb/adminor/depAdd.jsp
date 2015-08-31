@@ -11,7 +11,7 @@
 $(function(){
 	$('#allNbrTab').datagrid({
 	    url:'${path}/admin/dep/listallNbr.do',
-	    fit:true,
+	    //fit:true,
 	    queryParams:{},
 	    rownumbers:true,
 	    autoRowHeight:false,
@@ -110,6 +110,6 @@ $.extend($.fn.validatebox.defaults.rules, {
 	<div style="text-align: center; padding: 5px">
 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
 	</div>
-	<table id="allNbrTab" style="width:500px;height:500px;"></table>
+	<table id="allNbrTab" style="width:500px;height:380px;"></table>
 </body>
 </html>
