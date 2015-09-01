@@ -81,6 +81,7 @@ function checkGPRSAddr(){
 	    				<select class="easyui-combobox" name="gprsprotocol" data-options="panelHeight:'auto'" style="width: 80px">
 							<option value="1"><fmt:message key='g.hdeg'/></option>
 							<option value="2" selected="selected"><fmt:message key='g.188'/></option>
+							<option value="3"><fmt:message key='g.hdeg'/>2</option>
 						</select>
 	    			</td>
 	    		</tr>

@@ -196,7 +196,7 @@ public class ReadMeter {
 				return new String(result, 0, count);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			readLogDao.updateException(readlog,admin,e);
 			jo.put("function", "read");
 			jo.put("pid", readlog.getPid());

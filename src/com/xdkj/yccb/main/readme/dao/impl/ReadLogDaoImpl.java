@@ -96,9 +96,9 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 
 	@Override
 	public void updateException(Readlog readlog, Admininfo admin, Exception e) {
-		Query q = getSession().createQuery("update ReadLog " +
-				"set ReadStatus = 100,FailReason = :e,completeTime = now(),Result = '抄表异常' " +
-				"where pid >= "+readlog.getPid()+" and adminid = "+admin.getPid());
+		Query q = getSession().createQuery("update Readlog " +
+				"set readStatus = 100,failReason = :e,completeTime = now(),result = '抄表异常,检查参数设置' " +
+				"where pid = "+readlog.getPid());
 		q.setString("e", e.getMessage());
 		q.executeUpdate();
 	}

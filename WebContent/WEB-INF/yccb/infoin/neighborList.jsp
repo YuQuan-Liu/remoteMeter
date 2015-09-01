@@ -144,7 +144,11 @@ $(function(){
 							if(value == 2){
 								return "<fmt:message key='g.188'/>";
 							}else{
-								return "<fmt:message key='common.exception'/>";
+								if(value == 3){
+									return "<fmt:message key='g.hdeg'/>"+2;
+								}else{
+									return "<fmt:message key='common.exception'/>";
+								}
 							}
 						}
 					}},
