@@ -122,7 +122,7 @@
 					<textElement verticalAlignment="Middle">
 						<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 					</textElement>
-					<text><![CDATA[收费员：]]></text>
+					<text><![CDATA[操作员：]]></text>
 				</staticText>
 				<textField isBlankWhenNull="true">
 					<reportElement uuid="29d025e8-15eb-4444-bee7-cfac8ef67351" x="74" y="23" width="84" height="14"/>

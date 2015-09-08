@@ -63,9 +63,13 @@ $(function(){
 		},
 		loadMsg:'<fmt:message key="main.loading"/>',
 		rownumbers:true,
-// 		singleSelect:true,  
+		singleSelect:true,  
 		rowStyler:function(index,row){
-			
+			if (row.editread == 1){
+				return 'background-color:#ffe48d;color:#000;';
+			}else{
+				return 'background-color:#FFFFFF;color:#000;';
+			}
 		},
 		onClickRow: onClickRow,
 		columns:[[
@@ -107,6 +111,7 @@ $(function(){
 		          {field:'deread',title:'<fmt:message key='m.deread'/>',width:80},
 		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
 		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},
+		          {field:'editread',title:'editread',width:60,hidden:true},
 		          {field:'newread',title:'<fmt:message key='readnon.newread'/>',width:70,editor:{type:'numberbox'}},
 		          {field:'yl',title:'<fmt:message key='yl'/>',width:70,styler:function(value,row,index){
 		        	  if(value > 30){
@@ -148,7 +153,7 @@ function readManual_(){
         		if(newread == ""){
         			newread = 0;
         		}
-        		console.log(index + " "+readlogid +" "+ newread+" "+id);
+//         		console.log(index + " "+readlogid +" "+ newread+" "+id);
             	$.ajax({
             		type:"POST",
     	    		url:"${path}/readme/nonremote/addnonremote.do",
@@ -163,6 +168,7 @@ function readManual_(){
     	    			$('#nonRemoteTab').datagrid('getRows')[index]["readdata"] = data.actionResult;
     	    			$('#nonRemoteTab').datagrid('getRows')[index]["readtime"] = data.actionTime;
 //     	    			$('#nonRemoteTab').datagrid('getRows')[index]["yl"] = data.mnum - deread;
+						$('#nonRemoteTab').datagrid('getRows')[index]["editread"] = 0;
     	    			$('#nonRemoteTab').datagrid('refreshRow', index);
     	    			onClickRow(index+1);
     	    		}
@@ -210,14 +216,21 @@ function onClickRow(index_){
 //             var ed = $('#nonRemoteTab').datagrid('getEditor', {index:index_,field:'newread'});
 //             console.log($(ed.target));
 //             $(ed.target).focus();
+// 			$('#nonRemoteTab').datagrid('uncheckAll');
+			$('#nonRemoteTab').datagrid('getRows')[index_]["editread"] = 1;
+			$('#nonRemoteTab').datagrid('refreshRow', index_);
 			$('#nonRemoteTab').datagrid('editCell', {
 				index: index_,
 				field: 'newread'
 			});
             editIndex = index_;
         } else {
-            $('#nonRemoteTab').datagrid('selectRow', editIndex);
+//             $('#nonRemoteTab').datagrid('selectRow', editIndex);
         }
+    }else{
+    	$('#nonRemoteTab').datagrid('getRows')[index_]["editread"] = 0;
+		$('#nonRemoteTab').datagrid('refreshRow', index_);
+		editIndex = undefined;
     }
 }
 

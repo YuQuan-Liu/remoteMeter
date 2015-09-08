@@ -26,16 +26,16 @@
 			  </tr>
 			  <tr>
 			    <td class="pa_bottom" style=" padding-bottom:20px; "><fmt:message key='login.password'/>：</td>
-			    <td style=" padding-bottom:20px;" colspan="2"><input id="loginkey" name="loginkey" type="password" class="login_input" /></td>
+			    <td style=" padding-bottom:20px;" colspan="2"><input id="loginkey" name="loginkey" type="password" class="login_input" tabindex="2" /></td>
 			  </tr>
 			    <tr>
 			    <td class="pa_bottom" style=" padding-bottom:20px; "><fmt:message key='login.checkcode'/>：</td>
-			    <td width="105" style=" padding-bottom:20px;"><input id="checkcode" name="checkcode" type="text" class="login_input" maxlength="4" style="width:84px;" /></td>
+			    <td width="105" style=" padding-bottom:20px;"><input id="checkcode" name="checkcode" type="text" class="login_input" maxlength="4" style="width:84px;" tabindex="3"/></td>
 			    <td width="109" style=" padding-bottom:20px;"><img id="checkimage" src="${path}/resource/codeImg.do" onclick="changeCheck()"></td>
 			  </tr>
 			  <tr>
 				<td style=" padding-bottom:20px;" colspan="2"><span id = "error_info" style="color:red">${message_login}</span></td>
-			    <td style=" padding-bottom:20px;" ><input name="" type="submit" value="<fmt:message key='login.submit'/>" class="login_botton" ></td>
+			    <td style=" padding-bottom:20px;" ><input name="" type="submit" value="<fmt:message key='login.submit'/>" class="login_botton" tabindex="4"></td>
 			  </tr>
 			</table>
 		</form>
