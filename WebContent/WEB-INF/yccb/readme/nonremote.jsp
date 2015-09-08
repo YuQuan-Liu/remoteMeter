@@ -48,7 +48,10 @@
 	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addreadlog()" ><fmt:message key='readnon.addreadlog'/></a><span style="color:red;margin-left:20px;"><fmt:message key='readnon.addreadlogremark'/></span>
 	</div>
 	<table id="nonRemoteTab" style="width:100%;height:400px;"></table>
+
+<script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/datagrid-cellediting.js"></script>
 <script>
+var editIndex = undefined;
 $(function(){
 	$("#nonRemoteTab").datagrid({
 		striped:true,
@@ -119,7 +122,59 @@ $(function(){
 				  }}
 		      ]]
 	});
+
+	$('#nonRemoteTab').datagrid('enableCellEditing');
+	
+	$(".datagrid").bind("keyup",function(e){
+        // 兼容FF和IE和Opera    
+// 	    var theEvent = e || window.event;    
+// 	    var code = theEvent.keyCode || theEvent.which || theEvent.charCode; 
+		var code = e.keyCode;
+	    if (code == 13) {    
+	        //回车执行查询
+	    	readManual_();
+		}    
+	});
 });
+
+function readManual_(){
+	var index = editIndex;
+        if (endEditing()){
+        	var readlogid = $("#readlog").combobox("getValue");
+        	var newread = $('#nonRemoteTab').datagrid('getRows')[index]["newread"];
+        	var id = $('#nonRemoteTab').datagrid('getRows')[index]["m_id"];
+        	
+        	if(readlogid > 0 && newread != ""){
+        		if(newread == ""){
+        			newread = 0;
+        		}
+        		console.log(index + " "+readlogid +" "+ newread+" "+id);
+            	$.ajax({
+            		type:"POST",
+    	    		url:"${path}/readme/nonremote/addnonremote.do",
+    	    		data:{
+    	    			m_id:id,
+    	    			newread:newread,
+    	    			readlogid:readlogid
+    	    		},
+    	    		dataType:"json",
+    	    		success:function(data){
+    	    			//the new data is add to the db
+    	    			$('#nonRemoteTab').datagrid('getRows')[index]["readdata"] = data.actionResult;
+    	    			$('#nonRemoteTab').datagrid('getRows')[index]["readtime"] = data.actionTime;
+//     	    			$('#nonRemoteTab').datagrid('getRows')[index]["yl"] = data.mnum - deread;
+    	    			$('#nonRemoteTab').datagrid('refreshRow', index);
+    	    			onClickRow(index+1);
+    	    		}
+    	    	});
+        	}else{
+        		if(readlogid == ""){
+            		$.messager.alert('Error','<fmt:message key='common.selectreadlog'/>');
+        		}
+        	}
+        }
+}
+
 function showMeterdata(){
 	var n_id = $("#neighbor").combobox("getValue");
 	if(n_id != ""){
@@ -135,7 +190,6 @@ function showMeterdata(){
 	}
 }
 
-var editIndex = undefined;
 function endEditing(){
 	
     if (editIndex == undefined){return true;}
@@ -149,11 +203,18 @@ function endEditing(){
         return false;
     }
 }
-function onClickRow(index){
-	if (editIndex != index){
+function onClickRow(index_){
+	if (editIndex != index_){
         if (endEditing()){
-            $('#nonRemoteTab').datagrid('selectRow', index).datagrid('beginEdit', index);
-            editIndex = index;
+//             $('#nonRemoteTab').datagrid('selectRow', index_).datagrid('beginEdit', index_);
+//             var ed = $('#nonRemoteTab').datagrid('getEditor', {index:index_,field:'newread'});
+//             console.log($(ed.target));
+//             $(ed.target).focus();
+			$('#nonRemoteTab').datagrid('editCell', {
+				index: index_,
+				field: 'newread'
+			});
+            editIndex = index_;
         } else {
             $('#nonRemoteTab').datagrid('selectRow', editIndex);
         }
