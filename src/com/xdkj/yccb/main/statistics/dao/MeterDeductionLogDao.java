@@ -93,5 +93,15 @@ public interface MeterDeductionLogDao {
 	List<MeterDereadMonth> getMeterDeread(int mid);
 
 
+	/**
+	 * 楼宇统计时   选择全部用户统计时  统计出  预后付费的户数、用水量、金额
+	 * @param n_id
+	 * @param settle_id
+	 * @param lou
+	 * @return
+	 */
+	List getLouSettledYLCount(int n_id, int settle_id, String lou);
+
+
 
 }

@@ -166,6 +166,13 @@ public class SettleServiceImpl implements SettleService {
 		
 		return meterDeductionLogDao.getLouLogAll(n_id,settle_id,pre,lou);
 	}
+	
+
+	@Override
+	public List getLouSettledYLCount(int n_id, int settle_id, String lou) {
+		
+		return meterDeductionLogDao.getLouSettledYLCount(n_id,settle_id,lou);
+	}
 
 	@Override
 	public List<SettleSum> getLouSettledYL(int n_id, int settle_id, int pre,
@@ -186,5 +193,6 @@ public class SettleServiceImpl implements SettleService {
 		list.add(sum);
 		return list;
 	}
+
 
 }

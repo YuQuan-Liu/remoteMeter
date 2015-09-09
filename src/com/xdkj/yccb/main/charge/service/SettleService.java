@@ -78,4 +78,14 @@ public interface SettleService {
 
 	List<SettleSum> getLouSettledYL(int n_id, int settle_id, int pre, String lou);
 
+	/**
+	 * 楼宇统计时   选择全部用户统计时  统计出  预后付费的户数、用水量、金额
+	 * @param n_id
+	 * @param settle_id
+	 * @param pre
+	 * @param lou
+	 * @return
+	 */
+	List getLouSettledYLCount(int n_id, int settle_id, String lou);
+
 }

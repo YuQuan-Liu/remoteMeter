@@ -19,11 +19,13 @@ import org.springframework.stereotype.Repository;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
+import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
 
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
+import com.xdkj.yccb.main.statistics.dto.Deductionlog_Lou;
 @Repository
 public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> implements MeterDeductionLogDao {
 
@@ -405,6 +407,44 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		}
 		return list;
 	}
+	
+	@Override
+	public List getLouSettledYLCount(int n_id, int settle_id, String lou) {
+		
+		String SQL = "select PrePaySign pre,sum(count_) count,sum(demoney) demoney,sum(yl) yl from ( " +
+				"select c.PrePaySign,count(*) count_,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
+				"join meter m on mdl.meterid = m.pid " +
+				"join customer c on c.pid = m.customerid " +
+				"where settlelogid = :settle_id and mdl.valid = 1 and mdl.changend = 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+				"group by c.PrePaySign " +
+				"union all " +
+				"select c.PrePaySign,count(*) count_,sum(demoney) demoney,sum(meterread+mdl.changend-lastderead) yl from meterdeductionlog mdl " +
+				"join meter m on mdl.meterid = m.pid " +
+				"join customer c on c.pid = m.customerid " +
+				"where settlelogid = :settle_id and mdl.valid = 1 and mdl.changend > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+				"group by c.PrePaySign " +
+				") sum_ group by PrePaySign ";
+		
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("pre",Hibernate.INTEGER)
+				.addScalar("count",Hibernate.INTEGER)
+				.addScalar("yl",Hibernate.INTEGER)
+				.addScalar("demoney",Hibernate.BIG_DECIMAL);
+		
+		q.setInteger("settle_id", settle_id);
+		q.setString("lou", lou);
+		q.setResultTransformer(Transformers.aliasToBean(Deductionlog_Lou.class));
+		
+		List<Deductionlog_Lou> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
 
 	@Override
 	public int addWaste(int m_id, int waste) {
@@ -569,6 +609,5 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		}
 		return list;
 	}
-
 	
 }

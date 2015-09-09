@@ -96,6 +96,11 @@ public class LouCtrl {
 		List settlesum = settleService.getLouSettledYL(n_id,settle_id,pre,lou);
 		map.put("lou", lou);
 		map.put("settlesum", new JRBeanCollectionDataSource(settlesum));
+		
+		if(pre == 2){
+			List log_lou = settleService.getLouSettledYLCount(n_id,settle_id,lou);
+			map.put("log_lou", new JRBeanCollectionDataSource(log_lou));
+		}
 		map.put("sub_dir", request.getServletContext().getRealPath("/WEB-INF/yccb/reports/")+"\\");
 		
 		return new ModelAndView("deductionlog",map);
