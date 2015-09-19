@@ -415,13 +415,13 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"select c.PrePaySign,count(*) count_,sum(demoney) demoney,sum(meterread-lastderead) yl from meterdeductionlog mdl " +
 				"join meter m on mdl.meterid = m.pid " +
 				"join customer c on c.pid = m.customerid " +
-				"where settlelogid = :settle_id and mdl.valid = 1 and mdl.changend = 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+				"where settlelogid = :settle_id and mdl.valid = 1 and mdl.changend = 0 and mdl.demoney > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
 				"group by c.PrePaySign " +
 				"union all " +
 				"select c.PrePaySign,count(*) count_,sum(demoney) demoney,sum(meterread+mdl.changend-lastderead) yl from meterdeductionlog mdl " +
 				"join meter m on mdl.meterid = m.pid " +
 				"join customer c on c.pid = m.customerid " +
-				"where settlelogid = :settle_id and mdl.valid = 1 and mdl.changend > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
+				"where settlelogid = :settle_id and mdl.valid = 1 and mdl.changend > 0 and mdl.demoney > 0 and m.valid = 1 and c.valid = 1 and c.louNum = :lou " +
 				"group by c.PrePaySign " +
 				") sum_ group by PrePaySign ";
 		
