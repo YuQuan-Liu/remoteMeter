@@ -28,8 +28,7 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 		ReadMeterLogDao {
 
 	@Override
-	public Readmeterlog getMaxReadMeterLog(int m_id) {
-		Query q = getSession().createQuery("from Readmeterlog log order by log.pid desc where log.meter.pid = "+m_id);
+	public Readmeterlog getMaxReadMeterLog(int m_id) {		Query q = getSession().createQuery("from Readmeterlog log where log.meter.pid = "+m_id+" order by log.pid desc");
 		q.setFirstResult(0);
 		q.setMaxResults(1);
 		return (Readmeterlog) q.uniqueResult();
