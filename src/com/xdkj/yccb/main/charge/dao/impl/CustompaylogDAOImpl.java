@@ -105,7 +105,8 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
-					"where c.valid = 1 ";
+					"where c.valid = 1 " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 			if(pre == 2){
 				SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
 						"c.prepaysign,cpl.amount,cpl.actionTime,cpl.prepaysign payPre,ad.adminName from customer c " +
@@ -116,7 +117,8 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 						"on c.pid = cpl.customerid " +
 						"join admininfo ad " +
 						"on cpl.adminid = ad.pid " +
-						"where c.valid = 1 ";
+						"where c.valid = 1 " +
+						"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 				
 			}
 			
@@ -130,7 +132,8 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
-					"where c.valid = 1 and c.neighborid = :n_id ";
+					"where c.valid = 1 and c.neighborid = :n_id " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 			if(pre == 2){
 				SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
 						"c.prepaysign,cpl.amount,cpl.actionTime,cpl.prepaysign payPre,ad.adminName from customer c " +
@@ -141,7 +144,8 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 						"on c.pid = cpl.customerid " +
 						"join admininfo ad " +
 						"on cpl.adminid = ad.pid " +
-						"where c.valid = 1 and c.neighborid = :n_id ";
+						"where c.valid = 1 and c.neighborid = :n_id " +
+						"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 				
 			}
 		}

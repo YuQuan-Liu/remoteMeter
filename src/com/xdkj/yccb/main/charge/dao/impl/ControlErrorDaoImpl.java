@@ -28,7 +28,8 @@ public class ControlErrorDaoImpl extends HibernateDAO implements
 				"on m.gprsid = g.pid " +
 				"left join valveconflog conflog " +
 				"on m.pid = conflog.meterid " +
-				"where c.neighborid = "+n_id+" and c.valid = 1 and m.valid = 1 and conflog.result = 2 and conflog.errorstatus = 0")
+				"where c.neighborid = "+n_id+" and c.valid = 1 and m.valid = 1 and conflog.result = 2 and conflog.errorstatus = 0 " +
+				"order by length(lounum),lounum,DYNum,length(HuNum),HuNum")
 				.addScalar("g_addr",Hibernate.STRING)
 				.addScalar("c_num",Hibernate.STRING)
 				.addScalar("customerId",Hibernate.STRING)

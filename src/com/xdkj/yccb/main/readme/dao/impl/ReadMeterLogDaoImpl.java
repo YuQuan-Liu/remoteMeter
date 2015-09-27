@@ -80,7 +80,8 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 				"on c.pid = m.customerid " +
 				"left join gprs g " +
 				"on m.gprsid = g.pid " +
-				"where c.neighborid = :n_id and c.valid = 1 and m.valid = 1")
+				"where c.neighborid = :n_id and c.valid = 1 and m.valid = 1 " +
+				"order by length(lounum),lounum,DYNum,length(HuNum),HuNum")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
 				.addScalar("g_addr",Hibernate.STRING)

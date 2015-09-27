@@ -34,7 +34,8 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				"on g.pid = m.GPRSID " +
 				"left join MeterKind mk " +
 				"on mk.pid = m.meterkindid " +
-				"where c.NeighborID = "+n_id+" and c.valid !=0 and m.valid != 0 and mk.remote = 1 ")
+				"where c.NeighborID = "+n_id+" and c.valid !=0 and m.valid != 0 and mk.remote = 1 " +
+				"order by length(lounum),lounum,DYNum,length(HuNum),HuNum")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
 				.addScalar("m_apid",Hibernate.STRING)
@@ -78,7 +79,8 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				"on g.pid = m.GPRSID " +
 				"left join meterkind mk " +
 				"on mk.pid = m.meterkindid " +
-				"where c.NeighborID = "+n_id+" and c.valid !=0 and m.valid != 0 and mk.remote = 0 ")
+				"where c.NeighborID = "+n_id+" and c.valid !=0 and m.valid != 0 and mk.remote = 0 " +
+				"order by length(lounum),lounum,DYNum,length(HuNum),HuNum")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
 				.addScalar("m_apid",Hibernate.STRING)
@@ -122,7 +124,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				"left join MeterKind mk " +
 				"on mk.pid = m.meterkindid " +
 				"where c.NeighborID in (:nid_list) and c.valid !=0 and m.valid != 0 and mk.remote = 1 " +
-				"order by c.NeighborID ")
+				"order by c.NeighborID,length(lounum),lounum,DYNum,length(HuNum),HuNum")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
 				.addScalar("m_apid",Hibernate.STRING)
@@ -168,7 +170,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				"left join MeterKind mk " +
 				"on mk.pid = m.meterkindid " +
 				"where c.NeighborID in (:nid_list) and c.valid !=0 and m.valid != 0 and mk.remote = 1 and m.lihu = 1 " +
-				"order by c.NeighborID ")
+				"order by c.NeighborID,length(lounum),lounum,DYNum,length(HuNum),HuNum")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
 				.addScalar("m_apid",Hibernate.STRING)

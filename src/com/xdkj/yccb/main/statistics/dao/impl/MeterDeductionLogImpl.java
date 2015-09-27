@@ -65,7 +65,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
 				"on m.pricekindid = pk.pid " +
-				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.LouNum = :lou ";
+				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.LouNum = :lou " +
+				"order by DYNum,length(HuNum),HuNum";
 		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("c_id",Hibernate.INTEGER)
@@ -123,7 +124,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
 				"on m.pricekindid = pk.pid " +
-				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
+				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
+				"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("c_id",Hibernate.INTEGER)
@@ -190,7 +192,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"join settlelog settle on settle.pid = mdl.settlelogid " +
 					"join admininfo ad on settle.adminid = ad.pid " +
 					"join pricekind pk on pk.pid = mdl.pricekindid " +
-					"where mdl.pid in ("+ids+")";
+					"where mdl.pid in ("+ids+") " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 			
 			Query q = getSession().createSQLQuery(SQL)
 					.addScalar("adminName",Hibernate.STRING)
@@ -227,7 +230,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"join settlelog settle on settle.pid = mdl.settlelogid " +
 					"join admininfo ad on settle.adminid = ad.pid " +
 					"join pricekind pk on pk.pid = mdl.pricekindid " +
-					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.demoney > 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.LouNum = :lou ";
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.demoney > 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.LouNum = :lou " +
+					"order by DYNum,length(HuNum),HuNum";
 			
 			Query q = getSession().createSQLQuery(SQL)
 					.addScalar("adminName",Hibernate.STRING)
@@ -270,7 +274,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
 					"on m.pricekindid = pk.pid " +
-					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}else{
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
 					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
@@ -282,7 +287,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
 					"on m.pricekindid = pk.pid " +
-					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = :pre and mdl.settlelogid = :settle_id and c.neighborid = :n_id";
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = :pre and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}
 		
 		Query q = getSession().createSQLQuery(SQL)
@@ -346,7 +352,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
 					"on m.pricekindid = pk.pid " +
-					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.louNum = :lou";
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.louNum = :lou " +
+					"order by DYNum,length(HuNum),HuNum";
 		}else{
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
 					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
@@ -358,7 +365,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
 					"on m.pricekindid = pk.pid " +
-					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = :pre and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.louNum = :lou";
+					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = :pre and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.louNum = :lou " +
+					"order by DYNum,length(HuNum),HuNum";
 		}
 		
 		Query q = getSession().createSQLQuery(SQL)

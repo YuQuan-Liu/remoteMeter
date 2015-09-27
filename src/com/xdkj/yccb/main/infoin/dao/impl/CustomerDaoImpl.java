@@ -22,7 +22,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 
 	@Override
 	public List<Customer> getCustomerList(String n_id) {
-		String hql = "from Customer c where c.valid='1' and c.neighbor.pid = "+n_id+" ";
+		String hql = "from Customer c where c.valid='1' and c.neighbor.pid = "+n_id+" order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		Query q = getSession().createQuery(hql);
 		return q.list();
 	}
@@ -191,7 +191,8 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
-					"where c.neighborid = :n_id and c.customerBalance <= :low and c.valid = 1";
+					"where c.neighborid = :n_id and c.customerBalance <= :low and c.valid = 1 " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}else{
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
@@ -201,7 +202,8 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
-					"where c.neighborid = :n_id and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1";
+					"where c.neighborid = :n_id and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1 " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}
 		
 		
@@ -243,7 +245,8 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
-					"where c.neighborid = :n_id and c.LouNum = :lou and c.customerBalance <= :low and c.valid = 1";
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.customerBalance <= :low and c.valid = 1 " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}else{
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
@@ -253,7 +256,8 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
-					"where c.neighborid = :n_id and c.LouNum = :lou and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1";
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1 " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}
 		
 		
@@ -296,7 +300,8 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
-					"where c.neighborid = :n_id and c.LouNum = :lou and c.DYNum = :dy and c.customerBalance <= :low and c.valid = 1";
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.DYNum = :dy and c.customerBalance <= :low and c.valid = 1 " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}else{
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign," +
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
@@ -306,7 +311,8 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
-					"where c.neighborid = :n_id and c.LouNum = :lou and c.DYNum = :dy and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1";
+					"where c.neighborid = :n_id and c.LouNum = :lou and c.DYNum = :dy and c.prepaySign = :pre and c.customerBalance <= :low and c.valid = 1 " +
+					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}
 		
 		

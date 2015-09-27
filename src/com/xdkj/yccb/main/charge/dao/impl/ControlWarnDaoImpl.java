@@ -34,7 +34,8 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 				"on maxwarn.customerid = c.pid " +
 				//"left join warnlog warn " +
 				//"on maxwarn.customerid = warn.customerid " +
-				"where c.neighborid = "+n_id+" and c.valid = 1 and m.valid = 1")
+				"where c.neighborid = "+n_id+" and c.valid = 1 and m.valid = 1 " +
+				"order by length(lounum),lounum,DYNum,length(HuNum),HuNum")
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("m_id",Hibernate.INTEGER)
 				.addScalar("g_addr",Hibernate.STRING)
