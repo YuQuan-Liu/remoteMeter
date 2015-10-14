@@ -54,6 +54,7 @@
 				loadMsg:'<fmt:message key="main.loading"/>',
 				rownumbers:true,
 				columns:[[
+						  {field:'c_id',title:'ID',width:60,checkbox:true},
 				          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
 				          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
 				          {field:'customerAddr',title:'<fmt:message key='common.addr'/>',width:80},

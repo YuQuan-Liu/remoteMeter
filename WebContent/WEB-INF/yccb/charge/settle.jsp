@@ -102,10 +102,14 @@ $(function(){
 		          }},
 		          {field:'deread',title:'<fmt:message key='m.deread'/>',width:80},
 		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
-		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},
+		          {field:'changeend',title:'<fmt:message key='m.changeend'/>',width:80},
 		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},
 		          {field:'yl',title:'<fmt:message key='yl'/>',width:80,formatter:function(value,row,index){
-		        	  return row.readdata-row.deread;
+		        	  if(row.changeend > 0){
+		        		  return row.readdata+row.changeend-row.deread;
+		        	  }else{
+		        		  return row.readdata-row.deread;
+		        	  }
 		          }},
 		          {field:'action',title:'<fmt:message key='common.action'/>',width:160,halign:'center',align:'center',
 						formatter: function(value,row,index){

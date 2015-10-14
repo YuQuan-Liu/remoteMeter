@@ -114,58 +114,40 @@ public class WarnSender {
 		if(c.getCustomerMobile()==null || c.getCustomerMobile().equals("") || c.getCustomerMobile().length() != 11){
 			return false;
 		}
-		/**
-		 * 目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
-		 */
+		//目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
 		para.put("mob", c.getCustomerMobile());
-		
-		/**
-		 * 微米账号的接口UID
-		 */
-		para.put("uid", "Hnq9MjyE1pBf");
-
-		/**
-		 * 微米账号的接口密码
-		 */
-		para.put("pas", "qg4nwa7k");
-
-		/**
-		 * 接口返回类型：json、xml、txt。默认值为txt
-		 */
+		//接口返回类型：json、xml、txt。默认值为txt
 		para.put("type", "json");
-
-		/**
-		 * 短信内容。必须设置好短信签名，签名规范： <br>
-		 * 1、短信内容一定要带签名，签名放在短信内容的最前面；<br>
-		 * 2、签名格式：【***】，签名内容为三个汉字以上（包括三个）；<br>
-		 * 3、短信内容不允许双签名，即短信内容里只有一个“【】”
-		 * 
-		 */
-//		para.put("con", "【西岛仪表】尊敬的"+c.getCustomerName()+"您好，您的水费余额为"+c.getCustomerBalance().doubleValue()+",请您及时交费。谢谢合作。"+wc.getCompanyName()+"。");
 		
-		/**
-         * 短信模板cid，通过微米后台创建，由在线客服审核。必须设置好短信签名，签名规范： 
-         * 1、模板内容一定要带签名，签名放在模板内容的最前面；
-         * 2、签名格式：【***】，签名内容为三个汉字以上（包括三个）；
-         * 3、短信内容不允许双签名，即短信内容里只有一个“【】”
-         */
-        para.put("cid", "fxPLFfO74Vik");
-        /**
-         * 传入模板参数。
-         * 
-         * 短信模板示例：
-         * 【微米】您的验证码是：%P%，%P%分钟内有效。如非您本人操作，可忽略本消息。
-         * 
-         * 传入两个参数：
-         * p1：610912
-         * p2：3
-         * 最终发送内容：
-         * 【微米】您的验证码是：610912，3分钟内有效。如非您本人操作，可忽略本消息。
-         */
-        para.put("p1", c.getCustomerName());
-        para.put("p2", c.getCustomerBalance().doubleValue()+"");
-        para.put("p3", wc.getCompanyName());
-		
+        switch(wc.getPid()){
+        case 4:
+        	//**************************烟台市福山供水**************************
+        	//微米账号的接口UID
+    		para.put("uid", "WAbSeP0sorqnull");
+    		//微米账号的接口密码
+    		para.put("pas", "wj5uu222");
+    		//短信模板cid，通过微米后台创建
+            para.put("cid", "21ZHzcE6YZIB");
+            //传入模板参数。  第一个%P% 为p1,后面的++
+            para.put("p1", c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+            para.put("p2", c.getCustomerBalance().doubleValue()+"");
+        	break;
+        	default:
+        		//**************************默认**************************
+        		//微米账号的接口UID
+        		para.put("uid", "Hnq9MjyE1pBf");
+        		//微米账号的接口密码
+        		para.put("pas", "qg4nwa7k");
+        		//短信模板cid，通过微米后台创建
+                para.put("cid", "fxPLFfO74Vik");
+                //传入模板参数。  第一个%P% 为p1,后面的++
+                para.put("p1", c.getCustomerName());
+                para.put("p2", c.getCustomerBalance().doubleValue()+"");
+                para.put("p3", wc.getCompanyName());
+        		break;
+        }
+        
+        
 		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
 				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
 						para), "UTF-8"));
