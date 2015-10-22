@@ -376,7 +376,7 @@
 				<textElement verticalAlignment="Middle" markup="none">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[本次交费余额：]]></text>
+				<text><![CDATA[上次交费余额：]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="0b3c831d-a4c0-48f8-b9cb-a7d82ad6d236" positionType="Float" x="308" y="16" width="60" height="14"/>

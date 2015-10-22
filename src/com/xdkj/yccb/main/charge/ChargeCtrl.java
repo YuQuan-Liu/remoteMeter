@@ -271,11 +271,20 @@ public class ChargeCtrl {
 			sumDemoney = sumDemoney.add(view.getDemoney());
 		}
 		
+		//当前交费记录之后的所有的扣费信息
+		List<SettledView> listsumde = chargeService.getMeterDeLog(cid,paylogs.get(0).getActionTime(),new Date());
+		BigDecimal sumafterde = new BigDecimal(0);;
+		for(int i = 0;i < listsumde.size();i++){
+			view = listsumde.get(i);
+			sumafterde = sumafterde.add(view.getDemoney());
+		}
+		
 		BigDecimal sumafterpay = chargeService.sumAfterPay(cid,cplid);
+		
 
 		CustomerView cv = custService.getCustomerViewbyCid(cid);
 		BigDecimal customerBalance = cv.getCustomerBalance();
-		customerBalance = customerBalance.subtract(sumafterpay);
+		customerBalance = customerBalance.add(sumafterde).subtract(paylogs.get(0).getAmount()).subtract(sumafterpay);
 		
 		map.put("sumDemoney", sumDemoney.doubleValue());
 		map.put("list",list);
