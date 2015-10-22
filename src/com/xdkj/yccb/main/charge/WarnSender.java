@@ -113,6 +113,12 @@ public class WarnSender {
 
 		if(c.getCustomerMobile()==null || c.getCustomerMobile().equals("") || c.getCustomerMobile().length() != 11){
 			return false;
+		}else{
+			//检查今天发送几条了
+			
+			if(!warnService.todaySend(c.getCustomerMobile())){
+				return false;
+			}
 		}
 		//目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
 		para.put("mob", c.getCustomerMobile());
@@ -157,7 +163,7 @@ public class WarnSender {
 		}
 		return done;
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		
 		Watercompany wc = new Watercompany();

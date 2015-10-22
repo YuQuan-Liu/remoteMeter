@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.charge.dao.impl;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 				"on m.gprsid = g.pid " +
 				"left join ( " +
 				"select max(pid),customerid,count(*) warncount from warnlog " +
-				"where valid = 1 " +
+				"where valid = 1 and successCount > 0 " +
 				"group by customerid " +
 				") maxwarn " +
 				"on maxwarn.customerid = c.pid " +
@@ -86,6 +87,25 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 		
 		getHibernateTemplate().save(warnlog);
 		
+	}
+	
+	@Override
+	public boolean todaySend(String mobile) {
+		/**
+		 * 查询一个手机号码今天是否可以发送     >3次  不可发送
+		 * @param mobile
+		 * @return
+		 */
+		Query q = getSession().createSQLQuery("select count(*) from warnlog " +
+				"where mobile = :mobile and actiontime > curdate() ")
+				.setString("mobile", mobile);
+
+		int times = ((BigInteger)q.uniqueResult()).intValue();
+		
+		if(times > 3){
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -187,7 +187,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
 					"left join ( " +
 					"select max(pid),customerid,count(*) warncount from warnlog " +
-					"where valid = 1 " +
+					"where valid = 1 and successCount > 0 " +
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
@@ -198,7 +198,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
 					"left join ( " +
 					"select max(pid),customerid,count(*) warncount from warnlog " +
-					"where valid = 1 " +
+					"where valid = 1 and successCount > 0 " +
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
@@ -241,7 +241,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
 					"left join ( " +
 					"select max(pid),customerid,count(*) warncount from warnlog " +
-					"where valid = 1 " +
+					"where valid = 1 and successCount > 0 " +
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
@@ -252,7 +252,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
 					"left join ( " +
 					"select max(pid),customerid,count(*) warncount from warnlog " +
-					"where valid = 1 " +
+					"where valid = 1 and successCount > 0 " +
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
@@ -296,7 +296,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
 					"left join ( " +
 					"select max(pid),customerid,count(*) warncount from warnlog " +
-					"where valid = 1 " +
+					"where valid = 1 and successCount > 0 " +
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +
@@ -307,7 +307,7 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 					"c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre,c.warnStyle,maxwarn.warnCount from customer c " +
 					"left join ( " +
 					"select max(pid),customerid,count(*) warncount from warnlog " +
-					"where valid = 1 " +
+					"where valid = 1 and successCount > 0 " +
 					"group by customerid " +
 					") maxwarn " +
 					"on maxwarn.customerid = c.pid " +

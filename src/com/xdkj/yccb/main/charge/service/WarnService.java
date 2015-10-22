@@ -11,4 +11,10 @@ public interface WarnService {
 
 	void addWarnSingle(Customer c, boolean done);
 
+	/**
+	 * 查询一个手机号码今天是否可以发送     >3次  不可发送
+	 * @param mobile
+	 * @return
+	 */
+	boolean todaySend(String mobile);
 }

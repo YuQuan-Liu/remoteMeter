@@ -27,4 +27,10 @@ public class WarnServiceImpl implements WarnService {
 		controlWarnDao.addWarnLog(c,done);
 	}
 
+	@Override
+	public boolean todaySend(String mobile) {
+		
+		return controlWarnDao.todaySend(mobile);
+	}
+
 }
