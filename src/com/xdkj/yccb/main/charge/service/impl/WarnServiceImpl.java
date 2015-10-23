@@ -23,8 +23,8 @@ public class WarnServiceImpl implements WarnService {
 	}
 	
 	@Override
-	public void addWarnSingle(Customer c,boolean done) {
-		controlWarnDao.addWarnLog(c,done);
+	public void addWarnSingle(Customer c,boolean done,String failReason) {
+		controlWarnDao.addWarnLog(c,done,failReason);
 	}
 
 	@Override

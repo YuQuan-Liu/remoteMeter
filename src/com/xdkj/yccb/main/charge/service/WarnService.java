@@ -9,7 +9,7 @@ public interface WarnService {
 
 	List<ControlWarnView> getControlWarns(int n_id);
 
-	void addWarnSingle(Customer c, boolean done);
+	void addWarnSingle(Customer c, boolean done,String failReason);
 
 	/**
 	 * 查询一个手机号码今天是否可以发送     >3次  不可发送

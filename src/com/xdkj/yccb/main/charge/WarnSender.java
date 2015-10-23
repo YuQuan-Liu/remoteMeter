@@ -44,16 +44,20 @@ public class WarnSender {
 		
 		Customer c = customerDao.getCustomerByPid(cid);
 		boolean done = false;
+		String re = "";
 		switch(c.getWarnStyle()){
 		case 1:
-			done = sendSMS(wc,c);
+			re = sendSMS(wc,c);
+			if(re.equals("0")){
+				done = true;
+			}
 			break;
 		case 2:
 			done = sendMail(wc,c);
 			break;
 		}
 		//将提醒信息保存到数据库
-		warnService.addWarnSingle(c,done);
+		warnService.addWarnSingle(c,done,re);
 		
 		return done;
 	}
@@ -106,18 +110,18 @@ public class WarnSender {
 		return done;
 	}
 	
-	private boolean sendSMS(Watercompany wc, Customer c){
+	private String sendSMS(Watercompany wc, Customer c){
 		// message
-		boolean done = false;
+//		boolean done = false;
 		Map<String, String> para = new HashMap<String, String>();
 
 		if(c.getCustomerMobile()==null || c.getCustomerMobile().equals("") || c.getCustomerMobile().length() != 11){
-			return false;
+			return "-999";
 		}else{
 			//检查今天发送几条了
 			
 			if(!warnService.todaySend(c.getCustomerMobile())){
-				return false;
+				return "-999";
 			}
 		}
 		//目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
@@ -158,10 +162,11 @@ public class WarnSender {
 				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
 						para), "UTF-8"));
 		
-		if(jo.get("code").toString().equals("0")){
-			done = true;
-		}
-		return done;
+//		if(jo.get("code").toString().equals("0")){
+//			done = true;
+//		}
+//		return done;
+		return jo.get("code").toString();
 	}
 
 	public static void main(String[] args) throws IOException {

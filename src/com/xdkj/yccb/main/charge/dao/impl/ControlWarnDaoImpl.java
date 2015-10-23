@@ -64,7 +64,7 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 	}
 
 	@Override
-	public void addWarnLog(Customer c, boolean done) {
+	public void addWarnLog(Customer c, boolean done,String failReason) {
 		
 		Warnlog warnlog = new Warnlog();
 		warnlog.setActionTime(new Date());
@@ -82,7 +82,7 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 		warnlog.setWarn(0);
 		warnlog.setWarnContent(c.getCustomerName()+c.getCustomerBalance());
 		warnlog.setWarnCount(1);
-		warnlog.setWarnReason("");
+		warnlog.setWarnReason(failReason);
 		warnlog.setWarnStyle(c.getWarnStyle());
 		
 		getHibernateTemplate().save(warnlog);
@@ -102,7 +102,7 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 
 		int times = ((BigInteger)q.uniqueResult()).intValue();
 		
-		if(times > 3){
+		if(times > 1){
 			return false;
 		}
 		return true;

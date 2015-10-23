@@ -9,7 +9,7 @@ public interface ControlWarnDao {
 
 	List<ControlWarnView> getControlWarns(int n_id);
 
-	void addWarnLog(Customer c, boolean done);
+	void addWarnLog(Customer c, boolean done,String failReason);
 
 	/**
 	 * 查询一个手机号码今天是否可以发送     >3次  不可发送
