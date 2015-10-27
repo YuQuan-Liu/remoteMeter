@@ -283,13 +283,16 @@ public class ChargeCtrl {
 		
 
 		CustomerView cv = custService.getCustomerViewbyCid(cid);
-		BigDecimal customerBalance = cv.getCustomerBalance();
-		customerBalance = customerBalance.add(sumafterde).subtract(paylogs.get(0).getAmount()).subtract(sumafterpay);
+		BigDecimal lastBalance = cv.getCustomerBalance();   //上次交费余额
+		lastBalance = lastBalance.add(sumafterde).subtract(paylogs.get(0).getAmount()).subtract(sumafterpay);
+		
+		BigDecimal thisBalance = lastBalance.add(paylogs.get(0).getAmount()).subtract(sumDemoney);
 		
 		map.put("sumDemoney", sumDemoney.doubleValue());
 		map.put("list",list);
 		map.put("amount", paylogs.get(0).getAmount().doubleValue());
-		map.put("customerBalance", customerBalance.doubleValue());
+		map.put("lastBalance", lastBalance.doubleValue());
+		map.put("thisBalance", thisBalance.doubleValue());
 		map.put("c_num", cv.getC_num());
 		map.put("customerName", cv.getCustomerName());
 		map.put("customerAddr", cv.getCustomerAddr());
