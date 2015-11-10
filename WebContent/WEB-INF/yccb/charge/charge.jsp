@@ -11,8 +11,7 @@
 
 	<div id="tb" style="float:left;">
 		<fmt:message key='common.neighborName'/>： 
-		<select class="easyui-combobox" panelHeight="auto"
-			style="width: 100px" id="sel_neibours" data-options="editable:false">
+		<select class="easyui-combobox" style="width: 100px" id="sel_neibours" data-options="panelHeight:'200'">
 			<option value=""><fmt:message key='common.choosenei'/></option>
 			<c:forEach var="n" items="${neighbor_list }">
 				<option value="${n.pid }">${n.neighborName }</option>
