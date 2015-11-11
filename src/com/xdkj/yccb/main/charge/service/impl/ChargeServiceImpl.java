@@ -113,6 +113,7 @@ public class ChargeServiceImpl implements ChargeService {
 			int custId = mdl.getMeter().getCustomer().getPid();
 			mdl.setValid('0');
 			meterDeductionLogDao.updateMeterductionLog(mdl);
+			meterDao.updateDeread(mdl.getMeter().getPid(), mdl.getLastDeRead(), mdl.getLastDeTime());
 			BigDecimal pay = mdl.getDeMoney();
 			//将交给额加至Customer 余额 CustomerBalance
 			custDAO.updateCustomerBalance(pay, custId);

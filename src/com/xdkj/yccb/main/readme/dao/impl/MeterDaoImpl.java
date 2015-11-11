@@ -47,6 +47,14 @@ public class MeterDaoImpl extends HibernateDAO<Meter> implements MeterDao {
 		return getSession().createSQLQuery(hql).setInteger("deread", waste)
 			.setInteger("meterId", m_id).executeUpdate();
 	}
+	
+	@Override
+	public int updateDeread(int m_id, int deread,Date detime) {
+		String hql = "update Meter m set m.deread=:deread,m.detime=:detime where m.pid=:meterId";
+		
+		return getSession().createSQLQuery(hql).setInteger("deread", deread)
+			.setInteger("meterId", m_id).setDate("detime", detime).executeUpdate();
+	}
 
 	@Override
 	public List<Meter> getTimerList() {
