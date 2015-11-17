@@ -13,16 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +41,8 @@ public class LoginCtrl {
         //获取HttpSession中的验证码  
         String checkcode = (String)request.getSession().getAttribute("check");
         //获取用户请求表单中输入的验证码  
-        String submitCode = WebUtils.getCleanParam(request, "checkcode");
+        
+        String submitCode = request.getParameter("checkcode");//WebUtils.getCleanParam(request, "checkcode");
         if (StringUtils.isEmpty(submitCode)){
         	return  "login";
         }

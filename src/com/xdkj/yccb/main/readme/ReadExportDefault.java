@@ -46,8 +46,10 @@ public class ReadExportDefault extends AbstractExcelView{
 		setText(cell, "表状态");
 		
 		cell = getCell(sheet, 0, 6);
-		setText(cell, "表读数");
+		setText(cell, "表状态");
 		cell = getCell(sheet, 0, 7);
+		setText(cell, "表读数");
+		cell = getCell(sheet, 0, 8);
 		setText(cell, "抄表时间");
 		
 		
@@ -55,7 +57,7 @@ public class ReadExportDefault extends AbstractExcelView{
 		ReadView readView = null;
 		for(int i = 0;i < list.size();i++){
 			readView = list.get(i);
-			for(int j = 0;j< 8;j++){
+			for(int j = 0;j< 9;j++){
 				cell = getCell(sheet, i+1, j);
 				switch (j) {
 				case 0:
@@ -97,9 +99,13 @@ public class ReadExportDefault extends AbstractExcelView{
 					break;
 				case 6:
 //					setText(cell, readView.getReaddata()+"");
-					cell.setCellValue(readView.getReaddata());
+					cell.setCellValue(readView.getCollectorAddr()+String.format("%03d",readView.getMeterAddr()));
 					break;
 				case 7:
+//					setText(cell, readView.getReaddata()+"");
+					cell.setCellValue(readView.getReaddata());
+					break;
+				case 8:
 					setText(cell, readView.getReadtime());
 					break;
 					
