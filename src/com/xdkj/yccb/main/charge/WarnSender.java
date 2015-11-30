@@ -124,6 +124,12 @@ public class WarnSender {
 				return "-999";
 			}
 		}
+		
+		if(c.getCustomerBalance().compareTo(new BigDecimal(0)) != -1){
+			//用户余额  >= 0
+			return "-998";
+		}
+		
 		//目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
 		para.put("mob", c.getCustomerMobile());
 		//接口返回类型：json、xml、txt。默认值为txt
@@ -171,19 +177,26 @@ public class WarnSender {
 
 	public static void main(String[] args) throws IOException {
 		
-		Watercompany wc = new Watercompany();
-		Customer c = new Customer();
-		wc.setCompanyName("西岛");
-		wc.setEmailHost("smtp.163.com");
-		wc.setEmailUser("zffyxdkj@163.com");
-		wc.setEmailPassword("YWJjMTIzNDU2");
+//		Watercompany wc = new Watercompany();
+//		Customer c = new Customer();
+//		wc.setCompanyName("西岛");
+//		wc.setEmailHost("smtp.163.com");
+//		wc.setEmailUser("zffyxdkj@163.com");
+//		wc.setEmailPassword("YWJjMTIzNDU2");
+//		
+//		c.setCustomerMobile("13176868783");
+//		c.setCustomerEmail("582615540@qq.com");
+//		c.setCustomerBalance(new BigDecimal(100.00));
+//		c.setCustomerName("haha");
+//		new WarnSender().sendMail(wc, c);
+//		new WarnSender().sendSMS(wc, c);
 		
-		c.setCustomerMobile("13176868783");
-		c.setCustomerEmail("582615540@qq.com");
-		c.setCustomerBalance(new BigDecimal(100.00));
-		c.setCustomerName("haha");
-		new WarnSender().sendMail(wc, c);
-		new WarnSender().sendSMS(wc, c);
+		//test the BigDecimal compareTo 
+		BigDecimal a = new BigDecimal(-1);
+		if(a.compareTo(new BigDecimal(0)) != -1){
+			System.out.println("!= -1");
+		}
+		System.out.println("== -1");
 	}
 
 
