@@ -85,6 +85,7 @@ function checkGPRSAddr(){
 							<option value="1" <c:if test="${gprs.gprsprotocol==1 }">selected="selected"</c:if>><fmt:message key='g.hdeg'/></option>
 							<option value="2" <c:if test="${gprs.gprsprotocol==2 }">selected="selected"</c:if>><fmt:message key='g.188'/></option>
 							<option value="3" <c:if test="${gprs.gprsprotocol==3 }">selected="selected"</c:if>><fmt:message key='g.hdeg'/>2</option>
+							<option value="4" <c:if test="${gprs.gprsprotocol==4 }">selected="selected"</c:if>>D10</option>
 						</select>
 	    			</td>
 	    		</tr>

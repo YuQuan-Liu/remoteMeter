@@ -211,7 +211,9 @@ public class CustomerServiceImpl implements CustomerService {
 				Gprs g = gprsDAO.getById(Integer.parseInt(mv.getGprs_id()));
 				switch (g.getGprsprotocol()) {
 				case 1:
+				case 3:
 					//eg
+					//eg2
 					for(int j = 0;j < mlist.size();j++){
 //						m = mlist.get(j);
 						if(null != customerDao.getMeterByGCM(g.getPid(),mv.getCollectorAddr(),mv.getMeterAddr())){
@@ -221,7 +223,9 @@ public class CustomerServiceImpl implements CustomerService {
 					}
 					break;
 				case 2:
+				case 4:
 					//188
+					//D10
 					for(int j = 0;j < mlist.size();j++){
 //						m = mlist.get(j);
 						if(null != customerDao.getMeterByMAddr(mv.getMeterAddr())){
@@ -252,8 +256,9 @@ public class CustomerServiceImpl implements CustomerService {
 			Customer c = customerDao.getCustomerByPid(mv.getC_id());
 			m.setCustomer(c);
 			
-			Gprs g = new Gprs();
-			g.setPid(Integer.valueOf(mv.getGprs_id()));
+//			Gprs g = new Gprs();
+			Gprs g = gprsDAO.getById(Integer.parseInt(mv.getGprs_id()));
+//			g.setPid(Integer.valueOf(mv.getGprs_id()));
 			m.setGprs(g);
 			
 			Meterkind mk = new Meterkind();
@@ -281,7 +286,9 @@ public class CustomerServiceImpl implements CustomerService {
 				
 			}
 			customerDao.addMeter(m);
-			if(m.getPid() > 0 && m.getTimerSwitch() == 1){
+			if(m.getPid() > 0 && m.getTimerSwitch() == 1 && g.getGprsprotocol() != 4){
+				//g.getGprsprotocol() != 4  表示为D10下的表  
+				//D10下的表不添加到定时抄表任务中
 				QuartzManager.addJobMeter(m, administratorDAO.getById(adminid));
 			}
 			map.put("add", m.getPid()+"");
@@ -353,6 +360,15 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Override
 	public String deleteMeter(int mid) {
+		Meter m = customerDao.getMeterByPid(mid);
+		Gprs g = gprsDAO.getById(m.getGprs().getPid());
+		
+		if(m.getTimerSwitch() == 1){
+			//从定时任务中删除
+			if(g.getGprsprotocol() != 4){
+				QuartzManager.removeMeter(m);
+			}
+		}
 		if(customerDao.deleteMeter(mid) > 0){
 			return "true";
 		}else{
@@ -404,13 +420,18 @@ public class CustomerServiceImpl implements CustomerService {
 		m.setValveOffthre(mv.getValveOffthre());
 		m.setTimerSwitch(mv.getTimerSwitch());
 		
+		Gprs g = gprsDAO.getById(Integer.parseInt(mv.getGprs_id()));
 		
 		if(mv.getTimerSwitch() == 1){
 			m.setTimer(mv.getTimer());
-			QuartzManager.modifyMeterJobTime(m, administratorDAO.getById(adminid));
+			if(g.getGprsprotocol() != 4){
+				QuartzManager.modifyMeterJobTime(m, administratorDAO.getById(adminid));
+			}
 		}else{
 			m.setTimer("");
-			QuartzManager.removeMeter(m);
+			if(g.getGprsprotocol() != 4){
+				QuartzManager.removeMeter(m);
+			}
 		}
 		m.setOverflow(mv.getOverflow());
 		
