@@ -17,6 +17,7 @@
 	    		<input class="easyui-numberspinner" style="width:100px;" id="year_" name="year_" data-options="min:2015,max:2099" value=""/>
 	    		
 				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="print()" ><fmt:message key='print'/></a>
 			</div>
 		</form>
 	</div>
@@ -173,6 +174,12 @@
     			});
         	}
         }
+        function print() {
+        	var year_ = $("#year_").numberspinner('getValue');
+        	if(year_ != ""){
+        		window.open("${path}/statistics/chargerate/print.do?year=" + year_, "_blank");
+        	}
+		}
 	</script>
 </body>
 </html>

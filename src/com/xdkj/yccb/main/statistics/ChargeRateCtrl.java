@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.statistics;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.xdkj.yccb.main.infoin.CustomerCtrl;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
+import com.xdkj.yccb.main.statistics.dto.ChargeRate;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
 import com.xdkj.yccb.main.statistics.service.PayLogService;
 import com.xdkj.yccb.security.UserForSession;
@@ -61,5 +63,23 @@ public class ChargeRateCtrl {
 		UserForSession admin = WebUtil.getCurrUser(request);
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 		return neighborService.getDrawChargerate(neighbor_list,year);
+	}
+	
+	@RequestMapping(value="/statistics/chargerate/print")
+	public ModelAndView payInfoPrint(HttpServletRequest request,Model model,int year) throws Exception{
+//		UserForSession admin = WebUtil.getCurrUser(request);
+//		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
+//		model.addAttribute("neighbor_list", neighbor_list);
+//		
+		UserForSession admin = WebUtil.getCurrUser(request);
+		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
+		
+		//根据小区ID  时间  预付费标识  获取用户的交费信息
+		Map map = new HashMap();
+		List<ChargeRate> list_chargerate = neighborService.getChargeRate(neighbor_list,year);
+		map.put("list", list_chargerate);
+//		map.put("header","收费率统计");
+		
+		return new ModelAndView("chargerate",map);
 	}
 }
