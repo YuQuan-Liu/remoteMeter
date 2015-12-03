@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.TransRMB;
 import com.xdkj.yccb.common.WebUtil;
+import com.xdkj.yccb.main.adminor.dao.WaterCompanyDAO;
 import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.service.ReadLogService;
@@ -37,6 +39,10 @@ public class PostPayCtrl {
 	private NeighborService neighborService;
 	@Autowired
 	private SettleService settleService;
+	@Autowired
+	private WarnSender warnSender;
+	@Autowired
+	private WaterCompanyDAO waterCompanyDAO;
 	@Autowired
 	private MeterDeductionLogService meterDeductionLogService;
 	@Autowired
@@ -63,6 +69,22 @@ public class PostPayCtrl {
 	public String chargepostpay(HttpServletRequest request,int[] mdl_ids){
 		UserForSession admin = WebUtil.getCurrUser(request);
 		return meterDeductionLogService.chargepostpay(admin.getPid(),mdl_ids);
+	}
+	
+	@RequestMapping(value="/charge/postpay/warnpostpay",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String warnpostpay(HttpServletRequest request,int[] mdl_ids){
+		
+		JSONObject jo = new JSONObject();
+		if(mdl_ids == null){
+			jo.put("done", false);
+			jo.put("reason", "无记录");
+			return jo.toJSONString();
+		}
+		UserForSession admin = WebUtil.getCurrUser(request);
+		warnSender.sendWarnPostPay(waterCompanyDAO.getById(admin.getWaterComId()), mdl_ids);
+		jo.put("done", true);
+		return jo.toJSONString();
 	}
 	
 	@RequestMapping(value="/charge/postpay/printcharge")

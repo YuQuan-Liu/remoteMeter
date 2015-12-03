@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.xdkj.yccb.main.charge.dao.ControlWarnDao;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
+import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 import com.xdkj.yccb.main.charge.service.WarnService;
 import com.xdkj.yccb.main.entity.Customer;
 
@@ -31,6 +32,12 @@ public class WarnServiceImpl implements WarnService {
 	public boolean todaySend(String mobile) {
 		
 		return controlWarnDao.todaySend(mobile);
+	}
+
+	@Override
+	public void addWarnSinglePostPay(WarnPostPay warnPostPay, boolean done,
+			String failReason) {
+		controlWarnDao.addWarnLog(warnPostPay,done,failReason);
 	}
 
 }

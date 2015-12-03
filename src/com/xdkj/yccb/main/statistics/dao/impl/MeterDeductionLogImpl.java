@@ -22,6 +22,7 @@ import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
+import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
@@ -615,6 +616,34 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		} catch (HibernateException e) {
 			e.printStackTrace();
 		}
+		return list;
+	}
+
+	@Override
+	public List<WarnPostPay> getWarnPostPays(int[] mdl_ids) {
+		List<WarnPostPay> list = null;
+		StringBuilder sb_ids = new StringBuilder();
+		for(int i = 0;i < mdl_ids.length;i++){
+			sb_ids.append(mdl_ids[i]);
+			if(i < mdl_ids.length-1){
+				sb_ids.append(",");
+			}
+		}
+		
+		String SQL = "select mdl.demoney demoney,c.customerMobile,c.pid c_id,c.CustomerName,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num from meterdeductionlog mdl " +
+				"join meter m on mdl.meterid = m.pid " +
+				"join customer c on m.customerid = c.pid " +
+				"where mdl.pid in ("+sb_ids.toString()+") ";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("demoney",Hibernate.BIG_DECIMAL)
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("customerMobile",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("c_num",Hibernate.STRING);
+		q.setResultTransformer(Transformers.aliasToBean(WarnPostPay.class));
+		list = q.list();
+		
 		return list;
 	}
 	

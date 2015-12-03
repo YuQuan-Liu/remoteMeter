@@ -7,6 +7,7 @@ import java.util.Map;
 import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.dto.SettledView;
+import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 
 /**
@@ -103,5 +104,6 @@ public interface MeterDeductionLogDao {
 	List getLouSettledYLCount(int n_id, int settle_id, String lou);
 
 
+	List<WarnPostPay> getWarnPostPays(int[] mdl_ids);
 
 }

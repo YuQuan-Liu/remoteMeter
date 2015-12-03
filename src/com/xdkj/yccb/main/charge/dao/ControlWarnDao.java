@@ -3,6 +3,7 @@ package com.xdkj.yccb.main.charge.dao;
 import java.util.List;
 
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
+import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 import com.xdkj.yccb.main.entity.Customer;
 
 public interface ControlWarnDao {
@@ -17,4 +18,12 @@ public interface ControlWarnDao {
 	 * @return
 	 */
 	boolean todaySend(String mobile);
+
+	/**
+	 * 后付费用户短信发送 存数据库
+	 * @param warnPostPay
+	 * @param done
+	 * @param failReason
+	 */
+	void addWarnLog(WarnPostPay warnPostPay, boolean done, String failReason);
 }

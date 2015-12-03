@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dao.ControlWarnDao;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
+import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Warnlog;
 import com.xdkj.yccb.main.readme.dto.ReadView;
@@ -84,6 +85,34 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 		warnlog.setWarnCount(1);
 		warnlog.setWarnReason(failReason);
 		warnlog.setWarnStyle(c.getWarnStyle());
+		
+		getHibernateTemplate().save(warnlog);
+		
+	}
+	
+	@Override
+	public void addWarnLog(WarnPostPay warnPostPay, boolean done,
+			String failReason) {
+		Warnlog warnlog = new Warnlog();
+		warnlog.setActionTime(new Date());
+		Customer c = new Customer();
+		c.setPid(warnPostPay.getC_id());
+		warnlog.setCustomer(c);
+		warnlog.setEmail("");
+		warnlog.setMobile(warnPostPay.getCustomerMobile());
+		if(done){
+			warnlog.setFailCount(0);
+			warnlog.setSuccessCount(1);
+		}else{
+			warnlog.setFailCount(1);
+			warnlog.setSuccessCount(0);
+		}
+		warnlog.setValid('1');
+		warnlog.setWarn(0);
+		warnlog.setWarnContent(warnPostPay.getCustomerName()+warnPostPay.getDemoney());
+		warnlog.setWarnCount(1);
+		warnlog.setWarnReason(failReason);
+		warnlog.setWarnStyle(1);
 		
 		getHibernateTemplate().save(warnlog);
 		

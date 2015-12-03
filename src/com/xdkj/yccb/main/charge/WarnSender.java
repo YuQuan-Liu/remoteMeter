@@ -3,6 +3,7 @@ package com.xdkj.yccb.main.charge;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -21,10 +22,13 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.encoder.Base64Pwd;
+import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 import com.xdkj.yccb.main.charge.service.WarnService;
 import com.xdkj.yccb.main.entity.Customer;
+import com.xdkj.yccb.main.entity.Meterdeductionlog;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
+import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -37,6 +41,8 @@ public class WarnSender {
 	private JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 	@Autowired
 	private CustomerDao customerDao;
+	@Autowired
+	private MeterDeductionLogDao meterDeductionLogDao;
 	@Autowired
 	private WarnService warnService;
 	
@@ -62,14 +68,92 @@ public class WarnSender {
 		return done;
 	}
 	
+	public void sendWarnPostPay(Watercompany wc,int[] mdlid){
+		
+		
+		List<WarnPostPay> list = meterDeductionLogDao.getWarnPostPays(mdlid);
+		for(int i = 0;i < list.size();i++){
+			boolean done = false;
+			String re = sendSMSPostPayAll(wc,list.get(i));
+			if(re.equals("0")){
+				done = true;
+			}
+			//将提醒信息保存到数据库
+			warnService.addWarnSinglePostPay(list.get(i),done,re);
+		}
+	}
+	
+	private String sendSMSPostPayAll(Watercompany wc, WarnPostPay c){
+		// message
+//		boolean done = false;
+		Map<String, String> para = new HashMap<String, String>();
+
+		if(c.getCustomerMobile()==null || c.getCustomerMobile().equals("") || c.getCustomerMobile().length() != 11){
+			return "-999";
+		}else{
+			//检查今天发送几条了
+			
+			if(!warnService.todaySend(c.getCustomerMobile())){
+				return "-999";
+			}
+		}
+		
+		if(c.getDemoney().compareTo(new BigDecimal(0)) != 1){
+			//扣费金额  <= 0
+			return "-998";
+		}
+		
+		//目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
+		para.put("mob", c.getCustomerMobile());
+		//接口返回类型：json、xml、txt。默认值为txt
+		para.put("type", "json");
+		
+        switch(wc.getPid()){
+        case 4:
+        	//**************************烟台市福山供水**************************
+        	//微米账号的接口UID
+    		para.put("uid", "WAbSeP0sorqnull");
+    		//微米账号的接口密码
+    		para.put("pas", "wj5uu222");
+    		//短信模板cid，通过微米后台创建
+            para.put("cid", "21ZHzcE6YZIB");
+            //传入模板参数。  第一个%P% 为p1,后面的++
+            para.put("p1", c.getC_num());
+            para.put("p2", "-"+c.getDemoney().doubleValue());
+        	break;
+        	default:
+        		//**************************默认**************************
+        		//微米账号的接口UID
+        		para.put("uid", "Hnq9MjyE1pBf");
+        		//微米账号的接口密码
+        		para.put("pas", "qg4nwa7k");
+        		//短信模板cid，通过微米后台创建
+                para.put("cid", "fxPLFfO74Vik");
+                //传入模板参数。  第一个%P% 为p1,后面的++
+                para.put("p1", c.getCustomerName());
+                para.put("p2", "-"+c.getDemoney().doubleValue());
+                para.put("p3", wc.getCompanyName());
+        		break;
+        }
+        
+        
+		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
+				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
+						para), "UTF-8"));
+		
+//		if(jo.get("code").toString().equals("0")){
+//			done = true;
+//		}
+//		return done;
+		return jo.get("code").toString();
+	}
+	
 
 	public void sendWarnAll(Watercompany wc, Object[] ids) {
 		for(int i = 0;i < ids.length;i++){
 			sendWarnSingle(wc, Integer.parseInt(ids[i].toString()));
 //			System.out.println(Integer.parseInt(ids[i].toString()));
-			
 		}
-		
 	}
 	
 	

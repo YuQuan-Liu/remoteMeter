@@ -39,6 +39,9 @@
 	    		<span style="margin-left:20px;">
 					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chargePost()"><fmt:message key='charge.pay'/></a>
 	    		</span>
+	    		<span style="margin-left:20px;">
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="sendMessage()"><fmt:message key='warnpay'/></a>
+	    		</span>
 			</div>
 		</form>
 	</div>
@@ -212,6 +215,36 @@ function chargePost(){
 			success:function(data){
 				if(data.done == true){
 					searchCustomer();
+				}else{
+					//;
+				}
+			}
+		});
+	}else{
+		$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
+	}
+}
+
+function sendMessage(){
+	var mdl_ids = [];
+	var rows = $('#postpayTab').datagrid('getSelections');
+	
+	for(var i=0; i<rows.length; i++){
+		var row = rows[i];
+		mdl_ids.push(row.mdl_id);
+	}
+	if(mdl_ids.length != 0){
+		$.ajax({
+			type:"POST",
+			url:"${path}/charge/postpay/warnpostpay.do",
+			dataType:"json",  
+	        traditional :true,
+			data:{
+				'mdl_ids':mdl_ids
+			},
+			success:function(data){
+				if(data.done == true){
+					$.messager.show({title:'Info',msg:'<fmt:message key='sending'/>'});
 				}else{
 					//;
 				}
