@@ -76,7 +76,7 @@ public class ReadLogDaoImpl extends HibernateDAO implements ReadLogDao {
 			maxpid = (int) q.uniqueResult();
 		}
 		q = getSession().createQuery("from Readlog log " +
-				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.pid > "+maxpid+" and log.readStatus = 100 and log.completeTime is not null " +
+				"where log.readObject <> 3 and log.objectId = "+n_id +" and log.pid >= "+maxpid+" and log.readStatus = 100 and log.completeTime is not null " +
 						"order by log.pid desc ");
 		q.setFirstResult(0);
 		q.setMaxResults(20);
