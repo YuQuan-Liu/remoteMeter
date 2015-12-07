@@ -21,8 +21,6 @@ import com.xdkj.yccb.main.adminor.dto.DepartmentView;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.adminor.service.DepartmentService;
 import com.xdkj.yccb.main.entity.Admininfo;
-import com.xdkj.yccb.main.entity.Roles;
-import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.logger.ActionLogService;
 import com.xdkj.yccb.main.sys.dto.RoleView;
 import com.xdkj.yccb.main.sys.service.RoleService;
@@ -85,6 +83,10 @@ public class AdministratorCtrl {
 	@ResponseBody
 	public String add(HttpServletRequest request,Admininfo admin,int roleid){
 		admin.setLoginKey("96e79218965eb72c92a549dd5a330112");
+		
+		if(admin.getDepartment().getPid() == null){
+			admin.setDepartment(null);
+		}
 		
 		//log
 		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 1, admin.toString()+"roleid"+roleid);

@@ -12,15 +12,15 @@
 function submitForm(){
 	var did = $("#depid").combobox("getValue");
 	var rid = $("#roleid").combobox("getValue");
-	if(did == ""){
-		$.messager.show({
-			title:'Info',
-			msg:'<fmt:message key='admin.choosedep'/>',
-			showType:'slide',
-			timeout:3000
-		});
-		return;
-	}
+// 	if(did == ""){
+// 		$.messager.show({
+// 			title:'Info',
+// 			msg:'<fmt:message key='admin.choosedep'/>',
+// 			showType:'slide',
+// 			timeout:3000
+// 		});
+// 		return;
+// 	}
 	if(rid == ""){
 		$.messager.show({
 			title:'Info',
