@@ -49,11 +49,13 @@ public class VIPCtrl {
 	
 	@RequestMapping(value="/statistics/vip/listvipdata",produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String listVIPMonitor(int n_id,String month){
+	public String listVIPMonitor(int n_id,String start,int module){
 		/**
-		 * 小区这个月month对应下的  所有检测表的每日最后一次的数据
+		 * 根据显示模式  显示出start时间对应的 小区下的所有的检测表的数据   和 D10的数据
+		 * module == 1(月模式，即start月内每天的最后一次数据)
+		 * module == 2(日模式，即start那一天每个小时内最后一次数据)
 		 */
-		return meterService.getVIPMonitor(n_id,month);
+		return meterService.getVIPMonitor(n_id,start,module);
 		
 //		String x = "[{\"data\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3333,3333,3333,0,0,0,3333,0,0,0,3333,3334,3333],\"meteraddr\":\"55550000000001\"}," +
 //				"{\"data\":[0,22,0,0,1,0,20,0,4440,0,0,0,0,0,0,0,0,0,3333,3333,3333,0,0,0,3333,0,0,0,3333,3334,3333],\"meteraddr\":\"5555000000033\"}," +

@@ -309,7 +309,41 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 				.addScalar("readdata", Hibernate.INTEGER)
 				.addScalar("day", Hibernate.INTEGER)
 				.addScalar("meterAddr", Hibernate.STRING);
+		month = month.substring(0, 7);
 		q.setString("start", month+"-01");
+		q.setInteger("n_id", n_id);
+		q.setResultTransformer(Transformers.aliasToBean(VIPMonitor.class));
+		List<VIPMonitor> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<VIPMonitor> getVIPMonitorDay(int n_id, String start) {
+		String SQL = "select rml.meterid m_id,rml.ActionTime readtime,rml.ActionResult readdata,hour(rml.ActionTime) day,m.MeterAddr meterAddr from readmeterlog rml " +
+				"join meter m " +
+				"on rml.meterid = m.pid " +
+				"where rml.pid in " +
+				"( select max(pid) maxid from readmeterlog rml " +
+				"where rml.meterid in ( " +
+				"select m.pid from meter m " +
+				"where m.valid = 1 and m.TimerSwitch = 1 and m.neighborid = :n_id " +
+				") and actiontime between :start and date_add(:start,interval 1 day) " +
+				"group by hour(rml.ActionTime) " +
+				") " +
+				"order by rml.MeterID";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("m_id", Hibernate.INTEGER)
+				.addScalar("readtime",Hibernate.STRING)
+				.addScalar("readdata", Hibernate.INTEGER)
+				.addScalar("day", Hibernate.INTEGER)
+				.addScalar("meterAddr", Hibernate.STRING);
+		q.setString("start", start);
 		q.setInteger("n_id", n_id);
 		q.setResultTransformer(Transformers.aliasToBean(VIPMonitor.class));
 		List<VIPMonitor> list = new ArrayList<>();

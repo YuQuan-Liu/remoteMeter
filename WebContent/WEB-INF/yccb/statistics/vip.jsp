@@ -20,8 +20,15 @@
 					</c:forEach>
 	    		</select>
 	    		
-	    		<label><fmt:message key='month'/></label>
-				<input class="easyui-datetimespinner" id="month" data-options="highlight:1,formatter:formatter2,parser:parser2,selections:[[0,4],[5,7]]"  style="width:100px"/>
+	    		<label>模式</label>
+				<select class="easyui-combobox" id="module" name="module" style="width:100px" data-options="panelHeight:'200',onSelect:showEchart">
+					<option value="1"><fmt:message key='month'/></option>
+					<option value="2">日</option>
+	    		</select>
+	    		
+	    		<input class="easyui-datebox" id="from"></input>
+	    		
+<!-- 				<input class="easyui-datetimespinner" id="month" data-options="highlight:1,formatter:formatter2,parser:parser2,selections:[[0,4],[5,7]]"  style="width:100px"/> -->
 				
 				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
 			</div>
@@ -31,28 +38,28 @@
 		<div id='vipchart0' style='width:96%;height:300px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;'></div>
 	</div>
 	<script type="text/javascript">
-		$(function(){
-			var now_ = new Date();
-			$("#month").datetimespinner("setValue",now_.getFullYear()+"-"+now_.getMonth());
-		});
+// 		$(function(){
+// 			var now_ = new Date();
+// 			$("#month").datetimespinner("setValue",now_.getFullYear()+"-"+now_.getMonth());
+// 		});
 		
-		function formatter2(date){
-            if (!date){return '';}
-            var y = date.getFullYear();
-            var m = date.getMonth() + 1;
-            return y + '-' + (m<10?('0'+m):m);
-        }
-        function parser2(s){
-            if (!s){return null;}
-            var ss = s.split('-');
-            var y = parseInt(ss[0],10);
-            var m = parseInt(ss[1],10);
-            if (!isNaN(y) && !isNaN(m)){
-                return new Date(y,m-1,1);
-            } else {
-                return new Date();
-            }
-        }
+// 		function formatter2(date){
+//             if (!date){return '';}
+//             var y = date.getFullYear();
+//             var m = date.getMonth() + 1;
+//             return y + '-' + (m<10?('0'+m):m);
+//         }
+//         function parser2(s){
+//             if (!s){return null;}
+//             var ss = s.split('-');
+//             var y = parseInt(ss[0],10);
+//             var m = parseInt(ss[1],10);
+//             if (!isNaN(y) && !isNaN(m)){
+//                 return new Date(y,m-1,1);
+//             } else {
+//                 return new Date();
+//             }
+//         }
         
         var option = {
     			title:{
@@ -101,13 +108,26 @@
             	    myChart.setOption(option);
                 }
             );
-            
+        
 		var i = 0;
+		function showEchart(){
+			var myChart = EChart.init(document.getElementById('vipchart0')); 
+			var module = $("#module").combobox("getValue");
+			if(module == 1){
+				option.xAxis[0].data=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"];
+				option.series[0].data=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+			}else{
+				option.xAxis[0].data=["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24"];
+				option.series[0].data=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+			}
+    	    myChart.setOption(option);
+		}
         function search_(){
         	var n_id = $("#neighbor").combobox("getValue");
-        	var month = $("#month").datetimespinner('getValue');
+        	var start = $("#from").datebox("getValue");
+        	var module = $("#module").combobox("getValue");
         	
-        	if(n_id !="" && month !=""){
+        	if(n_id !="" && start !=""){
         		//ajax get the data 
         		$.ajax({
         			type:"POST",
@@ -115,7 +135,8 @@
         			dataType:"json",
         			data:{
         				n_id:n_id,
-        				month:month
+        				start:start,
+        				module:module
         			},
         			success:function(data){
         				//load the data in myChart;
@@ -130,12 +151,16 @@
             					var myChart = EChart.init(document.getElementById('vipchart'+show.id)); 
     	       	     	        // 为echarts对象加载数据 
     	        				option.series[0].data = show.data;
-    	        				option.title.text = month+"表数";
+    	       	     	        if(module == 1){
+    	       	     	        	option.title.text = start.substring(0,7)+"表读数";
+    	       	     	        }else{
+    	       	     	        	option.title.text = start+"表读数";
+    	       	     	        }
+    	        				
     	        				option.title.subtext = '表地址：'+show.meteraddr;
     	       	     	        myChart.setOption(option);
             				}
         				}
-        				
         			}
         		});
         	}else{

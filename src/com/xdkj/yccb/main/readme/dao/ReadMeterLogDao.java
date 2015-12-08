@@ -27,6 +27,20 @@ public interface ReadMeterLogDao {
 	List<SettleSum> getLouSettledSum(int n_id, int settle_id, int pre,
 			String lou);
 
+	/**
+	 * 获取小区下  定时抄表的表（包括D10）  在month月内  每天最后一次抄表记录
+	 * @param n_id
+	 * @param month
+	 * @return
+	 */
 	List<VIPMonitor> getVIPMonitor(int n_id, String month);
+
+	/**
+	 * 获取小区下  定时抄表的表（包括D10） 在start这天  每个小时最后一次抄表记录
+	 * @param n_id
+	 * @param start
+	 * @return
+	 */
+	List<VIPMonitor> getVIPMonitorDay(int n_id, String start);
 
 }

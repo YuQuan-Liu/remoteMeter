@@ -76,6 +76,18 @@ $(function(){
 		          {field:'m_id',title:'ID',width:60,checkbox:true},
 		          {field:'c_num',title:'<fmt:message key='c.num'/>',width:80},
 		          {field:'customerName',title:'<fmt:message key='c.name'/>',width:80},
+		          {field:'deread',title:'<fmt:message key='m.deread'/>',width:80},
+		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
+		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},
+		          {field:'editread',title:'editread',width:60,hidden:true},
+		          {field:'newread',title:'<fmt:message key='readnon.newread'/>',width:70,editor:{type:'numberbox'}},
+		          {field:'yl',title:'<fmt:message key='yl'/>',width:70,styler:function(value,row,index){
+		        	  if(value > 30){
+		        		  return 'color:red;';
+		        	  }
+		          },formatter: function(value,row,index){
+						return row.readdata-row.deread;
+				  }},
 		          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:80,styler:function(value,row,index){
 		        	  if(value <= 0){
 		        		  return 'background-color:#ffee00;color:red;';
@@ -108,18 +120,6 @@ $(function(){
 							return "<fmt:message key='m.mstatechange'/>";
 						}
 		          }},
-		          {field:'deread',title:'<fmt:message key='m.deread'/>',width:80},
-		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
-		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},
-		          {field:'editread',title:'editread',width:60,hidden:true},
-		          {field:'newread',title:'<fmt:message key='readnon.newread'/>',width:70,editor:{type:'numberbox'}},
-		          {field:'yl',title:'<fmt:message key='yl'/>',width:70,styler:function(value,row,index){
-		        	  if(value > 30){
-		        		  return 'color:red;';
-		        	  }
-		          },formatter: function(value,row,index){
-						return row.readdata-row.deread;
-				  }},
 		          {field:'action',title:'<fmt:message key='common.action'/>',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
 							var id = row.m_id;

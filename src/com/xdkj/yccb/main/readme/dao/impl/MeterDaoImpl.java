@@ -59,7 +59,7 @@ public class MeterDaoImpl extends HibernateDAO<Meter> implements MeterDao {
 	@Override
 	public List<Meter> getTimerList() {
 		
-		Query q = getSession().createQuery("from Meter m where m.valid = 1 and m.timerSwitch = 1");
+		Query q = getSession().createQuery("from Meter m where m.valid = 1 and m.timerSwitch = 1 and m.gprs.gprsprotocol <> 4");
 		return q.list();
 	}
 

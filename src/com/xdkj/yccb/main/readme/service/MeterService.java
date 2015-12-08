@@ -16,12 +16,15 @@ public interface MeterService {
 	public Map addMeterReads(List<Readmeterlog> list);
 
 	/**
-	 * 小区这个月month对应下的  所有检测表的每日最后一次的数据
+	 * 根据显示模式  显示出start时间对应的 小区下的所有的检测表的数据   和 D10的数据
+	 * module == 1(月模式，即start月内每天的最后一次数据)
+	 * module == 2(日模式，即start那一天每个小时内最后一次数据)
 	 * @param n_id
-	 * @param month
+	 * @param start
+	 * @param module
 	 * @return
 	 */
-	public String getVIPMonitor(int n_id, String month);
+	public String getVIPMonitor(int n_id, String start,int module);
 	
 	
 	

@@ -60,8 +60,52 @@ public class MeterServiceImpl implements MeterService {
 	}
 
 	@Override
-	public String getVIPMonitor(int n_id, String month) {
-		List<VIPMonitor> list = readMeterLogDao.getVIPMonitor(n_id,month);
+	public String getVIPMonitor(int n_id, String start,int module) {
+		String result = "";
+		switch (module){
+		case 1:
+			//月
+			result = getEchartDataMonth(n_id,start);
+			break;
+		case 2:
+			//日
+			result = getEchartDataDay(n_id,start);
+			break;
+		}
+		
+		return result;
+	}
+
+	private String getEchartDataDay(int n_id, String start) {
+		List<VIPMonitor> list = readMeterLogDao.getVIPMonitorDay(n_id,start);
+		JSONArray ja = new JSONArray();
+		
+		VIPMonitor vip = null;
+		int mid = 0;
+		JSONObject jo = null;
+		JSONArray ja_data = null;
+		
+		for(int i = 0;i<list.size();i++){
+			vip = list.get(i);
+			if(mid != vip.getM_id()){
+				mid = vip.getM_id();
+				jo = new JSONObject();
+				ja_data = new JSONArray();
+				for(int j = 0;j < 24;j++){
+					ja_data.add(i, 0);
+				}
+				jo.put("id", vip.getM_id());
+				jo.put("meteraddr", vip.getMeterAddr());
+				jo.put("data", ja_data);
+				ja.add(jo);
+			}
+			ja_data.set(vip.getDay()-1,vip.getReaddata());
+		}
+		return ja.toJSONString();
+	}
+
+	private String getEchartDataMonth(int n_id, String start) {
+		List<VIPMonitor> list = readMeterLogDao.getVIPMonitor(n_id,start);
 		JSONArray ja = new JSONArray();
 		
 		VIPMonitor vip = null;
