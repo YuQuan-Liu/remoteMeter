@@ -99,7 +99,7 @@ public class ReadExportDefault extends AbstractExcelView{
 					break;
 				case 6:
 //					setText(cell, readView.getReaddata()+"");
-					cell.setCellValue(readView.getCollectorAddr()+String.format("%03d",readView.getMeterAddr()));
+					cell.setCellValue(readView.getCollectorAddr()+String.format("%03d",Integer.parseInt(readView.getMeterAddr())));
 					break;
 				case 7:
 //					setText(cell, readView.getReaddata()+"");
