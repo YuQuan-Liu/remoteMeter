@@ -46,7 +46,7 @@ public class ReadExportDefault extends AbstractExcelView{
 		setText(cell, "表状态");
 		
 		cell = getCell(sheet, 0, 6);
-		setText(cell, "表状态");
+		setText(cell, "表地址");
 		cell = getCell(sheet, 0, 7);
 		setText(cell, "表读数");
 		cell = getCell(sheet, 0, 8);
