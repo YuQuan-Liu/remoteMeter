@@ -83,6 +83,7 @@ $(function(){
 		          {field:'nationalId',title:'<fmt:message key='c.nationalid'/>',width:80},
 		          {field:'customerAddr',title:'<fmt:message key='common.addr'/>',width:225},
 		          {field:'hk',title:'<fmt:message key='c.hk'/>',width:60,editor:'text'},
+		          {field:'peoplecnt',title:'<fmt:message key='c.hushu'/>',width:60},
 		          {field:'customerBalance',title:'<fmt:message key='c.balance'/>',width:60,styler:function(value,row,index){
 		        	  if(value <= 0){
 		        		  return 'background-color:#ffee00;color:red;';
@@ -190,6 +191,8 @@ $(function(){
 					        }},
 				          	{field:'timer',title:'<fmt:message key='m.timer'/>',width:50},
 				          	{field:'overflow',title:'<fmt:message key='m.overflow'/>',width:50},
+				          	{field:'deRead',title:'<fmt:message key='m.deread'/>',width:50},
+				          	{field:'destartread',title:'<fmt:message key='m.destartread'/>',width:50},
 				          	{field:'changend',title:'<fmt:message key='m.changeend'/>',width:50},
 // 				          	{field:'changestart',title:'起始读数',width:50},
 				          	{field:'action',title:'<fmt:message key='common.action'/>',width:90,halign:'center',align:'center',formatter: function(value,row_,index_){

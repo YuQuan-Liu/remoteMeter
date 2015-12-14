@@ -24,6 +24,7 @@ public class SettledView {
 	private int isValve;
 	
 	private int lastderead;
+	private int destartread;
 	private int meterread;
 	private String meterreadtime;
 	
@@ -199,6 +200,12 @@ public class SettledView {
 	}
 	public SettledView() {
 		super();
+	}
+	public int getDestartread() {
+		return destartread;
+	}
+	public void setDestartread(int destartread) {
+		this.destartread = destartread;
 	}
 	
 	

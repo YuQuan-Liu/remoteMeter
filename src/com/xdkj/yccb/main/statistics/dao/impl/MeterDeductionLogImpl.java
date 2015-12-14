@@ -57,7 +57,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 	public List<SettledView> getLogPostPay(int n_id, int settle_id,String lou) {
 		
 		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +
 				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 				"pk.pricekindname from meterdeductionlog mdl " +
 				"join meter m " +
@@ -90,6 +90,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("isValve",Hibernate.INTEGER)
 				
 				.addScalar("lastderead",Hibernate.INTEGER)
+				.addScalar("destartread",Hibernate.INTEGER)
 				.addScalar("meterread",Hibernate.INTEGER)
 				.addScalar("meterreadtime",Hibernate.STRING)
 				.addScalar("demoney",Hibernate.BIG_DECIMAL)
@@ -116,7 +117,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 	public List<SettledView> getLogAuto(int n_id, int settle_id) {
 		
 		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +
 				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 				"pk.pricekindname from meterdeductionlog mdl " +
 				"join meter m " +
@@ -149,6 +150,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("isValve",Hibernate.INTEGER)
 				
 				.addScalar("lastderead",Hibernate.INTEGER)
+				.addScalar("destartread",Hibernate.INTEGER)
 				.addScalar("meterread",Hibernate.INTEGER)
 				.addScalar("meterreadtime",Hibernate.STRING)
 				.addScalar("demoney",Hibernate.BIG_DECIMAL)
@@ -266,7 +268,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		String SQL = "";
 		if(pre == 2){
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +
 					"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 					"pk.pricekindname from meterdeductionlog mdl " +
 					"join meter m " +
@@ -279,7 +281,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}else{
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +
 					"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 					"pk.pricekindname from meterdeductionlog mdl " +
 					"join meter m " +
@@ -313,6 +315,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("isValve",Hibernate.INTEGER)
 				
 				.addScalar("lastderead",Hibernate.INTEGER)
+				.addScalar("destartread",Hibernate.INTEGER)
 				.addScalar("meterread",Hibernate.INTEGER)
 				.addScalar("meterreadtime",Hibernate.STRING)
 				.addScalar("demoney",Hibernate.BIG_DECIMAL)
@@ -344,7 +347,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		String SQL = "";
 		if(pre == 2){
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +
 					"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 					"pk.pricekindname from meterdeductionlog mdl " +
 					"join meter m " +
@@ -357,7 +360,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"order by DYNum,length(HuNum),HuNum";
 		}else{
 			SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+					"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +
 					"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 					"pk.pricekindname from meterdeductionlog mdl " +
 					"join meter m " +
@@ -391,6 +394,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("isValve",Hibernate.INTEGER)
 				
 				.addScalar("lastderead",Hibernate.INTEGER)
+				.addScalar("destartread",Hibernate.INTEGER)
 				.addScalar("meterread",Hibernate.INTEGER)
 				.addScalar("meterreadtime",Hibernate.STRING)
 				.addScalar("demoney",Hibernate.BIG_DECIMAL)
@@ -481,7 +485,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 	@Override
 	public List<SettledView> getLogDetail(int c_id, int count) {
 		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState," +
+				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +
 				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.meterreadtime,mdl.demoney,mdl.paytype,mdl.printed,mdl.payed,mdl.changend changeend, " +
 				"pk.pricekindname from meterdeductionlog mdl " +
 				"join meter m " +
@@ -514,6 +518,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("isValve",Hibernate.INTEGER)
 				
 				.addScalar("lastderead",Hibernate.INTEGER)
+				.addScalar("destartread",Hibernate.INTEGER)
 				.addScalar("meterread",Hibernate.INTEGER)
 				.addScalar("meterreadtime",Hibernate.STRING)
 				.addScalar("demoney",Hibernate.BIG_DECIMAL)

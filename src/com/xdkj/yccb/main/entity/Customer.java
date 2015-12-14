@@ -45,6 +45,7 @@ public class Customer implements java.io.Serializable {
 	private int warnThre;
 	private String valid;
 	private String remark;
+	private int peoplecnt;
 	private Set<Meter> meters = new HashSet<Meter>(0);
 	private Set<Customerpaylog> customerpaylogs = new HashSet<Customerpaylog>(0);
 	private Set<Warnlog> warnlogs = new HashSet<Warnlog>(0);
@@ -332,6 +333,15 @@ public class Customer implements java.io.Serializable {
 
 	public void setWarnlogs(Set<Warnlog> warnlogs) {
 		this.warnlogs = warnlogs;
+	}
+
+	@Column(name = "peoplecnt")
+	public int getPeoplecnt() {
+		return peoplecnt;
+	}
+
+	public void setPeoplecnt(int peoplecnt) {
+		this.peoplecnt = peoplecnt;
 	}
 
 }

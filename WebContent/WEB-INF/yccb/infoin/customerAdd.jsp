@@ -69,6 +69,9 @@
 						<td><label><fmt:message key='c.balance'/></label></td>
 						<td><input type="text" name="customerBalance" id="customerBalance" class="easyui-textbox" value="0"
 						data-options="required:true,novalidate:true,onChange:check_balance,invalidMessage:'<fmt:message key='c.balanceerror'/>'" validType="nonValidate[]"/></td>
+						<td><label><fmt:message key='c.hushu'/></label></td>
+						<td><input type="text" name="peoplecnt" id="peoplecnt" class="easyui-textbox" value="4"
+						data-options="novalidate:true" validType="nonValidate[]"/></td>
 					</tr>
 					<tr>
 						<td><label><fmt:message key='c.warnthre'/></label></td>

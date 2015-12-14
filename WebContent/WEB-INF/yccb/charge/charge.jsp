@@ -62,8 +62,8 @@
 						<td><input type="text" name="customerBalance" id="customerBalance" data-options="disabled:true" class="easyui-textbox"/></td>
 						<td><label><fmt:message key='c.warnthre'/>：</label></td>
 						<td><input type="text" name="warnThre" data-options="disabled:true" class="easyui-textbox"/></td>
-						<td></td>
-						<td></td>
+						<td><label><fmt:message key='c.hushu'/>：</label></td>
+						<td><input type="text" name="peoplecnt" data-options="disabled:true" class="easyui-textbox"/></td>
 					</tr>
 				</table>
 			</fieldset>
@@ -144,7 +144,8 @@ $(function(){
 	        	  }
 	        }},
 	      	{field:'timer',title:'<fmt:message key='m.timer'/>',width:40},
-	      	 {field:'deRead',title:'<fmt:message key='m.deread'/>',width:40},
+	      	{field:'deRead',title:'<fmt:message key='m.deread'/>',width:40},
+	      	{field:'destartread',title:'<fmt:message key='m.destartread'/>',width:40},
 	      	{field:'readdata',title:'<fmt:message key='m.readdata'/>',width:40},
 	        {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:40},
 	      	{field:'changend',title:'<fmt:message key='m.changeend'/>',width:40},

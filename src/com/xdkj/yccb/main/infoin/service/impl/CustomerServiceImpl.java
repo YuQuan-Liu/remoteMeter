@@ -336,6 +336,7 @@ public class CustomerServiceImpl implements CustomerService {
 		c.setCustomerEmail(cv.getCustomerEmail());
 		c.setWarnThre(cv.getWarnThre());
 		c.setWarnStyle(cv.getWarnStyle());
+		c.setPeoplecnt(cv.getPeoplecnt());
 		
 		JSONObject jo = new JSONObject();
 		jo.put("update", c.getPid());

@@ -23,6 +23,8 @@ public class SettleView {
 	private Byte meterState;
 	private int isValve;
 	
+
+	private int destartread;
 	private int deread;
 	private int readdata;
 	private String readtime;
@@ -171,6 +173,12 @@ public class SettleView {
 				+ ", meterState=" + meterState + ", isValve=" + isValve
 				+ ", deread=" + deread + ", readdata=" + readdata
 				+ ", readtime=" + readtime + "]";
+	}
+	public int getDestartread() {
+		return destartread;
+	}
+	public void setDestartread(int destartread) {
+		this.destartread = destartread;
 	}
 	
 	

@@ -47,6 +47,8 @@ public class Meter implements java.io.Serializable {
 	private Byte meterState;
 	private Integer deRead;
 	private Date deTime;
+	private int destartread;
+	private Date destarttime;
 	private int timerSwitch;
 	private String timer;
 	private Integer overflow;
@@ -374,6 +376,25 @@ public class Meter implements java.io.Serializable {
 
 	public void setValveconflogs(Set<Valveconflog> valveconflogs) {
 		this.valveconflogs = valveconflogs;
+	}
+
+	@Column(name = "destartread")
+	public int getDestartread() {
+		return destartread;
+	}
+
+	public void setDestartread(int destartread) {
+		this.destartread = destartread;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "destarttime", length = 19)
+	public Date getDestarttime() {
+		return destarttime;
+	}
+
+	public void setDestarttime(Date destarttime) {
+		this.destarttime = destarttime;
 	}
 
 }

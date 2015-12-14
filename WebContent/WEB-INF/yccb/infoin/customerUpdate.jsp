@@ -77,6 +77,8 @@
 								<option value="0" <c:if test="${cv.warnStyle == '2' }">selected="selected"</c:if>><fmt:message key='c.email'/></option>
 							</select>
 						</td>
+						<td><label><fmt:message key='c.hushu'/></label></td>
+						<td><input type="text" name="peoplecnt" id="peoplecnt" class="easyui-textbox" value="${cv.peoplecnt }"/></td>
 					</tr>
 				</table>
 				<div style="text-align:center;padding-top:10px;">

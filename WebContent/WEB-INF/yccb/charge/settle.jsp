@@ -101,6 +101,7 @@ $(function(){
 		        	  }
 		          }},
 		          {field:'deread',title:'<fmt:message key='m.deread'/>',width:80},
+		          {field:'destartread',title:'<fmt:message key='m.destartread'/>',width:80},
 		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
 		          {field:'changeend',title:'<fmt:message key='m.changeend'/>',width:80},
 		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},

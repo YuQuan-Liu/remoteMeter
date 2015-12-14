@@ -33,7 +33,9 @@ public class MeterView {
 	private Integer valveOffthre;
 	private Byte meterState;
 	private Integer deRead;
-	private Date deTime;
+	private String deTime;
+	private Integer destartread;
+	private String destarttime;
 	private int timerSwitch;
 	private String timer;
 	private Integer overflow;
@@ -194,10 +196,10 @@ public class MeterView {
 	public void setDeRead(Integer deRead) {
 		this.deRead = deRead;
 	}
-	public Date getDeTime() {
+	public String getDeTime() {
 		return deTime;
 	}
-	public void setDeTime(Date deTime) {
+	public void setDeTime(String deTime) {
 		this.deTime = deTime;
 	}
 	public int getTimerSwitch() {
@@ -266,6 +268,18 @@ public class MeterView {
 		result.put("success", "true");
 		
 		return result;
+	}
+	public Integer getDestartread() {
+		return destartread;
+	}
+	public void setDestartread(Integer destartread) {
+		this.destartread = destartread;
+	}
+	public String getDestarttime() {
+		return destarttime;
+	}
+	public void setDestarttime(String destarttime) {
+		this.destarttime = destarttime;
 	}
 
 	

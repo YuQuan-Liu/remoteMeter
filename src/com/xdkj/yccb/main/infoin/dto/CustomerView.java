@@ -23,7 +23,7 @@ public class CustomerView {
 	private int warnSwitch;
 	private int warnStyle;
 	private int warnThre;
-//	private String valid;
+	private int peoplecnt;
 //	private String remark;
 	
 	private String louNum;
@@ -200,6 +200,12 @@ public class CustomerView {
 		}
 		
 		return result;
+	}
+	public int getPeoplecnt() {
+		return peoplecnt;
+	}
+	public void setPeoplecnt(int peoplecnt) {
+		this.peoplecnt = peoplecnt;
 	}
 	
 }

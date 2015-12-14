@@ -75,7 +75,7 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 	public List<SettleView> getReadMeterLogToSettle(int n_id) {
 		
 		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
-				"g.GPRSAddr g_addr,m.pid m_id, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.deread,m.readdata,m.readtime,m.changend changeend from customer c " +
+				"g.GPRSAddr g_addr,m.pid m_id, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.deread,m.readdata,m.readtime,m.changend changeend,m.destartread from customer c " +
 				"left join meter m " +
 				"on c.pid = m.customerid " +
 				"left join gprs g " +
@@ -100,6 +100,7 @@ public class ReadMeterLogDaoImpl extends HibernateDAO implements
 				.addScalar("isValve",Hibernate.INTEGER)
 				.addScalar("meterState",Hibernate.BYTE)
 				.addScalar("deread",Hibernate.INTEGER)
+				.addScalar("destartread",Hibernate.INTEGER)
 				.addScalar("changeend",Hibernate.INTEGER)
 				.addScalar("readdata",Hibernate.INTEGER)
 				.addScalar("readtime",Hibernate.STRING);
