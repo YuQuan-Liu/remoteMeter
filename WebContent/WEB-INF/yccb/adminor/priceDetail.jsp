@@ -26,7 +26,8 @@ $(function(){
 	        {field:'basicFirstOver',title:'<fmt:message key='price.firstover'/>',width:80},
 	        {field:'basicPriceSecond',title:'<fmt:message key='price.second'/>',width:80},
 	        {field:'basicSecondOver',title:'<fmt:message key='price.secondover'/>',width:80},
-	        {field:'basicPriceThird',title:'<fmt:message key='price.third'/>',width:80}
+	        {field:'basicPriceThird',title:'<fmt:message key='price.third'/>',width:80},
+	        {field:'perYL',title:'<fmt:message key='price.perYL'/>',width:80}
 	    ]],
 	});
 })

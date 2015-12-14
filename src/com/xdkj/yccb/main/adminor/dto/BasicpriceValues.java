@@ -9,6 +9,7 @@ public class BasicpriceValues {
 	private String basicPriceSecond;
 	private String basicSecondOver;
 	private String basicPriceThird;
+	private String perYL;
 	//private String valid;
 	//private String remark;
 	public String getPids() {
@@ -16,6 +17,12 @@ public class BasicpriceValues {
 	}
 	public void setPids(String pids) {
 		this.pids = pids;
+	}
+	public String getPerYL() {
+		return perYL;
+	}
+	public void setPerYL(String perYL) {
+		this.perYL = perYL;
 	}
 	public String getBasicPriceName() {
 		return basicPriceName;

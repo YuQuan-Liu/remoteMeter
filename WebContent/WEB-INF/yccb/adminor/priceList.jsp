@@ -37,7 +37,7 @@ $(function(){
 	        handler: function() { 
 	        	$('#priceAddWin').window({   
 	    		    href:'${path}/admin/price/priceAddPage.do',
-	    		    width:600,
+	    		    width:700,
 	    		    height:400,
 	    		    minimizable:false,
 	    		    maximizable:false,

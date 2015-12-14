@@ -11,6 +11,7 @@ public class BasicpriceView {
 	private BigDecimal basicPriceSecond;
 	private int basicSecondOver;
 	private BigDecimal basicPriceThird;
+	private int perYL;
 	private String valid;
 	private String remark;
 	public Integer getPid() {
@@ -66,5 +67,11 @@ public class BasicpriceView {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public int getPerYL() {
+		return perYL;
+	}
+	public void setPerYL(int perYL) {
+		this.perYL = perYL;
 	}
 }

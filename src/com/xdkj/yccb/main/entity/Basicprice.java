@@ -28,6 +28,7 @@ public class Basicprice implements java.io.Serializable {
 	private BigDecimal basicPriceSecond;
 	private int basicSecondOver;
 	private BigDecimal basicPriceThird;
+	private int perYL;
 	private String valid;
 	private String remark;
 
@@ -125,6 +126,15 @@ public class Basicprice implements java.io.Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	@Column(name = "perYL", nullable = false)
+	public int getPerYL() {
+		return perYL;
+	}
+
+	public void setPerYL(int perYL) {
+		this.perYL = perYL;
 	}
 
 }

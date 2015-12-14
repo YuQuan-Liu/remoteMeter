@@ -9,7 +9,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.adminor.dao.BasicpriceDAO;
 import com.xdkj.yccb.main.adminor.dao.PriceKindDAO;
 import com.xdkj.yccb.main.adminor.dto.BasicpriceValues;
@@ -61,6 +60,7 @@ public class PriceServiceImpl implements PriceService {
 		String[] basicPriceSecond = bpv.getBasicPriceSecond().split(",");
 		String[] basicSecondOver = bpv.getBasicSecondOver().split(",");
 		String[] basicPriceThird = bpv.getBasicPriceThird().split(",");
+		String[] perYL = bpv.getPerYL().split(",");
 		
 		for (int i = 0; i < basicPriceName.length; i++) {
 			Basicprice bp = new Basicprice();
@@ -70,6 +70,7 @@ public class PriceServiceImpl implements PriceService {
 			bp.setBasicPriceSecond(new BigDecimal(basicPriceSecond[i]));
 			bp.setBasicSecondOver(Integer.parseInt(basicSecondOver[i]));
 			bp.setBasicPriceThird(new BigDecimal(basicPriceThird[i]));
+			bp.setPerYL(Integer.parseInt(perYL[i]));
 			bp.setPricekind(pk);
 			bp.setValid("1");
 			basicpriceDAO.addBasicprice(bp);
@@ -116,6 +117,7 @@ public class PriceServiceImpl implements PriceService {
 			bpv.setBasicPriceSecond(bp.getBasicPriceSecond());
 			bpv.setBasicSecondOver(bp.getBasicSecondOver());
 			bpv.setBasicPriceThird(bp.getBasicPriceThird());
+			bpv.setPerYL(bp.getPerYL());
 			bpv.setRemark(bp.getRemark());
 			listView.add(bpv);
 		}

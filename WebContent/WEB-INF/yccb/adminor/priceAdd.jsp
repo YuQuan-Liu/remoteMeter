@@ -47,38 +47,11 @@ $(function(){
 	        {field:'basicFirstOver',title:'<fmt:message key='price.firstover'/>',width:80,editor:{type:'numberbox',options:{precision:0}}},
 	        {field:'basicPriceSecond',title:'<fmt:message key='price.second'/>',width:80,editor:{type:'numberbox',options:{precision:2}}},
 	        {field:'basicSecondOver',title:'<fmt:message key='price.secondover'/>',width:80,editor:{type:'numberbox',options:{precision:0}}},
-	        {field:'basicPriceThird',title:'<fmt:message key='price.third'/>',width:80,editor:{type:'numberbox',options:{precision:2}}}
+	        {field:'basicPriceThird',title:'<fmt:message key='price.third'/>',width:80,editor:{type:'numberbox',options:{precision:2}}},
+	        {field:'perYL',title:'<fmt:message key='price.perYL'/>',width:80,editor:{type:'numberbox',options:{precision:0}}}
 	    ]],
-	    data:[{"basicPriceName":"","basicPriceFirst":0,"basicFirstOver":0,"basicPriceSecond":0,"basicSecondOver":0,"basicSecondOver":0,"basicPriceThird":0}],
-	    toolbar: [{
-	        text: '<fmt:message key='common.add'/>', 
-	        iconCls: 'icon-add', 
-	        handler: function() {
-	        	$('#basicPriceTab').datagrid('insertRow',{
-	        		row: {"basicPriceName":"","basicPriceFirst":0,"basicFirstOver":0,"basicPriceSecond":0,"basicSecondOver":0,"basicSecondOver":0,"basicPriceThird":0}
-	        	});
-	        } 
-	    },
-	    '-',{ 
-	        text: '<fmt:message key='common.delete'/>', 
-	        iconCls: 'icon-remove', 
-	        handler: function(){
-	        	var row = bpTab.datagrid('getSelected');
-	        	if(row){
-	        		var rowIndex = bpTab.datagrid('getRowIndex',row);
-		        	bpTab.datagrid('deleteRow', rowIndex);  
-	        	}else{
-	        		$.messager.show({
-						title:'Info',
-						msg:'<fmt:message key='common.chooserecord'/>',
-						showType:'slide',
-						timeout:3000
-					});
-	        	}
-	        } 
-	    }]
+	    data:[{"basicPriceName":"","basicPriceFirst":0,"basicFirstOver":0,"basicPriceSecond":0,"basicSecondOver":0,"basicSecondOver":0,"basicPriceThird":0,"perYL":0}]
 	});
-	
 	
 })
 
@@ -140,7 +113,7 @@ function getBasicData(){
 	
 	if(rows.length>0){
 		var basicPriceName='',basicPriceFirst='',basicFirstOver='',
-		basicPriceSecond='',basicSecondOver='',basicPriceThird='';
+		basicPriceSecond='',basicSecondOver='',basicPriceThird='',perYL='';
 		
 		for(var i=0;i<rows.length;i++){
 			var row = rows[i];
@@ -165,7 +138,7 @@ function getBasicData(){
 				return false;
 			}
 			
-			if(row.basicFirstOver < row.basicSecondOver){
+			if(row.basicFirstOver > row.basicSecondOver){
 				$.messager.show({
 					title : 'Info',
 					msg : '<fmt:message key='price.secondoversmall'/>',
@@ -181,6 +154,7 @@ function getBasicData(){
 			basicPriceSecond += row.basicPriceSecond;
 			basicSecondOver +=row.basicSecondOver;
 			basicPriceThird+=row.basicPriceThird;
+			perYL+=row.perYL;
 			
 			if(i != rows.length-1){
 				basicPriceName += ",";
@@ -189,6 +163,7 @@ function getBasicData(){
 				basicPriceSecond += ",";
 				basicSecondOver += ",";
 				basicPriceThird += ",";
+				perYL += ",";
 			}
 // 			var bp = new Object();
 // 			bp.basicPriceName = row.basicPriceName;
@@ -206,6 +181,7 @@ function getBasicData(){
 		$('#basicPriceSecond').val(basicPriceSecond);
 		$('#basicSecondOver').val(basicSecondOver);
 		$('#basicPriceThird').val(basicPriceThird);
+		$('#perYL').val(perYL);
 		return true;
 	}
 }
@@ -221,6 +197,7 @@ function getBasicData(){
 			<input type="hidden" name="basicPriceSecond" value="" id="basicPriceSecond" />
 			<input type="hidden" name="basicSecondOver" value="" id="basicSecondOver" /> 
 			<input type="hidden" name="basicPriceThird" value="" id="basicPriceThird" />
+			<input type="hidden" name="perYL" value="" id="perYL" />
 			<table>
 				<tr>
 					<td><fmt:message key='price.name'/>：</td>
