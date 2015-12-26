@@ -687,6 +687,11 @@ public class CustomerServiceImpl implements CustomerService {
 		
 	}
 
+	@Override
+	public Customer getByMobile(String mobile, String encodePassword) {
+		return customerDao.getByMobile(mobile,encodePassword);
+	}
+
 	
 	
 }

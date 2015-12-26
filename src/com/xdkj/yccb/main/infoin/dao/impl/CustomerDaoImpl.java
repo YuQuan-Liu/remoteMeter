@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.sun.xml.internal.bind.v2.TODO;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
@@ -415,6 +416,14 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		}else{
 			return 0;
 		}
+	}
+
+	@Override
+	public Customer getByMobile(String mobile, String encodePassword) {
+		Query q = getSession().createQuery("from Customer c where c.customerMobile=:mobile and c.loginKey=:password and c.valid = 1");
+		q.setString("mobile", mobile);
+		q.setString("password", encodePassword);
+		return (Customer) q.uniqueResult();
 	}
 
 	

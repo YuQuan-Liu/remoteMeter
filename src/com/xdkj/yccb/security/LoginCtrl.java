@@ -24,7 +24,9 @@ import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.RoleAuthority;
+import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.logger.ActionLogService;
 @Controller
 public class LoginCtrl {
@@ -32,6 +34,8 @@ public class LoginCtrl {
 	private AdministratorService administratorService;
 	@Autowired
 	private ActionLogService actionLogService;
+	@Autowired
+	private CustomerService customerService;
 	
 	@RequestMapping(value="/resource/login")
 	public String login(HttpServletRequest request, HttpServletResponse response, Model model){
@@ -51,51 +55,70 @@ public class LoginCtrl {
             return  "login";  
         }
         
-        Admininfo admin = administratorService.getByLoginName(username, new Md5PwdEncoder().encodePassword(password));
-        if(admin == null){
-        	request.setAttribute("message_login", "用户名密码错误！"); 
-            return "login";
+        String identity = request.getParameter("identity");
+        if(identity.equals("1")){
+        	//管理员
+        	Admininfo admin = administratorService.getByLoginName(username, new Md5PwdEncoder().encodePassword(password));
+            if(admin == null){
+            	request.setAttribute("message_login", "用户名密码错误！"); 
+                return "login";
+            }else{
+            	UserForSession ufs = new UserForSession();
+    			ufs.setPid(admin.getPid());
+    			ufs.setLoginName(admin.getLoginName());
+    			ufs.setAdminName(admin.getAdminName());
+    			ufs.setAdminEmail(admin.getAdminEmail());
+    			ufs.setAdminMobile(admin.getAdminMobile());
+    			ufs.setWaterComId(admin.getWatercompany().getPid());
+    			
+    			//管理员没有片区   将0存到Session中
+    			if(null == admin.getDepartment()){
+    				ufs.setDepart_id(0);
+    			}else{
+    				ufs.setDepart_id(admin.getDepartment().getPid());
+    			}
+    			
+    			List<AdminRole> adminRole = new ArrayList<AdminRole>(admin.getAdminRoles());
+    			Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
+    			Map<String, String> menus = new HashMap<String, String>();
+    			for (RoleAuthority roleAuthority : ras) {
+    				menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
+    			}
+    			ufs.setMenus(menus);
+    			//log
+    			actionLogService.addActionlog(admin.getPid(), 28, "login:adminid"+admin.getPid());
+    			
+    			request.getSession().setAttribute("curuser", ufs);
+    			request.getSession().setAttribute("identity", identity);
+            }
+            return "redirect:/index.do";
         }else{
-        	UserForSession ufs = new UserForSession();
-			ufs.setPid(admin.getPid());
-			ufs.setLoginName(admin.getLoginName());
-			ufs.setAdminName(admin.getAdminName());
-			ufs.setAdminEmail(admin.getAdminEmail());
-			ufs.setAdminMobile(admin.getAdminMobile());
-			ufs.setWaterComId(admin.getWatercompany().getPid());
-			
-			//管理员没有片区   将0存到Session中
-			if(null == admin.getDepartment()){
-				ufs.setDepart_id(0);
-			}else{
-				ufs.setDepart_id(admin.getDepartment().getPid());
-			}
-			
-			List<AdminRole> adminRole = new ArrayList<AdminRole>(admin.getAdminRoles());
-			Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
-			Map<String, String> menus = new HashMap<String, String>();
-			for (RoleAuthority roleAuthority : ras) {
-				menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
-			}
-			ufs.setMenus(menus);
-			//log
-			actionLogService.addActionlog(admin.getPid(), 28, "login:adminid"+admin.getPid());
-			
-			request.getSession().setAttribute("curuser", ufs);
-			
+        	//用户登录
+        	Customer c = customerService.getByMobile(username, new Md5PwdEncoder().encodePassword(password));
+            if(c == null){
+            	request.setAttribute("message_login", "用户名密码错误！"); 
+                return "login";
+            }else{
+    			request.getSession().setAttribute("customer", c);
+    			request.getSession().setAttribute("identity", identity);
+    			return "redirect:/c/customer.do";
+            }
         }
-        return "redirect:/index.do";
 	}
 
 	
 	@RequestMapping(value="logout")
 	public String logout(HttpServletRequest request){
 		
-		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 29, "logout:adminid"+WebUtil.getCurrUser(request).getPid());
-		
-		HttpSession session = request.getSession();
+		HttpSession session = request.getSession(false);
+
+		if(session.getAttribute("identity").equals("1")){
+			//log
+			actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 29, "logout:adminid"+WebUtil.getCurrUser(request).getPid());
+		}
 		session.removeAttribute("curuser");
+		session.removeAttribute("identity");
+		session.removeAttribute("customer");
 		return "redirect:/login.do";
 	}
 }

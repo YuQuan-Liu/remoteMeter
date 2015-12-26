@@ -21,6 +21,7 @@ import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.entity.AdminRole;
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.RoleAuthority;
 import com.xdkj.yccb.security.UserForSession;
 /**
@@ -30,7 +31,6 @@ import com.xdkj.yccb.security.UserForSession;
  */
 @Controller
 public class MainCtroller {
-	public static final String homePage = "/main";
 	
 	@Autowired
 	private AdministratorService administratorService;
@@ -39,43 +39,18 @@ public class MainCtroller {
 	@RequestMapping(value="/index",method = RequestMethod.GET)
 	public String homePage(HttpServletRequest request,HttpServletResponse response,Model model){
 		
-//		Admininfo adInfo = administratorService.getByLoginName("admin", "96e79218965eb72c92a549dd5a330112");
-//		UserForSession ufs = new UserForSession();
-//		ufs.setPid(adInfo.getPid());
-//		ufs.setLoginName(adInfo.getLoginName());
-//		ufs.setAdminName(adInfo.getAdminName());
-//		ufs.setAdminEmail(adInfo.getAdminEmail());
-//		ufs.setAdminMobile(adInfo.getAdminMobile());
-//		ufs.setWaterComId(adInfo.getWatercompany().getPid());
-//		
-//		//管理员没有片区   将0存到Session中
-//		if(null == adInfo.getDepartment()){
-//			ufs.setDepart_id(0);
-//		}else{
-//			ufs.setDepart_id(adInfo.getDepartment().getPid());
-//		}
-//		
-//		List<AdminRole> adminRole = new ArrayList<AdminRole>(adInfo.getAdminRoles());
-//		Set<RoleAuthority> ras = adminRole.get(0).getRoles().getRoleAuthorities();
-//		Map<String, String> menus = new HashMap<String, String>();
-//		for (RoleAuthority roleAuthority : ras) {
-//			menus.put(roleAuthority.getAuthority().getAuthorityCode(), "t");
-//		}
-//		ufs.setMenus(menus);
-//		model.addAttribute("userInfo", ufs);
-//		
-//		request.getSession().setAttribute("curuser", ufs);
-		
-//		UserForSession ufs =(UserForSession) request.getSession().getAttribute("curuser") ;
-//		if(null!=ufs){
-//			model.addAttribute("userInfo", ufs);
-//			
-//		}
-		
 		UserForSession admin = WebUtil.getCurrUser(request);
 		model.addAttribute("userInfo", admin);
 		
-		return homePage;
+		return "/main";
+	}
+	@RequestMapping(value="/c/customer",method = RequestMethod.GET)
+	public String customer(HttpServletRequest request,HttpServletResponse response,Model model){
+		
+		Customer c = (Customer) request.getSession(false).getAttribute("customer");
+		model.addAttribute("c", c);
+		
+		return "/customerinfo";
 	}
 	@RequestMapping(value="/usermenu",method=RequestMethod.GET,produces="application/json;charset=UTF-8")
 	@ResponseBody
@@ -89,6 +64,6 @@ public class MainCtroller {
 	@RequestMapping(value="/intro",method = RequestMethod.GET)
 	public String introl(){
 		
-		return "intro";
+		return "/intro";
 	}
 }

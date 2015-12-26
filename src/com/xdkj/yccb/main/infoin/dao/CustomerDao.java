@@ -127,5 +127,13 @@ public interface CustomerDao {
 	 * @return
 	 */
 	int getMainMeterid(Meter meter);
+	
+	/**
+	 * 根据手机号和密码获取用户
+	 * @param username
+	 * @param encodePassword
+	 * @return
+	 */
+	Customer getByMobile(String mobile, String encodePassword);
 
 }

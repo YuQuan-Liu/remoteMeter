@@ -8,7 +8,6 @@
 <c:set var="menus" scope="session" value="${userInfo.menus}"/>
 </head>
 <body>
-
 	<div id="tb" style="float:left;">
 		<fmt:message key='common.neighborName'/>： 
 		<select class="easyui-combobox" style="width: 100px" id="sel_neibours" data-options="panelHeight:'200'">

@@ -105,4 +105,12 @@ public interface CustomerService {
 	 */
 	public String changemeter(String new_maddr, int end, int meterid);
 
+	/**
+	 * 根据用户的手机号和密码 获取用户
+	 * @param mobile
+	 * @param encodePassword
+	 * @return
+	 */
+	public Customer getByMobile(String mobile, String encodePassword);
+
 }

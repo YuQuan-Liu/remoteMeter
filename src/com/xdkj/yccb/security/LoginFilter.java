@@ -43,10 +43,22 @@ public class LoginFilter implements Filter {
 		if(!uri.contains("resource")){
 			//
 			HttpSession session = req.getSession(false);
-//			System.out.println(session);
-			if(session == null || session.getAttribute("curuser") == null){
+			
+			if(session == null){
 				res.sendRedirect(req.getContextPath()+"/resource/login.do");
 				return;
+			}else{
+				if(session.getAttribute("identity") == null){
+					res.sendRedirect(req.getContextPath()+"/resource/login.do");
+					return;
+				}else{
+					if(session.getAttribute("customer") != null){
+//						if(!uri.contains("/c/")){
+//							res.sendRedirect(req.getContextPath()+"/resource/login.do");
+//							return;
+//						}
+					}
+				}
 			}
 		}
 		

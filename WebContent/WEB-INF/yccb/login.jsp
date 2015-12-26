@@ -34,8 +34,14 @@
 			    <td width="109" style=" padding-bottom:20px;"><img id="checkimage" src="${path}/resource/codeImg.do" onclick="changeCheck()"></td>
 			  </tr>
 			  <tr>
-				<td style=" padding-bottom:20px;" colspan="2"><span id = "error_info" style="color:red">${message_login}</span></td>
-			    <td style=" padding-bottom:20px;" ><input name="" type="submit" value="<fmt:message key='login.submit'/>" class="login_botton" tabindex="4"></td>
+				<td style=" padding-bottom:20px;"><span id = "error_info" style="color:red">${message_login}</span></td>
+				<td width="109" style=" padding-bottom:20px;">
+					<select name="identity" style="width:100px;">
+				        <option value="1">管理员</option>
+				        <option value="2">用户</option>
+				    </select>
+				</td>
+			    <td style=" padding-bottom:20px;"><input name="" type="submit" value="<fmt:message key='login.submit'/>" class="login_botton" tabindex="4"></td>
 			  </tr>
 			</table>
 		</form>
