@@ -97,6 +97,7 @@
 								if(value == 5){
 									return "<fmt:message key='m.mstatechange'/>";
 								}
+								return "<fmt:message key='common.exception'/>";
 				          }},
 				          {field:'pricekindname',title:'<fmt:message key='m.pk'/>',width:80},
 				          {field:'lastderead',title:'<fmt:message key='m.deread'/>',width:80},

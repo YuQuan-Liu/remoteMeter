@@ -119,6 +119,7 @@ $(function(){
 						if(value == 5){
 							return "<fmt:message key='m.mstatechange'/>";
 						}
+						return "<fmt:message key='common.exception'/>";
 		          }},
 		          {field:'action',title:'<fmt:message key='common.action'/>',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){

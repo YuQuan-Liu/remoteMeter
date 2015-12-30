@@ -94,6 +94,7 @@ $(function(){
 						if(value == 5){
 							return "<fmt:message key='m.mstatechange'/>";
 						}
+						return "<fmt:message key='common.exception'/>";
 		          }},
 		          {field:'valveState',title:'<fmt:message key='m.vstate'/>',width:80,editor:'text',formatter:function(value,row,index){
 		        	  if(value == 1){
