@@ -92,7 +92,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 		return (CustomerpaylogView) q.uniqueResult();
 	}
 	
-	public List<PayInfo> getCustomerPayLogs(int n_id, String start, String end, int pre){
+	public List<PayInfo> getCustomerPayLogs(int wcid,int n_id, String start, String end, int pre){
 		
 		String SQL = "";
 		if(n_id == 0){
@@ -105,7 +105,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
-					"where c.valid = 1 " +
+					"where c.valid = 1 and ad.wcid = :wcid " +
 					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 			if(pre == 2){
 				SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
@@ -117,7 +117,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 						"on c.pid = cpl.customerid " +
 						"join admininfo ad " +
 						"on cpl.adminid = ad.pid " +
-						"where c.valid = 1 " +
+						"where c.valid = 1 and ad.wcid = :wcid " +
 						"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 				
 			}
@@ -132,7 +132,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
-					"where c.valid = 1 and c.neighborid = :n_id " +
+					"where c.valid = 1 and c.neighborid = :n_id and ad.wcid = :wcid " +
 					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 			if(pre == 2){
 				SQL = "select c.customerName,c.customerMobile,c.customerAddr,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerBalance," +
@@ -144,7 +144,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 						"on c.pid = cpl.customerid " +
 						"join admininfo ad " +
 						"on cpl.adminid = ad.pid " +
-						"where c.valid = 1 and c.neighborid = :n_id " +
+						"where c.valid = 1 and c.neighborid = :n_id and ad.wcid = :wcid " +
 						"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 				
 			}
@@ -163,6 +163,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 				.addScalar("adminName",Hibernate.STRING);
 		q.setString("start", start);
 		q.setString("end", end);
+		q.setInteger("wcid", wcid);
 		if(n_id != 0){
 			q.setInteger("n_id", n_id);
 		}
@@ -175,7 +176,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 	}
 
 	@Override
-	public List<AdminSum> getAdminSum(int n_id, String start, String end,
+	public List<AdminSum> getAdminSum(int wcid,int n_id, String start, String end,
 			int pre) {
 		String SQL = "";
 		if(n_id != 0){
@@ -187,7 +188,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
-					"where c.valid = 1 and c.neighborid = :n_id " +
+					"where c.valid = 1 and c.neighborid = :n_id and ad.wcid = :wcid " +
 					"group by ad.pid,ad.adminName";
 			if(pre == 2){
 				SQL = "select adminName,sum(amount) amount from customer c " +
@@ -198,7 +199,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 						"on c.pid = cpl.customerid " +
 						"join admininfo ad " +
 						"on cpl.adminid = ad.pid " +
-						"where c.valid = 1 and c.neighborid = :n_id " +
+						"where c.valid = 1 and c.neighborid = :n_id and ad.wcid = :wcid " +
 						"group by ad.pid,ad.adminName";
 				
 			}
@@ -211,7 +212,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 					"on c.pid = cpl.customerid " +
 					"join admininfo ad " +
 					"on cpl.adminid = ad.pid " +
-					"where c.valid = 1 " +
+					"where c.valid = 1 and ad.wcid = :wcid " +
 					"group by ad.pid,ad.adminName";
 			if(pre == 2){
 				SQL = "select adminName,sum(amount) amount from customer c " +
@@ -222,7 +223,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 						"on c.pid = cpl.customerid " +
 						"join admininfo ad " +
 						"on cpl.adminid = ad.pid " +
-						"where c.valid = 1 " +
+						"where c.valid = 1 and ad.wcid = :wcid " +
 						"group by ad.pid,ad.adminName";
 				
 			}
@@ -233,6 +234,7 @@ public class CustompaylogDAOImpl extends HibernateDAO<Customerpaylog> implements
 				.addScalar("adminName",Hibernate.STRING);
 		q.setString("start", start);
 		q.setString("end", end);
+		q.setInteger("wcid", wcid);
 		if(n_id != 0){
 			q.setInteger("n_id", n_id);
 		}

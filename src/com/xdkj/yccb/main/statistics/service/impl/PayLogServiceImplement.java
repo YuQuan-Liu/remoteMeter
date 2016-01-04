@@ -19,14 +19,14 @@ public class PayLogServiceImplement implements PayLogService {
 	private CustompaylogDAO custompaylogDAO;
 	
 	@Override
-	public List<PayInfo> getCustomerPayLogs(int n_id, String start, String end, int pre) {
+	public List<PayInfo> getCustomerPayLogs(int wcid,int n_id, String start, String end, int pre) {
 		
-		return custompaylogDAO.getCustomerPayLogs(n_id, start, end, pre);
+		return custompaylogDAO.getCustomerPayLogs(wcid,n_id, start, end, pre);
 	}
 
 	@Override
-	public List<AdminSum> getAdminSum(int n_id, String start, String end, int pre) {
-		List<AdminSum> list = custompaylogDAO.getAdminSum(n_id, start, end, pre);
+	public List<AdminSum> getAdminSum(int wcid,int n_id, String start, String end, int pre) {
+		List<AdminSum> list = custompaylogDAO.getAdminSum(wcid,n_id, start, end, pre);
 		AdminSum sum = null;
 		BigDecimal sumAmount = new BigDecimal(0);
 		for(int i = 0;i < list.size();i++){

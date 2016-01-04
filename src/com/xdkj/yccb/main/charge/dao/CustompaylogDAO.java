@@ -21,10 +21,10 @@ public interface CustompaylogDAO {
 	List<CustomerpaylogView> getList(int count,int custId);
 	
 	
-	public List<PayInfo> getCustomerPayLogs(int n_id, String start, String end, int pre);
+	public List<PayInfo> getCustomerPayLogs(int wcid,int n_id, String start, String end, int pre);
 
 
-	List<AdminSum> getAdminSum(int n_id, String start, String end, int pre);
+	List<AdminSum> getAdminSum(int wcid,int n_id, String start, String end, int pre);
 	
 	Customerpaylog getById(Integer id);
 	

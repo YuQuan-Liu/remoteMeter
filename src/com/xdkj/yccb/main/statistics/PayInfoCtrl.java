@@ -52,17 +52,17 @@ public class PayInfoCtrl {
 	@RequestMapping(value="/statistics/payinfo/print")
 	public ModelAndView payInfoPrint(HttpServletRequest request,Model model,
 			int n_id,String start,String end,String n_name,int pre) throws Exception{
-//		UserForSession admin = WebUtil.getCurrUser(request);
+		UserForSession admin = WebUtil.getCurrUser(request);
 //		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 //		model.addAttribute("neighbor_list", neighbor_list);
 //		
 		//根据小区ID  时间  预付费标识  获取用户的交费信息
 		Map map = new HashMap();
-		List list = payLogService.getCustomerPayLogs(n_id,start,end,pre);
+		List list = payLogService.getCustomerPayLogs(admin.getWaterComId(),n_id,start,end,pre);
 		map.put("list", list);
 		map.put("header",new String(n_name.getBytes("ISO8859_1"), "utf-8")+start+"~"+end+"收费统计");
 		
-		List admin_sum = payLogService.getAdminSum(n_id,start,end,pre);
+		List admin_sum = payLogService.getAdminSum(admin.getWaterComId(),n_id,start,end,pre);
 		map.put("adminsum", new JRBeanCollectionDataSource(admin_sum));
 		map.put("sub_dir", request.getServletContext().getRealPath("/WEB-INF/yccb/reports/")+"\\");
 		
@@ -77,15 +77,15 @@ public class PayInfoCtrl {
 	@RequestMapping(value="/statistics/payinfo/listpayinfo",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String listPayInfo(HttpServletRequest request,Model model,int n_id,String start,String end,String n_name,int pre){
-		
-		return JSON.toJSONString(payLogService.getCustomerPayLogs(n_id,start,end,pre));
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return JSON.toJSONString(payLogService.getCustomerPayLogs(admin.getWaterComId(),n_id,start,end,pre));
 	}
 	
 	@RequestMapping(value="/statistics/payinfo/listadminsum",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String listAdminSum(HttpServletRequest request,Model model,int n_id,String start,String end,String n_name,int pre){
-		
-		return JSON.toJSONString(payLogService.getAdminSum(n_id,start,end,pre));
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return JSON.toJSONString(payLogService.getAdminSum(admin.getWaterComId(),n_id,start,end,pre));
 	}
 	
 	@RequestMapping(value="/statistics/payinfo/neighborbalance",produces="application/json;charset=UTF-8")
