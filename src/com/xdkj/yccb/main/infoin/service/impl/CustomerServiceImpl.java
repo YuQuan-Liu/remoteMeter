@@ -275,6 +275,9 @@ public class CustomerServiceImpl implements CustomerService {
 			m.setChangestart(0);
 			m.setReaddata(0);
 			m.setReadtime(new Date());
+			m.setDestartread(0);
+			m.setDestarttime(new Date());
+			m.setRemark("");
 			if(mv.getDeductionStyle() == null){
 				m.setDeductionStyle(0);
 			}
@@ -597,9 +600,9 @@ public class CustomerServiceImpl implements CustomerService {
 		m.setNeighbor(n);
 		m.setValid('1');
 		m.setDeTime(new Date());
-		m.setNeighbor(c.getNeighbor());
-		m.setValid('1');
-		m.setDeTime(new Date());
+		m.setDestartread(0);
+		m.setDestarttime(new Date());
+		m.setRemark("");
 		m.setValveState((byte)1);
 		m.setMeterState((byte)1);
 		m.setDeRead(0);
