@@ -61,7 +61,7 @@
 						<td>
 							<select class="easyui-combobox" name="mk_id" data-options="panelHeight:'200'" style="width:148px;">
 								<c:forEach var="mk" items="${mk_list }">
-								<option value="${mk.pid }">${mk.meterTypeName }</option>
+								<option value="${mk.pid }" <c:if test="${mv.mk_id == mk.pid}">selected="selected"</c:if>>${mk.meterTypeName }</option>
 								</c:forEach>
 							</select>
 						</td>
@@ -75,8 +75,8 @@
 						<td><label><fmt:message key='m.lihu'/></label></td>
 						<td>
 							<select class="easyui-combobox" name="lihu" data-options="panelHeight:'auto'" style="width:148px;">
-								<option value="0" <c:if test="${mv.lihu == 0 }">selected="selected"</c:if>><fmt:message key='m.nolihu'/></option>
-								<option value="1" <c:if test="${mv.lihu == 1 }">selected="selected"</c:if>><fmt:message key='m.lihu'/></option>
+								<option value="0" <c:if test="${mv.lihu < 1 }">selected="selected"</c:if>><fmt:message key='m.nolihu'/></option>
+								<option value="1" <c:if test="${mv.lihu > 0 }">selected="selected"</c:if>><fmt:message key='m.lihu'/></option>
 							</select>
 						</td>
 					</tr>
