@@ -113,4 +113,16 @@ public interface CustomerService {
 	 */
 	public Customer getByMobile(String mobile, String encodePassword);
 
+	/**
+	 * 调整表具  将集中器、采集器、表对应的表   对应到customerid下。   将当前表扣的所有的费用加回去，并在customerid下扣掉
+	 * @param adminid   用于保存记录
+	 * @param gaddr
+	 * @param caddr
+	 * @param maddr
+	 * @param customerid
+	 * @return
+	 */
+	public String adjustmeter(int adminid,String gaddr, String caddr, String maddr,
+			int customerid);
+
 }

@@ -252,4 +252,14 @@ public class CustomerCtrl {
 		
 		return customerService.changemeter(new_maddr,end,meterid);
 	}
+	
+	@RequestMapping(value="/infoin/customer/adjustmeter",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String adjustmeter(HttpServletRequest request,String gaddr,String caddr,String maddr,int customerid){
+		
+//		System.out.println(new_maddr+"~"+new_read+"~"+meterid);
+//		return JSON.toJSONString();
+		
+		return customerService.adjustmeter(WebUtil.getCurrUser(request).getPid(),gaddr,caddr,maddr,customerid);
+	}
 }

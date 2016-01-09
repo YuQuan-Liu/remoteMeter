@@ -164,6 +164,18 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		q.setString("meterAddr", meterAddr);
 		return (Meter) q.uniqueResult();
 	}
+	
+	@Override
+	public Meter getMeterByGCM(String gaddr, String collectorAddr,
+			String meterAddr) {
+		String hql = "from Meter m " +
+				"where m.valid='1' and m.gprs.gprsaddr = :gaddr and m.collectorAddr = :collectorAddr and m.meterAddr = :meterAddr";
+		Query q = getSession().createQuery(hql);
+		q.setString("gaddr", gaddr);
+		q.setString("collectorAddr", collectorAddr);
+		q.setString("meterAddr", meterAddr);
+		return (Meter) q.uniqueResult();
+	}
 
 	@Override
 	public Meter getMeterByMAddr(String meterAddr) {
@@ -424,6 +436,16 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		q.setString("mobile", mobile);
 		q.setString("password", encodePassword);
 		return (Customer) q.uniqueResult();
+	}
+
+	@Override
+	public void adjustMeter(int customerid, int mid,int oldcid) {
+		Query q = getSession().createSQLQuery("{call adjustmeter(?,?,?)}");
+		q.setInteger(0, customerid);
+		q.setInteger(1, mid);
+		q.setInteger(2, oldcid);
+		q.executeUpdate();
+		
 	}
 
 	

@@ -19,6 +19,7 @@ import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.MeterKindDao;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
@@ -39,6 +40,7 @@ import com.xdkj.yccb.main.infoin.dto.CustomerMeter;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
+import com.xdkj.yccb.main.logger.ActionLogService;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.WasteLogDao;
 import com.xdkj.yccb.main.readme.quartz.QuartzManager;
@@ -62,6 +64,8 @@ public class CustomerServiceImpl implements CustomerService {
 	private AdministratorDAO administratorDAO;
 	@Autowired
 	private ChargeService chargeService;
+	@Autowired
+	private ActionLogService actionLogService;
 	
 	@Override
 	public List<CustomerView> getCustomerby(String n_id, String c_num) {
@@ -693,6 +697,23 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Customer getByMobile(String mobile, String encodePassword) {
 		return customerDao.getByMobile(mobile,encodePassword);
+	}
+
+	@Override
+	public String adjustmeter(int adminid,String gaddr, String caddr, String maddr,
+			int customerid) {
+		Meter m = customerDao.getMeterByGCM(gaddr,caddr,maddr);
+		JSONObject jo = new JSONObject();
+		if(m == null){
+			jo.put("r", 0);
+		}else{
+			//log
+			actionLogService.addActionlog(adminid, 30, "adjustmeter~newcid:"+customerid+"gaddr:"+gaddr+"caddr:"+caddr+"maddr:"+maddr+"oldcid:"+m.getCustomer().getPid());
+
+			customerDao.adjustMeter(customerid,m.getPid(),m.getCustomer().getPid());
+			jo.put("r", 1);
+		}
+		return jo.toString();
 	}
 
 	

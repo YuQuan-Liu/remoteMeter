@@ -77,6 +77,15 @@ public interface CustomerDao {
 	 * @return
 	 */
 	Meter getMeterByGCM(int pid, String collectorAddr, String meterAddr);
+
+	/**
+	 * 根据集中器地址  采集器 表地址  获取表
+	 * @param gaddr
+	 * @param caddr
+	 * @param maddr
+	 * @return
+	 */
+	Meter getMeterByGCM(String gaddr, String caddr, String maddr);
 	/**
 	 * 188协议表  根据表地址获取表
 	 * @param meterAddr
@@ -135,5 +144,11 @@ public interface CustomerDao {
 	 * @return
 	 */
 	Customer getByMobile(String mobile, String encodePassword);
+	/**
+	 * 将mid所有的扣费 添加回oldcid,在customerid中扣除,对应mid到customerid下。
+	 * @param customerid
+	 * @param mid
+	 */
+	void adjustMeter(int customerid, int mid,int oldcid);
 
 }

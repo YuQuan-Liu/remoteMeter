@@ -53,6 +53,32 @@
 			<a href="javascript:void(0)" class="easyui-linkbutton" id="changeMeter" onclick="changeMeter()"><fmt:message key='common.submit'/></a>
 		</div>
 	</div>
+	
+	<div class="easyui-dialog" title="<fmt:message key='m.adjustmeter'/>" id="adjustdialog" data-options="closed:true" style="width:500px;height:300px;padding:10px;">
+		<form id="adjustmeterform" method="post">
+		<table style="margin:0px auto;padding-top:20px;">
+			<tr>
+				<td><lable><fmt:message key='g.addr'/>：</lable></td>
+				<td><input type="text" class="easyui-textbox" name="gaddr" id="gaddr" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td><lable><fmt:message key='m.caddr'/>：</lable></td>
+				<td><input type="text" class="easyui-textbox" name="caddr" id="caddr" data-options="required:true"/></td>
+			</tr>
+			<tr>
+				<td><lable><fmt:message key='m.maddr'/></lable></td>
+				<td><input type="text" class="easyui-textbox" name="maddr" id="maddr" data-options="required:true"/></td>
+				<input type="hidden" name="customerid" id="customerid"/>
+			</tr>
+			<tr>
+				<td colspan=2><lable style="color:red">将此表扣过的水费，加回给原来的用户，在新用户中扣掉，并将此表对应到新用户下。</lable></td>
+			</tr>
+		</table>
+		</form>
+		<div style="text-align:center;padding-top:10px;">
+			<a href="javascript:void(0)" class="easyui-linkbutton" id="adjustMeter" onclick="adjustMeter()"><fmt:message key='common.submit'/></a>
+		</div>
+	</div>
 </body>
 <script type="text/javascript" src="${path}/resource/jquery-easyui-1.4.1/datagrid-detailview.js"></script>
 <script>
@@ -115,7 +141,8 @@ $(function(){
 						formatter: function(value,row,index){
 							var id = row.pid;
 							return "<a href='#' class='operateHref' onclick='updateCustomer("+id+","+index+")'><fmt:message key='common.update'/></a>"
-							+"<a href='#' class='operateHref' onclick='deleteCustomer("+id+","+index+")'><fmt:message key='common.delete'/></a>";
+							+"<a href='#' class='operateHref' onclick='deleteCustomer("+id+","+index+")'><fmt:message key='common.delete'/></a>"
+							+"<a href='#' class='operateHref' onclick='adjustDialog("+id+")'><fmt:message key='m.adjustmeter'/></a>";
 				  }}
 		      ]],
 		      toolbar:[{
@@ -359,6 +386,12 @@ function refreshRow(index){
 		$("#meterid").val(mid);
 		$("#changedialog").dialog('open');
 	}
+	
+	function adjustDialog(cid){
+		$("#customerid").val(cid);
+		$("#adjustdialog").dialog('open');
+	}
+	
 	function check_maddr(){
 		var maddr=$("#new_maddr").textbox("getValue");
 		if(maddr != ""){
@@ -407,6 +440,29 @@ function refreshRow(index){
 // 				var data = eval('(' + data + ')'); // change the JSON string to javascript object 
 				if(data == "true"){
 					$("#changedialog").dialog('close');
+				}
+			}
+		});
+	}
+	function adjustMeter(){
+		$("#adjustmeterform").form('submit',{
+			url:"${path}/infoin/customer/adjustmeter.do",
+			success:function(data){
+				var data = eval('(' + data + ')');  // change the JSON string to javascript object
+				if(data.r > 0){
+					$("#adjustdialog").dialog('close');
+					$.messager.show({
+						title:"Info",
+						msg:"调整成功!请刷新数据",
+						showType:'slide'
+					});
+// 					window.location.reload();
+				}else{
+					$.messager.show({
+						title:"Info",
+						msg:"输入信息错误！",
+						showType:'slide'
+					});
 				}
 			}
 		});
