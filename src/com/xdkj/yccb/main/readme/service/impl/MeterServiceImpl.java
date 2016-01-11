@@ -32,6 +32,11 @@ public class MeterServiceImpl implements MeterService {
 	public Meter getMeterbyPID(String m_id) {
 		return meterDao.getMeterByID(Integer.parseInt(m_id));
 	}
+	
+	@Override
+	public Meter getMeterbyAPID(String apid, int n_id) {
+		return meterDao.getMeterByAPID(apid,n_id);
+	}
 
 	@Override
 	public String addMeterRead(int m_id, int m_read) {

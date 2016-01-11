@@ -19,21 +19,30 @@
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
-	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="upload_()" ><fmt:message key='readnon.upload'/></a>
+	    		<span style="margin-left:200px;">
+					<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'200'">
+						<c:forEach var="e" items="${export_list }">
+						<option value="${e.pid }">${e.exportname }</option>
+						</c:forEach>
+						<option value="0"><fmt:message key='read.exportdefault'/></option>
+					</select>
+				</span>
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="download_()" ><fmt:message key='readnon.download'/></a>
-				
+	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="upload_()" ><fmt:message key='readnon.upload'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="download_this()" ><fmt:message key='read.exportthis'/></a>
 			</div>
 		</form>
 		<form id="exportform" method="post">
 			<input type="hidden" name="n_id" id="n_id"/> 
 			<input type="hidden" name="n_name" id="n_name"/>
+			<input type="hidden" name="export_id" id="export_id"/>
 		</form>
 	</div>
 	<div id="uploadDialog" class="easyui-dialog" title="Upload" data-options="closed:true,modal:true" style="width:467px;height:300px">
 		<form id="uploadreads" method="post" enctype="multipart/form-data">
 			<div style="margin:10px;">
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chooseFile()"><fmt:message key='c.choosefile'/></a>
-				<input type="file" id="file" name="file" accept=".xls" hidden="true" onchange="updateName()"/>
+				<input type="file" id="file" name="file" accept=".xls,.dbf" hidden="true" onchange="updateName()"/>
 				<input type="text" id="name" name="name" hidden="true"/>
 	<!-- 			<input class="easyui-filebox" style="width:300px;"/> -->
 				<a href="javascript:void(0)" class="easyui-linkbutton" id="upload" onclick="submitUpload()"><fmt:message key='common.upload'/></a>
@@ -271,13 +280,30 @@ function readManual(id,index){
 function download_(){
 	var n_id = $("#neighbor").combobox("getValue");
 	var n_name = $("#neighbor").combobox("getText");
-	
+	var export_id = $("#export_frame").combobox("getValue");
 	if(n_id != ""){
 		$("#n_id").val(n_id);
 		$("#n_name").val(n_name);
-		
+		$("#export_id").val(export_id);
 		$("#exportform").form('submit',{
 			url:"${path}/readme/nonremote/download.do",
+		});
+	}else{
+		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
+	}
+	
+}
+
+function download_this(){
+	var n_id = $("#neighbor").combobox("getValue");
+	var n_name = $("#neighbor").combobox("getText");
+	var export_id = $("#export_frame").combobox("getValue");
+	if(n_id != ""){
+		$("#n_id").val(n_id);
+		$("#n_name").val(n_name);
+		$("#export_id").val(export_id);
+		$("#exportform").form('submit',{
+			url:"${path}/readme/nonremote/downloadthis.do",
 		});
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
@@ -304,6 +330,8 @@ function chooseFile(){
 function submitUpload(){
 	
 	var readlogid = $("#readlog").combobox("getValue");
+	var export_id = $("#export_frame").combobox("getValue");
+	var n_id = $("#neighbor").combobox("getValue");
 	$.messager.progress({title:"<fmt:message key='common.uploading'/>",text:"",interval:100});
 	$("#uploadreads").form("submit",{
 		url:"${path}/readme/nonremote/upload.do",
@@ -313,6 +341,8 @@ function submitUpload(){
 				return false;
 			}
 			param.readlogid = readlogid;
+			param.export_id = export_id;
+			param.n_id = n_id;
 		},
 		success:function(data){
 			$.messager.progress('close');

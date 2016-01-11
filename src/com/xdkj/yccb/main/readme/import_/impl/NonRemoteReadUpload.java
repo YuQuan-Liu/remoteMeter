@@ -1,4 +1,4 @@
-package com.xdkj.yccb.main.readme;
+package com.xdkj.yccb.main.readme.import_.impl;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,10 +16,12 @@ import org.apache.poi.ss.usermodel.Sheet;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Readlog;
 import com.xdkj.yccb.main.entity.Readmeterlog;
+import com.xdkj.yccb.main.readme.import_.NonRemoteUpload;
+import com.xdkj.yccb.main.readme.service.MeterService;
 
-public class UploadNonRemoteRead {
+public class NonRemoteReadUpload implements NonRemoteUpload{
 
-	public static List<Readmeterlog> readExcel(String excelPath,int readlogid){
+	public List<Readmeterlog> read(String excelPath,int readlogid,int n_id,MeterService meterService){
 		InputStream input = null;
 		HSSFWorkbook wb = null;
 		Sheet sheet = null;

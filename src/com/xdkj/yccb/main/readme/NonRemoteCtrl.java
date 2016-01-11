@@ -4,12 +4,14 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,12 +25,18 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
+import com.xdkj.yccb.main.entity.NonRemoteExport;
 import com.xdkj.yccb.main.entity.Readmeterlog;
-import com.xdkj.yccb.main.infoin.UploadCustomer;
+import com.xdkj.yccb.main.entity.RemoteExport;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.readme.dao.NonRemoteExportDao;
+import com.xdkj.yccb.main.readme.dao.ReadDao;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
+import com.xdkj.yccb.main.readme.export.ExportRead;
+import com.xdkj.yccb.main.readme.import_.NonRemoteUpload;
+import com.xdkj.yccb.main.readme.import_.impl.NonRemoteReadUpload;
 import com.xdkj.yccb.main.readme.service.MeterService;
 import com.xdkj.yccb.main.readme.service.ReadService;
 import com.xdkj.yccb.security.UserForSession;
@@ -48,12 +56,20 @@ public class NonRemoteCtrl {
 	private ActionLogService actionLogService;
 	@Autowired
 	private ReadLogDao readlogDao;
+	@Autowired
+	private NonRemoteExportDao nonremoteExportDao;
+	@Autowired
+	private ReadDao readDao;
 	
 	@RequestMapping(value="/readme/read/unremotelist")
 	public String nonRemoteList(HttpServletRequest request,Model model){
 		UserForSession admin = WebUtil.getCurrUser(request);
 		List<NeighborView> neighbor_list = neighborService.getList(admin.getDepart_id(), admin.getWaterComId());
 		model.addAttribute("neighbor_list", neighbor_list);
+		
+		//导出格式
+		List<NonRemoteExport> export_list = nonremoteExportDao.getList(admin.getWaterComId());
+		model.addAttribute("export_list", export_list);
 		
 		return "/readme/nonremote";
 	}
@@ -87,49 +103,104 @@ public class NonRemoteCtrl {
 	}
 	
 	@RequestMapping(value="/readme/nonremote/download")
-	public ModelAndView download(int n_id, String n_name){
-		Map map = new HashMap();
-		map.put("n_id", n_id);
-		map.put("n_name", n_name);
-		map.put("list", readService.getNonRemoteMeters(n_id+""));
-		return new ModelAndView("export_nonremote_default", map);
+	public ModelAndView download(HttpServletRequest request,HttpServletResponse response,int n_id, String n_name,int export_id){
+		if(export_id == 0){
+			Map map = new HashMap();
+			map.put("n_id", n_id);
+			map.put("n_name", n_name);
+			map.put("list", readService.getNonRemoteMeters(n_id+""));
+			return new ModelAndView("export_nonremote_default", map);
+		}else{
+			NonRemoteExport nonexport = nonremoteExportDao.getByID(export_id);
+			try {
+				List<Integer> nid_list = new ArrayList<>();
+				nid_list.add(n_id);
+				
+				Class c = Class.forName(nonexport.getClazzdown1());
+				ExportRead exportRead = (ExportRead) c.newInstance();
+				
+				exportRead.download(request,response,nid_list,n_name,readDao);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return null;
+		}
+		
+	}
+	
+	@RequestMapping(value="/readme/nonremote/downloadthis")
+	public ModelAndView downloadthis(HttpServletRequest request,HttpServletResponse response,int n_id, String n_name,int export_id){
+		
+		if(export_id == 0){
+			Map map = new HashMap();
+			map.put("n_id", n_id);
+			map.put("n_name", n_name);
+			map.put("list", readService.getNonRemoteMeters(n_id+""));
+			return new ModelAndView("export_nonremote_default", map);
+		}else{
+			NonRemoteExport nonexport = nonremoteExportDao.getByID(export_id);
+			try {
+				List<Integer> nid_list = new ArrayList<>();
+				nid_list.add(n_id);
+				
+				Class c = Class.forName(nonexport.getClazzdown2());
+				ExportRead exportRead = (ExportRead) c.newInstance();
+				
+				exportRead.download(request,response,nid_list,n_name,readDao);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return null;
+		}
 	}
 	
 	@RequestMapping(value="/readme/nonremote/uploadPage")
-	public String addCustomerPages(){
+	public String uploadPage(){
 		return "/readme/uploadnonremote";
 	}
 	
 	@RequestMapping(value="/readme/nonremote/upload")
 	@ResponseBody
-	public String uploadExcel(HttpServletRequest request, String name,MultipartFile file, int readlogid){
+	public String upload(HttpServletRequest request, String name,MultipartFile file, int readlogid,int export_id,int n_id){
 		JSONObject jo = new JSONObject();
-		String realPath = request.getServletContext().getRealPath("/WEB-INF/yccb/readme/Excels");
+//		String realPath = request.getServletContext().getRealPath("/WEB-INF/yccb/readme/Excels");
+		String excelPath = "D:/Excels/"+Calendar.getInstance().getTimeInMillis()+name.substring(name.lastIndexOf("\\")+1);
 		if(!file.isEmpty()){
 			try {
 				byte[] bytes = file.getBytes();
-				String excelPath = "D:/Excels/"+Calendar.getInstance().getTimeInMillis()+name.substring(name.lastIndexOf("\\")+1);
-				
 				//log
 				actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 21, "excelPath:"+excelPath);
-				
 				
 				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
 				
 				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(f));
-                stream.write(bytes);
-                stream.close();
-                
-                //read excel;
-                List<Readmeterlog> list = UploadNonRemoteRead.readExcel(excelPath, readlogid);
-                
-                UserForSession admin = WebUtil.getCurrUser(request);
-                Map result = meterService.addMeterReads(list);
+	            stream.write(bytes);
+	            stream.close();
+	            
+	            List<Readmeterlog> list = null;
+	            if(export_id == 0){
+					//read excel;
+	            	Class c = Class.forName("com.xdkj.yccb.main.readme.import_.impl.NonRemoteReadUpload");
+	            	NonRemoteUpload upload = (NonRemoteUpload) c.newInstance();
+	                list = upload.read(excelPath, readlogid,n_id,meterService);
+				}else{
+					//read dbf;
+					NonRemoteExport nonexport = nonremoteExportDao.getByID(export_id);
+					
+					Class c = Class.forName(nonexport.getClazzup());
+					
+					NonRemoteUpload upload = (NonRemoteUpload) c.newInstance();
+	                list = upload.read(excelPath, readlogid,n_id,meterService);
+				}
+	            Map result = meterService.addMeterReads(list);
                 jo.put("done", true);
                 jo.put("success", result.get("success"));
                 jo.put("reason", result.get("reason"));
-                
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				jo.put("done", false);
         		jo.put("reason", e.getMessage());

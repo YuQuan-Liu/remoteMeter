@@ -9,7 +9,14 @@ import com.xdkj.yccb.main.entity.Meter;
 public interface MeterDao {
 
 	public Meter getMeterByID(int m_id);
-
+	/**
+	 * 根据水表的APID 在n_id 下查找表具
+	 * @param apid
+	 * @param n_id
+	 * @return
+	 */
+	public Meter getMeterByAPID(String apid, int n_id);
+	
 	public void updateMeterRead(int m_id, int type, int m_read);
 	
 	int updateMeterPrice(int meterId,int priceId);

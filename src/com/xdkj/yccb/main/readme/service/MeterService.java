@@ -25,6 +25,14 @@ public interface MeterService {
 	 * @return
 	 */
 	public String getVIPMonitor(int n_id, String start,int module);
+
+	/**
+	 * 根据表的apid 在n_id 下查找对应表具
+	 * @param apid
+	 * @param n_id
+	 * @return
+	 */
+	public Meter getMeterbyAPID(String apid, int n_id);
 	
 	
 	

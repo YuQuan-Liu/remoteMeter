@@ -21,6 +21,12 @@ public class MeterDaoImpl extends HibernateDAO<Meter> implements MeterDao {
 	}
 
 	@Override
+	public Meter getMeterByAPID(String apid, int n_id) {
+		Query q = getSession().createQuery("from Meter m where m.apid = :apid and m.neighbor.pid=:n_id").setString("apid", apid).setInteger("n_id", n_id);
+		return (Meter) q.uniqueResult();
+	}
+
+	@Override
 	public void updateMeterRead(int m_id, int type, int m_read) {
 		
 		Meter m = getMeterByID(m_id);
