@@ -287,7 +287,7 @@ var _menus = {
 		</div>
 	</div>
 	<div data-options="region:'south',border:false" style="background: #D2E0F2;overflow: hidden;">
-		<p align="center">copyright 2015 版权所有 淅川西岛光电仪表科技有限公司</p>
+		<p align="center">copyright 2016 版权所有 淅川西岛光电仪表科技有限公司</p>
 	</div>
 	<div id="mm" class="easyui-menu" style="width:150px;">
 		<!-- <div id="mm-tabupdate">刷新</div> -->

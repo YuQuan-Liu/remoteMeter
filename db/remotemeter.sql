@@ -1400,10 +1400,22 @@ BEGIN
 				declare second_over int;
 				declare third decimal(19,4);
 				declare perYL int;
+				declare bp_cnt int;
 				
-				set first_ = 0,first_over = 0,second_ = 0,second_over = 0,third = 0,perYL=0;
-				select BasicPriceFirst,BasicFirstOver,BasicPriceSecond,BasicSecondOver,BasicPriceThird,perYL into first_,first_over,second_,second_over,third,perYL from BasicPrice
-				where pricekindid = pkid and valid = 1 limit 1;
+				set first_ = 0,first_over = 0,second_ = 0,second_over = 0,third = 0,perYL=0,bp_cnt=0;
+                
+                select count(*) into bp_cnt from BasicPrice
+                where pricekindid = pkid and valid = 1;
+                if(bp_cnt > 1)then
+					select sum(BasicPriceFirst),sum(BasicFirstOver),sum(BasicPriceSecond),sum(BasicSecondOver),sum(BasicPriceThird),sum(perYL) into first_,first_over,second_,second_over,third,perYL from BasicPrice
+					where pricekindid = pkid and valid = 1 limit 1;
+                    set first_over = first_over / bp_cnt;
+                    set second_over = second_over / bp_cnt;
+                    set perYL = perYL / bp_cnt;
+                else
+					select BasicPriceFirst,BasicFirstOver,BasicPriceSecond,BasicSecondOver,BasicPriceThird,perYL into first_,first_over,second_,second_over,third,perYL from BasicPrice
+					where pricekindid = pkid and valid = 1 limit 1;
+                end if;
 				
 				##如果户人数>4人  更新阶梯超量
 				if(peoplecnt > 4)then
@@ -1616,10 +1628,22 @@ BEGIN
 				declare second_over int;
 				declare third decimal(19,4);
 				declare perYL int;
+				declare bp_cnt int;
 				
-				set first_ = 0,first_over = 0,second_ = 0,second_over = 0,third = 0,perYL=0;
-				select BasicPriceFirst,BasicFirstOver,BasicPriceSecond,BasicSecondOver,BasicPriceThird,perYL into first_,first_over,second_,second_over,third,perYL from BasicPrice
-				where pricekindid = pkid and valid = 1 limit 1;
+				set first_ = 0,first_over = 0,second_ = 0,second_over = 0,third = 0,perYL=0,bp_cnt=0;
+                
+                select count(*) into bp_cnt from BasicPrice
+                where pricekindid = pkid and valid = 1;
+                if(bp_cnt > 1)then
+					select sum(BasicPriceFirst),sum(BasicFirstOver),sum(BasicPriceSecond),sum(BasicSecondOver),sum(BasicPriceThird),sum(perYL) into first_,first_over,second_,second_over,third,perYL from BasicPrice
+					where pricekindid = pkid and valid = 1 limit 1;
+                    set first_over = first_over / bp_cnt;
+                    set second_over = second_over / bp_cnt;
+                    set perYL = perYL / bp_cnt;
+                else
+					select BasicPriceFirst,BasicFirstOver,BasicPriceSecond,BasicSecondOver,BasicPriceThird,perYL into first_,first_over,second_,second_over,third,perYL from BasicPrice
+					where pricekindid = pkid and valid = 1 limit 1;
+                end if;
 				
 				##如果户人数>4人  更新阶梯超量
 				if(peoplecnt > 4)then
