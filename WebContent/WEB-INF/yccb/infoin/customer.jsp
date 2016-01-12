@@ -43,7 +43,7 @@
 			</tr>
 			<tr>
 				<td><lable><fmt:message key='m.changeend'/></lable></td>
-				<td><input type="text" class="easyui-numberbox" name="end" id="end" data-options="min:0,max:9999"/>
+				<td><input type="text" class="easyui-numberbox" name="end" id="end" data-options="min:0,max:1000000"/>
 					<input type="hidden" name="meterid" id="meterid"/>
 				</td>
 			</tr>
