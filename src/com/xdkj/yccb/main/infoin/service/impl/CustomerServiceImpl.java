@@ -424,7 +424,9 @@ public class CustomerServiceImpl implements CustomerService {
 		m.setMeterSolid(mv.getMeterSolid());
 		m.setLihu(mv.getLihu());
 		m.setIsValve(mv.getIsValve());
-		m.setDeductionStyle(mv.getDeductionStyle());
+		if(mv.getDeductionStyle()!= null){
+			m.setDeductionStyle(mv.getDeductionStyle());
+		}
 		m.setValveOffthre(mv.getValveOffthre());
 		m.setTimerSwitch(mv.getTimerSwitch());
 		
