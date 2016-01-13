@@ -19,6 +19,10 @@ public interface CustomerDao {
 	 */
 	List<Customer> getCustomerList(String n_id);
 	/*
+	 * 根据小区ID lou 查出小区下的全部用户信息
+	 */
+	List<Customer> getCustomerList(String n_id,String lou);
+	/*
 	 * 根据用户在数据库里的唯一标示 查询用户
 	 */
 	List<Customer> getCustomerListByID(String c_identify);

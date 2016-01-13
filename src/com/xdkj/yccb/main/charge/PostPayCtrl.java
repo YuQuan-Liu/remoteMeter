@@ -1,5 +1,7 @@
 package com.xdkj.yccb.main.charge;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +25,14 @@ import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dao.WaterCompanyDAO;
 import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
+import com.xdkj.yccb.main.charge.dto.QYCharge;
+import com.xdkj.yccb.main.charge.dto.QYDetail;
+import com.xdkj.yccb.main.charge.dto.QYMeters;
 import com.xdkj.yccb.main.charge.service.ReadLogService;
 import com.xdkj.yccb.main.charge.service.SettleService;
+import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Watercompany;
+import com.xdkj.yccb.main.infoin.dao.CustomerDao;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
@@ -47,6 +54,9 @@ public class PostPayCtrl {
 	private MeterDeductionLogService meterDeductionLogService;
 	@Autowired
 	private WaterCompanyService waterCompanyService;
+	@Autowired
+	private CustomerDao customerDao;
+	
 	
 	@RequestMapping(value="/charge/postpay")
 	public String postPay(HttpServletRequest request,Model model){
@@ -94,18 +104,64 @@ public class PostPayCtrl {
 		Map map = new HashMap();
 		List<PostCharge> list = meterDeductionLogService.getPostCharge(ids);
 
-		PostCharge postCharge = null;
-		for(int i = 0;list != null && i < list.size();i++){
-			postCharge = list.get(i);
-			postCharge.setCnDemoney(TransRMB.transform(postCharge.getDemoney()+""));
+		if(list != null && list.size() >0){
+			PostCharge postCharge = list.get(0);
+			if(postCharge.getHkid() == 4){
+				int settlelogid = postCharge.getSettlelogid();
+				int pkid = postCharge.getPkid();
+				//企业
+				List<Customer> clist = meterDeductionLogService.getCustomers(ids);
+				List<QYCharge> qylist = new ArrayList<QYCharge>();
+				for(int i = 0;clist != null && i < clist.size();i++){
+					QYCharge qy = new QYCharge();
+					Customer c = clist.get(i);
+//					System.out.println(c.getLouNum()+":"+c.getDyNum()+":"+c.getHuNum());
+					
+					qy.setCustomerName(c.getCustomerName());
+					qy.setC_num(c.getLouNum().trim()+"-"+c.getDyNum().trim()+"-"+c.getHuNum().trim());
+					
+					//get the meter under the cid
+					List<QYMeters> qymeters = meterDeductionLogService.getMeters(c.getPid(),settlelogid);
+					qy.setMeters(new JRBeanCollectionDataSource(qymeters));
+					//get the detail under the cid
+					int yl = 0;
+					for(int j = 0;qymeters != null && j < qymeters.size();j++){
+						QYMeters meter = qymeters.get(j);
+						yl += meter.getThis_()-meter.getLast();
+					}
+					List<QYDetail> qydetail = meterDeductionLogService.getDetails(pkid,yl);
+					qy.setDetail(new JRBeanCollectionDataSource(qydetail));
+					BigDecimal sumdemoney = new BigDecimal(0);
+					for(int j = 0;qydetail != null && j < qydetail.size();j++){
+						QYDetail detail = qydetail.get(j);
+						sumdemoney = sumdemoney.add(detail.getDemoney());
+					}
+					qy.setSumdemoney(sumdemoney);
+					qylist.add(qy);
+				}
+				map.put("list", qylist);
+				UserForSession admin = WebUtil.getCurrUser(request);
+				Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+				map.put("header",wc.getCompanyName()+"水费备款单");
+				map.put("sub_dir", request.getServletContext().getRealPath("/WEB-INF/yccb/reports/")+"\\");
+				return new ModelAndView("qycharge",map);
+			}else{
+				//普通
+				for(int i = 0;list != null && i < list.size();i++){
+					postCharge = list.get(i);
+					postCharge.setCnDemoney(TransRMB.transform(postCharge.getDemoney()+""));
+				}
+				map.put("list", list);
+				UserForSession admin = WebUtil.getCurrUser(request);
+				Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+				map.put("header",wc.getCompanyName()+"收费单");
+				map.put("tel",wc.getTelephone());
+				
+				return new ModelAndView("postcharge",map);
+			}
 		}
-		map.put("list", list);
-		UserForSession admin = WebUtil.getCurrUser(request);
-		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
-		map.put("header",wc.getCompanyName()+"收费单");
-		map.put("tel",wc.getTelephone());
+		return null;
 		
-		return new ModelAndView("postcharge",map);
 	}
 	
 	@RequestMapping(value="/charge/postpay/printchargeall")
@@ -115,17 +171,61 @@ public class PostPayCtrl {
 		Map map = new HashMap();
 		List<PostCharge> list = meterDeductionLogService.getPostChargeLou(n_id,settle_id,lou);
 
-		PostCharge postCharge = null;
-		for(int i = 0;list != null && i < list.size();i++){
-			postCharge = list.get(i);
-			postCharge.setCnDemoney(TransRMB.transform(postCharge.getDemoney()+""));
+		if(list != null && list.size() >0){
+			PostCharge postCharge = list.get(0);
+			if(postCharge.getHkid() == 4){
+				int settlelogid = postCharge.getSettlelogid();
+				int pkid = postCharge.getPkid();
+				//企业
+				List<Customer> clist = customerDao.getCustomerList(n_id+"",lou);
+				List<QYCharge> qylist = new ArrayList<QYCharge>();
+				for(int i = 0;clist != null && i < clist.size();i++){
+					QYCharge qy = new QYCharge();
+					Customer c = clist.get(i);
+//					System.out.println(c.getLouNum()+":"+c.getDyNum()+":"+c.getHuNum());
+					
+					qy.setCustomerName(c.getCustomerName());
+					qy.setC_num(c.getLouNum().trim()+"-"+c.getDyNum().trim()+"-"+c.getHuNum().trim());
+					
+					//get the meter under the cid
+					List<QYMeters> qymeters = meterDeductionLogService.getMeters(c.getPid(),settlelogid);
+					qy.setMeters(new JRBeanCollectionDataSource(qymeters));
+					//get the detail under the cid
+					int yl = 0;
+					for(int j = 0;qymeters != null && j < qymeters.size();j++){
+						QYMeters meter = qymeters.get(j);
+						yl += meter.getThis_()-meter.getLast();
+					}
+					List<QYDetail> qydetail = meterDeductionLogService.getDetails(pkid,yl);
+					qy.setDetail(new JRBeanCollectionDataSource(qydetail));
+					BigDecimal sumdemoney = new BigDecimal(0);
+					for(int j = 0;qydetail != null && j < qydetail.size();j++){
+						QYDetail detail = qydetail.get(j);
+						sumdemoney = sumdemoney.add(detail.getDemoney());
+					}
+					qy.setSumdemoney(sumdemoney);
+					qylist.add(qy);
+				}
+				map.put("list", qylist);
+				UserForSession admin = WebUtil.getCurrUser(request);
+				Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+				map.put("header",wc.getCompanyName()+"水费备款单");
+				map.put("sub_dir", request.getServletContext().getRealPath("/WEB-INF/yccb/reports/")+"\\");
+				return new ModelAndView("qycharge",map);
+			}else{
+				for(int i = 0;list != null && i < list.size();i++){
+					postCharge = list.get(i);
+					postCharge.setCnDemoney(TransRMB.transform(postCharge.getDemoney()+""));
+				}
+				map.put("list", list);
+				UserForSession admin = WebUtil.getCurrUser(request);
+				Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
+				map.put("header",wc.getCompanyName()+"收费单");
+				map.put("tel",wc.getTelephone());
+				
+				return new ModelAndView("postcharge",map);
+			}
 		}
-		map.put("list", list);
-		UserForSession admin = WebUtil.getCurrUser(request);
-		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
-		map.put("header",wc.getCompanyName()+"收费单");
-		map.put("tel",wc.getTelephone());
-		
-		return new ModelAndView("postcharge",map);
+		return null;
 	}
 }

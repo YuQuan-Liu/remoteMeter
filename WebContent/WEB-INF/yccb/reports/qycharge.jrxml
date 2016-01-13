@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="qycharge" pageWidth="572" pageHeight="342" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="460" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28" uuid="824c03a0-2da5-4129-b614-36865cd45e79">
+	<property name="ireport.zoom" value="1.6500000000000037"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="header" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="sub_dir" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="customerName" class="java.lang.String"/>
+	<field name="c_num" class="java.lang.String"/>
+	<field name="meters" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="detail" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<field name="sumdemoney" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="52">
+			<textField>
+				<reportElement uuid="8e5cd44a-cf0d-4ee2-9c79-147803787df9" x="96" y="0" width="268" height="24"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="宋体" size="14" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{header}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd">
+				<reportElement uuid="b0025427-b4d0-4be4-9fa4-41c791537114" x="180" y="24" width="100" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="80c500f6-961d-496e-b1d7-842143deff48" x="3" y="38" width="52" height="14"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[用户名]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="34e83c78-5bdf-4c2f-917d-fab4b626222c" x="55" y="38" width="196" height="14"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{customerName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="936b486c-9f34-43fa-ac59-3dc5d9221f39" x="251" y="38" width="55" height="14"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[用户号：]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="28d24692-68d8-4f48-837d-03876b1edc86" x="306" y="38" width="147" height="14"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c_num}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="114" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="83ce0dd0-8409-4742-9738-1efe1cfb4f2a" x="3" y="0" width="450" height="21"/>
+				<dataSourceExpression><![CDATA[$F{meters}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{sub_dir} + "qymeters_sub.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="3924ca60-e11a-4ebb-8a38-750a09f659d1" positionType="Float" x="3" y="21" width="450" height="21"/>
+				<subreportParameter name="sumdemoney">
+					<subreportParameterExpression><![CDATA[$F{sumdemoney}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[$F{detail}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{sub_dir} + "qydetail_sub.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement uuid="b1fce0c2-8f01-4b18-826f-d7fceba34b13" positionType="Float" x="3" y="42" width="62" height="72"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[注意事项]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3ad8b446-ed9d-4bac-a1f4-a72296e115c1" positionType="Float" x="65" y="42" width="388" height="72"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[规定每月2-4日由供水公司抄表员对水户进行抄表，核算，用水户每月6-10日到指定银行缴纳水费（包括计量水费、水资源费、排污费、城市附加费），11-15日前到供水公司财供科缴纳水费，逾期按水费金额每日加收0.5%的滞纳金，每月20日前，既不缴纳水费，又不讲明事由者，将关阀停水，在缴纳水费的同时，须缴纳滞纳金，和误工费50元，并办理复接手续后，再给予供水。]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -10,6 +10,9 @@ public class PostCharge {
 	private String yl;
 	private String c_num;
 	private String customerID;
+	private int hkid;
+	private int pkid;
+	private int settlelogid;
 	private String lastread;
 	private String thisread;
 	private String changeend;
@@ -17,6 +20,24 @@ public class PostCharge {
 	private String pkName;
 	private String steelNum;
 	
+	public int getPkid() {
+		return pkid;
+	}
+	public void setPkid(int pkid) {
+		this.pkid = pkid;
+	}
+	public int getSettlelogid() {
+		return settlelogid;
+	}
+	public void setSettlelogid(int settlelogid) {
+		this.settlelogid = settlelogid;
+	}
+	public int getHkid() {
+		return hkid;
+	}
+	public void setHkid(int hkid) {
+		this.hkid = hkid;
+	}
 	public double getDemoney() {
 		return demoney;
 	}

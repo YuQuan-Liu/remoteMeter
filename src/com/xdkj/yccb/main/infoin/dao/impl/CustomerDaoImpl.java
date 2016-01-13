@@ -27,6 +27,13 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		Query q = getSession().createQuery(hql);
 		return q.list();
 	}
+	
+	@Override
+	public List<Customer> getCustomerList(String n_id,String lou) {
+		String hql = "from Customer c where c.valid='1' and c.neighbor.pid = "+n_id+" and c.louNum = :lou order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
+		Query q = getSession().createQuery(hql).setString("lou", lou);
+		return q.list();
+	}
 
 	@Override
 	public List<Customer> getCustomerListByID(String c_identify) {

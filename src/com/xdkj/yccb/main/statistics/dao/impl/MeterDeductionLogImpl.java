@@ -19,11 +19,14 @@ import org.springframework.stereotype.Repository;
 import com.xdkj.yccb.common.HibernateDAO;
 import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
+import com.xdkj.yccb.main.charge.dto.QYDetail;
+import com.xdkj.yccb.main.charge.dto.QYMeters;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
 import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 
+import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
 import com.xdkj.yccb.main.statistics.dto.Deductionlog_Lou;
@@ -187,8 +190,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		List<PostCharge> list = null;
 		String[] mdl_ids = ids.split(",");
 		if(!ids.trim().equals("") && mdl_ids.length > 0){
-			String SQL = "select mdl.MeterRead thisread,mdl.LastDeRead lastread,mdl.MeterReadTime readTime,mdl.changend changeend,mdl.demoney demoney,ad.AdminName,pk.pricekindname pkName," +
-					"c.CustomerAddr,c.CustomerName,c.CustomerID,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num," +
+			String SQL = "select mdl.MeterRead thisread,mdl.LastDeRead lastread,mdl.MeterReadTime readTime,mdl.changend changeend,mdl.demoney demoney,mdl.settlelogid,ad.AdminName,pk.pricekindname pkName," +
+					"c.CustomerAddr,c.CustomerName,c.CustomerID,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.housekindid hkid,m.pricekindid pkid," +
 					"case when mdl.changend > 0 then mdl.MeterRead+mdl.changend - mdl.LastDeRead else mdl.MeterRead-mdl.LastDeRead end yl,m.steelNum from meterdeductionlog mdl " +
 					"join meter m on mdl.meterid = m.pid " +
 					"join customer c on m.customerid = c.pid " +
@@ -202,6 +205,9 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					.addScalar("adminName",Hibernate.STRING)
 					.addScalar("customerAddr",Hibernate.STRING)
 					.addScalar("customerName",Hibernate.STRING)
+					.addScalar("hkid",Hibernate.INTEGER)
+					.addScalar("settlelogid",Hibernate.INTEGER)
+					.addScalar("pkid",Hibernate.INTEGER)
 					.addScalar("c_num",Hibernate.STRING)
 					.addScalar("customerID",Hibernate.STRING)
 					.addScalar("yl",Hibernate.STRING)
@@ -225,8 +231,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 	public List<PostCharge> getPostChargeLou(int n_id, int settle_id, String lou) {
 		List<PostCharge> list = null;
 		if(!lou.trim().equals("") && n_id > 0 && settle_id > 0){
-			String SQL = "select mdl.MeterRead thisread,mdl.LastDeRead lastread,mdl.MeterReadTime readTime,mdl.changend changeend,mdl.demoney demoney,ad.AdminName,pk.pricekindname pkName," +
-					"c.CustomerAddr,c.CustomerName,c.CustomerID,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num," +
+			String SQL = "select mdl.MeterRead thisread,mdl.LastDeRead lastread,mdl.MeterReadTime readTime,mdl.changend changeend,mdl.demoney demoney,mdl.settlelogid,ad.AdminName,pk.pricekindname pkName," +
+					"c.CustomerAddr,c.CustomerName,c.CustomerID,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.housekindid hkid,m.pricekindid pkid," +
 					"case when mdl.changend > 0 then mdl.MeterRead+mdl.changend - mdl.LastDeRead else mdl.MeterRead-mdl.LastDeRead end yl,m.steelNum from meterdeductionlog mdl " +
 					"join meter m on mdl.meterid = m.pid " +
 					"join customer c on m.customerid = c.pid " +
@@ -240,6 +246,9 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					.addScalar("adminName",Hibernate.STRING)
 					.addScalar("customerAddr",Hibernate.STRING)
 					.addScalar("customerName",Hibernate.STRING)
+					.addScalar("hkid",Hibernate.INTEGER)
+					.addScalar("settlelogid",Hibernate.INTEGER)
+					.addScalar("pkid",Hibernate.INTEGER)
 					.addScalar("c_num",Hibernate.STRING)
 					.addScalar("customerID",Hibernate.STRING)
 					.addScalar("yl",Hibernate.STRING)
@@ -647,6 +656,57 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("customerName",Hibernate.STRING)
 				.addScalar("c_num",Hibernate.STRING);
 		q.setResultTransformer(Transformers.aliasToBean(WarnPostPay.class));
+		list = q.list();
+		
+		return list;
+	}
+
+	@Override
+	public List<Customer> getCustomers(String ids) {
+		List<Customer> list = null;
+		String[] mdl_ids = ids.split(",");
+		if(!ids.trim().equals("") && mdl_ids.length > 0){
+			String SQL = "select distinct c.* from meterdeductionlog mdl " +
+					"join meter m on mdl.meterid = m.pid " +
+					"join customer c on c.pid = m.customerid " +
+					"where mdl.pid in ("+ids+") ";
+			
+			Query q = getSession().createSQLQuery(SQL).addEntity(Customer.class);
+			list = q.list();
+		}
+		
+		return list;
+	}
+
+	@Override
+	public List<QYMeters> getMeters(int cid, int settlelogid) {
+		String SQL = "select mk.metermm kj,mdl.meterread this_,mdl.lastderead last from meterdeductionlog mdl " +
+				"join meter m on m.pid = mdl.meterid " +
+				"join meterkind mk on m.MeterKindID = mk.pid " +
+				"where m.customerid = :cid and mdl.settlelogid = :settlelog ";
+		List<QYMeters> list = null;
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("kj",Hibernate.STRING)
+				.addScalar("this_",Hibernate.INTEGER)
+				.addScalar("last",Hibernate.INTEGER)
+				.setInteger("cid", cid).setInteger("settlelog", settlelogid);
+		q.setResultTransformer(Transformers.aliasToBean(QYMeters.class));
+		list = q.list();
+		
+		return list;
+	}
+
+	@Override
+	public List<QYDetail> getDetails(int pkid, int yl) {
+		String SQL = "select BasicPriceName bpname,BasicPriceFirst price,BasicPriceFirst*"+yl+" demoney,"+yl+" yl from basicprice " +
+				"where pricekindid = "+pkid;
+		List<QYDetail> list = null;
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("bpname",Hibernate.STRING)
+				.addScalar("price",Hibernate.BIG_DECIMAL)
+				.addScalar("yl",Hibernate.INTEGER)
+				.addScalar("demoney",Hibernate.BIG_DECIMAL);
+		q.setResultTransformer(Transformers.aliasToBean(QYDetail.class));
 		list = q.list();
 		
 		return list;

@@ -1,13 +1,17 @@
 package com.xdkj.yccb.main.statistics.dao;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
+import com.xdkj.yccb.main.charge.dto.QYDetail;
+import com.xdkj.yccb.main.charge.dto.QYMeters;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.WarnPostPay;
+import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 
 /**
@@ -105,5 +109,32 @@ public interface MeterDeductionLogDao {
 
 
 	List<WarnPostPay> getWarnPostPays(int[] mdl_ids);
+
+
+
+	/**
+	 * 根据扣费ids 获取用户list
+	 * @param ids
+	 * @return
+	 */
+	List<Customer> getCustomers(String ids);
+
+
+	/**
+	 * 更加用户id 和settlelogid  获取用户下的所有表settlelogid对应的扣费信息
+	 * @param cid
+	 * @param settlelogid
+	 * @return
+	 */
+	List<QYMeters> getMeters(int cid, int settlelogid);
+
+
+	/**
+	 * 根据用量和pkid  获取基本单价的detail 企业打印使用
+	 * @param pkid
+	 * @param yl
+	 * @return
+	 */
+	List<QYDetail> getDetails(int pkid, int yl);
 
 }
