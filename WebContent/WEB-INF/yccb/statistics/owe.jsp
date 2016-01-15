@@ -66,7 +66,7 @@
 				        	  }
 				          }},
 				          {field:'warnThre',title:'<fmt:message key='c.warnthre'/>',width:80},
-				          {field:'pre',title:'<fmt:message key='c.prestyle'/>',width:60,formatter:function(value,row,index){
+				          {field:'prePaySign',title:'<fmt:message key='c.prestyle'/>',width:60,formatter:function(value,row,index){
 				        	  if(value == 1){
 				        		  return "<fmt:message key='c.pre'/>";
 				        	  }else{
