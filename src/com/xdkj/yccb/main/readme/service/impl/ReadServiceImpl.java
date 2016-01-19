@@ -114,9 +114,11 @@ public class ReadServiceImpl implements ReadService {
 				jo.put("failReason", readlog.getFailReason());
 				jo.put("result", readlog.getResult());
 				Readmeterlog readmeterlog = readMeterLogDao.getMaxReadMeterLog(readlog.getObjectId());
-				jo.put("read", readmeterlog.getActionResult());
-				jo.put("time", readmeterlog.getActionTime().toLocaleString());
-				jo.put("status", readmeterlog.getActionType());
+				if(readmeterlog != null){
+					jo.put("read", readmeterlog.getActionResult());
+					jo.put("time", readmeterlog.getActionTime().toLocaleString());
+					jo.put("status", readmeterlog.getActionType());
+				}
 			}
 			
 		}
