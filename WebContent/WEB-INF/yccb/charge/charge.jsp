@@ -151,7 +151,6 @@ $(function(){
 	      	{field:'action',title:'<fmt:message key='common.action'/>',width:130,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a class='operateHref' onclick='openValue("+row.pid+","+index+")'><fmt:message key='m.open'/></a>"
 				+"<a class='operateHref' onclick='updatePrice("+row.pid+","+index+")'><fmt:message key='charge.updateprice'/> </a>"
-				+"<a class='operateHref' onclick='waterwaste("+row.pid+","+index+")'><fmt:message key='charge.waterwaste'/> </a>"
 				+"<a class='operateHref' onclick='draw("+row.pid+","+index+")'><fmt:message key='charge.draw'/></a>";
 	  		}}
 	    ]],
