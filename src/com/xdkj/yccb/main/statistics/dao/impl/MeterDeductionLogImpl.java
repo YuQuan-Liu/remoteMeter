@@ -21,6 +21,7 @@ import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.dto.QYDetail;
 import com.xdkj.yccb.main.charge.dto.QYMeters;
+import com.xdkj.yccb.main.charge.dto.QYSettledView;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
@@ -68,7 +69,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"join customer c " +
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
-				"on m.pricekindid = pk.pid " +
+				"on mdl.pricekindid = pk.pid " +
 				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = 0 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.LouNum = :lou " +
 				"order by DYNum,length(HuNum),HuNum";
 		
@@ -128,7 +129,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"join customer c " +
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
-				"on m.pricekindid = pk.pid " +
+				"on mdl.pricekindid = pk.pid " +
 				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
 				"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		
@@ -285,7 +286,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"join customer c " +
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
-					"on m.pricekindid = pk.pid " +
+					"on mdl.pricekindid = pk.pid " +
 					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
 					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}else{
@@ -298,7 +299,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"join customer c " +
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
-					"on m.pricekindid = pk.pid " +
+					"on mdl.pricekindid = pk.pid " +
 					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = :pre and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
 					"order by length(lounum),lounum,DYNum,length(HuNum),HuNum";
 		}
@@ -364,7 +365,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"join customer c " +
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
-					"on m.pricekindid = pk.pid " +
+					"on mdl.pricekindid = pk.pid " +
 					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.louNum = :lou " +
 					"order by DYNum,length(HuNum),HuNum";
 		}else{
@@ -377,7 +378,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 					"join customer c " +
 					"on c.pid = m.customerid " +
 					"join pricekind pk " +
-					"on m.pricekindid = pk.pid " +
+					"on mdl.pricekindid = pk.pid " +
 					"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.paytype = :pre and mdl.settlelogid = :settle_id and c.neighborid = :n_id and c.louNum = :lou " +
 					"order by DYNum,length(HuNum),HuNum";
 		}
@@ -502,7 +503,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"join customer c " +
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
-				"on m.pricekindid = pk.pid " +
+				"on mdl.pricekindid = pk.pid " +
 				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and c.pid = :c_id " +
 				"order by mdl.pid desc ";
 		
@@ -562,7 +563,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"join customer c " +
 				"on c.pid = m.customerid " +
 				"join pricekind pk " +
-				"on m.pricekindid = pk.pid " +
+				"on mdl.pricekindid = pk.pid " +
 				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and c.pid = :c_id and mdl.actiontime between :start and :end " +
 				"order by mdl.actiontime desc ";
 		
@@ -709,6 +710,50 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		q.setResultTransformer(Transformers.aliasToBean(QYDetail.class));
 		list = q.list();
 		
+		return list;
+	}
+
+	@Override
+	public List<QYSettledView> getQYLogAll(int n_id, int settle_id) {
+		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName," +
+				"m.pid m_id,mk.metermm kj," +
+				"mdl.pid mdl_id,mdl.lastderead,mdl.meterread,mdl.changend,mdl.pricekindid pkid,0 gy,0 jz,0 jm,'' remark from meterdeductionlog mdl " +
+				"join meter m " +
+				"on m.pid = mdl.meterid " +
+				"join customer c " +
+				"on c.pid = m.customerid " +
+				"join meterkind mk " +
+				"on m.MeterKindID = mk.pid " +
+				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
+				"order by length(HuNum),HuNum";
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("c_id",Hibernate.INTEGER)
+				.addScalar("m_id",Hibernate.INTEGER)
+				.addScalar("mdl_id",Hibernate.INTEGER)
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("customerName",Hibernate.STRING)
+				.addScalar("kj",Hibernate.STRING)
+				.addScalar("pkid",Hibernate.INTEGER)
+				
+				.addScalar("lastderead",Hibernate.INTEGER)
+				.addScalar("meterread",Hibernate.INTEGER)
+				.addScalar("changend",Hibernate.INTEGER)
+				.addScalar("gy",Hibernate.INTEGER)
+				.addScalar("jz",Hibernate.INTEGER)
+				.addScalar("jm",Hibernate.INTEGER)
+				.addScalar("remark",Hibernate.STRING);
+		
+		q.setInteger("n_id", n_id);
+		q.setInteger("settle_id", settle_id);
+		q.setResultTransformer(Transformers.aliasToBean(QYSettledView.class));
+		
+		List<QYSettledView> list = new ArrayList<>();
+		try {
+			list = q.list();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
 		return list;
 	}
 	

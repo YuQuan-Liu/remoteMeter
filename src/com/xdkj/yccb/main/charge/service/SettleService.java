@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.charge.service;
 
 import java.util.List;
 
+import com.xdkj.yccb.main.charge.dto.QYSettledView;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
@@ -87,5 +88,13 @@ public interface SettleService {
 	 * @return
 	 */
 	List getLouSettledYLCount(int n_id, int settle_id, String lou);
+
+	/**
+	 * 获取小区名为企业下的 本次扣费记录的用量统计
+	 * @param n_id
+	 * @param settle_id
+	 * @return
+	 */
+	List<QYSettledView> getQYSettledAll(int n_id, int settle_id);
 
 }

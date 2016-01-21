@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.charge.dao.SettleLogDao;
+import com.xdkj.yccb.main.charge.dto.QYSettledView;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
@@ -192,6 +193,11 @@ public class SettleServiceImpl implements SettleService {
 		sum.setPricekindname("总水量");
 		list.add(sum);
 		return list;
+	}
+
+	@Override
+	public List<QYSettledView> getQYSettledAll(int n_id, int settle_id) {
+		return meterDeductionLogDao.getQYLogAll(n_id,settle_id);
 	}
 
 

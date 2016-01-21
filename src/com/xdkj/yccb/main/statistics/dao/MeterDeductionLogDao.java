@@ -9,6 +9,7 @@ import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.dto.QYDetail;
 import com.xdkj.yccb.main.charge.dto.QYMeters;
+import com.xdkj.yccb.main.charge.dto.QYSettledView;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 import com.xdkj.yccb.main.entity.Customer;
@@ -136,5 +137,14 @@ public interface MeterDeductionLogDao {
 	 * @return
 	 */
 	List<QYDetail> getDetails(int pkid, int yl);
+
+
+	/**
+	 * 获取小区名为企业下的 本次扣费记录的用量统计
+	 * @param n_id
+	 * @param settle_id
+	 * @return
+	 */
+	List<QYSettledView> getQYLogAll(int n_id, int settle_id);
 
 }
