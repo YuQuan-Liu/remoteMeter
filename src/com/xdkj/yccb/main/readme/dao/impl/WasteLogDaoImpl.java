@@ -18,16 +18,16 @@ public class WasteLogDaoImpl extends HibernateDAO implements WasteLogDao {
 	@Override
 	public List<WasteReadView> getWasteByReadlogid(int readlogid) {
 		
-		String SQL = "select w.pid,w.louNum,w.meterRead,w.salveSum,w.waste,wd.wasted from wastelog w " +
+		String SQL = "select w.pid,w.louNum,w.meterRead,w.salveSum,w.waste,case when wd.wasted is null then 0 else wd.wasted end wasted from wastelog w " +
 				"left join ( " +
 				"select meterid,sum(waste) wasted from wastelog " +
 				"where meterid in( " +
 				"select meterid from wastelog " +
-				"where readlogid = "+readlogid+" ) and valid = 1 " +
+				"where readlogid = :readlogid ) and valid = 1 " +
 				"group by meterid " +
 				") wd " +
 				"on w.meterid = wd.meterid " +
-				"where readlogid = "+readlogid;
+				"where readlogid = :readlogid";
 		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("pid",Hibernate.INTEGER)
@@ -35,7 +35,7 @@ public class WasteLogDaoImpl extends HibernateDAO implements WasteLogDao {
 				.addScalar("meterRead",Hibernate.INTEGER)
 				.addScalar("salveSum",Hibernate.INTEGER)
 				.addScalar("waste",Hibernate.INTEGER)
-				.addScalar("wasted",Hibernate.INTEGER);
+				.addScalar("wasted",Hibernate.INTEGER).setInteger("readlogid", readlogid);
 		
 		q.setResultTransformer(Transformers.aliasToBean(WasteReadView.class));
 		return q.list();
