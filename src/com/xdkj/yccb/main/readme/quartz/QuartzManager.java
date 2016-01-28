@@ -102,12 +102,11 @@ public class QuartzManager {
 			SimpleTrigger tri = (SimpleTrigger) sche.getTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
 			int mins = Integer.parseInt(m.getTimer());
 			if(tri != null){
-				
-				tri.getTriggerBuilder().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(mins).repeatForever());
-				sche.resumeTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
-			}else{
-				addJobMeter(m,n, admin);
+				removeMeter(m);
+//				tri.getTriggerBuilder().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(mins).repeatForever());
+//				sche.resumeTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
 			}
+			addJobMeter(m,n, admin);
 			System.out.println("定时修改：mid:"+m.getPid()+"mins:"+mins+"adminid:"+admin.getPid());
 		} catch (SchedulerException e) {
 			e.printStackTrace();
@@ -119,15 +118,15 @@ public class QuartzManager {
 			CronTrigger tri = (CronTrigger) sche.getTrigger(TriggerKey.triggerKey(n.getPid()+"t", "neighbor"));
 			String timer = n.getTimer();
 			if(tri != null){
-				
-				String[] day_hour = timer.split("-");  //0-几号    1-几点
-				
-				tri.getTriggerBuilder().withSchedule(CronScheduleBuilder.cronSchedule("0 0 "+day_hour[1]+" "+day_hour[0]+" * ?"));
-				
-				sche.resumeTrigger(TriggerKey.triggerKey(n.getPid()+"t", "neighbor"));
-			}else{
-				addJobNeighbor(n, admin);
+				removeNeighbor(n);
+//				String[] day_hour = timer.split("-");  //0-几号    1-几点
+//				
+//				tri.getTriggerBuilder().withSchedule(CronScheduleBuilder.cronSchedule("0 0 "+day_hour[1]+" "+day_hour[0]+" * ?"));
+//				
+//				sche.resumeTrigger(TriggerKey.triggerKey(n.getPid()+"t", "neighbor"));
 			}
+			addJobNeighbor(n, admin);
+			
 			System.out.println("定时修改：nid:"+n.getPid()+"name:"+n.getNeighborName()+"timer:"+timer+"adminid:"+admin.getPid());
 		} catch (SchedulerException e) {
 			e.printStackTrace();
