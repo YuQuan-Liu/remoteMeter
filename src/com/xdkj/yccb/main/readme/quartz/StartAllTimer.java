@@ -54,7 +54,9 @@ public class StartAllTimer{
 		for(int i = 0;i <m_list.size();i++){
 			Meter m = m_list.get(i);
 			Admininfo admin = neighborDAO.getAdmin(m.getNeighbor());
-			QuartzManager.addJobMeter(m,m.getNeighbor(), admin);
+			Neighbor n = m.getNeighbor();
+			n.getIp();
+			QuartzManager.addJobMeter(m,n, admin);
 		}
 		
 		

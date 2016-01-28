@@ -296,7 +296,9 @@ public class CustomerServiceImpl implements CustomerService {
 			if(m.getPid() > 0 && m.getTimerSwitch() == 1 && g.getGprsprotocol() != 4){
 				//g.getGprsprotocol() != 4  表示为D10下的表  
 				//D10下的表不添加到定时抄表任务中
-				QuartzManager.addJobMeter(m,m.getNeighbor(), administratorDAO.getById(adminid));
+				Neighbor n = m.getNeighbor();
+				n.getIp();
+				QuartzManager.addJobMeter(m,n, administratorDAO.getById(adminid));
 			}
 			map.put("add", m.getPid()+"");
 		}
@@ -435,7 +437,9 @@ public class CustomerServiceImpl implements CustomerService {
 		if(mv.getTimerSwitch() == 1){
 			m.setTimer(mv.getTimer());
 			if(g.getGprsprotocol() != 4){
-				QuartzManager.modifyMeterJobTime(m,m.getNeighbor(), administratorDAO.getById(adminid));
+				Neighbor n = m.getNeighbor();
+				n.getIp();
+				QuartzManager.modifyMeterJobTime(m,n, administratorDAO.getById(adminid));
 			}
 		}else{
 			m.setTimer("");
