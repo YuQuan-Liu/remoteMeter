@@ -222,7 +222,7 @@ function readMeter(mid,index){
 function readMeterManual(mid,index){
 	$.messager.prompt('<fmt:message key='read.readchange'/>', '<fmt:message key='read.readright'/>', function(r){
         if (r){
-			if(r > 0 && r < 999999){
+			if(r >= 0 && r <= 999999){
 				$.ajax({
 					type:"POST",
 					url:"${path}/readme/read/changeread.do",
