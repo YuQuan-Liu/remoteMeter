@@ -71,7 +71,7 @@ public class ReadMeter {
 	 * @param admin
 	 * @return
 	 */
-	public String readMeter(Meter meter, Admininfo admin) {
+	public String readMeter(Meter meter,Neighbor n, Admininfo admin) {
 		
 		JSONObject jo = new JSONObject();
 		//查看当前用户是否有抄表在进行
@@ -93,7 +93,7 @@ public class ReadMeter {
 		readlog.setReadType(3);
 		readlog.setRemote(1);
 		readlog.setReadObject(3);
-		readlog.setIp(meter.getNeighbor().getIp().trim());
+		readlog.setIp(n.getIp().trim());
 		readlog.setStartTime(new Date());
 		readlog.setReadStatus(0);
 		readlog.setFailReason("");
@@ -101,7 +101,7 @@ public class ReadMeter {
 		readlog.setResult("");
 		readLogDao.addReadLog(readlog);
 		
-		return sendToReadMeter(readlog,meter.getNeighbor(),admin);
+		return sendToReadMeter(readlog,n,admin);
 	}
 
 	/**

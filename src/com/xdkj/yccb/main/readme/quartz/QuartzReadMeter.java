@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Meter;
+import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.readme.ReadMeter;
 
 public class QuartzReadMeter implements Job{
@@ -21,9 +22,10 @@ public class QuartzReadMeter implements Job{
 		
 		JobDataMap map = context.getJobDetail().getJobDataMap();
 		Meter m = (Meter) map.get("m");
+		Neighbor n = (Neighbor) map.get("n");
 		Admininfo admin = (Admininfo) map.get("admin");
 		
-		readMeter.readMeter(m, admin);
+		readMeter.readMeter(m,n, admin);
 		
 	}
 

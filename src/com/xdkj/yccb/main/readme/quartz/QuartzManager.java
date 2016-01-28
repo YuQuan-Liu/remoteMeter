@@ -52,9 +52,10 @@ public class QuartzManager {
 		}
 	}
 	
-	public static void addJobMeter(Meter m,Admininfo admin) {
+	public static void addJobMeter(Meter m,Neighbor n,Admininfo admin) {
 		JobDataMap map = new JobDataMap();
 		map.put("m", m);
+		map.put("n", n);
 		map.put("admin", admin);
 		
 		JobDetail jobDetail = JobBuilder.newJob(QuartzReadMeter.class)
@@ -96,7 +97,7 @@ public class QuartzManager {
 //	}
 	
 	
-	public static void modifyMeterJobTime(Meter m,Admininfo admin){
+	public static void modifyMeterJobTime(Meter m,Neighbor n,Admininfo admin){
 		try {
 			SimpleTrigger tri = (SimpleTrigger) sche.getTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
 			int mins = Integer.parseInt(m.getTimer());
@@ -105,7 +106,7 @@ public class QuartzManager {
 				tri.getTriggerBuilder().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(mins).repeatForever());
 				sche.resumeTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
 			}else{
-				addJobMeter(m, admin);
+				addJobMeter(m,n, admin);
 			}
 			System.out.println("定时修改：mid:"+m.getPid()+"mins:"+mins+"adminid:"+admin.getPid());
 		} catch (SchedulerException e) {

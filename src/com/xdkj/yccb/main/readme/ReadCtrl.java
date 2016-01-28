@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
+import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.RemoteExport;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
@@ -81,7 +82,8 @@ public class ReadCtrl {
 	public String ReadMeter(HttpServletRequest request,String m_id){
 		
 		UserForSession admin = WebUtil.getCurrUser(request);
-		return readMeter.readMeter(meterService.getMeterbyPID(m_id), adminDao.getById(admin.getPid()));
+		Meter m = meterService.getMeterbyPID(m_id);
+		return readMeter.readMeter(m,m.getNeighbor(), adminDao.getById(admin.getPid()));
 		
 	}
 	
