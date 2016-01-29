@@ -100,12 +100,18 @@ function configgprsslave(){
 		url:'${path}/infoin/neighbor/configgprsslave.do',
 		type:'post',
 		data:{pid:gid,gprsslave:gprsslave},
-		success:function(typ){
-			if(typ=="succ"){
-				
+		dataType: "json", 
+		success:function(data){
+			if(data.done == true){
 				$.messager.show({
 					title:"Info",
-					msg:"'<fmt:message key='common.deleteok'/>'",
+					msg:"操作完成",
+					showType:'slide'
+				});
+			}else{
+				$.messager.show({
+					title:"Info",
+					msg:data.reason,
 					showType:'slide'
 				});
 			}

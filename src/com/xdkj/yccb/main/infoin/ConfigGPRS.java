@@ -153,9 +153,155 @@ public class ConfigGPRS {
 		return jo.toString();
 	}
 
-	public static String configgprsslave(Gprs g, int gprsslave) {
+	/**
+	 * 设置集中器底层类型
+	 * @param g
+	 * @param gprsslave
+	 * @return
+	 */
+	public static String configgprsslave(Gprs gprs, int gprsslave) {
 		
-		return null;
+		Socket s = null;
+		OutputStream out = null;
+		InputStream in = null;
+		byte seq = 0;   //服务器给集中器发送的序列号
+		
+		JSONObject jo = new JSONObject();
+		try {
+			s = new Socket(gprs.getIp(),gprs.getPort());
+			out = s.getOutputStream();
+			in = s.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		//如果没有连接成功 
+		if(s == null){
+			//没有连接到监听程序  
+			jo.put("done", false);
+			jo.put("reason", "连接监听异常");
+			return jo.toString();
+		}
+		
+		/**************************登录监听服务器******************************/
+		byte[] gprsaddr = StringUtil.string2Byte(gprs.getGprsaddr());
+		boolean read = false;
+		read = loginListener(s, out, in, gprsaddr);
+		if (!read) {
+			// 集中器不在线
+			try {
+				if (in != null) {
+					in.close();
+				}
+				if (out != null) {
+					out.close();
+				}
+				if (s != null) {
+					s.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			jo.put("done", false);
+			jo.put("reason", "集中器不在线");
+			return jo.toString();
+		}
+		
+
+		boolean seq_syn = false;
+		/**************************确定集中器的服务器的序列号******************************/
+		seq_syn = synSEQ(s, out, in, seq, gprsaddr);
+		if(!seq_syn){
+			//序列号未同步
+			try {
+				if(in != null){
+					in.close();
+				}
+				if(out != null){
+					out.close();
+				}
+				if(s != null){
+					s.close();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			jo.put("done", false);
+			jo.put("reason", "序列号未同步");
+			return jo.toString();
+		}
+		
+		
+		/************************************操作**************************************/
+		seq++;
+		seq = (byte) (seq&0x0F);
+		
+		byte[] framedata = new byte[1];
+		switch (gprsslave){
+		case 1:
+			framedata[0]=(byte) 0xAA; //MBUS
+			break;
+		case 2:
+			framedata[0]=(byte) 0xFF; //485
+			break;
+		case 3:
+			framedata[0]=(byte) 0xBB; //CJQ
+			break;
+			default:
+				framedata[0]=(byte) 0xBB; //默认CJQ
+				break;
+		}
+		Frame query = new Frame(1, (byte)(Frame.ZERO | Frame.PRM_MASTER |Frame.PRM_M_SECOND), 
+				Frame.AFN_CONFIG, (byte)(Frame.ZERO|Frame.SEQ_FIN|Frame.SEQ_FIR|seq), 
+				(byte)0x0C, gprsaddr, framedata);
+		try {
+			out.write(query.getFrame());
+			//等待集中器收到的回应
+			s.setSoTimeout(10000);
+			boolean timeout = false;
+			byte[] data = new byte[100];
+			try {
+				while((in.read(data, 0, 100)) > 0){
+					break;
+				}
+			} catch (SocketTimeoutException e) {
+				timeout = true;
+			}
+			
+			if(!timeout){
+				//判断接收到的集中器的回应
+				if(Frame.checkFrame(Arrays.copyOf(data, 17))){
+					if(data[14] == (byte)0x01){
+						jo.put("done", true);
+					}else{
+						jo.put("done", false);
+						jo.put("reason", "帧异常");
+					}
+				}
+			}else{
+				jo.put("done", false);
+				jo.put("reason", "等待超时");
+			}
+			
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		try {
+			if(out!=null){
+				out.close();
+			}
+			if(in!=null){
+				in.close();
+			}
+			if(s!=null){
+				s.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jo.toString();
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.infoin;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -178,14 +179,14 @@ public class NeighborCtrl {
 		return JSON.toJSONString(neighborService.listgprsmeters(pid));
 	}
 	
-	@RequestMapping(value="/infoin/neighbor/querygprsslave",method=RequestMethod.POST)
+	@RequestMapping(value="/infoin/neighbor/querygprsslave",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String querygprsslave(int pid){
 		Gprs g = neighborService.getGprsById(pid);
 		return ConfigGPRS.querygprsslave(g);
 	}
 	
-	@RequestMapping(value="/infoin/neighbor/configgprsslave",method=RequestMethod.POST)
+	@RequestMapping(value="/infoin/neighbor/configgprsslave",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String configgprsslave(int pid,int gprsslave){
 		Gprs g = neighborService.getGprsById(pid);
