@@ -104,7 +104,7 @@ public class MeterServiceImpl implements MeterService {
 				jo.put("data", ja_data);
 				ja.add(jo);
 			}
-			ja_data.set(vip.getDay()-1,vip.getReaddata());
+			ja_data.set(vip.getDay(),vip.getReaddata());
 		}
 		return ja.toJSONString();
 	}
