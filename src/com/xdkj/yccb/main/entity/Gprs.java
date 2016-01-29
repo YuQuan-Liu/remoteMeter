@@ -36,6 +36,7 @@ public class Gprs implements java.io.Serializable {
 	private int gprsprotocol;
 	private String ip;
 	private int port;
+	private int cleanSwitch;
 	private String valid;
 	private String remark;
 	private Set<Meter> meters = new HashSet<Meter>(0);
@@ -136,6 +137,15 @@ public class Gprs implements java.io.Serializable {
 
 	public void setPort(int port) {
 		this.port = port;
+	}
+	
+	@Column(name = "CleanSwitch", nullable = false)
+	public int getCleanSwitch() {
+		return this.cleanSwitch;
+	}
+
+	public void setCleanSwitch(int cleanSwitch) {
+		this.cleanSwitch = cleanSwitch;
 	}
 
 	@Column(name = "Valid", nullable = false, length = 1)

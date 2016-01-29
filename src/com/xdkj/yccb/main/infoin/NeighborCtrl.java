@@ -164,4 +164,10 @@ public class NeighborCtrl {
 		gs.setNeighbor(nbr);
 		return neighborService.updateGprs(gs);
 	}
+	
+	@RequestMapping(value="/infoin/neighbor/configPageGprs")
+	public String configPageGprs(HttpServletRequest request,@RequestParam("pid") String pid,Model model){
+		model.addAttribute("gprs",neighborService.getGprsById(Integer.parseInt(pid)));
+		return "/infoin/gprsConfig";
+	}
 }

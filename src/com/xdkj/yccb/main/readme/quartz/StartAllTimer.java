@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Neighbor;
+import com.xdkj.yccb.main.infoin.dao.GprsDAO;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.readme.ReadMeter;
 import com.xdkj.yccb.main.readme.dao.MeterDao;
@@ -22,6 +24,8 @@ public class StartAllTimer{
 	@Autowired
 	private NeighborDAO neighborDAO;
 	@Autowired
+	private GprsDAO gprsDAO;
+	@Autowired
 	private MeterDao meterDao;
 	@Autowired
 	private SchedulerFactoryBean schefactory;
@@ -33,7 +37,6 @@ public class StartAllTimer{
 		
 //		System.out.println(readMeter);
 		
-		QuartzRead.readMeter = readMeter;
 		QuartzReadMeter.readMeter = readMeter;
 		QuartzReadNeighbor.readMeter = readMeter;
 		
@@ -59,6 +62,13 @@ public class StartAllTimer{
 			QuartzManager.addJobMeter(m,n, admin);
 		}
 		
+		//获取全部需要阀门清理的集中器
+		List<Gprs> g_list = gprsDAO.getCleanList();
+		
+		for(int i = 0;i < g_list.size();i++){
+			Gprs g = g_list.get(i);
+			QuartzManager.addJobCleanValve(g);
+		}
 		
 	}
 

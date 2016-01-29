@@ -98,6 +98,15 @@ function checkGPRSAddr(){
 	    			<td><input class="easyui-textbox" type="text" id="port" name="port" data-options="required:true" value="${gprs.port }"/></td>
 	    		</tr>
 	    		<tr>
+					<td><fmt:message key='g.cleanswitch'/>：</td>
+					<td>
+						<select class="easyui-combobox" name="cleanSwitch" id="cleanSwitch" data-options="panelHeight:'auto'" style="width: 80px">
+							<option value="1" <c:if test="${gprs.cleanSwitch==1 }">selected="selected"</c:if>><fmt:message key='common.open'/></option>
+							<option value="0" <c:if test="${gprs.cleanSwitch==0 }">selected="selected"</c:if>><fmt:message key='common.close'/></option>
+						</select>
+					</td>
+				</tr>
+	    		<tr>
 	    			<td><fmt:message key='common.remark'/>：</td>
 	    			<td><input class="easyui-textbox" type="text" name="remark" value="${gprs.remark }"/></td>
 	    		</tr>

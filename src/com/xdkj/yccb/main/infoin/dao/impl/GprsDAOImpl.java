@@ -68,5 +68,11 @@ public class GprsDAOImpl extends HibernateDAO<Gprs> implements GprsDAO {
 		Query q = getSession().createQuery(hql);
 		return (Gprs) q.uniqueResult();
 	}
+	@Override
+	public List<Gprs> getCleanList() {
+		String hql = "from Gprs g where g.cleanSwitch=1 and g.gprsprotocol=2 and g.valid='1' ";
+		Query q = getSession().createQuery(hql);
+		return q.list();
+	}
 
 }

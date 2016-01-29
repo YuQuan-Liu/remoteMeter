@@ -135,7 +135,12 @@ public class NeighborServiceImpl implements NeighborService {
 	public String deleteNbrById(int nbrId) {
 		//这边“删除”小区后，集中器级联“删除”，事务能不鞥你回滚有待验证？
 		//……
+		Neighbor n = getNbrById(nbrId);
+		if(n.getTimerSwitch() == 1){
+			QuartzManager.removeNeighbor(n);
+		}
 		neighborDAO.delete(nbrId);
+		
 //		gprsDAO.deleteByNbrId(nbrId);
 		return "succ";
 	}
@@ -158,6 +163,9 @@ public class NeighborServiceImpl implements NeighborService {
 		//……
 		int pid = gprsDAO.addGprs(gprs);
 		if(pid>0){
+			if(gprs.getCleanSwitch() == 1 && gprs.getGprsprotocol() == 2){
+				QuartzManager.addJobCleanValve(gprs);
+			}
 			return "succ";
 		}
 		return "fail";
@@ -166,6 +174,15 @@ public class NeighborServiceImpl implements NeighborService {
 	@Override
 	public String updateGprs(Gprs gprs) {
 		gprsDAO.update(gprs);
+		
+		if(gprs.getCleanSwitch() == 0){
+			QuartzManager.removeJobCleanValve(gprs);
+		}else{
+			if(gprs.getGprsprotocol() == 2){
+				QuartzManager.modifyJobCleanValve(gprs);
+			}
+		}
+		
 		return "succ";
 	}
 
@@ -176,6 +193,10 @@ public class NeighborServiceImpl implements NeighborService {
 
 	@Override
 	public String deleteGprsById(int gprsId) {
+		Gprs gprs = getGprsById(gprsId);
+		if(gprs.getCleanSwitch() == 0){
+			QuartzManager.removeJobCleanValve(gprs);
+		}
 		gprsDAO.deleteGprs(gprsId);
 		return "succ";
 	}

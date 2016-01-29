@@ -23,4 +23,10 @@ public interface GprsDAO {
 	void deleteByNbrId(String nbrId);
 
 	Gprs getByAddr(String g_addr);
+
+	/**
+	 * 获取系统中所有的需要阀门清理的集中器
+	 * @return
+	 */
+	List<Gprs> getCleanList();
 }

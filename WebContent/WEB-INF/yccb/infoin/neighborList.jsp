@@ -164,6 +164,7 @@ $(function(){
 							var id = row_.pid;
 							var nid = row.pid;
 							return "<a href='#' class='operateHref' onclick='updatePageGprs("+id+")'><fmt:message key='common.update'/></a>"
+							+"<a href='#' class='operateHref' onclick='configPageGprs("+id+")'><fmt:message key='common.config'/></a>"
 							+"<a href='#' class='operateHref' onclick='deleteGprsById("+id+","+nid+","+index+")'><fmt:message key='common.delete'/></a>";
 						}
 					}
@@ -187,7 +188,7 @@ function addGprs(pid){
 	$('#addGprsWin').window({	
 		href:'${path}/infoin/neighbor/addPageGprs.do?neighborid='+pid,
 		width:500,
-		height:300,
+		height:400,
 		minimizable:false,
 		maximizable:false,
 		title:'<fmt:message key='g.add'/>'
@@ -199,11 +200,23 @@ function updatePageGprs(pid){
 	$('#updateGprsWin').window({	
 		href:'${path}/infoin/neighbor/updatePageGprs.do?pid='+pid,
 		width:500,	
-		height:300,
+		height:400,
 		minimizable:false,
 		maximizable:false,
 		title: '<fmt:message key='g.update'/>'
 	}); 
+}
+
+//配置集中器内信息
+function configPageGprs(pid){
+	$('#configGprsWin').window({	
+		href:'${path}/infoin/neighbor/configPageGprs.do?pid='+pid,
+		width:550,	
+		height:600,
+		minimizable:false,
+		maximizable:false,
+		title: '<fmt:message key='common.config'/>'
+	});
 }
 
 //删除单个集中器
@@ -235,5 +248,6 @@ function deleteGprsById(id,nid,index){
 	<div id="updateNeighborWin"></div>
 	<div id="addGprsWin"></div>
 	<div id="updateGprsWin"></div>
+	<div id="configGprsWin"></div>
 </body>
 </html>

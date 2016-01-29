@@ -18,6 +18,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Neighbor;
 
@@ -155,5 +156,61 @@ public class QuartzManager {
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void addJobCleanValve(Gprs gprs) {
+		JobDataMap map = new JobDataMap();
+		map.put("gprs", gprs);
+		
+		JobDetail jobDetail = JobBuilder.newJob(QuartzCleanValve.class)
+				.withIdentity(gprs.getPid()+"j", "gprs")
+				.usingJobData(map)
+				.build();
+		
+		//每个月的5号  20号 的凌晨1点
+		Trigger trigger = TriggerBuilder.newTrigger()
+				.withIdentity(gprs.getPid()+"t", "gprs")
+				.startNow()
+				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 1 5,20 * ?"))
+				.build();
+//		Trigger trigger = TriggerBuilder.newTrigger()
+//				.withIdentity(gprs.getPid()+"t", "gprs")
+//				.startNow()
+//				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(2).repeatForever())
+//				.build();
+		
+		
+		try {
+			sche.scheduleJob(jobDetail, trigger);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public static void removeJobCleanValve(Gprs gprs) {
+		try {
+			sche.pauseTrigger(TriggerKey.triggerKey(gprs.getPid()+"t", "gprs"));
+			sche.unscheduleJob(TriggerKey.triggerKey(gprs.getPid()+"t", "gprs"));
+			sche.deleteJob(JobKey.jobKey(gprs.getPid()+"j", "gprs"));
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public static void modifyJobCleanValve(Gprs gprs) {
+		try {
+			SimpleTrigger tri = (SimpleTrigger) sche.getTrigger(TriggerKey.triggerKey(gprs.getPid()+"t", "gprs"));
+			if(tri != null){
+				removeJobCleanValve(gprs);
+//				tri.getTriggerBuilder().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(mins).repeatForever());
+//				sche.resumeTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
+			}
+			addJobCleanValve(gprs);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+		
 	}
 }

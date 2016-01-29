@@ -25,7 +25,7 @@ function submitForm(){
 					});
 					return false;
 				}else{
-					var d_h = timer.split(/[ ]/);
+					var d_h = timer.split(/[-]/);
 					if(d_h.length != 2){
 						$.messager.show({
 							title:"Info",
@@ -135,7 +135,7 @@ function timeswitchChange(){
 				</tr>
 				<tr>
 					<td><fmt:message key='n.timer'/>：</td>
-					<td><input class="easyui-textbox" type="text" name="timer" id="timer" data-options="required:true,disabled:true" value="01 00"/></td>
+					<td><input class="easyui-textbox" type="text" name="timer" id="timer" data-options="required:true,disabled:true" value="01-00"/></td>
 				</tr>
 				<tr>
 					<td><fmt:message key='n.ip'/>：</td>
