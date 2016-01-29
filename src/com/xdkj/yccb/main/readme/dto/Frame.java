@@ -27,6 +27,8 @@ public class Frame {
 	public static final byte AFN_LOGIN = 0x02;
 	public static final byte AFN_READMETER = 0x0B;
 	public static final byte AFN_CONTROL = 0x04;
+	public static final byte AFN_CONFIG = 0x03;
+	public static final byte AFN_QUERY = 0x0A;
 	
 	
 	private byte[] frame;

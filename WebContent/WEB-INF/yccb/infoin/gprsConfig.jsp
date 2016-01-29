@@ -12,7 +12,7 @@
  <c:if test="${gprs.gprsprotocol==2 }">
  	<div style="margin:10px;">
  		<label><fmt:message key='g.addr'/>：</label><span>${gprs.gprsaddr }</span>
- 		<select class="easyui-combobox" id="gprsslave" name="gprsslave" style="width:100px" data-options="panelHeight:'200'">
+ 		<select class="easyui-combobox" id="gprsslave" name="gprsslave" style="width:100px" data-options="panelHeight:'auto'">
  			<option value="0">请选择底层类型</option>
  			<option value="1">MBUS表</option>
  			<option value="2">485表</option>
@@ -35,10 +35,10 @@ $(function(){
 		striped:true,
 		fitColumns:true,
 		method:'post',
-// 		url:"${path}/infoin/neighbor/listgprsmeters",
-// 		queryParams:{
-// 			pid:"${gprs.pid}"
-// 		},
+		url:"${path}/infoin/neighbor/listgprsmeters.do",
+		queryParams:{
+			pid:"${gprs.pid}"
+		},
 		loadMsg:'<fmt:message key="main.loading"/>',
 		rownumbers:true,
 		columns:[[
@@ -49,15 +49,15 @@ $(function(){
 		      ]],
 		toolbar: [{ 
 			text: '<fmt:message key="g.deleteall"/>', 
-			iconCls: 'icon-add', 
+			iconCls: 'icon-remove', 
 			handler: deleteAllmeters
 		}, '-', {
 			text: '<fmt:message key="g.addcjq"/>', 
-			iconCls: 'icon-edit', 
+			iconCls: 'icon-add', 
 			handler: addcjq
 		}, '-', {
 			text: '<fmt:message key="g.addmeter"/>', 
-			iconCls: 'icon-edit', 
+			iconCls: 'icon-add', 
 			handler: addmeter
 		}, '-', { 
 			text: '<fmt:message key="g.deletemeter"/>', 
@@ -65,7 +65,7 @@ $(function(){
 			handler:  deletemeter
 		}, '-', { 
 			text: '<fmt:message key="g.readdata"/>', 
-			iconCls: 'icon-remove',
+			iconCls: 'icon-reload',
 			handler:  readJZQdata
 		}]
 	});
@@ -84,6 +84,57 @@ function deletemeter(){
 }
 function readJZQdata(){
 	
+}
+function configgprsslave(){
+	var gid = $("#gprsconfig_pid").val();
+	var gprsslave = $("#gprsslave").combobox("getValue");
+	if(gprsslave == 0){
+		$.messager.show({
+			title:"Info",
+			msg:"请选择类型",
+			showType:'slide'
+		});
+		return;
+	}
+	$.ajax({
+		url:'${path}/infoin/neighbor/configgprsslave.do',
+		type:'post',
+		data:{pid:gid,gprsslave:gprsslave},
+		success:function(typ){
+			if(typ=="succ"){
+				
+				$.messager.show({
+					title:"Info",
+					msg:"'<fmt:message key='common.deleteok'/>'",
+					showType:'slide'
+				});
+			}
+		}
+	});	
+}
+function querygprsslave(){
+	var gid = $("#gprsconfig_pid").val();
+	$.ajax({
+		url:'${path}/infoin/neighbor/querygprsslave.do',
+		type:'post',
+		data:{pid:gid},
+		dataType: "json", 
+		success:function(data){
+			if(data.done == true){
+				$.messager.show({
+					title:"Info",
+					msg:data.slave,
+					showType:'slide'
+				});
+			}else{
+				$.messager.show({
+					title:"Info",
+					msg:data.reason,
+					showType:'slide'
+				});
+			}
+		}
+	});	
 }
 </script>
 </body>

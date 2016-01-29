@@ -27,6 +27,7 @@ import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dao.GprsDAO;
 import com.xdkj.yccb.main.infoin.dao.NeighborDAO;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
+import com.xdkj.yccb.main.infoin.dto.MeterViewSimple;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.main.readme.quartz.QuartzManager;
@@ -422,6 +423,12 @@ public class NeighborServiceImpl implements NeighborService {
 //		}
 //		return ja.toJSONString();
 		return list;
+	}
+
+	@Override
+	public List<MeterViewSimple> listgprsmeters(int gid) {
+		
+		return gprsDAO.listgprsmeters(gid);
 	}
 
 

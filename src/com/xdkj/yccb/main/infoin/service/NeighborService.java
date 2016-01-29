@@ -8,6 +8,7 @@ import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.infoin.dto.GprsView;
+import com.xdkj.yccb.main.infoin.dto.MeterViewSimple;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.statistics.dto.ChargeRate;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
@@ -115,5 +116,12 @@ public interface NeighborService {
 	 * @return
 	 */
 	public List<Neighbor> getallNbrBywcid(int waterComId);
+
+	/**
+	 * 列举出GPRS 下的所有的表具
+	 * @param gid
+	 * @return
+	 */
+	public List<MeterViewSimple> listgprsmeters(int gid);
 	
 }

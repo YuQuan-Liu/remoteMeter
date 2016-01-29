@@ -170,4 +170,25 @@ public class NeighborCtrl {
 		model.addAttribute("gprs",neighborService.getGprsById(Integer.parseInt(pid)));
 		return "/infoin/gprsConfig";
 	}
+	
+	@RequestMapping(value="/infoin/neighbor/listgprsmeters",method=RequestMethod.POST)
+	@ResponseBody
+	public String listgprsmeters(int pid){
+		
+		return JSON.toJSONString(neighborService.listgprsmeters(pid));
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/querygprsslave",method=RequestMethod.POST)
+	@ResponseBody
+	public String querygprsslave(int pid){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.querygprsslave(g);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/configgprsslave",method=RequestMethod.POST)
+	@ResponseBody
+	public String configgprsslave(int pid,int gprsslave){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.configgprsslave(g,gprsslave);
+	}
 }
