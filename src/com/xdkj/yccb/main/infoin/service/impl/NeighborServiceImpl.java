@@ -18,6 +18,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.DetaildepartDAO;
+import com.xdkj.yccb.main.adminor.dto.Collector;
 import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Department;
 import com.xdkj.yccb.main.entity.Detaildepart;
@@ -426,9 +427,15 @@ public class NeighborServiceImpl implements NeighborService {
 	}
 
 	@Override
-	public List<MeterViewSimple> listgprsmeters(int gid) {
+	public List<MeterViewSimple> listgprsmeters(int gid,String caddr) {
 		
-		return gprsDAO.listgprsmeters(gid);
+		return gprsDAO.listgprsmeters(gid,caddr);
+	}
+
+	@Override
+	public List<Collector> getCollectorsByGid(int pid) {
+		
+		return gprsDAO.listCollectors(pid);
 	}
 
 

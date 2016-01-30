@@ -3,7 +3,9 @@ package com.xdkj.yccb.main.infoin.service;
 import java.util.List;
 import java.util.Map;
 
+import com.sun.mail.util.logging.CollectorFormatter;
 import com.xdkj.yccb.common.PageBase;
+import com.xdkj.yccb.main.adminor.dto.Collector;
 import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
@@ -118,10 +120,12 @@ public interface NeighborService {
 	public List<Neighbor> getallNbrBywcid(int waterComId);
 
 	/**
-	 * 列举出GPRS 下的所有的表具
+	 * 列举出GPRS caddr 下的所有的表具
 	 * @param gid
 	 * @return
 	 */
-	public List<MeterViewSimple> listgprsmeters(int gid);
+	public List<MeterViewSimple> listgprsmeters(int gid,String caddr);
+
+	public List<Collector> getCollectorsByGid(int pid);
 	
 }

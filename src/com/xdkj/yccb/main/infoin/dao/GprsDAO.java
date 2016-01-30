@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.infoin.dao;
 
 import java.util.List;
 
+import com.xdkj.yccb.main.adminor.dto.Collector;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.infoin.dto.MeterViewSimple;
 
@@ -32,9 +33,16 @@ public interface GprsDAO {
 	List<Gprs> getCleanList();
 
 	/**
-	 * 根据GPRSid 获取集中器下的所有表的采集器、表地址、mid
+	 * 根据GPRSid caddr 获取集中器下的所有表的采集器、表地址、mid
 	 * @param gid
 	 * @return
 	 */
-	List<MeterViewSimple> listgprsmeters(int gid);
+	List<MeterViewSimple> listgprsmeters(int gid,String caddr);
+
+	/**
+	 * 列出集中器下所有的采集器
+	 * @param pid
+	 * @return
+	 */
+	List<Collector> listCollectors(int pid);
 }

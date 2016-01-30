@@ -169,14 +169,15 @@ public class NeighborCtrl {
 	@RequestMapping(value="/infoin/neighbor/configPageGprs")
 	public String configPageGprs(HttpServletRequest request,@RequestParam("pid") String pid,Model model){
 		model.addAttribute("gprs",neighborService.getGprsById(Integer.parseInt(pid)));
+		model.addAttribute("collector_list",neighborService.getCollectorsByGid(Integer.parseInt(pid)));
 		return "/infoin/gprsConfig";
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/listgprsmeters",method=RequestMethod.POST)
 	@ResponseBody
-	public String listgprsmeters(int pid){
+	public String listgprsmeters(int pid,String caddr){
 		
-		return JSON.toJSONString(neighborService.listgprsmeters(pid));
+		return JSON.toJSONString(neighborService.listgprsmeters(pid,caddr));
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/querygprsslave",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
@@ -191,5 +192,47 @@ public class NeighborCtrl {
 	public String configgprsslave(int pid,int gprsslave){
 		Gprs g = neighborService.getGprsById(pid);
 		return ConfigGPRS.configgprsslave(g,gprsslave);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/querycjqs",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String querycjqs(int pid){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.querycjqs(g);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/addcjq",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String addcjq(int pid,String caddr){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.addcjq(g,caddr);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/deleteAllmeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String deleteAllmeters(int pid){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.deleteAllmeters(g);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/readJZQdata",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String readJZQdata(int pid,String caddr){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.readJZQdata(g,caddr);
+	}
+
+	@RequestMapping(value="/infoin/neighbor/jzqaddmeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String jzqaddmeters(int pid,String caddr,String[] maddrs){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.jzqaddmeters(g,caddr,maddrs);
+	}
+	
+	@RequestMapping(value="/infoin/neighbor/jzqdeletemeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String jzqdeletemeters(int pid,String caddr,String[] maddrs){
+		Gprs g = neighborService.getGprsById(pid);
+		return ConfigGPRS.jzqdeletemeters(g,caddr,maddrs);
 	}
 }

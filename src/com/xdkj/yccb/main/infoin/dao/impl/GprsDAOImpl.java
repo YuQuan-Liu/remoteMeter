@@ -10,6 +10,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.xdkj.yccb.common.HibernateDAO;
+import com.xdkj.yccb.main.adminor.dto.Collector;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Neighbor;
@@ -79,10 +80,10 @@ public class GprsDAOImpl extends HibernateDAO<Gprs> implements GprsDAO {
 		return q.list();
 	}
 	@Override
-	public List<MeterViewSimple> listgprsmeters(int gid) {
+	public List<MeterViewSimple> listgprsmeters(int gid,String caddr) {
 		String SQL = "select pid,collectorAddr,meterAddr from meter " +
-				"where gprsid = :gid and valid = 1 " +
-				"order by collectoraddr";
+				"where gprsid = :gid and collectoraddr = :caddr and valid = 1 " +
+				"order by collectoraddr,meteraddr";
 		
 		
 		Query q = getSession().createSQLQuery(SQL)
@@ -91,8 +92,25 @@ public class GprsDAOImpl extends HibernateDAO<Gprs> implements GprsDAO {
 				.addScalar("meterAddr",Hibernate.STRING);
 
 		q.setInteger("gid", gid);
+		q.setString("caddr", caddr);
 		
 		q.setResultTransformer(Transformers.aliasToBean(MeterViewSimple.class));
+		
+		return q.list();
+	}
+	@Override
+	public List<Collector> listCollectors(int pid) {
+		String SQL = "select distinct collectorAddr caddr from meter " +
+				"where gprsid = :gid and valid = 1 " +
+				"order by collectoraddr";
+		
+		
+		Query q = getSession().createSQLQuery(SQL)
+				.addScalar("caddr",Hibernate.STRING);
+
+		q.setInteger("gid", pid);
+		
+		q.setResultTransformer(Transformers.aliasToBean(Collector.class));
 		
 		return q.list();
 	}
