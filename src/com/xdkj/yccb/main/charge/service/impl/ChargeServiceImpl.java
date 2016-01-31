@@ -109,18 +109,28 @@ public class ChargeServiceImpl implements ChargeService {
 		JSONObject j = new JSONObject();
 		//将MeterDeductionLog valid置为0
 		Meterdeductionlog mdl = meterDeductionLogDao.getById(Integer.parseInt(meterDeLogId));
-		if(mdl.getValid()=='1'){
-			int custId = mdl.getMeter().getCustomer().getPid();
-			mdl.setValid('0');
-			meterDeductionLogDao.updateMeterductionLog(mdl);
-			meterDao.updateDeread(mdl.getMeter().getPid(), mdl.getLastDeRead(), mdl.getLastDeTime());
-			BigDecimal pay = mdl.getDeMoney();
-			//将交给额加至Customer 余额 CustomerBalance
-			custDAO.updateCustomerBalance(pay, custId);
-			//插入操作记录
-			
+		
+		//获取当前表最新的有效的扣费记录的pid
+		Meterdeductionlog mdl_news = meterDeductionLogDao.getLastmdl(mdl.getMeter().getPid());
+		
+		if(mdl_news.getPid() == mdl.getPid()){
+			if(mdl.getValid()=='1'){
+				int custId = mdl.getMeter().getCustomer().getPid();
+				mdl.setValid('0');
+				meterDeductionLogDao.updateMeterductionLog(mdl);
+				meterDao.updateDeread(mdl.getMeter().getPid(), mdl.getLastDeRead(), mdl.getLastDeTime());
+				BigDecimal pay = mdl.getDeMoney();
+				//将交给额加至Customer 余额 CustomerBalance
+				custDAO.updateCustomerBalance(pay, custId);
+				//插入操作记录
+				
+			}
+			j.put("state", "succ");
+		}else{
+			j.put("state", "fail");
 		}
-		j.put("state", "succ");
+		
+		
 		return j.toJSONString();
 	}
 
