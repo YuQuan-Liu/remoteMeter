@@ -125,15 +125,6 @@ public class ChargeServiceImpl implements ChargeService {
 	}
 
 	@Override
-	public String addwaterwaste(int m_id, int waste) {
-		if(waste > 0){
-			meterDao.updateDeread(m_id,waste);
-			meterDeductionLogDao.addWaste(m_id,waste);
-		}
-		return "1";
-	}
-
-	@Override
 	public String addpay(int adminid,int c_id, BigDecimal amount) {
 		JSONObject jo = new JSONObject();
 		if(amount.doubleValue()>0){
@@ -161,6 +152,12 @@ public class ChargeServiceImpl implements ChargeService {
 		}
 		jo.put("yl", ja_n);
 		return jo.toJSONString();
+	}
+
+	@Override
+	public String updateDeread(int m_id, int deread) {
+		
+		return meterDao.updateDeread(m_id, deread)+"";
 	}
 	
 }

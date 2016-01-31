@@ -180,6 +180,16 @@ public class ChargeCtrl {
 		return chargeService.updatePrice(meterId, priceId);
 	}
 	
+	@RequestMapping(value ="/charge/updateDeread")
+	@ResponseBody
+	public String updateDeread(HttpServletRequest request,int deread,int m_id,int old){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 31, "mid:"+m_id+"~deread:"+deread+"~old:"+old);
+		
+		return chargeService.updateDeread(m_id, deread);
+	}
+	
 	@RequestMapping(value="/cahrge/canclePay")
 	@ResponseBody
 	public String canclePay(HttpServletRequest request,@RequestParam("custPayId") String custPayId){
@@ -196,15 +206,6 @@ public class ChargeCtrl {
 		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 26, "meterDeLogId:"+meterDeLogId);
 		
 		return chargeService.cancleCost(meterDeLogId);
-	}
-	
-	@RequestMapping(value="/charge/waterwaste")
-	@ResponseBody
-	public String waterwaste(HttpServletRequest request,int m_id,int waste){
-		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 24, "mid:"+m_id+"~waste:"+waste);
-				
-		return chargeService.addwaterwaste(m_id,waste);
 	}
 	
 	@RequestMapping(value="/charge/pay")

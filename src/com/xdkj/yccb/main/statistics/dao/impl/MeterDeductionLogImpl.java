@@ -470,29 +470,6 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 	}
 
 	@Override
-	public int addWaste(int m_id, int waste) {
-		Meterdeductionlog mdl = getLastmdl(m_id);
-		Meterdeductionlog wastelog = new Meterdeductionlog();
-		try {
-			BeanUtils.copyProperties(wastelog, mdl);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		}
-		wastelog.setMeterRead(mdl.getMeterRead()+waste);
-		wastelog.setMeterReadTime(new Date());
-		wastelog.setLastDeRead(mdl.getMeterRead());
-		wastelog.setLastDeTime(mdl.getMeterReadTime());
-		wastelog.setDeMoney(new BigDecimal(0));
-		wastelog.setActionTime(new Date());
-		wastelog.setChangend(0);
-		wastelog.setRemark("水费减免");
-		this.getHibernateTemplate().save(wastelog);
-		return 1;
-	}
-
-	@Override
 	public List<SettledView> getLogDetail(int c_id, int count) {
 		String SQL = "select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.customerId,c.CustomerName,c.customerAddr,c.prePaySign,c.CustomerMobile,c.customerEmail,c.CustomerBalance,c.warnThre," +
 				"m.pid m_id,m.steelNum, m.collectorAddr,m.meterAddr,m.isValve,m.valveState,m.meterState,m.destartread," +

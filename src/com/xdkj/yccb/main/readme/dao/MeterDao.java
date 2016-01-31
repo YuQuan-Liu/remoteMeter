@@ -22,12 +22,12 @@ public interface MeterDao {
 	int updateMeterPrice(int meterId,int priceId);
 
 	/**
-	 * 水费减免  在deread的基础上+waste
+	 * 更新m_id的扣费读数为deread
 	 * @param m_id
-	 * @param waste
+	 * @param deread
 	 * @return
 	 */
-	public int updateDeread(int m_id, int waste);
+	public int updateDeread(int m_id, int deread);
 
 	/**
 	 * 撤销扣费使用   更新meter的deread、detime 为上次的读数

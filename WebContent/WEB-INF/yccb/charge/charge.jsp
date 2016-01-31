@@ -151,6 +151,7 @@ $(function(){
 	      	{field:'action',title:'<fmt:message key='common.action'/>',width:130,halign:'center',align:'center',formatter: function(value,row,index){
 				return "<a class='operateHref' onclick='openValue("+row.pid+","+index+")'><fmt:message key='m.open'/></a>"
 				+"<a class='operateHref' onclick='updatePrice("+row.pid+","+index+")'><fmt:message key='charge.updateprice'/> </a>"
+				+"<a class='operateHref' onclick='updateDeread("+row.pid+","+index+","+row.deRead+")'>更新扣费读数 </a>"
 				+"<a class='operateHref' onclick='draw("+row.pid+","+index+")'><fmt:message key='charge.draw'/></a>";
 	  		}}
 	    ]],
@@ -500,37 +501,38 @@ $(function(){
 		});
 	}
 	
-	function waterwaste(mid,index_){
-		$.messager.prompt('<fmt:message key='charge.waterwaste'/>', '<fmt:message key='charge.waterwasteinput'/>', function(r){
+	function updateDeread(mid,index_,old_deread){
+		$.messager.prompt('更新扣费读数', '请输入新的扣费读数', function(r){
 	        if (r){
-				if(r > 0 && r < 1000){
+				if(r >= 0 && r <= 999999){
 					$.ajax({
 						type:"POST",
-						url:"${path}/charge/waterwaste.do",
+						url:"${path}/charge/updateDeread.do",
 						dataType:"json",
 						data:{
 							m_id:mid,
-							waste:r
+							deread:r,
+							old:old_deread
 						},
 						success:function(data){
-//	 						alert(data.id+data.read);
-							if(data == 1){
+							if (data == 1) {
 								$.messager.show({
 									title : 'Info',
-									msg : '<fmt:message key='common.addok'/>',
+									msg : '<fmt:message key='common.updateok'/>',
 									showType : 'slide'
 								});
-								$('#costInfoTab').datagrid({
-									url:"${path}/charge/costInfoContent.do",
-									queryParams: {
-										custId:pid
-									}
+								$("#custMeters").datagrid('updateRow', {index:index_,row:{deRead:r}});
+							} else {
+								$.messager.show({
+									title : 'Info',
+									msg : '<fmt:message key='common.updatefail'/>',
+									showType : 'slide'
 								});
 							}
 						}
 					});
 				}else{
-					 $.messager.alert('Error','<fmt:message key='charge.waterwasteerror'/>');
+					 $.messager.alert('Error','请输入正确的扣费读数');
 				}
 	        }
 	    });

@@ -66,13 +66,7 @@ public interface ChargeService {
 	 * @version 1.0
 	 */
 	String cancleCost(String meterDeLogId);
-	/**
-	 * 水费减免
-	 * @param m_id
-	 * @param waste
-	 * @return
-	 */
-	String addwaterwaste(int m_id, int waste);
+	
 	/**
 	 * 用户交费
 	 * @param c_id
@@ -115,4 +109,11 @@ public interface ChargeService {
 	 * @return
 	 */
 	public BigDecimal sumAfterPay(int cid, int cplid);
+	/**
+	 * 更新扣费读数
+	 * @param m_id
+	 * @param deread
+	 * @return
+	 */
+	String updateDeread(int m_id, int deread);
 }

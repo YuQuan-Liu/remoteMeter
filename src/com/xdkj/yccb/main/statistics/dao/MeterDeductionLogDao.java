@@ -67,13 +67,7 @@ public interface MeterDeductionLogDao {
 	 */
 	List<SettledView> getLogAll(int n_id, int settle_id, int pre);
 	List<SettledView> getLouLogAll(int n_id, int settle_id, int pre, String lou);
-	/**
-	 * 根据最新的扣费记录  添加水费减免
-	 * @param m_id
-	 * @param waste
-	 * @return
-	 */
-	int addWaste(int m_id, int waste);
+	
 	/**
 	 * 获取最新的扣费记录
 	 * @param mid
