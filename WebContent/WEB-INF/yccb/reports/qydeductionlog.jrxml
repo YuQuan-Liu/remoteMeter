@@ -13,6 +13,7 @@
 		<defaultValueExpression><![CDATA["D:\\Java_Workspace\\remoteMeter\\WebContent\\WEB-INF\\yccb\\reports\\"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="count" class="java.lang.Integer"/>
+	<parameter name="summinus" class="java.lang.Integer"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -402,7 +403,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<text><![CDATA[]]></text>
+				<text><![CDATA[减免]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="76c68463-4a96-49fc-b3b4-95dde0e86213" x="198" y="0" width="39" height="20"/>
@@ -415,20 +416,6 @@
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
-				</textElement>
-				<text><![CDATA[]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="a186b063-1269-483e-864f-a4cdade13f39" x="298" y="0" width="61" height="20"/>
-				<box leftPadding="2">
-					<pen lineWidth="1.0"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<text><![CDATA[]]></text>
 			</staticText>
@@ -487,6 +474,20 @@
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{sumjm}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="f1ede2a7-4d60-4591-9857-93d650ab62a5" x="298" y="0" width="61" height="20"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{summinus}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

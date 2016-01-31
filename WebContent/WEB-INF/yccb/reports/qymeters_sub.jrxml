@@ -6,13 +6,16 @@
 	<field name="kj" class="java.lang.String"/>
 	<field name="last" class="java.lang.Integer"/>
 	<field name="this_" class="java.lang.Integer"/>
+	<field name="changend" class="java.lang.Integer"/>
+	<field name="minusderead" class="java.lang.Integer"/>
+	<field name="tovirtual" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="20">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c3a47c1c-7c6d-4965-9d5f-eb4350c8b63a" x="52" y="0" width="56" height="20"/>
+				<reportElement uuid="c3a47c1c-7c6d-4965-9d5f-eb4350c8b63a" x="42" y="0" width="43" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -26,7 +29,7 @@
 				<textFieldExpression><![CDATA[$F{kj}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="74d62407-646d-4047-bd17-26cc67f7c0c0" x="168" y="0" width="70" height="20"/>
+				<reportElement uuid="74d62407-646d-4047-bd17-26cc67f7c0c0" x="130" y="0" width="45" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -40,7 +43,7 @@
 				<textFieldExpression><![CDATA[$F{last}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="5c871707-cd0c-4ec0-9a61-36d8299436f8" x="0" y="0" width="52" height="20"/>
+				<reportElement uuid="5c871707-cd0c-4ec0-9a61-36d8299436f8" x="0" y="0" width="42" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -54,7 +57,7 @@
 				<text><![CDATA[水表号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="668788f5-6c4c-4ae3-aeea-c95b9f335376" x="108" y="0" width="60" height="20"/>
+				<reportElement uuid="668788f5-6c4c-4ae3-aeea-c95b9f335376" x="85" y="0" width="45" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -68,7 +71,7 @@
 				<text><![CDATA[上月指针]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="051a8cb3-0d7a-4b4d-ae33-ed4dbd282b29" x="298" y="0" width="70" height="20"/>
+				<reportElement uuid="051a8cb3-0d7a-4b4d-ae33-ed4dbd282b29" x="220" y="0" width="45" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -82,7 +85,7 @@
 				<textFieldExpression><![CDATA[$F{this_}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="9fa4f31d-47e1-4ae5-ad75-a63bb474052a" x="238" y="0" width="60" height="20"/>
+				<reportElement uuid="9fa4f31d-47e1-4ae5-ad75-a63bb474052a" x="175" y="0" width="45" height="20"/>
 				<box>
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -95,20 +98,48 @@
 				</textElement>
 				<text><![CDATA[本月指针]]></text>
 			</staticText>
-			<staticText>
-				<reportElement uuid="1b1ba0df-7890-4c15-ad4a-7db7fa60ed9f" x="368" y="0" width="82" height="20"/>
-				<box>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8ff7e654-649d-4ca1-9ab5-65f851c11add" x="265" y="0" width="52" height="20"/>
+				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[换表水量0]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["换表"+$F{changend}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="32f2c8ef-04c1-48b4-8f0a-a1e558f8791b" x="317" y="0" width="67" height="20"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["减免"+$F{minusderead}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="8a5bb28b-2e82-44c6-a703-cca3f0adf182" x="384" y="0" width="66" height="20"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["虚表"+$F{tovirtual}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

@@ -131,6 +131,8 @@ $(function(){
 		        		  return row.meterread-row.lastderead;
 		        	  }
 		          }},
+				  {field:'minusderead',title:'减免',width:80},
+				  {field:'tovirtual',title:'转到虚表',width:80},
 		          {field:'demoney',title:'<fmt:message key='demoney'/>',width:80}
 		      ]]
 	});

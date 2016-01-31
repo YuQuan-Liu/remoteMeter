@@ -202,6 +202,8 @@ $(function(){
 	        		return row.meterread-row.lastderead;
 	        	}
 	          }},
+		    {field:'minusderead',title:'减免',width:80},
+		    {field:'tovirtual',title:'转到虚表',width:80},
 	        {field:'demoney',title:'<fmt:message key='demoney'/>',width:80}
 	        <c:if test="${menus['undo']=='t'}">,
 	      	{field:'action',title:'<fmt:message key='common.action'/>',width:90,halign:'center',align:'center',formatter: function(value,row,index){
@@ -494,7 +496,7 @@ $(function(){
 						} else {
 							$.messager.show({
 								title : 'Info',
-								msg : '<fmt:message key='common.updatefail'/>',
+								msg : '操作失败',
 								showType : 'slide',
 								timeout : 0
 							});
@@ -529,7 +531,7 @@ $(function(){
 							} else {
 								$.messager.show({
 									title : 'Info',
-									msg : '<fmt:message key='common.updatefail'/>',
+									msg : '操作失败',
 									showType : 'slide'
 								});
 							}
@@ -659,7 +661,7 @@ $(function(){
 							} else {
 								$.messager.show({
 									title : 'Info',
-									msg : '<fmt:message key='common.updatefail'/>',
+									msg : '操作失败',
 									showType : 'slide'
 								});
 							}
@@ -690,7 +692,7 @@ $(function(){
 							} else {
 								$.messager.show({
 									title : 'Info',
-									msg : '<fmt:message key='common.updatefail'/>',
+									msg : '操作失败',
 									showType : 'slide'
 								});
 							}

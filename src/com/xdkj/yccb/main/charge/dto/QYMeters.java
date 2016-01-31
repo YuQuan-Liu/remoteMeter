@@ -4,6 +4,36 @@ public class QYMeters {
 	private String kj;
 	private int last;
 	private int this_;
+	private int changend;
+	private int minusderead;
+	private int tovirtual;
+	private int pkid;
+	
+	
+	public int getPkid() {
+		return pkid;
+	}
+	public void setPkid(int pkid) {
+		this.pkid = pkid;
+	}
+	public int getChangend() {
+		return changend;
+	}
+	public void setChangend(int changend) {
+		this.changend = changend;
+	}
+	public int getMinusderead() {
+		return minusderead;
+	}
+	public void setMinusderead(int minusderead) {
+		this.minusderead = minusderead;
+	}
+	public int getTovirtual() {
+		return tovirtual;
+	}
+	public void setTovirtual(int tovirtual) {
+		this.tovirtual = tovirtual;
+	}
 	public String getKj() {
 		return kj;
 	}

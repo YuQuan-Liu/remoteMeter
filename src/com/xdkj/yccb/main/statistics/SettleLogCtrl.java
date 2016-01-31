@@ -78,15 +78,23 @@ public class SettleLogCtrl {
 			int sumgy = 0;
 			int sumjz = 0;
 			int sumjm = 0;
+			int summinus = 0;
 			QYSettledView view = null;
 			for(int i = 0;list != null && i < list.size();i++){
 				view = list.get(i);
 				int yl = 0;
 				if(view.getChangend() > 0){
-					yl = view.getChangend()-view.getLastderead()+view.getMeterread();
-					view.setRemark(view.getChangend()+"换表");
+					yl = view.getChangend()-view.getLastderead()+view.getMeterread()-view.getMinusderead()-view.getTovirtual();
+					view.setRemark(view.getRemark()+view.getChangend()+"换表");
 				}else{
-					yl = view.getMeterread()-view.getLastderead();
+					yl = view.getMeterread()-view.getLastderead()-view.getMinusderead()-view.getTovirtual();
+				}
+				if(view.getMinusderead()>0){
+					summinus += view.getMinusderead();
+					view.setRemark(view.getRemark()+"减免"+view.getMinusderead());
+				}
+				if(view.getTovirtual()>0){
+					view.setRemark(view.getRemark()+"虚表"+view.getTovirtual());
 				}
 				switch (view.getPkid()){
 				case 2:
@@ -125,7 +133,7 @@ public class SettleLogCtrl {
 					sumjm += yl;
 					break;
 					default:
-						view.setRemark("单价异常");
+						view.setRemark(view.getRemark()+"单价异常");
 						break;
 				}
 			}
@@ -133,6 +141,7 @@ public class SettleLogCtrl {
 			map.put("sumjm", sumjm);
 			map.put("sumgy", sumgy);
 			map.put("sumjz", sumjz);
+			map.put("summinus", summinus);
 			map.put("list", list);
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date settletime = df.parse(settle_time);

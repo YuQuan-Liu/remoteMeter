@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -108,36 +110,57 @@ public class PostPayCtrl {
 			PostCharge postCharge = list.get(0);
 			if(postCharge.getHkid() == 4){
 				int settlelogid = postCharge.getSettlelogid();
-				int pkid = postCharge.getPkid();
 				//企业
 				List<Customer> clist = meterDeductionLogService.getCustomers(ids);
 				List<QYCharge> qylist = new ArrayList<QYCharge>();
 				for(int i = 0;clist != null && i < clist.size();i++){
-					QYCharge qy = new QYCharge();
+					
 					Customer c = clist.get(i);
 //					System.out.println(c.getLouNum()+":"+c.getDyNum()+":"+c.getHuNum());
 					
-					qy.setCustomerName(c.getCustomerName());
-					qy.setC_num(c.getLouNum().trim()+"-"+c.getDyNum().trim()+"-"+c.getHuNum().trim());
-					
 					//get the meter under the cid
 					List<QYMeters> qymeters = meterDeductionLogService.getMeters(c.getPid(),settlelogid);
-					qy.setMeters(new JRBeanCollectionDataSource(qymeters));
-					//get the detail under the cid
-					int yl = 0;
-					for(int j = 0;qymeters != null && j < qymeters.size();j++){
-						QYMeters meter = qymeters.get(j);
-						yl += meter.getThis_()-meter.getLast();
+					int pkid_ = 0;
+					HashMap<Integer,List<QYMeters>> pkid_map = new HashMap();
+					//将qymeters中的表根据单价分组
+					List<QYMeters> qymeters_map = null;
+					for(int j=0;j<qymeters.size();j++){
+						QYMeters qymeter_ = qymeters.get(j);
+						if(pkid_ != qymeter_.getPkid()){
+							pkid_ = qymeter_.getPkid();
+							qymeters_map = new ArrayList<QYMeters>();
+							pkid_map.put(pkid_, qymeters_map);
+						}
+						qymeters_map.add(qymeter_);
 					}
-					List<QYDetail> qydetail = meterDeductionLogService.getDetails(pkid,yl);
-					qy.setDetail(new JRBeanCollectionDataSource(qydetail));
-					BigDecimal sumdemoney = new BigDecimal(0);
-					for(int j = 0;qydetail != null && j < qydetail.size();j++){
-						QYDetail detail = qydetail.get(j);
-						sumdemoney = sumdemoney.add(detail.getDemoney());
+					for(Entry<Integer, List<QYMeters>> entry: pkid_map.entrySet()){
+						QYCharge qy = new QYCharge();
+						qy.setCustomerName(c.getCustomerName());
+						qy.setC_num(c.getLouNum().trim()+"-"+c.getDyNum().trim()+"-"+c.getHuNum().trim());
+						List<QYMeters> qymeters_ = entry.getValue();
+						qy.setMeters(new JRBeanCollectionDataSource(qymeters_));
+						
+						//get the detail under the cid
+						int yl = 0;
+						for(int j = 0;qymeters_ != null && j < qymeters_.size();j++){
+							QYMeters meter = qymeters_.get(j);
+							if(meter.getChangend() > 0){
+								yl += meter.getChangend()-meter.getLast()+meter.getThis_()-meter.getMinusderead()-meter.getTovirtual();
+							}else{
+								yl += meter.getThis_()-meter.getLast()-meter.getMinusderead()-meter.getTovirtual();
+							}
+						}
+						
+						List<QYDetail> qydetail = meterDeductionLogService.getDetails(entry.getKey(),yl);
+						qy.setDetail(new JRBeanCollectionDataSource(qydetail));
+						BigDecimal sumdemoney = new BigDecimal(0);
+						for(int j = 0;qydetail != null && j < qydetail.size();j++){
+							QYDetail detail = qydetail.get(j);
+							sumdemoney = sumdemoney.add(detail.getDemoney());
+						}
+						qy.setSumdemoney(sumdemoney);
+						qylist.add(qy);
 					}
-					qy.setSumdemoney(sumdemoney);
-					qylist.add(qy);
 				}
 				map.put("list", qylist);
 				UserForSession admin = WebUtil.getCurrUser(request);
@@ -175,36 +198,54 @@ public class PostPayCtrl {
 			PostCharge postCharge = list.get(0);
 			if(postCharge.getHkid() == 4){
 				int settlelogid = postCharge.getSettlelogid();
-				int pkid = postCharge.getPkid();
 				//企业
 				List<Customer> clist = customerDao.getCustomerList(n_id+"",lou);
 				List<QYCharge> qylist = new ArrayList<QYCharge>();
 				for(int i = 0;clist != null && i < clist.size();i++){
-					QYCharge qy = new QYCharge();
 					Customer c = clist.get(i);
-//					System.out.println(c.getLouNum()+":"+c.getDyNum()+":"+c.getHuNum());
-					
-					qy.setCustomerName(c.getCustomerName());
-					qy.setC_num(c.getLouNum().trim()+"-"+c.getDyNum().trim()+"-"+c.getHuNum().trim());
-					
 					//get the meter under the cid
 					List<QYMeters> qymeters = meterDeductionLogService.getMeters(c.getPid(),settlelogid);
-					qy.setMeters(new JRBeanCollectionDataSource(qymeters));
-					//get the detail under the cid
-					int yl = 0;
-					for(int j = 0;qymeters != null && j < qymeters.size();j++){
-						QYMeters meter = qymeters.get(j);
-						yl += meter.getThis_()-meter.getLast();
+					int pkid_ =  0;
+					HashMap<Integer,List<QYMeters>> pkid_map = new HashMap();
+					//将qymeters中的表根据单价分组
+					List<QYMeters> qymeters_map = null;
+					for(int j=0;j<qymeters.size();j++){
+						QYMeters qymeter_ = qymeters.get(j);
+						if(pkid_ != qymeter_.getPkid()){
+							pkid_ = qymeter_.getPkid();
+							qymeters_map = new ArrayList<QYMeters>();
+							pkid_map.put(pkid_, qymeters_map);
+						}
+						qymeters_map.add(qymeter_);
 					}
-					List<QYDetail> qydetail = meterDeductionLogService.getDetails(pkid,yl);
-					qy.setDetail(new JRBeanCollectionDataSource(qydetail));
-					BigDecimal sumdemoney = new BigDecimal(0);
-					for(int j = 0;qydetail != null && j < qydetail.size();j++){
-						QYDetail detail = qydetail.get(j);
-						sumdemoney = sumdemoney.add(detail.getDemoney());
+					for(Entry<Integer, List<QYMeters>> entry: pkid_map.entrySet()){
+						QYCharge qy = new QYCharge();
+						qy.setCustomerName(c.getCustomerName());
+						qy.setC_num(c.getLouNum().trim()+"-"+c.getDyNum().trim()+"-"+c.getHuNum().trim());
+						List<QYMeters> qymeters_ = entry.getValue();
+						qy.setMeters(new JRBeanCollectionDataSource(qymeters_));
+						
+						//get the detail under the cid
+						int yl = 0;
+						for(int j = 0;qymeters_ != null && j < qymeters_.size();j++){
+							QYMeters meter = qymeters_.get(j);
+							if(meter.getChangend() > 0){
+								yl += meter.getChangend()-meter.getLast()+meter.getThis_()-meter.getMinusderead()-meter.getTovirtual();
+							}else{
+								yl += meter.getThis_()-meter.getLast()-meter.getMinusderead()-meter.getTovirtual();
+							}
+						}
+						
+						List<QYDetail> qydetail = meterDeductionLogService.getDetails(entry.getKey(),yl);
+						qy.setDetail(new JRBeanCollectionDataSource(qydetail));
+						BigDecimal sumdemoney = new BigDecimal(0);
+						for(int j = 0;qydetail != null && j < qydetail.size();j++){
+							QYDetail detail = qydetail.get(j);
+							sumdemoney = sumdemoney.add(detail.getDemoney());
+						}
+						qy.setSumdemoney(sumdemoney);
+						qylist.add(qy);
 					}
-					qy.setSumdemoney(sumdemoney);
-					qylist.add(qy);
 				}
 				map.put("list", qylist);
 				UserForSession admin = WebUtil.getCurrUser(request);

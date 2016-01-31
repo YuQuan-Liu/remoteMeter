@@ -13,6 +13,8 @@ public class QYSettledView {
 	private int lastderead;
 	private int meterread;
 	private int changend;
+	private int minusderead;
+	private int tovirtual;
 	
 	private int gy; //工业
 	private int jz; //建筑
@@ -20,6 +22,22 @@ public class QYSettledView {
 	private String remark;
 
 	
+	public int getMinusderead() {
+		return minusderead;
+	}
+
+	public void setMinusderead(int minusderead) {
+		this.minusderead = minusderead;
+	}
+
+	public int getTovirtual() {
+		return tovirtual;
+	}
+
+	public void setTovirtual(int tovirtual) {
+		this.tovirtual = tovirtual;
+	}
+
 	public String getRemark() {
 		return remark;
 	}

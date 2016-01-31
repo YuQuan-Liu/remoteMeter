@@ -35,7 +35,21 @@ public class SettledView {
 	private int payed;
 	private String pricekindname;
 	private int changeend;
+	private int minusderead;
+	private int tovirtual;
 	
+	public int getMinusderead() {
+		return minusderead;
+	}
+	public void setMinusderead(int minusderead) {
+		this.minusderead = minusderead;
+	}
+	public int getTovirtual() {
+		return tovirtual;
+	}
+	public void setTovirtual(int tovirtual) {
+		this.tovirtual = tovirtual;
+	}
 	public int getChangeend() {
 		return changeend;
 	}
