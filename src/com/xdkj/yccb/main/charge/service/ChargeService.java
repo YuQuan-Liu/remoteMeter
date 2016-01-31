@@ -116,4 +116,19 @@ public interface ChargeService {
 	 * @return
 	 */
 	String updateDeread(int m_id, int deread);
+	/**
+	 * 扣费记录的水费减免
+	 * @param mdlid
+	 * @param minus
+	 * @return
+	 */
+	String minusDeread(int mdlid, int minus);
+	
+	/**
+	 * 将扣费记录中的一部分水量转移到虚表中
+	 * @param mdlid
+	 * @param tovirtual
+	 * @return
+	 */
+	String toVirtual(int mdlid, int tovirtual);
 }

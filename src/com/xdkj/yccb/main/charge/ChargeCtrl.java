@@ -313,4 +313,24 @@ public class ChargeCtrl {
 		 */
 		return chargeService.getDrawMeter(mid);
 	}
+	
+	@RequestMapping(value ="/charge/minusDeread",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String minusDeread(HttpServletRequest request,int mdlid,int minus){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 32, "mdlid:"+mdlid+"~minus:"+minus);
+		
+		return chargeService.minusDeread(mdlid, minus);
+	}
+	
+	@RequestMapping(value ="/charge/toVirtual",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String toVirtual(HttpServletRequest request,int mdlid,int tovirtual){
+		
+		//log
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 33, "mdlid:"+mdlid+"~tovirtual:"+tovirtual);
+		
+		return chargeService.toVirtual(mdlid, tovirtual);
+	}
 }

@@ -202,10 +202,14 @@ $(function(){
 	        		return row.meterread-row.lastderead;
 	        	}
 	          }},
-	        {field:'demoney',title:'<fmt:message key='demoney'/>',width:80}<c:if test="${menus['undo']=='t'}"> ,
+	        {field:'demoney',title:'<fmt:message key='demoney'/>',width:80}
+	        <c:if test="${menus['undo']=='t'}">,
 	      	{field:'action',title:'<fmt:message key='common.action'/>',width:90,halign:'center',align:'center',formatter: function(value,row,index){
-				return "<a href='#' class='operateHref' onclick='cancleCost("+row.mdl_id+","+index+")' ><fmt:message key='undo'/></a>";
-	  		}}</c:if>
+				return "<a href='#' class='operateHref' onclick='cancleCost("+row.mdl_id+","+index+")' ><fmt:message key='undo'/></a>"
+				+"<a class='operateHref' onclick='minusDeread("+row.mdl_id+","+index+")'>减免</a>"
+				+"<a class='operateHref' onclick='toVirtual("+row.mdl_id+","+index+")'>转到虚表</a>";;
+	  		}}
+	        </c:if>
 	    ]],
 	});
 });
@@ -635,6 +639,68 @@ $(function(){
 				});
 			}
 		});
+	}
+	
+	function minusDeread(mdlid,index_) {
+		$.messager.prompt('水费减免', '请输入水费减免吨数', function(r){
+	        if (r){
+				if(r >= 0 && r <= 999999){
+					$.ajax({
+						type:"POST",
+						url:"${path}/charge/minusDeread.do",
+						dataType:"json",
+						data:{
+							mdlid:mdlid,
+							minus:r
+						},
+						success:function(data){
+							if (data == 1) {
+								loadCust();
+							} else {
+								$.messager.show({
+									title : 'Info',
+									msg : '<fmt:message key='common.updatefail'/>',
+									showType : 'slide'
+								});
+							}
+						}
+					});
+				}else{
+					 $.messager.alert('Error','请输入正确的减免吨数');
+				}
+	        }
+	    });
+	}
+	
+	function toVirtual(mdlid,index_) {
+		$.messager.prompt('转到虚表', '请输入转到虚表吨数', function(r){
+	        if (r){
+				if(r >= 0 && r <= 999999){
+					$.ajax({
+						type:"POST",
+						url:"${path}/charge/toVirtual.do",
+						dataType:"json",
+						data:{
+							mdlid:mdlid,
+							tovirtual:r
+						},
+						success:function(data){
+							if (data == 1) {
+								loadCust();
+							} else {
+								$.messager.show({
+									title : 'Info',
+									msg : '<fmt:message key='common.updatefail'/>',
+									showType : 'slide'
+								});
+							}
+						}
+					});
+				}else{
+					 $.messager.alert('Error','请输入正确的转到虚表吨数');
+				}
+	        }
+	    });
 	}
 	
 	var option = {

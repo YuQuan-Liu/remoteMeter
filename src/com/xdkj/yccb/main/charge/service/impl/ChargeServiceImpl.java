@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xdkj.yccb.main.adminor.dao.BasicpriceDAO;
 import com.xdkj.yccb.main.charge.dao.CustompaylogDAO;
 import com.xdkj.yccb.main.charge.dto.CustomerpaylogView;
 import com.xdkj.yccb.main.charge.dto.MeterDereadMonth;
@@ -23,6 +24,7 @@ import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
+import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
 import com.xdkj.yccb.main.statistics.dto.MeterdeductionlogView;
@@ -37,6 +39,8 @@ public class ChargeServiceImpl implements ChargeService {
 	private MeterDeductionLogDao meterDeductionLogDao;
 	@Autowired
 	private MeterDao meterDao;
+	@Autowired
+	private BasicpriceDAO basicpriceDAO;
 
 	@Override
 	public String updatePayment(int cstId, int prePaySign) {
@@ -120,7 +124,7 @@ public class ChargeServiceImpl implements ChargeService {
 				meterDeductionLogDao.updateMeterductionLog(mdl);
 				meterDao.updateDeread(mdl.getMeter().getPid(), mdl.getLastDeRead(), mdl.getLastDeTime());
 				BigDecimal pay = mdl.getDeMoney();
-				//将交给额加至Customer 余额 CustomerBalance
+				//将交费额加至Customer 余额 CustomerBalance
 				custDAO.updateCustomerBalance(pay, custId);
 				//插入操作记录
 				
@@ -168,6 +172,91 @@ public class ChargeServiceImpl implements ChargeService {
 	public String updateDeread(int m_id, int deread) {
 		
 		return meterDao.updateDeread(m_id, deread)+"";
+	}
+
+	@Override
+	public String minusDeread(int mdlid, int minus) {
+		//一条扣费记录 只能减免一次
+		Meterdeductionlog mdl = meterDeductionLogDao.getById(mdlid);
+		BigDecimal basicprice = basicpriceDAO.getFirstSum(mdl.getPricekind().getPid());
+		if(mdl.getMinusDeread() == 0){
+			mdl.setMinusDeread(minus);
+			
+			BigDecimal minusdemoney = basicprice.multiply(new BigDecimal(minus));
+			mdl.setDeMoney(mdl.getDeMoney().subtract(minusdemoney));
+			//更新扣费记录
+			meterDeductionLogDao.updateMeterductionLog(mdl);
+
+			//将交费额加至Customer 余额 CustomerBalance
+			int cid = mdl.getMeter().getCustomer().getPid();
+			custDAO.updateCustomerBalance(minusdemoney, cid);
+			return "1";
+		}else{
+			//已经减免过了  错了  重新减免一次  
+			BigDecimal old_minusdemoney = basicprice.multiply(new BigDecimal(mdl.getMinusDeread()));
+			mdl.setMinusDeread(minus);
+			BigDecimal new_minusdemoney = basicprice.multiply(new BigDecimal(minus));
+			mdl.setDeMoney(mdl.getDeMoney().add(old_minusdemoney).subtract(new_minusdemoney));
+			//更新扣费记录
+			meterDeductionLogDao.updateMeterductionLog(mdl);
+			//将交费额加至Customer 余额 CustomerBalance
+			int cid = mdl.getMeter().getCustomer().getPid();
+			custDAO.updateCustomerBalance(new_minusdemoney.subtract(old_minusdemoney), cid);
+			return "1";
+		}
+		
+	}
+
+	@Override
+	public String toVirtual(int mdlid, int tovirtual) {
+		//查看当前用户下是否有虚表
+		Meterdeductionlog mdl = meterDeductionLogDao.getById(mdlid);
+		Meter m = mdl.getMeter();
+		if(m.getMeterSolid() == 0){
+			return "0";
+		}
+		
+		Customer c = mdl.getMeter().getCustomer();
+		List<Meter> list = custDAO.getMeterListByCid(c.getPid()+"");
+		int virtual = 0;
+		for(int i = 0;i < list.size();i++){
+			Meter m_= list.get(i);
+			if(m_.getMeterSolid() == 0){
+				virtual = 1;
+				break;
+			}
+		}
+		
+		if(virtual == 0){
+			return "0";
+		}
+		
+		BigDecimal basicprice = basicpriceDAO.getFirstSum(mdl.getPricekind().getPid());
+		//一条扣费记录 只能转移一次
+		if(mdl.getToVirtual()==0){
+			
+			mdl.setToVirtual(tovirtual);
+			
+			BigDecimal tovirtualdemoney = basicprice.multiply(new BigDecimal(tovirtual));
+			mdl.setDeMoney(mdl.getDeMoney().subtract(tovirtualdemoney));
+			//更新扣费记录
+			meterDeductionLogDao.updateMeterductionLog(mdl);
+
+			//将交费额加至Customer 余额 CustomerBalance
+			custDAO.updateCustomerBalance(tovirtualdemoney, c.getPid());
+			return "1";
+		}else{
+			//已经转到虚表过了  错了  重新转一次  
+			BigDecimal old_tovirtualdemoney = basicprice.multiply(new BigDecimal(mdl.getToVirtual()));
+			mdl.setToVirtual(tovirtual);
+			BigDecimal new_tovirtualdemoney = basicprice.multiply(new BigDecimal(tovirtual));
+			mdl.setDeMoney(mdl.getDeMoney().add(old_tovirtualdemoney).subtract(new_tovirtualdemoney));
+			//更新扣费记录
+			meterDeductionLogDao.updateMeterductionLog(mdl);
+			//将交费额加至Customer 余额 CustomerBalance
+			custDAO.updateCustomerBalance(new_tovirtualdemoney.subtract(old_tovirtualdemoney), c.getPid());
+			return "1";
+		}
 	}
 	
 }

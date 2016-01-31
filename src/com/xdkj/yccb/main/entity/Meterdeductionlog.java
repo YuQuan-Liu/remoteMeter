@@ -42,6 +42,9 @@ public class Meterdeductionlog implements java.io.Serializable {
 	private char printed;
 	private Integer changend;
 	
+	private int minusDeread;
+	private int toVirtual;
+	
 	public Meterdeductionlog() {
 	}
 
@@ -93,6 +96,24 @@ public class Meterdeductionlog implements java.io.Serializable {
 
 	public void setMeterRead(int meterRead) {
 		this.meterRead = meterRead;
+	}
+	
+	@Column(name = "minusDeread", nullable = false)
+	public int getMinusDeread() {
+		return minusDeread;
+	}
+
+	public void setMinusDeread(int minusDeread) {
+		this.minusDeread = minusDeread;
+	}
+
+	@Column(name = "toVirtual", nullable = false)
+	public int getToVirtual() {
+		return toVirtual;
+	}
+
+	public void setToVirtual(int toVirtual) {
+		this.toVirtual = toVirtual;
 	}
 
 	@Temporal(TemporalType.TIMESTAMP)

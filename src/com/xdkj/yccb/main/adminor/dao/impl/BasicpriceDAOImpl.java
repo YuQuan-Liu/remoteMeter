@@ -1,5 +1,6 @@
 package com.xdkj.yccb.main.adminor.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -26,6 +27,13 @@ public class BasicpriceDAOImpl extends HibernateDAO<Basicprice> implements Basic
 	public void delete(int bpId) {
 		String hql = "update Basicprice bp set bp.valid='0' ";
 		getSession().createQuery(hql).executeUpdate();
+	}
+
+	@Override
+	public BigDecimal getFirstSum(int pkid) {
+		String sql = "select sum(BasicPriceFirst) from basicprice " +
+				"where pricekindid = :pkid";
+		return (BigDecimal) getSession().createSQLQuery(sql).setInteger("pkid", pkid).uniqueResult();
 	}
 
 }
