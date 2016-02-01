@@ -644,9 +644,18 @@ $(function(){
 	}
 	
 	function minusDeread(mdlid,index_) {
+		var changeend = $('#costInfoTab').datagrid('getRows')[index_]["changeend"];
+		var meterread = $('#costInfoTab').datagrid('getRows')[index_]["meterread"];
+		var lastderead = $('#costInfoTab').datagrid('getRows')[index_]["lastderead"];
+		var yl = 0;
+		if(changeend > 0){
+   	  		yl = meterread+changeend-lastderead;
+    	}else{
+    		yl = meterread-lastderead;
+    	}
 		$.messager.prompt('水费减免', '请输入水费减免吨数', function(r){
 	        if (r){
-				if(r >= 0 && r <= 999999){
+				if(r >= 0 && r <= yl){
 					$.ajax({
 						type:"POST",
 						url:"${path}/charge/minusDeread.do",
@@ -675,9 +684,18 @@ $(function(){
 	}
 	
 	function toVirtual(mdlid,index_) {
+		var changeend = $('#costInfoTab').datagrid('getRows')[index_]["changeend"];
+		var meterread = $('#costInfoTab').datagrid('getRows')[index_]["meterread"];
+		var lastderead = $('#costInfoTab').datagrid('getRows')[index_]["lastderead"];
+		var yl = 0;
+		if(changeend > 0){
+   	  		yl = meterread+changeend-lastderead;
+    	}else{
+    		yl = meterread-lastderead;
+    	}
 		$.messager.prompt('转到虚表', '请输入转到虚表吨数', function(r){
 	        if (r){
-				if(r >= 0 && r <= 999999){
+				if(r >= 0 && r <= yl){
 					$.ajax({
 						type:"POST",
 						url:"${path}/charge/toVirtual.do",
