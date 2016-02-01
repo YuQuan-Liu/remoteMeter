@@ -212,7 +212,7 @@ function configPageGprs(pid){
 	$('#configGprsWin').window({	
 		href:'${path}/infoin/neighbor/configPageGprs.do?pid='+pid,
 		width:550,	
-		height:700,
+		height:500,
 		minimizable:false,
 		maximizable:false,
 		title: '<fmt:message key='common.config'/>'

@@ -34,7 +34,7 @@
  		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="querygprsslave()" >查询底层类型</a>
  	</div>
  	
- 	<table id="gprsmetersTbl" style="width:100%;height:500px;"></table>
+ 	<table id="gprsmetersTbl" style="width:100%;height:300px;"></table>
  </c:if>
  <c:if test="${gprs.gprsprotocol!=2 }">
  	<div style="margin:10px;">
