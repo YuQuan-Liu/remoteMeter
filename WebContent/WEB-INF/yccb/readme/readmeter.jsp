@@ -114,9 +114,9 @@ $(function(){
 		          {field:'action',title:'<fmt:message key='common.action'/>',width:200,halign:'center',align:'center',
 						formatter: function(value,row,index){
 							var id = row.m_id;
-							var action = "<fmt:message key='m.open'/>";
-							if(row.valveState == 1){
-								action = "<fmt:message key='m.close'/>";
+							var action = "<fmt:message key='m.close'/>";
+							if(row.valveState == 0){
+								action = "<fmt:message key='m.open'/>";
 							}
 							
 							return "<a href='#' class='operateHref' onclick='readMeter("+id+","+index+")'><fmt:message key='read'/></a><c:if test="${menus['readvalve']=='t'}"><a href='#' class='operateHref' onclick='openValve("+id+","+index+")'>"+action+" </a></c:if><a href='#' class='operateHref' onclick='readMeterManual("+id+","+index+")'><fmt:message key='common.update'/></a>";
@@ -317,10 +317,10 @@ function showNeighborWaste(readlogid){
 function openValve(mid,index_){
 	var valveState = $('#readmeterTab').datagrid('getRows')[index_]["valveState"];
 	var control = 0;
-	if(valveState == 1){
-		control = 0;
-	}else{
+	if(valveState == 0){
 		control = 1;
+	}else{
+		control = 0;
 	}
 	$.ajax({
 		type:"POST",

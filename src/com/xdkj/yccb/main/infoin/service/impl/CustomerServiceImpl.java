@@ -246,6 +246,7 @@ public class CustomerServiceImpl implements CustomerService {
 		if(!done){
 			//add the meter
 			Meter m = new Meter();
+			mv.setDestartread(0);
 			try {
 				BeanUtils.copyProperties(m, mv);
 			} catch (IllegalAccessException e) {
