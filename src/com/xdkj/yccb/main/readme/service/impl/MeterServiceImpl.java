@@ -97,7 +97,7 @@ public class MeterServiceImpl implements MeterService {
 				jo = new JSONObject();
 				ja_data = new JSONArray();
 				for(int j = 0;j < 24;j++){
-					ja_data.add(i, 0);
+					ja_data.add(j, 0);
 				}
 				jo.put("id", vip.getM_id());
 				jo.put("meteraddr", vip.getMeterAddr());
@@ -125,7 +125,7 @@ public class MeterServiceImpl implements MeterService {
 				jo = new JSONObject();
 				ja_data = new JSONArray();
 				for(int j = 0;j < 31;j++){
-					ja_data.add(i, 0);
+					ja_data.add(j, 0);
 				}
 				jo.put("id", vip.getM_id());
 				jo.put("meteraddr", vip.getMeterAddr());
