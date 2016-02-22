@@ -51,6 +51,8 @@ public class ReadExportDefault extends AbstractExcelView{
 		setText(cell, "表读数");
 		cell = getCell(sheet, 0, 8);
 		setText(cell, "抄表时间");
+		cell = getCell(sheet, 0, 9);
+		setText(cell, "序列号");
 		
 		
 		List<ReadView> list = (List<ReadView>) model.get("list");
@@ -108,7 +110,9 @@ public class ReadExportDefault extends AbstractExcelView{
 				case 8:
 					setText(cell, readView.getReadtime());
 					break;
-					
+				case 9:
+					setText(cell, readView.getM_id()+"");
+					break;
 				default:
 					break;
 				}
