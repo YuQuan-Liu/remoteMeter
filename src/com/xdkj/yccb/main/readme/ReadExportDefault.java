@@ -59,7 +59,7 @@ public class ReadExportDefault extends AbstractExcelView{
 		ReadView readView = null;
 		for(int i = 0;i < list.size();i++){
 			readView = list.get(i);
-			for(int j = 0;j< 9;j++){
+			for(int j = 0;j< 10;j++){
 				cell = getCell(sheet, i+1, j);
 				switch (j) {
 				case 0:
@@ -101,7 +101,11 @@ public class ReadExportDefault extends AbstractExcelView{
 					break;
 				case 6:
 //					setText(cell, readView.getReaddata()+"");
-					cell.setCellValue(readView.getCollectorAddr()+String.format("%03d",Integer.parseInt(readView.getMeterAddr())));
+					if(readView.getMeterAddr().length()>3){
+						cell.setCellValue(readView.getMeterAddr());
+					}else{
+						cell.setCellValue(readView.getCollectorAddr()+String.format("%03d",Integer.parseInt(readView.getMeterAddr())));
+					}
 					break;
 				case 7:
 //					setText(cell, readView.getReaddata()+"");
