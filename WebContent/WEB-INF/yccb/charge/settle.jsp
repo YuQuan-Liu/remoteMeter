@@ -106,6 +106,7 @@ $(function(){
 		          {field:'readdata',title:'<fmt:message key='m.readdata'/>',width:80},
 		          {field:'changeend',title:'<fmt:message key='m.changeend'/>',width:80},
 		          {field:'readtime',title:'<fmt:message key='m.readtime'/>',width:80},
+		          {field:'pkName',title:'<fmt:message key='price.name'/>',width:80},
 		          {field:'yl',title:'<fmt:message key='yl'/>',width:80,formatter:function(value,row,index){
 		        	  if(row.changeend > 0){
 		        		  return row.readdata+row.changeend-row.deread;

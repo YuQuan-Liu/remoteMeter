@@ -31,6 +31,14 @@ public class SettleView {
 
 	private int changeend;
 	
+	private String pkName;
+	
+	public String getPkName() {
+		return pkName;
+	}
+	public void setPkName(String pkName) {
+		this.pkName = pkName;
+	}
 	public int getChangeend() {
 		return changeend;
 	}
