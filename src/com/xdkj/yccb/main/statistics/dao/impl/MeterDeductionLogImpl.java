@@ -719,7 +719,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				"join meterkind mk " +
 				"on m.MeterKindID = mk.pid " +
 				"where mdl.valid = 1 and m.valid = 1 and c.valid = 1 and mdl.settlelogid = :settle_id and c.neighborid = :n_id " +
-				"order by length(HuNum),HuNum";
+				"order by length(HuNum),HuNum,m.pid ";
 		
 		Query q = getSession().createSQLQuery(SQL)
 				.addScalar("c_id",Hibernate.INTEGER)
