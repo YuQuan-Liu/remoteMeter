@@ -510,7 +510,7 @@ $(function(){
 	function updateDeread(mid,index_,old_deread){
 		$.messager.prompt('更新扣费读数', '请输入新的扣费读数', function(r){
 	        if (r){
-				if(r >= 0 && r <= 999999){
+				if(r >= 0){
 					$.ajax({
 						type:"POST",
 						url:"${path}/charge/updateDeread.do",

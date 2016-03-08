@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="postcharge" pageWidth="456" pageHeight="263" orientation="Landscape" columnWidth="344" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28" uuid="bbe45d05-e959-4344-a55e-6b09bdb63cb7">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="2.000000000000001"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="header" class="java.lang.String"/>
@@ -180,13 +180,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
-				<textField isBlankWhenNull="true">
-					<reportElement uuid="2ea678e5-f1a1-43e5-8d37-7114b11949f3" positionType="Float" x="228" y="112" width="84" height="14"/>
-					<textElement verticalAlignment="Middle">
-						<font fontName="宋体"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$F{pkName}]]></textFieldExpression>
-				</textField>
 				<textField pattern="yyyy/MM/dd" isBlankWhenNull="true">
 					<reportElement uuid="38d07cd7-7d9d-43b8-8b80-c9d6787845e4" x="228" y="6" width="91" height="14"/>
 					<textElement verticalAlignment="Middle">
@@ -270,6 +263,13 @@
 						<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{steelNum}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="0133f6fd-2bc5-493d-9b9a-b40327ff989a" positionType="Float" x="228" y="112" width="84" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{pkName}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

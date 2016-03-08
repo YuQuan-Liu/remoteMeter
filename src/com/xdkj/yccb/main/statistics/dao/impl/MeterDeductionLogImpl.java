@@ -673,7 +673,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 		String SQL = "select mk.metermm kj,mdl.meterread this_,mdl.lastderead last,mdl.changend,mdl.minusderead,mdl.tovirtual,mdl.pricekindid pkid from meterdeductionlog mdl " +
 				"join meter m on m.pid = mdl.meterid " +
 				"join meterkind mk on m.MeterKindID = mk.pid " +
-				"where m.customerid = :cid and mdl.settlelogid = :settlelog " +
+				"where m.customerid = :cid and mdl.settlelogid = :settlelog and mdl.valid = 1 " +
 				"order by mdl.pricekindid ";
 		List<QYMeters> list = null;
 		Query q = getSession().createSQLQuery(SQL)
