@@ -95,6 +95,14 @@ public class JM_1ExportReadImpl implements ExportRead {
 			for(int i =0;i<list.size();i++){
 				view = list.get(i);
 				Date readtime = df.parse(view.getReadtime());
+				String[] ldh = view.getC_num().split("-");
+				String c_addr="";
+				if(ldh.length==3){
+					c_addr = name+ldh[0]+"楼"+ldh[1]+"单元"+ldh[2];
+				}else{
+					c_addr = name+view.getC_num();
+				}
+				
 				Object[] record = { 
 						i,//new JDBField("DOWN_ORDER", 'N', 7, 0),
 						i,//new JDBField("COPY_ORDER", 'N', 7, 0),
@@ -103,7 +111,7 @@ public class JM_1ExportReadImpl implements ExportRead {
 						view.getM_apid(),//new JDBField("C_CODE", 'C', 20, 0),
 						"",//new JDBField("UP_CODE", 'C', 20, 0),
 						"",//new JDBField("C_NAME", 'C', 80, 0),
-						view.getC_num(),//new JDBField("C_ADDR", 'C', 80, 0),
+						c_addr,//new JDBField("C_ADDR", 'C', 80, 0),
 						"",//new JDBField("C_PHONE", 'C', 20, 0),
 						"",//new JDBField("COPIER", 'C', 12, 0),
 						"",//new JDBField("LINKMAN", 'C', 12, 0),
