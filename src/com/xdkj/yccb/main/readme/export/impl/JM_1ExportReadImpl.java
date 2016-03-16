@@ -136,7 +136,7 @@ public class JM_1ExportReadImpl implements ExportRead {
 						0,//new JDBField("LOW", 'N', 7, 0),
 						0,//new JDBField("ZTID", 'N', 4, 0),
 						"1",//new JDBField("ZTMC", 'C', 20, 0),
-						"",//new JDBField("SBDZ", 'C', 40, 0),
+						c_addr,//new JDBField("SBDZ", 'C', 40, 0),
 						(Integer.parseInt(view.getCollectorAddr())-1)*256+Integer.parseInt(view.getMeterAddr())+""};//new JDBField("FAC", 'C', 20, 0)};
 				dbfwriter.addRecord(record);
 			}
