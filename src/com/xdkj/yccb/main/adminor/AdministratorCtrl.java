@@ -87,7 +87,7 @@ public class AdministratorCtrl {
 		if(admin.getDepartment().getPid() == null){
 			admin.setDepartment(null);
 		}
-		
+		admin.setSid(1);  //默认的监督ID为系统第一个  暂时不允许用户自己定义   需要修改联系西岛
 		//log
 		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 1, admin.toString()+"roleid"+roleid);
 		

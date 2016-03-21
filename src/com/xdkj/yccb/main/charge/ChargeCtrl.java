@@ -25,13 +25,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.TransRMB;
 import com.xdkj.yccb.common.WebUtil;
+import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
+import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.adminor.service.PriceService;
 import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
 import com.xdkj.yccb.main.charge.dto.CustomerpaylogView;
 import com.xdkj.yccb.main.charge.dto.PostCharge;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.service.ChargeService;
+import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Customerpaylog;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
@@ -64,6 +67,8 @@ public class ChargeCtrl {
 	private WaterCompanyService waterCompanyService;
 	@Autowired
 	private ActionLogService actionLogService;
+	@Autowired
+	private AdministratorService adminService;
 	
 	/**
 	 * 跳转收费页面
@@ -182,12 +187,21 @@ public class ChargeCtrl {
 	
 	@RequestMapping(value ="/charge/updateDeread")
 	@ResponseBody
-	public String updateDeread(HttpServletRequest request,int deread,int m_id,int old){
+	public String updateDeread(HttpServletRequest request,int deread,int m_id,int old,String pwd){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 31, "mid:"+m_id+"~deread:"+deread+"~old:"+old);
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 31, "mid:"+m_id+"~deread:"+deread+"~old:"+old+"~pwd:"+pwd);
 		
-		return chargeService.updateDeread(m_id, deread);
+		Admininfo admininfo = adminService.getById(WebUtil.getCurrUser(request).getPid()+"");
+		Admininfo sadmininfo = adminService.getById(admininfo.getSid()+"");
+		
+		String result = "0";
+		if(new Md5PwdEncoder().encodePassword(pwd).equals(sadmininfo.getLoginKey())){
+			result = chargeService.updateDeread(m_id, deread);
+		}else{
+			result = "2";
+		}
+		return result;
 	}
 	
 	@RequestMapping(value="/cahrge/canclePay")

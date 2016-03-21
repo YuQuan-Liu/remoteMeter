@@ -90,6 +90,30 @@
 	</div>
 	<table id="costInfoTab" style="width:100%;height:100px;"></table>
 	
+	<div id="dereadDialog" class="easyui-dialog" title="更改扣费读数" style="width:400px;height:200px;" data-options="iconCls:'icon-edit',closed:true,resizable:true,modal:true">
+		
+		<table style="width:300px;margin-left:20px;margin-top:20px;line-height:24px;text-align:center">
+			<tr>
+				<td><label>新扣费读数：</label></td>
+				<td><input type="text" name="newderead" id="newderead"/></td>
+			</tr>
+			<tr>
+				<td><label>监督密码：</label></td>
+				<td><input type="password" name="depassword" id="depassword"/></td>
+			</tr>
+			<tr>
+				<td colspan="2" >
+					<input name="submitderead" type="button" id="submitderead" value="修改" onclick="submit_deread()">
+					<input type="hidden" id="deread_mid">
+					<input type="hidden" id="deread_old">
+					<input type="hidden" id="deread_index">
+				</td>
+			</tr>
+		</table>
+		
+		
+	</div>
+	
 <!-- 	<div id="meterCurveWin"></div> -->
 	<div id="meterChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;"></div>
 <script type="text/javascript">
@@ -507,41 +531,55 @@ $(function(){
 		});
 	}
 	
-	function updateDeread(mid,index_,old_deread){
-		$.messager.prompt('更新扣费读数', '请输入新的扣费读数', function(r){
-	        if (r){
-				if(r >= 0){
-					$.ajax({
-						type:"POST",
-						url:"${path}/charge/updateDeread.do",
-						dataType:"json",
-						data:{
-							m_id:mid,
-							deread:r,
-							old:old_deread
-						},
-						success:function(data){
-							if (data == 1) {
-								$.messager.show({
-									title : 'Info',
-									msg : '<fmt:message key='common.updateok'/>',
-									showType : 'slide'
-								});
-								$("#custMeters").datagrid('updateRow', {index:index_,row:{deRead:r}});
-							} else {
-								$.messager.show({
-									title : 'Info',
-									msg : '操作失败',
-									showType : 'slide'
-								});
-							}
-						}
-					});
-				}else{
-					 $.messager.alert('Error','请输入正确的扣费读数');
+	function submit_deread(){
+		var newderead = $('#newderead').val();
+		var old_deread = $('#deread_old').val();
+		var depassword = $('#depassword').val();
+		var mid = $('#deread_mid').val();
+		var index_ = $('#deread_index').val();
+		
+		console.log(newderead+"~"+old_deread+"~"+depassword+"~"+mid+"~"+index_);
+		
+		if(newderead >= 0 && depassword != ""){
+			$.ajax({
+				type:"POST",
+				url:"${path}/charge/updateDeread.do",
+				dataType:"json",
+				data:{
+					m_id:mid,
+					deread:newderead,
+					old:old_deread,
+					pwd:depassword
+				},
+				success:function(data){
+					$('#dereadDialog').window('close');
+					if (data == 1) {
+						$.messager.show({
+							title : 'Info',
+							msg : '<fmt:message key='common.updateok'/>',
+							showType : 'slide'
+						});
+						$("#custMeters").datagrid('updateRow', {index:index_,row:{deRead:newderead}});
+					} else {
+						$.messager.show({
+							title : 'Info',
+							msg : '操作失败',
+							showType : 'slide'
+						});
+					}
 				}
-	        }
-	    });
+			});
+		}else{
+			 $.messager.alert('Error','请输入正确的扣费读数密码');
+		}
+	}
+	
+	function updateDeread(mid,index_,old_deread){
+		
+		$('#dereadDialog').window('open');
+		$('#deread_mid').val(mid);
+		$('#deread_index').val(index_);
+		$('#deread_old').val(old_deread);
 	}
 	
 	function meterQX(meterId) {

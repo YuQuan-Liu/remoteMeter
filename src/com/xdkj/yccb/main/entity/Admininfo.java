@@ -42,6 +42,7 @@ public class Admininfo implements java.io.Serializable {
 	private Set<Useractionlog> useractionlogs = new HashSet<Useractionlog>(0);
 	private Set<Settlelog> settlelogs = new HashSet<Settlelog>(0);*/
 	private Set<AdminRole> adminRoles = new HashSet<AdminRole>(0);
+	private int sid;
 
 	public Admininfo() {
 	}
@@ -219,6 +220,15 @@ public class Admininfo implements java.io.Serializable {
 
 	public void setAdminRoles(Set<AdminRole> adminRoles) {
 		this.adminRoles = adminRoles;
+	}
+
+	@Column(name = "sid", nullable = false)
+	public int getSid() {
+		return sid;
+	}
+
+	public void setSid(int sid) {
+		this.sid = sid;
 	}
 
 	@Override
