@@ -1,6 +1,7 @@
 package com.xdkj.yccb.main.statistics;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
+import com.xdkj.yccb.main.statistics.dto.StepYL;
 import com.xdkj.yccb.main.statistics.service.PayLogService;
 import com.xdkj.yccb.security.UserForSession;
 
@@ -64,6 +66,14 @@ public class LouCtrl {
 	public String listsettledyl(int n_id, int settle_id,int pre, String lou){
 		
 		return JSON.toJSONString(settleService.getLouSettledYL(n_id,settle_id,pre,lou));
+	}
+	
+	@RequestMapping(value="/statistics/lou/listjietiyl",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String listjietiyl(int n_id, int settle_id,int pre, String lou){
+		List<StepYL> step = new ArrayList<StepYL>();
+		step.add(settleService.getJietiYL(n_id,settle_id,pre,lou));
+		return JSON.toJSONString(step);
 	}
 	
 	@RequestMapping(value="/statistics/lou/print")

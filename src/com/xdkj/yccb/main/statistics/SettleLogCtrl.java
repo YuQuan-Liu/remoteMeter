@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.statistics;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
 import com.xdkj.yccb.main.statistics.dto.NeighborBalance;
+import com.xdkj.yccb.main.statistics.dto.StepYL;
 import com.xdkj.yccb.main.statistics.service.PayLogService;
 import com.xdkj.yccb.security.UserForSession;
 
@@ -60,6 +62,14 @@ public class SettleLogCtrl {
 	public String listsettledyl(int n_id, int settle_id,int pre){
 		
 		return JSON.toJSONString(settleService.getSettledYL(n_id,settle_id,pre));
+	}
+	
+	@RequestMapping(value="/statistics/settlelog/listjietiyl",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String listjietiyl(int n_id, int settle_id,int pre){
+		List<StepYL> step = new ArrayList<StepYL>();
+		step.add(settleService.getJietiYL(n_id,settle_id,pre));
+		return JSON.toJSONString(step);
 	}
 	
 	@RequestMapping(value="/statistics/settlelog/print")

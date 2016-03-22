@@ -37,7 +37,15 @@ public class SettledView {
 	private int changeend;
 	private int minusderead;
 	private int tovirtual;
+	private String formula;
 	
+	
+	public String getFormula() {
+		return formula;
+	}
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
 	public int getMinusderead() {
 		return minusderead;
 	}

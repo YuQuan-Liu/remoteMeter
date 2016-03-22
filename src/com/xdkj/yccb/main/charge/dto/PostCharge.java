@@ -19,7 +19,15 @@ public class PostCharge {
 	private String cnDemoney;
 	private String pkName;
 	private String steelNum;
+	private String formula;
 	
+	
+	public String getFormula() {
+		return formula;
+	}
+	public void setFormula(String formula) {
+		this.formula = formula;
+	}
 	public int getPkid() {
 		return pkid;
 	}

@@ -22,6 +22,7 @@
 	<field name="pkName" class="java.lang.String"/>
 	<field name="cnDemoney" class="java.lang.String"/>
 	<field name="steelNum" class="java.lang.String"/>
+	<field name="formula" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -270,6 +271,20 @@
 						<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{pkName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="2def4ce6-e087-4559-bf24-550a03a16ee2" positionType="Float" x="167" y="59" width="50" height="14"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[阶梯：]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="fd96be6c-9138-4836-a924-3058ee6b9c30" positionType="Float" x="228" y="59" width="91" height="14"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{formula}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>

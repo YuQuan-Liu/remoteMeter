@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="deductionlog" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" uuid="2aa894cc-5f98-4ba3-88a7-ad0166014ebe">
-	<property name="ireport.zoom" value="1.239669421487607"/>
+	<property name="ireport.zoom" value="1.6500000000000052"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="139"/>
 	<parameter name="header" class="java.lang.String"/>
 	<parameter name="sub_dir" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\Java_Workspace\\remoteMeter\\WebContent\\WEB-INF\\yccb\\reports\\"]]></defaultValueExpression>
@@ -43,6 +43,7 @@
 	<field name="changeend" class="java.lang.Integer"/>
 	<field name="pricekindname" class="java.lang.String"/>
 	<field name="demoney" class="java.math.BigDecimal"/>
+	<field name="formula" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -102,7 +103,7 @@
 				<text><![CDATA[地址]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="823fe0bc-1363-48fc-a9f9-34c067a0cbad" x="169" y="1" width="50" height="20"/>
+				<reportElement uuid="823fe0bc-1363-48fc-a9f9-34c067a0cbad" x="169" y="1" width="40" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -116,7 +117,7 @@
 				<text><![CDATA[余额]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="87527926-69d8-4bbc-bc7f-c13d573b036b" x="319" y="1" width="47" height="20"/>
+				<reportElement uuid="87527926-69d8-4bbc-bc7f-c13d573b036b" x="309" y="1" width="34" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -127,7 +128,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
-				<text><![CDATA[换表底数]]></text>
+				<text><![CDATA[换表]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="d792fe48-5bb9-47c6-850b-ece16ad95784" x="515" y="1" width="40" height="20"/>
@@ -144,7 +145,7 @@
 				<text><![CDATA[付费]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8fd6a625-a49b-4267-b0d1-482a15455481" x="219" y="1" width="50" height="20"/>
+				<reportElement uuid="8fd6a625-a49b-4267-b0d1-482a15455481" x="209" y="1" width="50" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -158,7 +159,7 @@
 				<text><![CDATA[上次读数]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="be6b9b2b-84d0-42ae-844c-051c6e8224f5" x="269" y="1" width="50" height="20"/>
+				<reportElement uuid="be6b9b2b-84d0-42ae-844c-051c6e8224f5" x="259" y="1" width="50" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -172,7 +173,7 @@
 				<text><![CDATA[本次读数]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="1d36a41b-20ae-4b89-9b9c-cd54371d4e6e" x="366" y="1" width="51" height="20"/>
+				<reportElement uuid="1d36a41b-20ae-4b89-9b9c-cd54371d4e6e" x="343" y="1" width="84" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -186,7 +187,7 @@
 				<text><![CDATA[用量]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="189f4e89-3083-4d4d-a5d0-bed84ca1ee58" x="417" y="1" width="53" height="20"/>
+				<reportElement uuid="189f4e89-3083-4d4d-a5d0-bed84ca1ee58" x="427" y="1" width="43" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -260,7 +261,7 @@
 				<textFieldExpression><![CDATA[$F{customerAddr}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="89c68ec5-d871-4662-94ae-fccfdf6b3e63" x="319" y="0" width="47" height="20"/>
+				<reportElement uuid="89c68ec5-d871-4662-94ae-fccfdf6b3e63" x="309" y="0" width="34" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -288,7 +289,7 @@
 				<textFieldExpression><![CDATA[$F{prePaySign}==1?"预":"后"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0ae20926-49d7-4a52-a660-f437ebe44774" x="219" y="0" width="50" height="20"/>
+				<reportElement uuid="0ae20926-49d7-4a52-a660-f437ebe44774" x="209" y="0" width="50" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -302,7 +303,7 @@
 				<textFieldExpression><![CDATA[$F{lastderead}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="d3610a85-4c60-4f0e-898a-cf0c13555f67" x="269" y="0" width="50" height="20"/>
+				<reportElement uuid="d3610a85-4c60-4f0e-898a-cf0c13555f67" x="259" y="0" width="50" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -316,7 +317,7 @@
 				<textFieldExpression><![CDATA[$F{meterread}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="7959cbd9-3801-41de-b590-1b6cc035986f" x="366" y="0" width="51" height="20"/>
+				<reportElement uuid="7959cbd9-3801-41de-b590-1b6cc035986f" x="343" y="0" width="84" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -327,10 +328,10 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{changeend}==0?$F{meterread}-$F{lastderead}:$F{changeend}-$F{lastderead}+$F{meterread}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{changeend}==0?$F{meterread}-$F{lastderead}:$F{changeend}-$F{lastderead}+$F{meterread})+"("+$F{formula}+")"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="df55c224-5913-4937-a8ff-9b32416ba22b" x="169" y="0" width="50" height="20"/>
+				<reportElement uuid="df55c224-5913-4937-a8ff-9b32416ba22b" x="169" y="0" width="40" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -344,7 +345,7 @@
 				<textFieldExpression><![CDATA[$F{customerBalance}.doubleValue()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="08737dcd-5eaf-482b-a8c1-d1496456a4da" x="417" y="0" width="53" height="20"/>
+				<reportElement uuid="08737dcd-5eaf-482b-a8c1-d1496456a4da" x="427" y="0" width="43" height="20"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -374,7 +375,7 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="218" splitType="Stretch">
+		<band height="331" splitType="Stretch">
 			<subreport>
 				<reportElement uuid="382b57ce-4f8f-436e-adb5-b1ac626a707f" x="19" y="24" width="240" height="59"/>
 				<dataSourceExpression><![CDATA[$P{settlesum}]]></dataSourceExpression>
@@ -388,24 +389,24 @@
 				<text><![CDATA[用量统计]]></text>
 			</staticText>
 			<textField>
-				<reportElement uuid="c385081c-c364-4687-8c8e-9956216cd734" positionType="Float" x="288" y="4" width="100" height="20"/>
+				<reportElement uuid="c385081c-c364-4687-8c8e-9956216cd734" positionType="Float" x="20" y="96" width="100" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{lou}!=null?"":"小区余额"]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement uuid="1d0b7ea5-fcc6-47ab-b267-0706689e3efb" positionType="Float" x="288" y="24" width="239" height="59"/>
+				<reportElement uuid="1d0b7ea5-fcc6-47ab-b267-0706689e3efb" positionType="Float" x="20" y="116" width="239" height="59"/>
 				<dataSourceExpression><![CDATA[$P{neighborbalance}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{sub_dir} + "neighborbalance.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
-				<reportElement uuid="580f76e5-7932-4b5e-a47d-932477c204f3" positionType="Float" x="20" y="122" width="239" height="59"/>
+				<reportElement uuid="580f76e5-7932-4b5e-a47d-932477c204f3" positionType="Float" x="20" y="205" width="239" height="59"/>
 				<dataSourceExpression><![CDATA[$P{log_lou}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[$P{sub_dir} + "deductionlog_lou.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement uuid="eaefc92a-9de7-4fb4-874e-6ad12c9bc2ed" positionType="Float" x="19" y="102" width="240" height="20"/>
+				<reportElement uuid="eaefc92a-9de7-4fb4-874e-6ad12c9bc2ed" positionType="Float" x="19" y="185" width="240" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>

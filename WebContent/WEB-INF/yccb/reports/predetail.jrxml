@@ -23,6 +23,7 @@
 	<field name="meterreadtime" class="java.lang.String"/>
 	<field name="pricekindname" class="java.lang.String"/>
 	<field name="demoney" class="java.math.BigDecimal"/>
+	<field name="formula" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -132,7 +133,7 @@
 	<columnHeader>
 		<band height="16">
 			<staticText>
-				<reportElement uuid="8c478ac5-ebb3-449c-93a8-607b0949f27c" x="378" y="0" width="75" height="16"/>
+				<reportElement uuid="8c478ac5-ebb3-449c-93a8-607b0949f27c" x="392" y="0" width="61" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -146,7 +147,7 @@
 				<text><![CDATA[金额]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a62fb926-516f-46f6-a6d5-e66e425e467c" x="200" y="0" width="69" height="16"/>
+				<reportElement uuid="a62fb926-516f-46f6-a6d5-e66e425e467c" x="200" y="0" width="51" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -160,7 +161,7 @@
 				<text><![CDATA[抄表时间]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="806e0210-bbde-461f-8691-9e3245ca7abf" x="269" y="0" width="45" height="16"/>
+				<reportElement uuid="806e0210-bbde-461f-8691-9e3245ca7abf" x="251" y="0" width="37" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -216,7 +217,7 @@
 				<text><![CDATA[表号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="135c7b49-56c7-4c32-91bf-ecda86875c53" x="314" y="0" width="64" height="16"/>
+				<reportElement uuid="135c7b49-56c7-4c32-91bf-ecda86875c53" x="338" y="0" width="54" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -242,6 +243,20 @@
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<text><![CDATA[换表底数]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="799f482c-8a0d-40aa-98da-78ae84dad9d4" x="288" y="0" width="50" height="16"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[阶梯]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -304,7 +319,7 @@
 				<textFieldExpression><![CDATA[$F{changeend}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="1860fef0-bea0-464a-9662-a87c87ddbf16" x="200" y="0" width="69" height="16"/>
+				<reportElement uuid="1860fef0-bea0-464a-9662-a87c87ddbf16" x="200" y="0" width="51" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -318,7 +333,7 @@
 				<textFieldExpression><![CDATA[$F{meterreadtime}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="fa3e8f3d-f5b1-4382-9ed0-cb3b6f2bc7d6" x="269" y="0" width="45" height="16"/>
+				<reportElement uuid="fa3e8f3d-f5b1-4382-9ed0-cb3b6f2bc7d6" x="251" y="0" width="37" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -332,7 +347,7 @@
 				<textFieldExpression><![CDATA[$F{changeend}>0?($F{changeend}-$F{lastderead}+$F{meterread}):($F{meterread}-$F{lastderead})]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="1a7ff1cd-4dc2-409b-b98e-67dced8232e7" x="314" y="0" width="64" height="16"/>
+				<reportElement uuid="1a7ff1cd-4dc2-409b-b98e-67dced8232e7" x="338" y="0" width="54" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -346,7 +361,7 @@
 				<textFieldExpression><![CDATA[$F{pricekindname}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="15cddef3-f903-493c-8e93-65defd3ae6fd" x="378" y="0" width="75" height="16"/>
+				<reportElement uuid="15cddef3-f903-493c-8e93-65defd3ae6fd" x="392" y="0" width="61" height="16"/>
 				<box leftPadding="2">
 					<pen lineWidth="1.0"/>
 					<topPen lineWidth="1.0"/>
@@ -358,6 +373,20 @@
 					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{demoney}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="4739ec09-8b60-4017-829b-6f6ba3717293" x="288" y="0" width="50" height="16"/>
+				<box leftPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="宋体" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{formula}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

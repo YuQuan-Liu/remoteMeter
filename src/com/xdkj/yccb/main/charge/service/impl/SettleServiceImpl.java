@@ -22,6 +22,7 @@ import com.xdkj.yccb.main.readme.dao.MeterDao;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.ReadMeterLogDao;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
+import com.xdkj.yccb.main.statistics.dto.StepYL;
 
 @Service
 public class SettleServiceImpl implements SettleService {
@@ -198,6 +199,16 @@ public class SettleServiceImpl implements SettleService {
 	@Override
 	public List<QYSettledView> getQYSettledAll(int n_id, int settle_id) {
 		return meterDeductionLogDao.getQYLogAll(n_id,settle_id);
+	}
+
+	@Override
+	public StepYL getJietiYL(int n_id, int settle_id, int pre) {
+		return meterDeductionLogDao.getJietiYL(n_id,settle_id,pre);
+	}
+
+	@Override
+	public StepYL getJietiYL(int n_id, int settle_id, int pre, String lou) {
+		return meterDeductionLogDao.getJietiYL(n_id,settle_id,pre,lou);
 	}
 
 

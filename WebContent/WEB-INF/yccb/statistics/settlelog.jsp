@@ -44,6 +44,10 @@
 		<p><fmt:message key='neighborbalance'/></p>
 		<table id="nbalanceTab" style="width:400px;height:200px;"></table>
 	</div>
+	<div style="margin:10px;float:left;">
+		<p>阶梯统计</p>
+		<table id="jietiTab" style="width:400px;height:200px;"></table>
+	</div>
 	<script type="text/javascript">
 		$(function(){
 			$("#delogTab").datagrid({
@@ -112,6 +116,7 @@
 				        		  return row.meterread-row.lastderead;
 				        	  }
 				          }},
+				          {field:'formula',title:'阶梯',width:80},
 				          {field:'minusderead',title:'减免',width:80},
 						  {field:'tovirtual',title:'转到虚表',width:80},
 				          {field:'demoney',title:'<fmt:message key='demoney'/>',width:80},
@@ -140,6 +145,17 @@
 				          {field:'balance',title:'<fmt:message key='balance'/>',width:100}
 				      ]]
 			});
+			$("#jietiTab").datagrid({
+				striped:true,
+				method:'post',
+				loadMsg:'<fmt:message key="main.loading"/>',
+				rownumbers:true,
+				columns:[[
+				          {field:'firstyl',title:'一阶用量',width:100},
+				          {field:'secondyl',title:'二阶用量',width:100},
+				          {field:'thirdyl',title:'三阶用量',width:100}
+				      ]]
+			});
 		});
 		
 		function search_(){
@@ -166,6 +182,15 @@
 			
 			$('#ylTab').datagrid({
 				url:"${path}/statistics/settlelog/listsettledyl.do",
+				queryParams: {
+					n_id:n_id,
+					pre:pre,
+					settle_id:settle_id
+				}
+			});
+			
+			$('#jietiTab').datagrid({
+				url:"${path}/statistics/settlelog/listjietiyl.do",
 				queryParams: {
 					n_id:n_id,
 					pre:pre,

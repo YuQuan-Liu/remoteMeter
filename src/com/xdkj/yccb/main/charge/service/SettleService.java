@@ -6,6 +6,7 @@ import com.xdkj.yccb.main.charge.dto.QYSettledView;
 import com.xdkj.yccb.main.charge.dto.SettleSum;
 import com.xdkj.yccb.main.charge.dto.SettledView;
 import com.xdkj.yccb.main.charge.dto.SettleView;
+import com.xdkj.yccb.main.statistics.dto.StepYL;
 
 public interface SettleService {
 
@@ -96,5 +97,24 @@ public interface SettleService {
 	 * @return
 	 */
 	List<QYSettledView> getQYSettledAll(int n_id, int settle_id);
+
+	/**
+	 * 获取当前结算下的阶梯单价的每阶用量统计
+	 * @param n_id
+	 * @param settle_id
+	 * @param pre
+	 * @return
+	 */
+	StepYL getJietiYL(int n_id, int settle_id, int pre);
+
+	/**
+	 * 获取当前结算下  当前楼  的阶梯单价的每阶用量统计
+	 * @param n_id
+	 * @param settle_id
+	 * @param pre
+	 * @param lou
+	 * @return
+	 */
+	StepYL getJietiYL(int n_id, int settle_id, int pre, String lou);
 
 }
