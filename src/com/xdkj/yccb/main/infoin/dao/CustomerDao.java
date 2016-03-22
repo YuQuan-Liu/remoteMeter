@@ -154,5 +154,11 @@ public interface CustomerDao {
 	 * @param mid
 	 */
 	void adjustMeter(int customerid, int mid,int oldcid);
+	/**
+	 * 根据小区ids 获取需要今天可以提醒的用户的信息
+	 * @param nbr_ids
+	 * @return
+	 */
+	List<String> getWarns(int[] nbr_ids);
 
 }

@@ -25,6 +25,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
+import com.xdkj.yccb.main.adminor.dao.SysParaDao;
 import com.xdkj.yccb.main.entity.NonRemoteExport;
 import com.xdkj.yccb.main.entity.Readmeterlog;
 import com.xdkj.yccb.main.entity.RemoteExport;
@@ -60,6 +61,8 @@ public class NonRemoteCtrl {
 	private NonRemoteExportDao nonremoteExportDao;
 	@Autowired
 	private ReadDao readDao;
+	@Autowired
+	private SysParaDao sysParaDao;
 	
 	@RequestMapping(value="/readme/read/unremotelist")
 	public String nonRemoteList(HttpServletRequest request,Model model){
@@ -168,7 +171,7 @@ public class NonRemoteCtrl {
 	public String upload(HttpServletRequest request, String name,MultipartFile file, int readlogid,int export_id,int n_id){
 		JSONObject jo = new JSONObject();
 //		String realPath = request.getServletContext().getRealPath("/WEB-INF/yccb/readme/Excels");
-		String excelPath = "D:/Excels/"+Calendar.getInstance().getTimeInMillis()+name.substring(name.lastIndexOf("\\")+1);
+		String excelPath = sysParaDao.getValue("server_UpPath")+Calendar.getInstance().getTimeInMillis()+name.substring(name.lastIndexOf("\\")+1);
 		if(!file.isEmpty()){
 			try {
 				byte[] bytes = file.getBytes();

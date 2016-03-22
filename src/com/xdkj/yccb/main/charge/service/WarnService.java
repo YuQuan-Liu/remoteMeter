@@ -10,7 +10,16 @@ public interface WarnService {
 
 	List<ControlWarnView> getControlWarns(int n_id);
 
-	void addWarnSingle(Customer c, boolean done,String failReason);
+	void addWarnSingle(Customer c, boolean done,String failReason,String cid);
+	
+	/**
+	 * 根据手机号 添加日志
+	 * @param c
+	 * @param done
+	 * @param failReason
+	 * @param cid
+	 */
+	void addWarnMobile(String mobile, boolean done,String failReason,String cid);
 
 	/**
 	 * 查询一个手机号码今天是否可以发送     >3次  不可发送

@@ -35,7 +35,8 @@ public class Warnlog implements java.io.Serializable {
 	private Integer failCount;
 	private char valid;
 	private int warn;
-
+	private String smscid;
+	
 	public Warnlog() {
 	}
 
@@ -51,7 +52,7 @@ public class Warnlog implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CustomerID", nullable = false)
+	@JoinColumn(name = "CustomerID")
 	public Customer getCustomer() {
 		return this.customer;
 	}
@@ -159,5 +160,16 @@ public class Warnlog implements java.io.Serializable {
 	public void setWarn(int warn) {
 		this.warn = warn;
 	}
+
+	@Column(name = "smscid", nullable = false)
+	public String getSmscid() {
+		return smscid;
+	}
+
+	public void setSmscid(String smscid) {
+		this.smscid = smscid;
+	}
+	
+	
 
 }

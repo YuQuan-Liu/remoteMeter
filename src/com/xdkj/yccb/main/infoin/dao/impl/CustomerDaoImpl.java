@@ -1,10 +1,13 @@
 package com.xdkj.yccb.main.infoin.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -453,6 +456,27 @@ public class CustomerDaoImpl extends HibernateDAO implements CustomerDao{
 		q.setInteger(2, oldcid);
 		q.executeUpdate();
 		
+	}
+
+	@Override
+	public List<String> getWarns(int[] nbr_ids) {
+		
+		StringBuilder nbrs = new StringBuilder();
+		for(int i = 0;i <nbr_ids.length;i++){
+			nbrs.append(nbr_ids[i]);
+			if(i<nbr_ids.length-1){
+				nbrs.append(",");
+			}
+		}
+		
+		String SQL =  "select distinct CustomerMobile from customer " +
+				"where neighborid in ("+nbrs.toString()+") and CustomerMobile not in ( " +
+				"select mobile from warnlog " +
+				"where ActionTime > curdate() and length(mobile) = 11 " +
+				") and length(CustomerMobile) = 11";
+		
+		SQLQuery q = getSession().createSQLQuery(SQL).addScalar("CustomerMobile", Hibernate.STRING);
+		return q.list();
 	}
 
 	

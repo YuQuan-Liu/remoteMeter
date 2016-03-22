@@ -52,6 +52,12 @@ var _menus = {
 					"icon" : "micon-nav",
 					"url" : "${path}/admin/price/list.do"
 				},
+				{
+					"menuid" : "119",
+					"menuname" : "故障通知",
+					"icon" : "micon-nav",
+					"url" : "${path}/admin/breakdown/list.do"
+				},
 			]
 		}],
 		<c:if test="${menus['infoin']=='t'}">

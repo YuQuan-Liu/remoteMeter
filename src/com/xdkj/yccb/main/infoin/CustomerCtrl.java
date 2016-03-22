@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.WebUtil;
+import com.xdkj.yccb.main.adminor.dao.SysParaDao;
 import com.xdkj.yccb.main.adminor.dto.MeterkindView;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.MeterkindService;
@@ -43,6 +44,8 @@ public class CustomerCtrl {
 	private MeterkindService meterKindService;
 	@Autowired
 	private ActionLogService actionLogService;
+	@Autowired
+	private SysParaDao sysParaDao;
 	
 	@RequestMapping(value="/infoin/customer/list")
 	public String customerList(HttpServletRequest request,Model model){
@@ -100,7 +103,7 @@ public class CustomerCtrl {
 			try {
 				byte[] bytes = file.getBytes();
 				long time = Calendar.getInstance().getTimeInMillis();
-				String excelPath = "D:/Excels/"+time+name.substring(name.lastIndexOf("\\")+1);
+				String excelPath = sysParaDao.getValue("server_UpPath")+time+name.substring(name.lastIndexOf("\\")+1);
 				
 				//log
 				actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 18, "excelPath:"+excelPath);

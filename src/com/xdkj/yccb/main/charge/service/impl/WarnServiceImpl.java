@@ -24,8 +24,8 @@ public class WarnServiceImpl implements WarnService {
 	}
 	
 	@Override
-	public void addWarnSingle(Customer c,boolean done,String failReason) {
-		controlWarnDao.addWarnLog(c,done,failReason);
+	public void addWarnSingle(Customer c,boolean done,String failReason,String cid) {
+		controlWarnDao.addWarnLog(c,done,failReason,cid);
 	}
 
 	@Override
@@ -38,6 +38,13 @@ public class WarnServiceImpl implements WarnService {
 	public void addWarnSinglePostPay(WarnPostPay warnPostPay, boolean done,
 			String failReason) {
 		controlWarnDao.addWarnLog(warnPostPay,done,failReason);
+	}
+
+	@Override
+	public void addWarnMobile(String mobile, boolean done, String failReason,
+			String cid) {
+		controlWarnDao.addWarnLog(mobile,done,failReason,cid);
+		
 	}
 
 }

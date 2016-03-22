@@ -91,7 +91,6 @@
 	<table id="costInfoTab" style="width:100%;height:100px;"></table>
 	
 	<div id="dereadDialog" class="easyui-dialog" title="更改扣费读数" style="width:400px;height:200px;" data-options="iconCls:'icon-edit',closed:true,resizable:true,modal:true">
-		
 		<table style="width:300px;margin-left:20px;margin-top:20px;line-height:24px;text-align:center">
 			<tr>
 				<td><label>新扣费读数：</label></td>
@@ -110,10 +109,7 @@
 				</td>
 			</tr>
 		</table>
-		
-		
 	</div>
-	
 <!-- 	<div id="meterCurveWin"></div> -->
 	<div id="meterChart" style="width:96%;height:400px;border:1px solid #e3e3e3;padding:10px;margin-top:10px;"></div>
 <script type="text/javascript">
@@ -535,6 +531,7 @@ $(function(){
 		var newderead = $('#newderead').val();
 		var old_deread = $('#deread_old').val();
 		var depassword = $('#depassword').val();
+		$('#depassword').val("");//清空
 		var mid = $('#deread_mid').val();
 		var index_ = $('#deread_index').val();
 		

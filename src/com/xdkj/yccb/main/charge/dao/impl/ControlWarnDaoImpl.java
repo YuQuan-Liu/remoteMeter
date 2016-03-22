@@ -65,7 +65,7 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 	}
 
 	@Override
-	public void addWarnLog(Customer c, boolean done,String failReason) {
+	public void addWarnLog(Customer c, boolean done,String failReason,String cid) {
 		
 		Warnlog warnlog = new Warnlog();
 		warnlog.setActionTime(new Date());
@@ -85,6 +85,7 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 		warnlog.setWarnCount(1);
 		warnlog.setWarnReason(failReason);
 		warnlog.setWarnStyle(c.getWarnStyle());
+		warnlog.setSmscid(cid);
 		
 		getHibernateTemplate().save(warnlog);
 		
@@ -113,6 +114,7 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 		warnlog.setWarnCount(1);
 		warnlog.setWarnReason(failReason);
 		warnlog.setWarnStyle(1);
+		warnlog.setSmscid("");
 		
 		getHibernateTemplate().save(warnlog);
 		
@@ -135,6 +137,33 @@ public class ControlWarnDaoImpl extends HibernateDAO implements ControlWarnDao {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void addWarnLog(String mobile, boolean done, String failReason,
+			String cid) {
+		Warnlog warnlog = new Warnlog();
+		warnlog.setActionTime(new Date());
+		warnlog.setCustomer(null);
+		warnlog.setEmail("");
+		warnlog.setMobile(mobile);
+		if(done){
+			warnlog.setFailCount(0);
+			warnlog.setSuccessCount(1);
+		}else{
+			warnlog.setFailCount(1);
+			warnlog.setSuccessCount(0);
+		}
+		warnlog.setValid('1');
+		warnlog.setWarn(0);
+		warnlog.setWarnContent("");
+		warnlog.setWarnCount(1);
+		warnlog.setWarnReason(failReason);
+		warnlog.setWarnStyle(1);
+		warnlog.setSmscid(cid);
+		
+		getHibernateTemplate().save(warnlog);
+		
 	}
 
 }

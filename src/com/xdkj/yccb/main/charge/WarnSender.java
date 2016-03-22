@@ -2,6 +2,7 @@ package com.xdkj.yccb.main.charge;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +23,14 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.encoder.Base64Pwd;
+import com.xdkj.yccb.main.adminor.dao.SMSTemplateDao;
+import com.xdkj.yccb.main.adminor.dao.SysParaDao;
+import com.xdkj.yccb.main.adminor.service.WaterCompanyService;
 import com.xdkj.yccb.main.charge.dto.WarnPostPay;
 import com.xdkj.yccb.main.charge.service.WarnService;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.Meterdeductionlog;
+import com.xdkj.yccb.main.entity.SMSTemplate;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dao.CustomerDao;
 import com.xdkj.yccb.main.statistics.dao.MeterDeductionLogDao;
@@ -45,7 +50,18 @@ public class WarnSender {
 	private MeterDeductionLogDao meterDeductionLogDao;
 	@Autowired
 	private WarnService warnService;
-	
+	@Autowired
+	private WaterCompanyService waterCompanyService;
+	@Autowired
+	private SysParaDao sysParaDao;
+	@Autowired
+	private SMSTemplateDao smsTemplateDao;
+	/**
+	 * 欠费提醒 单个
+	 * @param wc
+	 * @param cid
+	 * @return
+	 */
 	public boolean sendWarnSingle(Watercompany wc,int cid){
 		
 		Customer c = customerDao.getCustomerByPid(cid);
@@ -63,11 +79,16 @@ public class WarnSender {
 			break;
 		}
 		//将提醒信息保存到数据库
-		warnService.addWarnSingle(c,done,re);
+		warnService.addWarnSingle(c,done,re,"");
 		
 		return done;
 	}
 	
+	/**
+	 * 提醒后付费交费 SMS
+	 * @param wc
+	 * @param mdlid
+	 */
 	public void sendWarnPostPay(Watercompany wc,int[] mdlid){
 		
 		
@@ -83,6 +104,12 @@ public class WarnSender {
 		}
 	}
 	
+	/**
+	 * 提醒后付费交费
+	 * @param wc
+	 * @param c
+	 * @return
+	 */
 	private String sendSMSPostPayAll(Watercompany wc, WarnPostPay c){
 		// message
 //		boolean done = false;
@@ -108,47 +135,49 @@ public class WarnSender {
 		//接口返回类型：json、xml、txt。默认值为txt
 		para.put("type", "json");
 		
-        switch(wc.getPid()){
-        case 4:
-        	//**************************烟台市福山供水**************************
-        	//微米账号的接口UID
-    		para.put("uid", "WAbSeP0sorqnull");
+		if(wc.getSmsuid() == null){
+			//默认
+			//微米账号的接口UID
+			para.put("uid", sysParaDao.getValue("xdkj_smsuid"));
     		//微米账号的接口密码
-    		para.put("pas", "wj5uu222");
-    		//短信模板cid，通过微米后台创建
-            para.put("cid", "21ZHzcE6YZIB");
-            //传入模板参数。  第一个%P% 为p1,后面的++
-            para.put("p1", c.getC_num());
+    		para.put("pas", sysParaDao.getValue("xdkj_smspas"));
+		}else{
+			//微米账号的接口UID
+    		para.put("uid", wc.getSmsuid());
+    		//微米账号的接口密码
+    		para.put("pas", wc.getSmspas());
+		}
+		//短信模板cid，通过微米后台创建
+		SMSTemplate qfTemplate = smsTemplateDao.getQF(wc.getPid());
+		if(qfTemplate == null){
+			//西岛默认
+			//短信模板cid
+			para.put("cid", sysParaDao.getValue("xdkj_smsqfcid"));
+			//传入模板参数。  第一个%P% 为p1,后面的++
+			para.put("p1", c.getCustomerName());
+            para.put("p2", c.getDemoney().doubleValue()+"");
+            para.put("p3", wc.getCompanyName());
+		}else{
+			//短信模板cid
+			para.put("cid", qfTemplate.getCid());
+			//传入模板参数。  第一个%P% 为p1,后面的++
+			para.put("p1", c.getC_num());
             para.put("p2", "-"+c.getDemoney().doubleValue());
-        	break;
-        	default:
-        		//**************************默认**************************
-        		//微米账号的接口UID
-        		para.put("uid", "Hnq9MjyE1pBf");
-        		//微米账号的接口密码
-        		para.put("pas", "qg4nwa7k");
-        		//短信模板cid，通过微米后台创建
-                para.put("cid", "fxPLFfO74Vik");
-                //传入模板参数。  第一个%P% 为p1,后面的++
-                para.put("p1", c.getCustomerName());
-                para.put("p2", "-"+c.getDemoney().doubleValue());
-                para.put("p3", wc.getCompanyName());
-        		break;
-        }
-        
-        
+		}
+		
 		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
 				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
 						para), "UTF-8"));
 		
-//		if(jo.get("code").toString().equals("0")){
-//			done = true;
-//		}
-//		return done;
 		return jo.get("code").toString();
 	}
 	
 
+	/**
+	 * 欠费提醒  全部
+	 * @param wc
+	 * @param ids
+	 */
 	public void sendWarnAll(Watercompany wc, Object[] ids) {
 		for(int i = 0;i < ids.length;i++){
 			sendWarnSingle(wc, Integer.parseInt(ids[i].toString()));
@@ -156,7 +185,12 @@ public class WarnSender {
 		}
 	}
 	
-	
+	/**
+	 * 提醒交费 Email
+	 * @param wc
+	 * @param c
+	 * @return
+	 */
 	private boolean sendMail(Watercompany wc, Customer c){
 		//mail
 		boolean done = false;
@@ -194,6 +228,12 @@ public class WarnSender {
 		return done;
 	}
 	
+	/**
+	 * 提醒交费 SMS
+	 * @param wc
+	 * @param c
+	 * @return
+	 */
 	private String sendSMS(Watercompany wc, Customer c){
 		// message
 //		boolean done = false;
@@ -219,43 +259,117 @@ public class WarnSender {
 		//接口返回类型：json、xml、txt。默认值为txt
 		para.put("type", "json");
 		
-        switch(wc.getPid()){
-        case 4:
-        	//**************************烟台市福山供水**************************
-        	//微米账号的接口UID
-    		para.put("uid", "WAbSeP0sorqnull");
+		if(wc.getSmsuid() == null){
+			//默认
+			//微米账号的接口UID
+			para.put("uid", sysParaDao.getValue("xdkj_smsuid"));
     		//微米账号的接口密码
-    		para.put("pas", "wj5uu222");
-    		//短信模板cid，通过微米后台创建
-            para.put("cid", "21ZHzcE6YZIB");
-            //传入模板参数。  第一个%P% 为p1,后面的++
-            para.put("p1", c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+    		para.put("pas", sysParaDao.getValue("xdkj_smspas"));
+		}else{
+			//微米账号的接口UID
+    		para.put("uid", wc.getSmsuid());
+    		//微米账号的接口密码
+    		para.put("pas", wc.getSmspas());
+		}
+		//短信模板cid，通过微米后台创建
+		SMSTemplate qfTemplate = smsTemplateDao.getQF(wc.getPid());
+		if(qfTemplate == null){
+			//西岛默认
+			//短信模板cid
+			para.put("cid", sysParaDao.getValue("xdkj_smsqfcid"));
+			//传入模板参数。  第一个%P% 为p1,后面的++
+			para.put("p1", c.getCustomerName());
             para.put("p2", c.getCustomerBalance().doubleValue()+"");
-        	break;
-        	default:
-        		//**************************默认**************************
-        		//微米账号的接口UID
-        		para.put("uid", "Hnq9MjyE1pBf");
-        		//微米账号的接口密码
-        		para.put("pas", "qg4nwa7k");
-        		//短信模板cid，通过微米后台创建
-                para.put("cid", "fxPLFfO74Vik");
-                //传入模板参数。  第一个%P% 为p1,后面的++
-                para.put("p1", c.getCustomerName());
-                para.put("p2", c.getCustomerBalance().doubleValue()+"");
-                para.put("p3", wc.getCompanyName());
-        		break;
-        }
-        
+            para.put("p3", wc.getCompanyName());
+		}else{
+			//短信模板cid
+			para.put("cid", qfTemplate.getCid());
+			//传入模板参数。  第一个%P% 为p1,后面的++
+			para.put("p1", c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+            para.put("p2", c.getCustomerBalance().doubleValue()+"");
+		}
         
 		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
 				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
 						para), "UTF-8"));
 		
-//		if(jo.get("code").toString().equals("0")){
-//			done = true;
-//		}
-//		return done;
+		return jo.get("code").toString();
+	}
+
+	/**
+	 * 提醒通知  故障通知 温馨提示 SMS
+	 * @param wcid
+	 * @param cid
+	 * @param para
+	 * @param nbr_ids
+	 */
+	public void sendBreakDown(int wcid,String cid,String[] para,int[] nbr_ids){
+		//选出小区中  今天没有发送过的合法的用户  一次发送短信
+		/*select * from customer 
+		where neighborid in (***) and CustomerMobile not in (
+		select mobile from warnlog
+		where ActionTime > curdate() and length(mobile) = 11
+		) and length(CustomerMobile) = 11
+		*/
+		List<String> list = customerDao.getWarns(nbr_ids);
+		for(int i = 0;i < list.size();i++){
+			boolean done = false;
+			String re = sendSMSBreakdown(wcid,cid,para,list.get(i));
+			if(re.equals("0")){
+				done = true;
+			}
+			//将提醒信息保存到数据库
+			warnService.addWarnMobile(list.get(i),done,"re",cid);
+		}
+	}
+	
+	/**
+	 * 提醒通知  故障通知 温馨提示 SMS
+	 * @param wcid
+	 * @param cid
+	 * @param para_
+	 * @param c
+	 * @return
+	 */
+	private String sendSMSBreakdown(int wcid,String cid, String[] para_, String mobile) {
+		Map<String, String> para = new HashMap<String, String>();
+
+		
+		//目标手机号码，多个以“,”分隔，一次性调用最多100个号码，示例：139********,138********
+		para.put("mob", mobile);
+		//接口返回类型：json、xml、txt。默认值为txt
+		para.put("type", "json");
+		
+		
+		Watercompany wc = waterCompanyService.getById(wcid+"");
+		if(wc.getSmsuid() == null){
+			//默认
+			//微米账号的接口UID
+			para.put("uid", sysParaDao.getValue("xdkj_smsuid"));
+    		//微米账号的接口密码
+    		para.put("pas", sysParaDao.getValue("xdkj_smspas"));
+//    		//短信模板cid，通过微米后台创建
+//            para.put("cid", "fxPLFfO74Vik");
+		}else{
+			//微米账号的接口UID
+    		para.put("uid", wc.getSmsuid());
+    		//微米账号的接口密码
+    		para.put("pas", wc.getSmspas());
+//    		//短信模板cid，通过微米后台创建
+//            para.put("cid", "21ZHzcE6YZIB");
+		}
+		//短信模板cid，通过微米后台创建
+		para.put("cid", cid);
+		
+		//传入模板参数。  第一个%P% 为p1,后面的++
+		for(int i = 1;i <= para_.length;i++){
+			para.put("p"+i, para_[i-1]);
+		}
+		
+		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
+				HttpClientHelper.get("http://api.weimi.cc/2/sms/send.html",
+						para), "UTF-8"));
+		
 		return jo.get("code").toString();
 	}
 

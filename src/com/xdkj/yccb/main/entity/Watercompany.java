@@ -36,7 +36,10 @@ public class Watercompany implements java.io.Serializable {
 	private Set<Pricekind> pricekinds = new HashSet<Pricekind>(0);
 	private Set<Admininfo> admininfos = new HashSet<Admininfo>(0);
 	private Set<Department> departments = new HashSet<Department>(0);
-
+	private String smsuid;
+	private String smspas;
+	
+	
 	public Watercompany() {
 	}
 	
@@ -187,6 +190,24 @@ public class Watercompany implements java.io.Serializable {
 
 	public void setPayAddr(String payAddr) {
 		this.payAddr = payAddr;
+	}
+	
+	@Column(name = "smsuid", length = 50)
+	public String getSmsuid() {
+		return smsuid;
+	}
+
+	public void setSmsuid(String smsuid) {
+		this.smsuid = smsuid;
+	}
+
+	@Column(name = "smspas", length = 50)
+	public String getSmspas() {
+		return smspas;
+	}
+
+	public void setSmspas(String smspas) {
+		this.smspas = smspas;
 	}
 
 	
