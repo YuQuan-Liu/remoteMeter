@@ -19,8 +19,8 @@
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
-	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeValveAll()" ><fmt:message key='m.close'/></a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="warnAll()" ><fmt:message key='warnpay'/></a>
+	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="closeValveAll()" id="closevalveallbtn"><fmt:message key='m.close'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="warnAll()" id="warnallbtn"><fmt:message key='warnpay'/></a>
 			</div>
 		</form>
 		<form id="exportform" method="post">
@@ -210,6 +210,7 @@ function showMeterdata(){
 }
 
 function warnAll(){
+	$('#warnallbtn').linkbutton('disable');
 	var c_ids = [];
 	var rows = $('#controlTab').datagrid('getSelections');
 	
@@ -237,27 +238,40 @@ function warnAll(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 	}
+	$('#warnallbtn').linkbutton('enable');
 }
 
+var closevalve_done = true;
 function warnSingle(cid,index){
-	$.ajax({
-		type:"POST",
-		url:"${path}/charge/valve/warnsingle.do",
-		dataType:"json",
-		data:{
-			c_id:cid
-		},
-		success:function(data){
-			if(data.done == true){
-				$.messager.alert('Info','<fmt:message key='sendok'/>');
-			}else{
-				$.messager.alert('Error','<fmt:message key='sendfail'/>');
+	if(closevalve_done){
+		closevalve_done = false;
+		$.ajax({
+			type:"POST",
+			url:"${path}/charge/valve/warnsingle.do",
+			dataType:"json",
+			data:{
+				c_id:cid
+			},
+			success:function(data){
+				if(data.done == true){
+					$.messager.alert('Info','<fmt:message key='sendok'/>');
+				}else{
+					$.messager.alert('Error','<fmt:message key='sendfail'/>');
+				}
 			}
-		}
-	});
+		});
+		closevalve_done = true;
+	}else{
+		$.messager.show({
+			title : 'Info',
+			msg : '操作频繁，请稍后重试',
+			showType : 'slide'
+		});
+	}
 }
 
 function closeValveAll(){
+	$('#closevalveallbtn').linkbutton('disable');
 	var m_ids = [];
 	var rows = $('#controlTab').datagrid('getSelections');
 	
@@ -286,6 +300,7 @@ function closeValveAll(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 	}
+	$('#closevalveallbtn').linkbutton('enable');
 }
 
 function resolveError(conf_id,index_){
@@ -310,23 +325,33 @@ function resolveError(conf_id,index_){
 }
 
 function closeValveSingle(mid,index){
-	$.ajax({
-		type:"POST",
-		url:"${path}/readme/valve/valvecontrol.do",
-		dataType:"json",
-		data:{
-			m_id:mid,
-			control:0
-		},
-		success:function(data){
-			if(data.result == "success"){
-				$.messager.progress({title:"",text:"",interval:100});
-				interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
-			}else{
-				$.messager.alert('Error','<fmt:message key='read.valvefail'/>');
+	if(closevalve_done){
+		closevalve_done = false;
+		$.ajax({
+			type:"POST",
+			url:"${path}/readme/valve/valvecontrol.do",
+			dataType:"json",
+			data:{
+				m_id:mid,
+				control:0
+			},
+			success:function(data){
+				if(data.result == "success"){
+					$.messager.progress({title:"",text:"",interval:100});
+					interval = setInterval(function(){checkcontroling(data.pid,index);},1000);
+				}else{
+					$.messager.alert('Error','<fmt:message key='read.valvefail'/>');
+				}
 			}
-		}
-	});
+		});
+		closevalve_done = true;
+	}else{
+		$.messager.show({
+			title : 'Info',
+			msg : '操作频繁，请稍后重试',
+			showType : 'slide'
+		});
+	}
 }
 function checkcontroling(valvelogid,index){
 	$.ajax({

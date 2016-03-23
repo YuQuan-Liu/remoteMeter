@@ -9,6 +9,7 @@
 <body>
 <script type="text/javascript">
 function submitForm(){
+	$('#updatewcbtn').linkbutton('disable');
 	$('#watUpdateForm').form('submit', {
 		onSubmit:function(){
 			$('#watUpdateForm').form('validate');
@@ -26,7 +27,7 @@ function submitForm(){
 	       }
 	    }   
 	});  	
-	
+	$('#updatewcbtn').linkbutton('enable');
 }
 </script>
 		<div style="padding:10px 0 10px 60px">
@@ -72,7 +73,7 @@ function submitForm(){
 	    </form>
 	    </div>
 	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="updatewcbtn"><fmt:message key='common.submit'/></a>
 	    </div>
 </body>
 </html>

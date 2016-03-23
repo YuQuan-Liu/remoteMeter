@@ -10,6 +10,7 @@
 <script type="text/javascript">
 
 function submitForm(){
+	$('#updateneighborbtn').linkbutton('disable');
 	$('#updateNeighborForm').form('submit', {	
 		onSubmit:function(){
 			var switch_ = $("#timerSwitch").combobox("getValue");
@@ -62,6 +63,7 @@ function submitForm(){
 			}
 		}	
 	}); 
+	$('#updateneighborbtn').linkbutton('enable');
 }
 //检查本自来水公司下此小区是否已经存在
 function checkNbrName(){
@@ -150,7 +152,7 @@ function timeswitchChange(){
 			</table>
 		</div>
 		 <div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.update'/></a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="updateneighborbtn"><fmt:message key='common.update'/></a>
 		</div>
 	</form>
 </body>

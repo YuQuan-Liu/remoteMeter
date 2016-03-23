@@ -9,6 +9,7 @@
 <body>
 <script type="text/javascript">
 function submitForm(){
+	$('#updategprsbtn').linkbutton('disable');
 	var n_id = $("#neighborid").val();
 	
 	$('#updateGprsForm').form('submit', {	
@@ -27,6 +28,7 @@ function submitForm(){
 			}
 		}	
 	}); 
+	$('#updategprsbtn').linkbutton('enable');
 }
 
 $.extend($.fn.validatebox.defaults.rules, {
@@ -113,7 +115,7 @@ function checkGPRSAddr(){
 	    	</table>
 		</div>
 		 <div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="updategprsbtn"><fmt:message key='common.submit'/></a>
 		</div>
 	</form>
 </body>

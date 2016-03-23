@@ -40,7 +40,7 @@
 				<input class="easyui-validatebox" type="text" name="low" id="low" value="0"/>
 				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="search_()" ><fmt:message key='search'/></a>
 				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="print()" ><fmt:message key='print'/></a>
-				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="warnAll()" ><fmt:message key='warnpay'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton operateHref" onclick="warnAll()" id="warnallbtn"><fmt:message key='warnpay'/></a>
 			</div>
 		</form>
 	</div>
@@ -76,7 +76,7 @@
 				          {field:'warnCount',title:'<fmt:message key='close.warncount'/>',width:80},
 				          {field:'action',title:'<fmt:message key='common.action'/>',width:160,halign:'center',align:'center',
 								formatter: function(value,row,index){
-									return "<a href='#' class='operateHref' onclick='warnSingle("+row.c_id+","+index+")'><fmt:message key='warnpay'/></a>";
+									return "<a href='javascript:void(0)' class='operateHref' onclick='warnSingle("+row.c_id+","+index+")'><fmt:message key='warnpay'/></a>";
 						  }}
 				      ]]
 			});
@@ -148,6 +148,7 @@
 		
 
 		function warnAll(){
+			$('#warnallbtn').linkbutton('disable');
 			var c_ids = [];
 			var rows = $('#oweTab').datagrid('getSelections');
 			
@@ -175,24 +176,35 @@
 			}else{
 				$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 			}
+			$('#warnallbtn').linkbutton('enable');
 		}
-
+		var warnsingle_done = true;
 		function warnSingle(cid,index){
-			$.ajax({
-				type:"POST",
-				url:"${path}/charge/valve/warnsingle.do",
-				dataType:"json",
-				data:{
-					c_id:cid
-				},
-				success:function(data){
-					if(data.done == true){
-						$.messager.alert('Info','<fmt:message key='sendok'/>');
-					}else{
-						$.messager.alert('Error','<fmt:message key='sendfail'/>');
+			if(warnsingle_done){
+				warnsingle_done = false;
+				$.ajax({
+					type:"POST",
+					url:"${path}/charge/valve/warnsingle.do",
+					dataType:"json",
+					data:{
+						c_id:cid
+					},
+					success:function(data){
+						if(data.done == true){
+							$.messager.alert('Info','<fmt:message key='sendok'/>');
+						}else{
+							$.messager.alert('Error','<fmt:message key='sendfail'/>');
+						}
 					}
-				}
-			});
+				});
+				warnsingle_done = true;
+			}else{
+				$.messager.show({
+					title : 'Info',
+					msg : '操作频繁，请稍后重试',
+					showType : 'slide'
+				});
+			}
 		}
 	</script>
 </body>

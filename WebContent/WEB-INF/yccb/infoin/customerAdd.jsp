@@ -209,13 +209,14 @@
 				</table>
 				<div style="text-align:center;padding-top:10px;">
 					<input type="hidden" id="c_id" name="c_id"/>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitMeter()"><fmt:message key='common.submit'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitMeter()" id="addmeterbtn"><fmt:message key='common.submit'/></a>
 				</div>
 			</fieldset>
 		</div>
 	</form>
 	<script>
 	function submitMeter(){
+		$('#addmeterbtn').linkbutton('disable');
 		var c_id = $("#c_id").val();
 		$("#meter").form('submit',{
 			url:"${path}/infoin/meter/add.do",
@@ -283,8 +284,10 @@
 				}
 			}
 		});
+		$('#addmeterbtn').linkbutton('enable');
 	}
 	function submitCustomer(){
+		$('#customersubmit').linkbutton('disable');
 		$("#customer").form('submit',{
 			url:"${path}/infoin/customer/add.do",
 			onSubmit:function(){
@@ -309,6 +312,7 @@
 				}
 			}
 		});
+		$('#customersubmit').linkbutton('enable');
 	}
 	function listGPRS(){
 		var n_id = $("#n_id").combobox("getValue");

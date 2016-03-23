@@ -117,13 +117,14 @@
 					<input type="hidden" id="c_id" name="c_id" value="${mv.c_id }"/>
 					<input type="hidden" id="pid" name="pid" value="${mv.pid }"/>
 					<input type="hidden" id="gprs_id" name="gprs_id" value="${mv.gprs_id }"/>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitMeter()"><fmt:message key='common.submit'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitMeter()" id="updatemeterbtn"><fmt:message key='common.submit'/></a>
 				</div>
 			</fieldset>
 		</div>
 	</form>
 	<script>
 	function submitMeter(){
+		$('#updatemeterbtn').linkbutton('disable');
 		$("#meter").form('submit',{
 			url:"${path}/infoin/meter/update.do",
 			onSubmit:function(){
@@ -165,6 +166,7 @@
 				}
 			}
 		});
+		$('#updatemeterbtn').linkbutton('enable');
 	}
 	function valveChange(){
 		var valve = $("#isValve").combobox("getValue");

@@ -18,7 +18,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 });
 
 function submitForm(){
-	
+	$('#addgprsbtn').linkbutton('disable');
 	$('#addGprsForm').form('submit', {
 		onSubmit:function(){
 			return $('#addGprsForm').form('validate');
@@ -35,6 +35,7 @@ function submitForm(){
 			}
 		}	
 	});
+	$('#addgprsbtn').linkbutton('enable');
 }
 
 //检查集中器的地址  是否已经存在
@@ -110,7 +111,7 @@ function checkGPRSAddr(){
 	    	</table>
 		</div>
 		 <div style="text-align:center;padding:5px">
-			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+			<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="addgprsbtn"><fmt:message key='common.submit'/></a>
 		</div>
 	</form>
 </body>

@@ -61,6 +61,7 @@
 		$('#sendsms_cnt').val(cnt);
 		$('#confirmDialog').window('open');
 	}
+	var breakdown_done = true;
 	function sendSMS(){
 		var cid = $('#sendsms_cid').val();
 		var cnt = $('#sendsms_cnt').val();
@@ -78,34 +79,44 @@
 			for(var i = 0;i < cnt;i++){
 				para.push($("#"+cid+i).val());
 			}
-			$.ajax({
-				type:"POST",
-				url:"${path}/admin/breakdown/sendsms.do",
-				dataType:"json",  
-		        traditional :true,
-				data:{
-					cid:cid,
-					pwd:pwd,
-					'para':para,
-					'nbr_ids':nbr_ids
-				},
-				success:function(data){
-					if (data == 1) {
-						$.messager.show({
-							title : 'Info',
-							msg : '操作成功',
-							showType : 'slide'
-						});
-					} else {
-						$.messager.show({
-							title : 'Info',
-							msg : '操作失败',
-							showType : 'slide'
-						});
+			if(breakdown_done){
+				breakdown_done = false;
+				$.ajax({
+					type:"POST",
+					url:"${path}/admin/breakdown/sendsms.do",
+					dataType:"json",  
+			        traditional :true,
+					data:{
+						cid:cid,
+						pwd:pwd,
+						'para':para,
+						'nbr_ids':nbr_ids
+					},
+					success:function(data){
+						if (data == 1) {
+							$.messager.show({
+								title : 'Info',
+								msg : '操作成功',
+								showType : 'slide'
+							});
+						} else {
+							$.messager.show({
+								title : 'Info',
+								msg : '操作失败',
+								showType : 'slide'
+							});
+						}
+						$('#confirmDialog').window('close');
 					}
-					$('#confirmDialog').window('close');
-				}
-			});
+				});
+				breakdown_done = true;
+			}else{
+				$.messager.show({
+					title : 'Info',
+					msg : '操作频繁，请稍后重试',
+					showType : 'slide'
+				});
+			}
 		}else{
 			$.messager.show({
 				title : 'Info',

@@ -23,7 +23,7 @@
 	    			<a href="javascript:void(0)" class="easyui-linkbutton" id="settleall" onclick="settleAll()" ><fmt:message key='settle.settlenei'/></a>
 	    		</span>
 	    		<span style="margin-left:20px;">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="warnAll()"><fmt:message key='warnpay'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" id="warnallbtn" onclick="warnAll()"><fmt:message key='warnpay'/></a>
 	    		</span>
 			</div>
 		</form>
@@ -180,6 +180,7 @@ function readMeterManual(mid,index){
 }
 
 function warnAll(){
+	$('#warnallbtn').linkbutton('disable');
 	var c_ids = [];
 	var rows = $('#settleTab').datagrid('getSelections');
 	
@@ -207,9 +208,11 @@ function warnAll(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 	}
+	$('#warnallbtn').linkbutton('enable');
 }
 
 function settleAll(){
+	$('#settleall').linkbutton('disable');
 	var n_name = $("#neighbor").combobox("getText");
 	var n_id = $("#neighbor").combobox("getValue");
 	
@@ -235,8 +238,10 @@ function settleAll(){
 			});
 		}
 	});
+	$('#settleall').linkbutton('enable');
 }
 
+var settlesingle_done = true;
 function settleSingle(mid,index){
 	var meteraddr = $('#settleTab').datagrid('getRows')[index]["meterAddr"];
 	var yl = $('#settleTab').datagrid('getRows')[index]["readdata"]-$('#settleTab').datagrid('getRows')[index]["deread"];
@@ -246,23 +251,33 @@ function settleSingle(mid,index){
 	}
 	$.messager.confirm('<fmt:message key='settle'/>', '<fmt:message key='settle.confirm'/>'+meteraddr+'?', function(r){
 		if(r){
-			$.ajax({
-				type:"POST",
-				url:"${path}/charge/settle/settlesingle.do",
-				dataType:"json",
-				data:{
-					m_id:mid
-				},
-				success:function(data){
-					if(data.done == true){
-						$.messager.alert('Info','<fmt:message key='settle.done'/>');
-						$("#settleTab").datagrid('updateRow', 
-								{index:index,row:{readdata:data.read,customerBalance:data.customerBalance,deread:data.deread}});
-					}else{
-						$.messager.alert('Info',data.reason);
+			if(settlesingle_done){
+				settlesingle_done = false;
+				$.ajax({
+					type:"POST",
+					url:"${path}/charge/settle/settlesingle.do",
+					dataType:"json",
+					data:{
+						m_id:mid
+					},
+					success:function(data){
+						if(data.done == true){
+							$.messager.alert('Info','<fmt:message key='settle.done'/>');
+							$("#settleTab").datagrid('updateRow', 
+									{index:index,row:{readdata:data.read,customerBalance:data.customerBalance,deread:data.deread}});
+						}else{
+							$.messager.alert('Info',data.reason);
+						}
 					}
-				}
-			});
+				});
+				settlesingle_done = true;
+			}else{
+				$.messager.show({
+					title : 'Info',
+					msg : '操作频繁，请稍后重试',
+					showType : 'slide'
+				});
+			}
 		}
 	});
 }

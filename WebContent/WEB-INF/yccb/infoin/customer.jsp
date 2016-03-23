@@ -418,6 +418,7 @@ function refreshRow(index){
 		}
 	}
 	function changeMeter(){
+		$('#changeMeter').linkbutton('disable');
 		var end=$("#end").textbox("getValue");
 // 		var maddr=$("#new_maddr").textbox("getValue");
 		$("#changemeterform").form('submit',{
@@ -443,8 +444,10 @@ function refreshRow(index){
 				}
 			}
 		});
+		$('#changeMeter').linkbutton('enable');
 	}
 	function adjustMeter(){
+		$('#adjustMeter').linkbutton('disable');
 		$("#adjustmeterform").form('submit',{
 			url:"${path}/infoin/customer/adjustmeter.do",
 			success:function(data){
@@ -466,6 +469,7 @@ function refreshRow(index){
 				}
 			}
 		});
+		$('#adjustMeter').linkbutton('enable');
 	}
 </script>
 </html>

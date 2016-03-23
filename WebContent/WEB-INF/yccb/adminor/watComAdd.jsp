@@ -25,6 +25,7 @@ $.extend($.fn.validatebox.defaults.rules, {
   }
 });
 function submitForm(){
+	$('#addwcbtn').linkbutton('disable');
 	$('#watAddForm').form('submit', {
 		onSubmit: function(){
 			var isValid = $('#watAddForm').form('validate');
@@ -43,7 +44,7 @@ function submitForm(){
 	       }
 	    }   
 	});	  
-	
+	$('#addwcbtn').linkbutton('enable');
 }
 
 //检查登录名是否已经存在
@@ -128,7 +129,7 @@ function checkLoginName(){
 	    </form>
 	    </div>
 	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="addwcbtn"><fmt:message key='common.submit'/></a>
 	    </div>
 </body>
 </html>

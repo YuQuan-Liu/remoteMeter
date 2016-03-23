@@ -37,10 +37,10 @@
 	    			<a href="javascript:void(0)" class="easyui-linkbutton" id="settleall" onclick="printAll()" ><fmt:message key='allprint'/></a>
 	    		</span>
 	    		<span style="margin-left:20px;">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chargePost()"><fmt:message key='charge.pay'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="chargePost()" id="chargepostbtn"><fmt:message key='charge.pay'/></a>
 	    		</span>
 	    		<span style="margin-left:20px;">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="sendMessage()"><fmt:message key='warnpay'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="sendMessage()" id="sendmessagebtn"><fmt:message key='warnpay'/></a>
 	    		</span>
 			</div>
 		</form>
@@ -199,6 +199,7 @@ function searchCustomer(){
 }
 
 function chargePost(){
+	$('#chargepostbtn').linkbutton('disable');
 	var mdl_ids = [];
 	var rows = $('#postpayTab').datagrid('getSelections');
 	
@@ -228,9 +229,11 @@ function chargePost(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
 	}
+	$('#chargepostbtn').linkbutton('enable');
 }
 
 function sendMessage(){
+	$('#sendmessagebtn').linkbutton('disable');
 	var mdl_ids = [];
 	var rows = $('#postpayTab').datagrid('getSelections');
 	
@@ -258,6 +261,7 @@ function sendMessage(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
 	}
+	$('#sendmessagebtn').linkbutton('enable');
 }
 
 function printAll(){

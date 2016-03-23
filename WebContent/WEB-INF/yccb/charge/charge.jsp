@@ -20,9 +20,9 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="loadCust()"><fmt:message key='search'/></a>
 	</div>
 	<div style="float:left;width:400px;text-align:center;">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateCust()"><fmt:message key='charge.updatecust'/></a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePre()"><fmt:message key='charge.changepre'/></a>
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="payFor()"><fmt:message key='charge.pay'/></a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="updateCust()" id="updatecustbtn"><fmt:message key='charge.updatecust'/></a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePre()" id="changeprebtn"><fmt:message key='charge.changepre'/></a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="payFor()" id="payforbtn"><fmt:message key='charge.pay'/></a>
 	</div>
 	
 	<form id="customer" method="post" style="margin-top:35px;">
@@ -292,6 +292,7 @@ $(function(){
 		}
 	}
 	function updateCust() {
+		$('#updatecustbtn').linkbutton('disable');
 		if(pid == 0){
 			$.messager.show({
 				title : 'Info',
@@ -337,8 +338,10 @@ $(function(){
     	    	});
 			}
 		});
+		$('#updatecustbtn').linkbutton('enable');
 	}
 	function changePre() {
+		$('#changeprebtn').linkbutton('disable');
 		if(pid == 0){
 			$.messager.show({
 				title : 'Info',
@@ -380,10 +383,11 @@ $(function(){
 				});
 			}
 		});
-
+		$('#changeprebtn').linkbutton('enable');
 	}
 	function payFor() {
 		//交费
+		$('#payforbtn').linkbutton('disable');
 		if(pid == 0){
 			$.messager.show({
 				title : 'Info',
@@ -433,6 +437,7 @@ $(function(){
 				
 			}
 		});
+		$('#payforbtn').linkbutton('enable');
 	}
 	
 	function chargeprint(cplid){

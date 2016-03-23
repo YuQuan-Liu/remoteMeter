@@ -62,6 +62,7 @@
 		$("#file").trigger("click");
 	}
 	function submitUpload(){
+		$('#upload').linkbutton('disable');
 		$.messager.progress({text:""});
 		$("#uploadcustomers").form("submit",{
 			url:"${path}/infoin/customer/upload.do",
@@ -87,6 +88,7 @@
 				}
 			}
 		});
+		$('#upload').linkbutton('enable');
 	}
 	</script>
 </body>

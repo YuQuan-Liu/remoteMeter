@@ -83,7 +83,7 @@
 				</table>
 				<div style="text-align:center;padding-top:10px;">
 					<input type="hidden" id="pid" name="pid" value="${cv.pid }"/>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitCustomer()"><fmt:message key='common.submit'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitCustomer()" id="updatecustomerbtn"><fmt:message key='common.submit'/></a>
 				</div>
 			</fieldset>
 		</div>
@@ -117,6 +117,7 @@
 		});
 	}
 	function submitCustomer(){
+		$('#updatecustomerbtn').linkbutton('disable');
 		$("#customer").form('submit',{
 			url:"${path}/infoin/customer/update.do",
 			onSubmit:function(){
@@ -134,6 +135,7 @@
 				}
 			}
 		});
+		$('#updatecustomerbtn').linkbutton('enable');
 	}
 	</script>
 </body>

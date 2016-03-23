@@ -9,6 +9,7 @@
 <body>
 <script type="text/javascript">
 function submitForm(){
+	$('#updateadminbtn').linkbutton('disable');
 	$('#updateForm').form('submit', { 
 		onSubmit:function(){
 			return $('#updateForm').form('validate');
@@ -24,6 +25,7 @@ function submitForm(){
 	    	}
 	    }
 	}); 
+	$('#updateadminbtn').linkbutton('enable');
 }
 
 $.extend($.fn.validatebox.defaults.rules, {
@@ -66,6 +68,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 });
 
 function changepwd(){
+	$('#changepwdbtn').linkbutton('disable');
 	var old_ = $("#old").textbox("getValue");
 	var new_ = $("#p1").textbox("getValue");
 	var pid = $("#adminid").val();
@@ -99,6 +102,7 @@ function changepwd(){
 			}
 		});
 	}
+	$('#changepwdbtn').linkbutton('enable');
 }
 function resetpwd(){
 	
@@ -244,7 +248,7 @@ function changedep(){
 	</div>
 
 	<div style="text-align:center;padding:5px">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="updateadminbtn"><fmt:message key='common.submit'/></a>
 	</div>
 	
 	<div style="padding:10px;margin-top:10px;">
@@ -264,7 +268,7 @@ function changedep(){
 	    		</tr>
 				<tr>
 					<td colspan="2"style="text-align:center">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changepwd()"><fmt:message key='admin.updatepwd'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changepwd()" id="changepwdbtn"><fmt:message key='admin.updatepwd'/></a>
 					</td>
 				</tr>
 			</table>
@@ -297,9 +301,9 @@ function changedep(){
 	    		</tr>
 				<tr>
 					<td colspan="2"style="text-align:center">
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetpwd()"><fmt:message key='admin.resetpwd'/></a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changerole()"><fmt:message key='admin.changerole'/></a>
-					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changedep()"><fmt:message key='admin.changedep'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="resetpwd()" id="resetpwdbtn"><fmt:message key='admin.resetpwd'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changerole()" id="changerolebtn"><fmt:message key='admin.changerole'/></a>
+					<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changedep()" id="changedepbtn"><fmt:message key='admin.changedep'/></a>
 					</td>
 				</tr>
 			</table>

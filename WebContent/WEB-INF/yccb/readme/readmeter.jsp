@@ -20,8 +20,8 @@
 					<option value="${n.pid }">${n.neighborName }</option>
 					</c:forEach>
 	    		</select>
-	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbor()" ><fmt:message key='read.this'/></a>
-				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" ><fmt:message key='read.all'/></a>
+	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbor()" id="readthisbtn"><fmt:message key='read.this'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" id="readallbtn"><fmt:message key='read.all'/></a>
 			</span>
 			<span style="margin-left:200px;">
 				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'200'">
@@ -166,6 +166,7 @@ function showMeterdata(){
 //单击某个小区之后  抄表成功返回  设置当前抄表对应的readlog id
 var readlogid = 0;
 function readNeighbor(){
+	$('#readthisbtn').linkbutton('disable');
 	var n_id = $("#neighbor").combobox("getValue");
 	if(n_id != ""){
 		$.ajax({
@@ -185,8 +186,10 @@ function readNeighbor(){
 			}
 		});
 	}
+	$('#readthisbtn').linkbutton('enable');
 }
 function readNeighbors(){
+	$('#readallbtn').linkbutton('disable');
 	$.ajax({
 		type:"POST",
 		url:"${path}/readme/read/readneighbors.do",
@@ -200,24 +203,37 @@ function readNeighbors(){
 			}
 		}
 	});
+	$('#readallbtn').linkbutton('enable');
 }
+
+var readmeter_done = true;
 function readMeter(mid,index){
-	$.ajax({
-		type:"POST",
-		url:"${path}/readme/read/readmeter.do",
-		dataType:"json",
-		data:{
-			m_id:mid
-		},
-		success:function(data){
-			if(data.result == "success"){
-				$.messager.progress({title:"<fmt:message key='read.reading'/>",text:"",interval:100});
-				interval = setInterval(function(){checkreading(data.pid,index);},1000);
-			}else{
-				$.messager.alert('Error','<fmt:message key='read.fail'/>');
+	if(readmeter_done){
+		readmeter_done = false;
+		$.ajax({
+			type:"POST",
+			url:"${path}/readme/read/readmeter.do",
+			dataType:"json",
+			data:{
+				m_id:mid
+			},
+			success:function(data){
+				if(data.result == "success"){
+					$.messager.progress({title:"<fmt:message key='read.reading'/>",text:"",interval:100});
+					interval = setInterval(function(){checkreading(data.pid,index);},1000);
+				}else{
+					$.messager.alert('Error','<fmt:message key='read.fail'/>');
+				}
 			}
-		}
-	});
+		});
+		readmeter_done = true;
+	}else{
+		$.messager.show({
+			title : 'Info',
+			msg : '操作频繁，请稍后重试',
+			showType : 'slide'
+		});
+	}
 }
 function readMeterManual(mid,index){
 	$.messager.prompt('<fmt:message key='read.readchange'/>', '<fmt:message key='read.readright'/>', function(r){
@@ -322,23 +338,33 @@ function openValve(mid,index_){
 	}else{
 		control = 0;
 	}
-	$.ajax({
-		type:"POST",
-		url:"${path}/readme/valve/valvecontrol.do",
-		dataType:"json",
-		data:{
-			m_id:mid,
-			control:control
-		},
-		success:function(data){
-			if(data.result == "success"){
-				$.messager.progress({text:"",interval:100});
-				interval = setInterval(function(){checkcontroling(data.pid,index_);},1000);
-			}else{
-				$.messager.alert('Error','<fmt:message key='read.valvefail'/>');
+	if(readmeter_done){
+		readmeter_done = false;
+		$.ajax({
+			type:"POST",
+			url:"${path}/readme/valve/valvecontrol.do",
+			dataType:"json",
+			data:{
+				m_id:mid,
+				control:control
+			},
+			success:function(data){
+				if(data.result == "success"){
+					$.messager.progress({text:"",interval:100});
+					interval = setInterval(function(){checkcontroling(data.pid,index_);},1000);
+				}else{
+					$.messager.alert('Error','<fmt:message key='read.valvefail'/>');
+				}
 			}
-		}
-	});
+		});
+		readmeter_done = true;
+	}else{
+		$.messager.show({
+			title : 'Info',
+			msg : '操作频繁，请稍后重试',
+			showType : 'slide'
+		});
+	}
 }
 function checkcontroling(valvelogid,index){
 	$.ajax({

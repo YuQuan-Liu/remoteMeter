@@ -26,6 +26,7 @@ $(function(){
 	});
 });
 function submitForm(){
+	$('#adddepbtn').linkbutton('disable');
 	var nbr_ids = [];
 	var rows = $('#allNbrTab').datagrid('getSelections');
 	
@@ -60,6 +61,7 @@ function submitForm(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.enterinfo'/>');
 	}
+	$('#adddepbtn').linkbutton('enable');
 }
 
 //检查本自来水公司下此片区名是否已经存在
@@ -108,7 +110,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 	</form>
 
 	<div style="text-align: center; padding: 5px">
-		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="adddepbtn"><fmt:message key='common.submit'/></a>
 	</div>
 	<table id="allNbrTab" style="width:500px;height:380px;"></table>
 </body>

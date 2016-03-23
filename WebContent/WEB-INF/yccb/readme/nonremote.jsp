@@ -54,7 +54,7 @@
 		<select class="easyui-combobox" id="readlog" name="readlog" style="width:200px" data-options="panelHeight:'200',valueField:'pid',textField:'completetime'">
 			<option value=""><fmt:message key='common.selectreadlog'/></option>
 	    </select>
-	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addreadlog()" ><fmt:message key='readnon.addreadlog'/></a><span style="color:red;margin-left:20px;"><fmt:message key='readnon.addreadlogremark'/></span>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addreadlog()" id="addreadlogbtn"><fmt:message key='readnon.addreadlog'/></a><span style="color:red;margin-left:20px;"><fmt:message key='readnon.addreadlogremark'/></span>
 	</div>
 	<table id="nonRemoteTab" style="width:100%;height:400px;"></table>
 
@@ -353,6 +353,7 @@ function submitUpload(){
 }
 
 function addreadlog(){
+	$('#addreadlogbtn').linkbutton('disable');
 	var n_id = $("#neighbor").combobox("getValue");
 	
 	if(n_id != ""){
@@ -379,6 +380,7 @@ function addreadlog(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 	}
+	$('#addreadlogbtn').linkbutton('enable');
 }
 </script>
 </body>

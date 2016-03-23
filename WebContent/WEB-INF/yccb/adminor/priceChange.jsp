@@ -10,7 +10,7 @@
 <script type="text/javascript">
 
 function changePrice(){
-
+	$('#changepricebtn').linkbutton('disable');
 	var old_ = $("#pk_old").combobox("getValue");
 	var new_ = $("#pk_new").combobox("getValue");
 	
@@ -52,6 +52,7 @@ function changePrice(){
 			});	
 		}
 	});
+	$('#changepricebtn').linkbutton('enable');
 }
 </script>
 		<div style="padding:10px ">
@@ -80,7 +81,7 @@ function changePrice(){
 	    </div>
 	  
 	   <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePrice()"><fmt:message key='price.changeprice'/></a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="changePrice()" id="changepricebtn"><fmt:message key='price.changeprice'/></a>
 	    </div>
 </body>
 </html>

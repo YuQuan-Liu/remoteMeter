@@ -20,9 +20,9 @@
 			</c:forEach>
 	    </select>
 	    <br/><br/>
-	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="querycjqs()" >查询采集器</a>
- 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addcjq()" ><fmt:message key="g.addcjq"/></a>
- 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="deleteAllmeters()" ><fmt:message key="g.deleteall"/></a>
+	    <a href="javascript:void(0)" class="easyui-linkbutton" onclick="querycjqs()" id="querycjqsbtn">查询采集器</a>
+ 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addcjq()" id="addcjqbtn"><fmt:message key="g.addcjq"/></a>
+ 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="deleteAllmeters()" id="deleteallbtn"><fmt:message key="g.deleteall"/></a>
 	    <br/><br/>
  		<select class="easyui-combobox" id="gprsslave" name="gprsslave" style="width:100px" data-options="panelHeight:'auto'">
  			<option value="0">请选择底层类型</option>
@@ -30,8 +30,8 @@
  			<option value="2">485表</option>
  			<option value="3">采集器</option>
  		</select>
- 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="configgprsslave()" >设置底层类型</a>
- 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="querygprsslave()" >查询底层类型</a>
+ 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="configgprsslave()" id="configslavebtn">设置底层类型</a>
+ 		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="querygprsslave()" id="queryslavebtn">查询底层类型</a>
  	</div>
  	
  	<table id="gprsmetersTbl" style="width:100%;height:300px;"></table>
@@ -90,6 +90,7 @@ function listmeters(){
 	});
 }
 function querycjqs(){
+	$('#querycjqsbtn').linkbutton('disable');
 	var gid = $("#gprsconfig_pid").val();
 	$.ajax({
 		url:'${path}/infoin/neighbor/querycjqs.do',
@@ -112,8 +113,10 @@ function querycjqs(){
 			}
 		}
 	});	
+	$('#querycjqsbtn').linkbutton('enable');
 }
 function addcjq(){
+	$('#addcjqbtn').linkbutton('disable');
 	var gid = $("#gprsconfig_pid").val();
 	var caddr = $("#collectors").combobox("getValue");
 	if(caddr==""){
@@ -145,8 +148,10 @@ function addcjq(){
 			}
 		}
 	});	
+	$('#addcjqbtn').linkbutton('enable');
 }
 function deleteAllmeters(){
+	$('#deleteallbtn').linkbutton('disable');
 	var gid = $("#gprsconfig_pid").val();
 	$.ajax({
 		url:'${path}/infoin/neighbor/deleteAllmeters.do',
@@ -169,7 +174,10 @@ function deleteAllmeters(){
 			}
 		}
 	});	
+	$('#deleteallbtn').linkbutton('enable');
 }
+
+var configgprs_done = true;
 function addmeters(){
 	var gid = $("#gprsconfig_pid").val();
 	var caddr = $("#collectors").combobox("getValue");
@@ -198,47 +206,57 @@ function addmeters(){
 		maddrs.push(row.meterAddr);
 	}
 	$.messager.alert('Info','根据表的数量不同，可能需要几分钟时间，请耐心等待');
-	$.ajax({
-		type:"POST",
-		url:'${path}/infoin/neighbor/jzqaddmeters.do',
-		dataType:"json",  
-        traditional :true,
-		data:{
-			'maddrs':maddrs,
-			pid:gid,
-			caddr:caddr
-		},
-		success:function(data){
-			if(data.done == true){
-				var result = data.result;
-				for(var i = 0;i < result.length;i++){
-					var m = result[i];
-					for(var j=0; j<rows_all.length; j++){
-						var row_ = rows_all[j];
-						if(row_.meterAddr == m.maddr){
-							var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
-							if(m.done == true){
-								$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'添加成功'}});
-							}else{
-								$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*添加失败*'}}); 
+	if(configgprs_done){
+		configgprs_done = false;
+		$.ajax({
+			type:"POST",
+			url:'${path}/infoin/neighbor/jzqaddmeters.do',
+			dataType:"json",  
+	        traditional :true,
+			data:{
+				'maddrs':maddrs,
+				pid:gid,
+				caddr:caddr
+			},
+			success:function(data){
+				if(data.done == true){
+					var result = data.result;
+					for(var i = 0;i < result.length;i++){
+						var m = result[i];
+						for(var j=0; j<rows_all.length; j++){
+							var row_ = rows_all[j];
+							if(row_.meterAddr == m.maddr){
+								var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
+								if(m.done == true){
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'添加成功'}});
+								}else{
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*添加失败*'}}); 
+								}
 							}
 						}
 					}
+					$.messager.show({
+						title:"Info",
+						msg:"操作完成",
+						showType:'slide'
+					});
+				}else{
+					$.messager.alert({
+						title:"Info",
+						msg:data.reason,
+						showType:'slide'
+					});
 				}
-				$.messager.show({
-					title:"Info",
-					msg:"操作完成",
-					showType:'slide'
-				});
-			}else{
-				$.messager.alert({
-					title:"Info",
-					msg:data.reason,
-					showType:'slide'
-				});
 			}
-		}
-	});
+		});
+		configgprs_done = true;
+	}else{
+		$.messager.show({
+			title : 'Info',
+			msg : '操作频繁，请稍后重试',
+			showType : 'slide'
+		});
+	}
 }
 
 function deletemeters(){
@@ -269,47 +287,57 @@ function deletemeters(){
 		maddrs.push(row.meterAddr);
 	}
 	$.messager.alert('Info','根据表的数量不同，可能需要几分钟时间，请耐心等待');
-	$.ajax({
-		type:"POST",
-		url:'${path}/infoin/neighbor/jzqdeletemeters.do',
-		dataType:"json",  
-        traditional :true,
-		data:{
-			'maddrs':maddrs,
-			pid:gid,
-			caddr:caddr
-		},
-		success:function(data){
-			if(data.done == true){
-				var result = data.result;
-				for(var i = 0;i < result.length;i++){
-					var m = result[i];
-					for(var j=0; j<rows_all.length; j++){
-						var row_ = rows_all[j];
-						if(row_.meterAddr == m.maddr){
-							var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
-							if(m.done == true){
-								$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'删除成功'}});
-							}else{
-								$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*删除失败*'}}); 
+	if(configgprs_done){
+		configgprs_done = false;
+		$.ajax({
+			type:"POST",
+			url:'${path}/infoin/neighbor/jzqdeletemeters.do',
+			dataType:"json",  
+	        traditional :true,
+			data:{
+				'maddrs':maddrs,
+				pid:gid,
+				caddr:caddr
+			},
+			success:function(data){
+				if(data.done == true){
+					var result = data.result;
+					for(var i = 0;i < result.length;i++){
+						var m = result[i];
+						for(var j=0; j<rows_all.length; j++){
+							var row_ = rows_all[j];
+							if(row_.meterAddr == m.maddr){
+								var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
+								if(m.done == true){
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'删除成功'}});
+								}else{
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*删除失败*'}}); 
+								}
 							}
 						}
 					}
+					$.messager.show({
+						title:"Info",
+						msg:"操作完成",
+						showType:'slide'
+					});
+				}else{
+					$.messager.alert({
+						title:"Info",
+						msg:data.reason,
+						showType:'slide'
+					});
 				}
-				$.messager.show({
-					title:"Info",
-					msg:"操作完成",
-					showType:'slide'
-				});
-			}else{
-				$.messager.alert({
-					title:"Info",
-					msg:data.reason,
-					showType:'slide'
-				});
 			}
-		}
-	});
+		});
+		configgprs_done = true;
+	}else{
+		$.messager.show({
+			title : 'Info',
+			msg : '操作频繁，请稍后重试',
+			showType : 'slide'
+		});
+	}
 }
 function readJZQdata(){
 	var gid = $("#gprsconfig_pid").val();
@@ -328,50 +356,61 @@ function readJZQdata(){
 		msg:"数据正在传送中...",
 		showType:'slide'
 	});
-	$.ajax({
-		url:'${path}/infoin/neighbor/readJZQdata.do',
-		type:'post',
-		data:{pid:gid,caddr:caddr},
-		dataType: "json", 
-		success:function(data){
-			if(data.done == false){
-				$.messager.show({
-					title:"Info",
-					msg:data.reason,
-					showType:'slide'
-				});
-			}
-			if(data.caddr == caddr){
-				var result = data.result;
-				for(var i = 0;i < result.length;i++){
-					var m = result[i];
-					var found = false;
-					for(var j=0; j<rows_all.length; j++){
-						var row_ = rows_all[j];
-						if(row_.meterAddr == m.maddr){
-							found = true;
-							var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
-							$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'已添加'}});
+	if(configgprs_done){
+		configgprs_done = false;
+		$.ajax({
+			url:'${path}/infoin/neighbor/readJZQdata.do',
+			type:'post',
+			data:{pid:gid,caddr:caddr},
+			dataType: "json", 
+			success:function(data){
+				if(data.done == false){
+					$.messager.show({
+						title:"Info",
+						msg:data.reason,
+						showType:'slide'
+					});
+				}
+				if(data.caddr == caddr){
+					var result = data.result;
+					for(var i = 0;i < result.length;i++){
+						var m = result[i];
+						var found = false;
+						for(var j=0; j<rows_all.length; j++){
+							var row_ = rows_all[j];
+							if(row_.meterAddr == m.maddr){
+								found = true;
+								var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
+								$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'已添加'}});
+							}
+						}
+						if(!found){
+							//没有找到  在最后面添加一条 
+							$("#gprsmetersTbl").datagrid('appendRow', {pid:0,collectorAddr:caddr,meterAddr:m.maddr,remark:'*多余*'});
 						}
 					}
-					if(!found){
-						//没有找到  在最后面添加一条 
-						$("#gprsmetersTbl").datagrid('appendRow', {pid:0,collectorAddr:caddr,meterAddr:m.maddr,remark:'*多余*'});
-					}
+					$.messager.show({
+						title:"Info",
+						msg:"操作完成",
+						showType:'slide'
+					});
+				}else{
+					//不是这个采集器  do nothing
 				}
-				$.messager.show({
-					title:"Info",
-					msg:"操作完成",
-					showType:'slide'
-				});
-			}else{
-				//不是这个采集器  do nothing
+				
 			}
-			
-		}
-	});	
+		});	
+		configgprs_done = true;
+	}else{
+		$.messager.show({
+			title : 'Info',
+			msg : '操作频繁，请稍后重试',
+			showType : 'slide'
+		});
+	}
 }
 function configgprsslave(){
+	$('#configslavebtn').linkbutton('disable');
 	var gid = $("#gprsconfig_pid").val();
 	var gprsslave = $("#gprsslave").combobox("getValue");
 	if(gprsslave == 0){
@@ -403,8 +442,10 @@ function configgprsslave(){
 			}
 		}
 	});	
+	$('#configslavebtn').linkbutton('enable');
 }
 function querygprsslave(){
+	$('#queryslavebtn').linkbutton('disable');
 	var gid = $("#gprsconfig_pid").val();
 	$.ajax({
 		url:'${path}/infoin/neighbor/querygprsslave.do',
@@ -427,6 +468,7 @@ function querygprsslave(){
 			}
 		}
 	});	
+	$('#queryslavebtn').linkbutton('enable');
 }
 </script>
 </body>

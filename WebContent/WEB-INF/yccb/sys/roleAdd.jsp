@@ -27,6 +27,7 @@ function getChecked(){
 	return true;
 }
 function submitForm(){
+	$('#addrolebtn').linkbutton('disable');
 	if(!getChecked()){
 		$.messager.show({
 			title:'Info',
@@ -64,6 +65,7 @@ function submitForm(){
 			}
 		});
 	}
+	$('#addrolebtn').linkbutton('enable');
 }
 function checkRoleName(){
 	var name = $("#roleName").textbox("getValue");
@@ -110,7 +112,7 @@ $.extend($.fn.validatebox.defaults.rules, {
 	</div>
 </form>
 <div style="text-align: center; padding: 5px">
-	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="addrolebtn"><fmt:message key='common.submit'/></a>
 </div>
 <div class="easyui-panel" title="<fmt:message key='role.choose'/>" style="padding:5px;height:250px;">
 	<ul id="authTree" class="easyui-tree" data-options="url:'${path}/sys/role/tree.do',method:'get',animate:true,checkbox:true"></ul>

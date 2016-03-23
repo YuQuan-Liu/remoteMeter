@@ -10,6 +10,7 @@
 <script type="text/javascript">
 
 function submitForm(){
+	$('#addadminbtn').linkbutton('disable');
 	var did = $("#depid").combobox("getValue");
 	var rid = $("#roleid").combobox("getValue");
 // 	if(did == ""){
@@ -41,6 +42,7 @@ function submitForm(){
 	       }
 	    }   
 	}); 
+	$('#addadminbtn').linkbutton('enable');
 }
 
 $.extend($.fn.validatebox.defaults.rules, {
@@ -137,7 +139,7 @@ function checkLoginName(){
 	    </form>
 	    </div>
 	    <div style="text-align:center;padding:5px">
-	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()"><fmt:message key='common.submit'/></a>
+	    	<a href="javascript:void(0)" class="easyui-linkbutton" onclick="submitForm()" id="addadminbtn"><fmt:message key='common.submit'/></a>
 	    </div>
 </body>
 </html>

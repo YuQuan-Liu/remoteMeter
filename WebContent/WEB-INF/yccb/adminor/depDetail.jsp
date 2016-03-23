@@ -83,10 +83,10 @@ function addNbr(dep_id){
 					showType:'slide'
 				});
 				$('#neibourListTab').datagrid('reload');
-				$('#addNbr').linkbutton('enable');
 			}
 		}
 	});
+	$('#addNbr').linkbutton('enable');
 }
 </script>
 	<div style="padding: 10px">
