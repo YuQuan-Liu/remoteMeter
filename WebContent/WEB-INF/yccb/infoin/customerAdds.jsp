@@ -86,9 +86,10 @@
 				}else{
 					$.messager.alert("error",data.reason);
 				}
+				$('#upload').linkbutton('enable');
 			}
 		});
-		$('#upload').linkbutton('enable');
+		
 	}
 	</script>
 </body>

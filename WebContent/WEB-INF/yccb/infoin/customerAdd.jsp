@@ -282,9 +282,10 @@
 					$("#c_id").val("");
 					$.messager.alert("Info","<fmt:message key='common.addok'/>");
 				}
+				$('#addmeterbtn').linkbutton('enable');
 			}
 		});
-		$('#addmeterbtn').linkbutton('enable');
+		
 	}
 	function submitCustomer(){
 		$('#customersubmit').linkbutton('disable');
@@ -310,9 +311,10 @@
 						window.open("${path}/charge/charge/printcharge.do?cplid="+data.cplid,"_blank");
 					}
 				}
+				$('#customersubmit').linkbutton('enable');
 			}
 		});
-		$('#customersubmit').linkbutton('enable');
+		
 	}
 	function listGPRS(){
 		var n_id = $("#n_id").combobox("getValue");

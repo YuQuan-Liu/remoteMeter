@@ -25,9 +25,10 @@ function submitForm(){
 				});
 			 	$('#watComListTab').datagrid('reload');
 	       }
+	       $('#updatewcbtn').linkbutton('enable');
 	    }   
 	});  	
-	$('#updatewcbtn').linkbutton('enable');
+	
 }
 </script>
 		<div style="padding:10px 0 10px 60px">

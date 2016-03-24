@@ -224,12 +224,13 @@ function chargePost(){
 				}else{
 					//;
 				}
+				$('#chargepostbtn').linkbutton('enable');
 			}
 		});
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
 	}
-	$('#chargepostbtn').linkbutton('enable');
+	
 }
 
 function sendMessage(){
@@ -256,12 +257,13 @@ function sendMessage(){
 				}else{
 					//;
 				}
+				$('#sendmessagebtn').linkbutton('enable');
 			}
 		});
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.chooserecord'/>');
 	}
-	$('#sendmessagebtn').linkbutton('enable');
+	
 }
 
 function printAll(){

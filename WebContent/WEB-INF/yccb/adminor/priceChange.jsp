@@ -48,11 +48,12 @@ function changePrice(){
 						});
 						$('#priceChangeWin').window('close');
 					}
+					$('#changepricebtn').linkbutton('enable');
 				}
 			});	
 		}
 	});
-	$('#changepricebtn').linkbutton('enable');
+	
 }
 </script>
 		<div style="padding:10px ">

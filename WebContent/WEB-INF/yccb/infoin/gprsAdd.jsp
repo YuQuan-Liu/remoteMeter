@@ -33,9 +33,10 @@ function submitForm(){
 				$('#addGprsWin').window('close');
 				$('#ddv-${neighborid }').datagrid('reload');
 			}
+			$('#addgprsbtn').linkbutton('enable');
 		}	
 	});
-	$('#addgprsbtn').linkbutton('enable');
+	
 }
 
 //检查集中器的地址  是否已经存在

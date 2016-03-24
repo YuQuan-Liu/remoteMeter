@@ -233,12 +233,13 @@ function warnAll(){
 				}else{
 					$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 				}
+				$('#warnallbtn').linkbutton('enable');
 			}
 		});
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 	}
-	$('#warnallbtn').linkbutton('enable');
+	
 }
 
 var closevalve_done = true;
@@ -295,12 +296,13 @@ function closeValveAll(){
 				}else{
 					$.messager.alert('Error','<fmt:message key='read.valvefail'/>');
 				}
+				$('#closevalveallbtn').linkbutton('enable');
 			}
 		});
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 	}
-	$('#closevalveallbtn').linkbutton('enable');
+	
 }
 
 function resolveError(conf_id,index_){

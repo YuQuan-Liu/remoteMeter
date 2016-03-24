@@ -203,12 +203,13 @@ function warnAll(){
 				}else{
 					$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 				}
+				$('#warnallbtn').linkbutton('enable');
 			}
 		});
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 	}
-	$('#warnallbtn').linkbutton('enable');
+	
 }
 
 function settleAll(){
@@ -234,11 +235,12 @@ function settleAll(){
 						$.messager.alert('Info',data.reason);
 					}
 					$("#settleall").prop("disabled",false);
+					$('#settleall').linkbutton('enable');
 				}
 			});
 		}
 	});
-	$('#settleall').linkbutton('enable');
+	
 }
 
 var settlesingle_done = true;

@@ -164,9 +164,10 @@
 						showType:'slide'
 					});
 				}
+				$('#updatemeterbtn').linkbutton('enable');
 			}
 		});
-		$('#updatemeterbtn').linkbutton('enable');
+		
 	}
 	function valveChange(){
 		var valve = $("#isValve").combobox("getValue");

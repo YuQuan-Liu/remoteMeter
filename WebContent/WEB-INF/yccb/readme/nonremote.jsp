@@ -375,12 +375,13 @@ function addreadlog(){
     					timeout:3000
     				});
     			}
+    			$('#addreadlogbtn').linkbutton('enable');
     		}
     	});
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.choosenei'/>');
 	}
-	$('#addreadlogbtn').linkbutton('enable');
+	
 }
 </script>
 </body>

@@ -42,9 +42,10 @@ function submitForm(){
 				});
 			 	$('#watComListTab').datagrid('reload');
 	       }
+	       $('#addwcbtn').linkbutton('enable');
 	    }   
 	});	  
-	$('#addwcbtn').linkbutton('enable');
+	
 }
 
 //检查登录名是否已经存在

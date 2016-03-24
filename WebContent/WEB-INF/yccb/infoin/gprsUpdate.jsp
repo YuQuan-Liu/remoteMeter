@@ -26,9 +26,10 @@ function submitForm(){
 				$('#updateGprsWin').window('close');
 				$('#ddv-'+n_id).datagrid('reload');
 			}
+			$('#updategprsbtn').linkbutton('enable');
 		}	
 	}); 
-	$('#updategprsbtn').linkbutton('enable');
+	
 }
 
 $.extend($.fn.validatebox.defaults.rules, {

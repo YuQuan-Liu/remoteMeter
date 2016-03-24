@@ -63,9 +63,10 @@ function submitForm(){
 				$('#addNeighborWin').window('close');
 				$('#neighborListTab').datagrid('reload');
 			}
+			$('#addneighborbtn').linkbutton('enable');
 		}	
 	}); 
-	$('#addneighborbtn').linkbutton('enable');
+	
 }
 //检查本自来水公司下此小区是否已经存在
 function checkNbrName(){

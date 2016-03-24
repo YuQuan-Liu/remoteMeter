@@ -171,12 +171,12 @@
 						}else{
 							$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 						}
+						$('#warnallbtn').linkbutton('enable');
 					}
 				});
 			}else{
 				$.messager.alert('Info','<fmt:message key='common.selectcustomer'/>');
 			}
-			$('#warnallbtn').linkbutton('enable');
 		}
 		var warnsingle_done = true;
 		function warnSingle(cid,index){

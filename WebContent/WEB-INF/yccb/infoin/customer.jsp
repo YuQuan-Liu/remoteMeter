@@ -442,9 +442,10 @@ function refreshRow(index){
 				if(data == "true"){
 					$("#changedialog").dialog('close');
 				}
+				$('#changeMeter').linkbutton('enable');
 			}
 		});
-		$('#changeMeter').linkbutton('enable');
+		
 	}
 	function adjustMeter(){
 		$('#adjustMeter').linkbutton('disable');
@@ -467,9 +468,10 @@ function refreshRow(index){
 						showType:'slide'
 					});
 				}
+				$('#adjustMeter').linkbutton('enable');
 			}
 		});
-		$('#adjustMeter').linkbutton('enable');
+		
 	}
 </script>
 </html>

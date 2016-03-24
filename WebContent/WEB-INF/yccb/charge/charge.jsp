@@ -334,11 +334,12 @@ $(function(){
 								showType : 'slide'
 							});
     	    			}
+    	    			$('#updatecustbtn').linkbutton('enable');
     	    		}
     	    	});
 			}
 		});
-		$('#updatecustbtn').linkbutton('enable');
+		
 	}
 	function changePre() {
 		$('#changeprebtn').linkbutton('disable');
@@ -379,11 +380,12 @@ $(function(){
 							});
 							$('#prePaySign').textbox('setValue',prestr);
 						}
+						$('#changeprebtn').linkbutton('enable');
 					}
 				});
 			}
 		});
-		$('#changeprebtn').linkbutton('enable');
+		
 	}
 	function payFor() {
 		//交费
@@ -429,6 +431,7 @@ $(function(){
 									timeout : 0
 								});
 							}
+							$('#payforbtn').linkbutton('enable');
 						}
 					});
 				}else{
@@ -437,7 +440,7 @@ $(function(){
 				
 			}
 		});
-		$('#payforbtn').linkbutton('enable');
+		
 	}
 	
 	function chargeprint(cplid){

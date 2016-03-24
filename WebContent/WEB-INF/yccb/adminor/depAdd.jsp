@@ -53,6 +53,7 @@ function submitForm(){
 						$('#depListTab').datagrid('reload');
 						$('#depAddWin').window('close');
 					}
+					$('#adddepbtn').linkbutton('enable');
 				}
 			});
 		}else{
@@ -61,7 +62,7 @@ function submitForm(){
 	}else{
 		$.messager.alert('Info','<fmt:message key='common.enterinfo'/>');
 	}
-	$('#adddepbtn').linkbutton('enable');
+	
 }
 
 //检查本自来水公司下此片区名是否已经存在

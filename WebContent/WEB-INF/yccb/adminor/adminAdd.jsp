@@ -40,9 +40,9 @@ function submitForm(){
 	    		$('#addWin').window('close');
 			 	$('#adminListTab').datagrid('reload');
 	       }
+	   		$('#addadminbtn').linkbutton('enable');
 	    }   
 	}); 
-	$('#addadminbtn').linkbutton('enable');
 }
 
 $.extend($.fn.validatebox.defaults.rules, {

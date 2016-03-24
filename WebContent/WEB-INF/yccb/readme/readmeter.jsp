@@ -183,10 +183,11 @@ function readNeighbor(){
 				}else{
 					$.messager.alert('Error','<fmt:message key='read.fail'/>');
 				}
+				$('#readthisbtn').linkbutton('enable');
 			}
 		});
 	}
-	$('#readthisbtn').linkbutton('enable');
+	
 }
 function readNeighbors(){
 	$('#readallbtn').linkbutton('disable');
@@ -201,9 +202,10 @@ function readNeighbors(){
 			}else{
 				$.messager.alert('Error','<fmt:message key='read.fail'/>');
 			}
+			$('#readallbtn').linkbutton('enable');
 		}
 	});
-	$('#readallbtn').linkbutton('enable');
+	
 }
 
 var readmeter_done = true;

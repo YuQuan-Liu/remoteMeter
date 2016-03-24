@@ -133,9 +133,10 @@
 						showType:'slide'
 					});
 				}
+				$('#updatecustomerbtn').linkbutton('enable');
 			}
 		});
-		$('#updatecustomerbtn').linkbutton('enable');
+		
 	}
 	</script>
 </body>

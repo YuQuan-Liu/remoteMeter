@@ -73,10 +73,11 @@ function submitForm(){
 					});
 				 	$('#priceListTab').datagrid('reload');
 		       }
+		       $('#addpricebtn').linkbutton('enable');
 		    }   
 		});
 	}
-	$('#addpricebtn').linkbutton('enable');
+	
 }
 
 function checkPKName(){

@@ -84,9 +84,10 @@ function addNbr(dep_id){
 				});
 				$('#neibourListTab').datagrid('reload');
 			}
+			$('#addNbr').linkbutton('enable');
 		}
 	});
-	$('#addNbr').linkbutton('enable');
+	
 }
 </script>
 	<div style="padding: 10px">

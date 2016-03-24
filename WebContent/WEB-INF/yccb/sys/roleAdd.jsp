@@ -62,10 +62,11 @@ function submitForm(){
 		    	   	$('#addRoleWin').window('close');
 				 	$('#roleListTab').datagrid('reload');
 				}
+				$('#addrolebtn').linkbutton('enable');
 			}
 		});
 	}
-	$('#addrolebtn').linkbutton('enable');
+	
 }
 function checkRoleName(){
 	var name = $("#roleName").textbox("getValue");

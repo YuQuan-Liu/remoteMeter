@@ -23,9 +23,10 @@ function submitForm(){
 					timeout:3000
 				});
 	    	}
+	    	$('#updateadminbtn').linkbutton('enable');
 	    }
 	}); 
-	$('#updateadminbtn').linkbutton('enable');
+	
 }
 
 $.extend($.fn.validatebox.defaults.rules, {
@@ -99,10 +100,11 @@ function changepwd(){
 						timeout:3000
 					});
 				}
+				$('#changepwdbtn').linkbutton('enable');
 			}
 		});
 	}
-	$('#changepwdbtn').linkbutton('enable');
+	
 }
 function resetpwd(){
 	

@@ -111,9 +111,10 @@ function querycjqs(){
 					showType:'slide'
 				});
 			}
+			$('#querycjqsbtn').linkbutton('enable');
 		}
 	});	
-	$('#querycjqsbtn').linkbutton('enable');
+	
 }
 function addcjq(){
 	$('#addcjqbtn').linkbutton('disable');
@@ -146,9 +147,10 @@ function addcjq(){
 					showType:'slide'
 				});
 			}
+			$('#addcjqbtn').linkbutton('enable');
 		}
 	});	
-	$('#addcjqbtn').linkbutton('enable');
+	
 }
 function deleteAllmeters(){
 	$('#deleteallbtn').linkbutton('disable');
@@ -172,9 +174,10 @@ function deleteAllmeters(){
 					showType:'slide'
 				});
 			}
+			$('#deleteallbtn').linkbutton('enable');
 		}
 	});	
-	$('#deleteallbtn').linkbutton('enable');
+	
 }
 
 var configgprs_done = true;
@@ -440,9 +443,10 @@ function configgprsslave(){
 					showType:'slide'
 				});
 			}
+			$('#configslavebtn').linkbutton('enable');
 		}
 	});	
-	$('#configslavebtn').linkbutton('enable');
+	
 }
 function querygprsslave(){
 	$('#queryslavebtn').linkbutton('disable');
@@ -466,9 +470,10 @@ function querygprsslave(){
 					showType:'slide'
 				});
 			}
+			$('#queryslavebtn').linkbutton('enable');
 		}
 	});	
-	$('#queryslavebtn').linkbutton('enable');
+	
 }
 </script>
 </body>
