@@ -20,9 +20,9 @@ public class SMSTemplateImpl extends HibernateDAO<SMSTemplate> implements SMSTem
 	}
 
 	@Override
-	public SMSTemplate getQF(int wcid) {
-		String hql = "from SMSTemplate sms where sms.qf = 1 and sms.watercompany.pid = "+wcid;
-		Query q = getSession().createQuery(hql);
+	public SMSTemplate getQF(int wcid,int qf) {
+		String hql = "from SMSTemplate sms where sms.qf = :qf and sms.watercompany.pid = :wcid";
+		Query q = getSession().createQuery(hql).setInteger("wcid", wcid).setInteger("qf", qf);
 		return (SMSTemplate) q.uniqueResult();
 	}
 

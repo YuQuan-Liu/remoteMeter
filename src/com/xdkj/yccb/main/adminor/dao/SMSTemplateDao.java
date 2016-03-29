@@ -14,10 +14,11 @@ public interface SMSTemplateDao {
 	List<SMSTemplate> getList(int wcid);
 
 	/**
-	 * 获取欠费通知的短信模板
+	 * 获取欠费通知的短信模板  qf==1为普通用户模板  qf==2企业模板
 	 * @param pid
+	 * @param qf
 	 * @return
 	 */
-	SMSTemplate getQF(int pid);
+	SMSTemplate getQF(int pid,int qf);
 
 }

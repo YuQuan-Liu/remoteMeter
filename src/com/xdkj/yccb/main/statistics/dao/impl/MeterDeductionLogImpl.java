@@ -643,7 +643,7 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 			}
 		}
 		
-		String SQL = "select mdl.demoney demoney,c.customerMobile,c.pid c_id,c.CustomerName,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num from meterdeductionlog mdl " +
+		String SQL = "select mdl.demoney demoney,c.customerMobile,c.pid c_id,c.CustomerName,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.housekindid hk from meterdeductionlog mdl " +
 				"join meter m on mdl.meterid = m.pid " +
 				"join customer c on m.customerid = c.pid " +
 				"where mdl.pid in ("+sb_ids.toString()+") ";
@@ -653,7 +653,8 @@ public class MeterDeductionLogImpl extends HibernateDAO<Meterdeductionlog> imple
 				.addScalar("c_id",Hibernate.INTEGER)
 				.addScalar("customerMobile",Hibernate.STRING)
 				.addScalar("customerName",Hibernate.STRING)
-				.addScalar("c_num",Hibernate.STRING);
+				.addScalar("c_num",Hibernate.STRING)
+				.addScalar("hk",Hibernate.INTEGER);
 		q.setResultTransformer(Transformers.aliasToBean(WarnPostPay.class));
 		list = q.list();
 		

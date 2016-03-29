@@ -9,7 +9,14 @@ public class WarnPostPay {
 	private String customerName;
 	private String customerMobile;
 	private BigDecimal demoney;
+	private int hk;
 	
+	public int getHk() {
+		return hk;
+	}
+	public void setHk(int hk) {
+		this.hk = hk;
+	}
 	public int getC_id() {
 		return c_id;
 	}

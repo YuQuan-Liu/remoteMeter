@@ -148,7 +148,16 @@ public class WarnSender {
     		para.put("pas", wc.getSmspas());
 		}
 		//短信模板cid，通过微米后台创建
-		SMSTemplate qfTemplate = smsTemplateDao.getQF(wc.getPid());
+		SMSTemplate qfTemplate = null;
+		//判断使用企业模板还是普通用户模板
+		switch (c.getHk()){
+		case 4:
+			qfTemplate = smsTemplateDao.getQF(wc.getPid(),2);
+			break;
+			default:
+				qfTemplate = smsTemplateDao.getQF(wc.getPid(),1);
+				break;
+		}
 		if(qfTemplate == null){
 			//西岛默认
 			//短信模板cid
@@ -159,10 +168,27 @@ public class WarnSender {
             para.put("p3", wc.getCompanyName());
 		}else{
 			//短信模板cid
-			para.put("cid", qfTemplate.getCid());
-			//传入模板参数。  第一个%P% 为p1,后面的++
-			para.put("p1", c.getC_num());
-            para.put("p2", "-"+c.getDemoney().doubleValue());
+            switch (c.getHk()){
+			case 4:
+//				//企业
+//				//短信模板cid
+				para.put("cid", qfTemplate.getCid());
+				//传入模板参数。  第一个%P% 为p1,后面的++
+				if(qfTemplate.getPara_cnt() == 1){
+					para.put("p1", c.getC_num());
+				}else{
+					para.put("p1", c.getC_num());
+		            para.put("p2", "-"+c.getDemoney().doubleValue());
+				}
+				break;
+			default:
+				//短信模板cid
+				para.put("cid", qfTemplate.getCid());
+				//传入模板参数。  第一个%P% 为p1,后面的++
+				para.put("p1", c.getC_num());
+	            para.put("p2", "-"+c.getDemoney().doubleValue());
+				break;
+			}
 		}
 		
 		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
@@ -272,7 +298,17 @@ public class WarnSender {
     		para.put("pas", wc.getSmspas());
 		}
 		//短信模板cid，通过微米后台创建
-		SMSTemplate qfTemplate = smsTemplateDao.getQF(wc.getPid());
+		SMSTemplate qfTemplate = null;
+		//判断使用企业模板还是普通用户模板
+		switch (c.getHousekind().getPid()){
+		case 4:
+			qfTemplate = smsTemplateDao.getQF(wc.getPid(),2);
+			break;
+			default:
+				qfTemplate = smsTemplateDao.getQF(wc.getPid(),1);
+				break;
+		}
+		
 		if(qfTemplate == null){
 			//西岛默认
 			//短信模板cid
@@ -282,11 +318,28 @@ public class WarnSender {
             para.put("p2", c.getCustomerBalance().doubleValue()+"");
             para.put("p3", wc.getCompanyName());
 		}else{
-			//短信模板cid
-			para.put("cid", qfTemplate.getCid());
-			//传入模板参数。  第一个%P% 为p1,后面的++
-			para.put("p1", c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
-            para.put("p2", c.getCustomerBalance().doubleValue()+"");
+			switch (c.getHousekind().getPid()){
+			case 4:
+//				//企业
+//				//短信模板cid
+				para.put("cid", qfTemplate.getCid());
+				//传入模板参数。  第一个%P% 为p1,后面的++
+				if(qfTemplate.getPara_cnt() == 1){
+					para.put("p1", c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+				}else{
+					para.put("p1", c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+			        para.put("p2", c.getCustomerBalance().doubleValue()+"");
+				}
+				break;
+			default:
+				//短信模板cid
+				para.put("cid", qfTemplate.getCid());
+				//传入模板参数。  第一个%P% 为p1,后面的++
+				para.put("p1", c.getLouNum()+"-"+c.getDyNum()+"-"+c.getHuNum());
+		        para.put("p2", c.getCustomerBalance().doubleValue()+"");
+				break;
+			}
+			
 		}
         
 		JSONObject jo = JSONObject.parseObject(HttpClientHelper.convertStreamToString(
