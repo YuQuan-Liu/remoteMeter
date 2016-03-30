@@ -187,20 +187,16 @@ public class ChargeCtrl {
 	
 	@RequestMapping(value ="/charge/updateDeread")
 	@ResponseBody
-	public String updateDeread(HttpServletRequest request,int deread,int m_id,int old,String pwd){
+	public String updateDeread(HttpServletRequest request,int deread,int m_id,int old){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 31, "mid:"+m_id+"~deread:"+deread+"~old:"+old+"~pwd:"+pwd);
+		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 31, "mid:"+m_id+"~deread:"+deread+"~old:"+old);
 		
 		Admininfo admininfo = adminService.getById(WebUtil.getCurrUser(request).getPid()+"");
 		Admininfo sadmininfo = adminService.getById(admininfo.getSid()+"");
 		
-		String result = "0";
-		if(new Md5PwdEncoder().encodePassword(pwd).equals(sadmininfo.getLoginKey())){
-			result = chargeService.updateDeread(m_id, deread);
-		}else{
-			result = "2";
-		}
+		String result = chargeService.updateDeread(m_id, deread);
+		
 		return result;
 	}
 	

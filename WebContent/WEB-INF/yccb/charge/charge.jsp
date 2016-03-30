@@ -97,10 +97,6 @@
 				<td><input type="text" name="newderead" id="newderead"/></td>
 			</tr>
 			<tr>
-				<td><label>监督密码：</label></td>
-				<td><input type="password" name="depassword" id="depassword"/></td>
-			</tr>
-			<tr>
 				<td colspan="2" >
 					<input name="submitderead" type="button" id="submitderead" value="修改" onclick="submit_deread()">
 					<input type="hidden" id="deread_mid">
@@ -539,14 +535,10 @@ $(function(){
 	function submit_deread(){
 		var newderead = $('#newderead').val();
 		var old_deread = $('#deread_old').val();
-		var depassword = $('#depassword').val();
-		$('#depassword').val("");//清空
 		var mid = $('#deread_mid').val();
 		var index_ = $('#deread_index').val();
 		
-		console.log(newderead+"~"+old_deread+"~"+depassword+"~"+mid+"~"+index_);
-		
-		if(newderead >= 0 && depassword != ""){
+		if(newderead >= 0){
 			$.ajax({
 				type:"POST",
 				url:"${path}/charge/updateDeread.do",
@@ -554,8 +546,7 @@ $(function(){
 				data:{
 					m_id:mid,
 					deread:newderead,
-					old:old_deread,
-					pwd:depassword
+					old:old_deread
 				},
 				success:function(data){
 					$('#dereadDialog').window('close');
