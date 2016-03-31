@@ -382,9 +382,12 @@ function checkcontroling(valvelogid,index){
 				$.messager.progress("close");
 				$.messager.alert('Result',"<fmt:message key='read.valvefinished'/>:"+data.completecount+"</br><fmt:message key='read.valveerror'/>:"+data.errorcount,'info'); 
 				
-				if(data.completecount+data.errorcount == 1){
+				if(data.completecount == 1){
 					//单个表
 					$("#readmeterTab").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
+				}
+				if(data.errorcount == 1){
+					$("#readmeterTab").datagrid('updateRow', {index:index,row:{valveState:2}});
 				}
 			}
 		}

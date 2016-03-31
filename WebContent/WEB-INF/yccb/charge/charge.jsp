@@ -488,9 +488,13 @@ $(function(){
 						showType : 'slide'
 					});
 // 					$.messager.alert('操作结果',"完成个数:"+data.completecount+"\r\n异常个数:"+data.errorcount,'info'); 
-					if(data.completecount+data.errorcount == 1){
+					if(data.completecount == 1){
 						//单个表
 						$("#custMeters").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
+					}
+					if(data.errorcount == 1){
+						//单个表
+						$("#custMeters").datagrid('updateRow', {index:index,row:{valveState:2}});
 					}
 				}
 			}

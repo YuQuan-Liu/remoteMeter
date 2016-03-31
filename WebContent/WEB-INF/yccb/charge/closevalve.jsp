@@ -371,7 +371,12 @@ function checkcontroling(valvelogid,index){
 				
 				if(data.completecount+data.errorcount == 1){
 					//单个表
-					$("#controlTab").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
+					if(data.completecount == 1){
+						$("#controlTab").datagrid('updateRow', {index:index,row:{valveState:data.switch_}});
+					}
+					if(data.errorcount == 1){
+						$("#controlTab").datagrid('updateRow', {index:index,row:{valveState:2}});
+					}
 				}else{
 					showMeterdata();
 				}
