@@ -94,6 +94,15 @@ $(function(){
 						if(value == 5){
 							return "<fmt:message key='m.mstatechange'/>";
 						}
+						if(value == 6){
+							return "气泡";
+						}
+						if(value == 7){
+							return "故障";
+						}
+						if(value == 8){
+							return "强光";
+						}
 						return "<fmt:message key='common.exception'/>";
 		          }},
 		          {field:'valveState',title:'<fmt:message key='m.vstate'/>',width:80,editor:'text',formatter:function(value,row,index){

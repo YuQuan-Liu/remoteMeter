@@ -385,7 +385,7 @@ public class ConfigGPRS {
 //									this.addrstr = this.addrstr+Integer.toHexString(addr[i]&0xFF);
 							cjqaddrstr = cjqaddrstr+String.format("%02x", cjqaddrbytes[k]&0xFF)+" ";
 						}
-						show = show + cjqaddrstr+"\r\n";
+						show = show + cjqaddrstr+"\r\n,";
 					}
 					jo.put("done", true);
 					jo.put("cjqs",show);

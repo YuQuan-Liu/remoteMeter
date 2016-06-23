@@ -100,6 +100,8 @@ function querycjqs(){
 		success:function(data){
 			if(data.done == true){
 				$.messager.show({
+					height:400,
+					timeout:0,
 					title:"Info",
 					msg:data.cjqs,
 					showType:'slide'
