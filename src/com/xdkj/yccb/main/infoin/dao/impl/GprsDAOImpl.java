@@ -44,23 +44,15 @@ public class GprsDAOImpl extends HibernateDAO<Gprs> implements GprsDAO {
 	public void deleteGprs(int gprsId) {
 		String hql = "update Gprs g set g.valid='0' where g.pid=:pid";
 		getSession().createQuery(hql).setParameter("pid", gprsId).executeUpdate();
+		String sql = "update Meter m set m.valid='0' where m.gprs.pid=:pid";
+		getSession().createQuery(sql).setParameter("pid", gprsId).executeUpdate();
 	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void deleteByNbrId(String ids) {
-		String[] id = ids.split(",");
-		List<Integer> idlist = new ArrayList<Integer>();
-		for (String str : id) {
-			idlist.add(Integer.parseInt(str));
-			}
-		Query q = this.getSession().createQuery("from Gprs gr where gr.neighbor.pid in(:ids)");
-		q.setParameterList("ids", idlist);
-		Iterator nbr = q.list().iterator();
-		while(nbr.hasNext()){
-			Gprs gr = (Gprs) nbr.next();
-			gr.setValid("0");
-		}
+	public void deleteByNbrId(int nbrId) {
+		String hql = "update Gprs g set g.valid='0' where g.neighbor.pid=:pid";
+		getSession().createQuery(hql).setParameter("pid", nbrId).executeUpdate();
 	}
 	
 	@Override

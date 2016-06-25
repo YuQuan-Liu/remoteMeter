@@ -86,9 +86,14 @@ public class NeighborDAOImpl extends HibernateDAO<Neighbor> implements NeighborD
 	public void delete(int id) {
 		
 		String sql = "update Neighbor set valid = 0 where pid = :n_id ";
-		Query q = getSession().createSQLQuery(sql);
-		q.setInteger("n_id", id);
-		q.executeUpdate();
+		getSession().createSQLQuery(sql).setInteger("n_id", id).executeUpdate();
+		
+		String sql_c = "update Customer c set c.valid = 0 where c.neighborid = :n_id ";
+		getSession().createSQLQuery(sql_c).setInteger("n_id", id).executeUpdate();
+		
+		String sql_m = "update Meter m set m.valid = 0 where m.neighborid = :n_id ";
+		getSession().createSQLQuery(sql_m).setInteger("n_id", id).executeUpdate();
+		
 	}
 
 	@SuppressWarnings("unchecked")

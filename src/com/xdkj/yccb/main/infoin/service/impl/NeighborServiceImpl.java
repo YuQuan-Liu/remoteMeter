@@ -143,7 +143,7 @@ public class NeighborServiceImpl implements NeighborService {
 		}
 		neighborDAO.delete(nbrId);
 		
-//		gprsDAO.deleteByNbrId(nbrId);
+		gprsDAO.deleteByNbrId(nbrId);
 		return "succ";
 	}
 
