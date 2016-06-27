@@ -58,7 +58,9 @@ public class JM_4_txt_ExportReadImpl implements ExportRead {
 						String.format("%-10s", "0")+
 						String.format("%-10s", view.getReaddata())+
 						String.format("%-15s", view.getCustomerMobile())+
-						String.format("%-10s", view.getN_remark())+"\r\n";
+						String.format("%-10s", view.getN_remark())+"\r\n";  
+				//数据库中小区的备注表示   txt导出时对应的本号
+				
 				buf.write(line.getBytes());
 				
 			}
