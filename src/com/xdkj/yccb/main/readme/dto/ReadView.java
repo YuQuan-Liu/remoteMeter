@@ -9,6 +9,7 @@ public class ReadView {
 	private int m_id;
 	private String m_apid;
 	private String n_name;
+	private String n_remark;
 	private int n_id;
 	private int g_id;
 	private String g_addr;
@@ -35,6 +36,12 @@ public class ReadView {
 	private int remote;
 	
 	
+	public String getN_remark() {
+		return n_remark;
+	}
+	public void setN_remark(String n_remark) {
+		this.n_remark = n_remark;
+	}
 	public String getCustomerAddr() {
 		return customerAddr;
 	}

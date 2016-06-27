@@ -114,7 +114,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 		Query q = getSession().createSQLQuery("select c.pid c_id,concat(c.LouNum ,'-',c.DYNum ,'-',c.HuNum) c_num,c.CustomerName,c.prePaySign,c.CustomerMobile,c.CustomerBalance,c.CustomerAddr, " +
 				"m.pid m_id,m.apid m_apid,m.CollectorAddr,m.MeterAddr,m.ValveState,m.MeterState,m.deread,m.readdata,m.readtime,m.steelNum, " +
 				"mk.MeterTypeName,mk.Remote, " +
-				"n.pid n_id,n.NeighborName n_name,g.pid g_id,g.GPRSAddr g_addr from customer c " +
+				"n.pid n_id,n.NeighborName n_name,n.remark n_remark,g.pid g_id,g.GPRSAddr g_addr from customer c " +
 				"left join meter m " +
 				"on c.pid = m.CustomerID " +
 				"left join neighbor n " +
@@ -129,6 +129,7 @@ public class ReadDaoImpl extends HibernateDAO implements ReadDao{
 				.addScalar("m_id",Hibernate.INTEGER)
 				.addScalar("m_apid",Hibernate.STRING)
 				.addScalar("n_name",Hibernate.STRING)
+				.addScalar("n_remark",Hibernate.STRING)
 				.addScalar("n_id",Hibernate.INTEGER)
 				.addScalar("g_id",Hibernate.INTEGER)
 				.addScalar("g_addr",Hibernate.STRING)
