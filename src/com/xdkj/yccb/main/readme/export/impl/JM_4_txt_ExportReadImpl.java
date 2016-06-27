@@ -1,20 +1,13 @@
 package com.xdkj.yccb.main.readme.export.impl;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
-import com.hexiong.jdbf.DBFWriter;
-import com.hexiong.jdbf.JDBField;
 import com.xdkj.yccb.main.readme.dao.ReadDao;
 import com.xdkj.yccb.main.readme.dto.ReadView;
 import com.xdkj.yccb.main.readme.export.ExportRead;
@@ -37,16 +30,13 @@ public class JM_4_txt_ExportReadImpl implements ExportRead {
 //			e1.printStackTrace();
 //		}
 		
-		response.setContentType("text/plain");
+		response.setContentType("text/plain;");
+		response.setCharacterEncoding("gbk");
 		response.setHeader("Content-Disposition", "attachment; filename=monthpoint" + name_ + ".txt");
 		
-		ServletOutputStream sos = null;
-		BufferedOutputStream buf = null;
 		try {
-			sos = response.getOutputStream();
+			PrintWriter writer = response.getWriter();
 			
-			buf = new BufferedOutputStream(sos);
-
 			// Write data to txt
 			ReadView view = null;
 			String dfyf = new SimpleDateFormat("yyyyMM").format(new Date());
@@ -58,26 +48,20 @@ public class JM_4_txt_ExportReadImpl implements ExportRead {
 						String.format("%-10s", "0")+
 						String.format("%-10s", view.getReaddata())+
 						String.format("%-15s", view.getCustomerMobile())+
-						String.format("%-10s", view.getN_remark())+"\r\n";  
+						String.format("%-10s", view.getN_remark());
 				//数据库中小区的备注表示   txt导出时对应的本号
 				
-				buf.write(line.getBytes());
+				if(i != list.size()-1){
+					line += "\r\n";
+				}
+				
+				writer.write(line);
+				
 				
 			}
-			buf.flush();
+			writer.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				if(sos != null){
-					sos.close();
-				}
-				if(buf != null){
-					buf.close();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
 	}
 
