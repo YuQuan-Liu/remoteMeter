@@ -43,6 +43,7 @@ public class JM_4_txt_ExportReadImpl implements ExportRead {
 			for(int i =0;i<list.size();i++){
 				view = list.get(i);
 				String line = String.format("%-20s", view.getM_apid())+
+						String.format("%-50s", view.getCustomerAddr())+
 						String.format("%-50s", view.getCustomerName())+
 						String.format("%-10s", dfyf)+
 						String.format("%-10s", "0")+
