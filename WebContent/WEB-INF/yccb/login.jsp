@@ -9,17 +9,15 @@
 </head>
 <body>
 <div class="gang">
-  <div style="height:169px; overflow:hidden;"><img src="${path}/resource/images/login_01.jpg" width="1004" height="169" /></div>
-  <div style="height:128px; overflow:hidden;"><img src="${path}/resource/images/login_02.jpg" width="1004" height="128" /></div>
   <div>
-     <div style="width:277px; float:left; height:255px; overflow:hidden;"><img src="${path}/resource/images/login_mid1.jpg" width="277" height="255" /></div>
-     <div class="login_midbg">
-     	<div class="lang_postion">
+ 	<div style="font-family:'宋体';font-size:50px;color:#fff;text-align:center;margin:100px auto;">智能远传抄表系统</div>
+     <div class="">
+     	<%-- <div class="lang_postion">
      		<a href="${path}/resource/lang.do?langType=zh" style="color:rgb(199, 199, 224)">中文</a> 
      		<a href="${path}/resource/lang.do?langType=en" style="color:rgb(199, 199, 224)">EN</a>
-     	</div>
+     	</div> --%>
      	<form onsubmit="return submitInfo()" id = "loginForm" action="${path}/resource/login.do" method="post">
-	     	<table width="285" border="0" cellspacing="0" cellpadding="0" style="margin-left:180px; margin-top:48px; line-height:24px;">
+	     	<table width="285" border="0" cellspacing="0" cellpadding="0" style="margin:48px auto; line-height:24px;">
 			  <tr>
 			    <td width="71" class="pa_bottom" style=" padding-bottom:20px; "><fmt:message key='login.uname'/>：</td>
 			    <td style=" padding-bottom:20px; " colspan="2"><input id="loginname" name="loginname" type="text" class="login_input" tabindex="1" /></td>
@@ -36,20 +34,19 @@
 			  <tr>
 				<td style=" padding-bottom:20px;"><span id = "error_info" style="color:red">${message_login}</span></td>
 				<td width="109" style=" padding-bottom:20px;">
-					<select name="identity" style="width:100px;">
-				        <option value="1">管理员</option>
+					<select name="identity" style="width:100px;" hidden>
+				        <option value="1" selected>管理员</option>
 				        <option value="2">用户</option>
-				    </select>
+				    </select><!--  -->
 				</td>
 			    <td style=" padding-bottom:20px;"><input name="" type="submit" value="<fmt:message key='login.submit'/>" class="login_botton" tabindex="4"></td>
 			  </tr>
 			</table>
 		</form>
      </div>
-     <div style="width:262px; float:left; height:255px; overflow:hidden;"><img src="${path}/resource/images/login_mid3.jpg" width="262" height="255" /></div>
   </div>
-  <div><img src="${path}/resource/images/login_03.jpg" width="1004" height="94" /></div>
-  <div class="login_copyrightbg">copyright 2016 淅川西岛光电仪表科技有限公司</div>
+  
+  <!-- <div class="login_copyrightbg">copyright </div> -->
 </div>
 <script type="text/javascript">
 $("#loginname").focus();

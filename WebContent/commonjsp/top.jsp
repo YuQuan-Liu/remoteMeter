@@ -2,9 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="path" value="${pageContext.request.contextPath}" />
-<link rel="shortcut icon" href="resource/images/logo.ico">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" href="${path}/resource/jquery-easyui-1.4.1/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${path}/resource/jquery-easyui-1.4.1/themes/bootstrap/easyui.css">
 <link rel="stylesheet" type="text/css" href="${path}/resource/jquery-easyui-1.4.1/themes/icon.css">
 <link rel="stylesheet" type="text/css" href="${path}/resource/css/default.css"> 
 
