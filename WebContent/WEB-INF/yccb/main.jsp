@@ -250,27 +250,27 @@ var _menus = {
 		</a></div>
 <%-- 		<span id="clock"><fmt:message key="currenttime"/>：<span id="bgclock"></span></span> --%>
 		<ul id="topmenu">
-				<li class="nav_ico1"><a class="active" name="index" href="javascript:;" title="<fmt:message key='main.index'/>">
-				<fmt:message key='main.index'/></a></li>
+				<li class="nav_ico1"><a class="active easyui-tooltip" name="index" href="javascript:;" title="<fmt:message key='main.index'/>">
+				&nbsp;</a></li>
 <%-- 			<c:if test="${menus['admin']=='t'}"> --%>
-				<li class="nav_ico2"><a name="admin" href="javascript:;" title="<fmt:message key='admin'/>">
-				<fmt:message key="admin"/></a></li>
+				<li class="nav_ico2"><a name="admin"  href="javascript:;" class="easyui-tooltip" title="<fmt:message key='admin'/>">
+				&nbsp;</a></li>
 <%-- 			</c:if> --%>
 			<c:if test="${menus['infoin']=='t'}">
-				<li class="nav_ico3"><a name="info" href="javascript:;" title="<fmt:message key='info'/>">
-				<fmt:message key='info'/></a></li>
+				<li class="nav_ico3"><a name="info" href="javascript:;" class="easyui-tooltip" title="<fmt:message key='info'/>">
+				&nbsp;</a></li>
 			</c:if>
 			<c:if test="${menus['readview']=='t'}">
-				<li class="nav_ico4"><a name="read" href="javascript:;" title="<fmt:message key='read'/>">
-				<fmt:message key='read'/></a></li>
+				<li class="nav_ico4"><a name="read" href="javascript:;" class="easyui-tooltip" title="<fmt:message key='read'/>">
+				&nbsp;</a></li>
 			</c:if>
 			<c:if test="${menus['chargeview']=='t'}">
-				<li class="nav_ico5"><a name="charge" href="javascript:;" title="<fmt:message key='charge'/>">
-				<fmt:message key='charge'/></a></li>
+				<li class="nav_ico5"><a name="charge" href="javascript:;" class="easyui-tooltip" title="<fmt:message key='charge'/>">
+				&nbsp;</a></li>
 			</c:if>
 			<c:if test="${menus['statisticview']=='t'}">
-				<li class="nav_ico6"><a name="statis" href="javascript:;" title="<fmt:message key='statis'/>">
-				<fmt:message key='statis'/></a></li>
+				<li class="nav_ico6"><a name="statis" href="javascript:;" class="easyui-tooltip" title="<fmt:message key='statis'/>">
+				&nbsp;</a></li>
 			</c:if>
 		</ul>
 		<span id="userInfo" style="color:rgb(199, 199, 224)">

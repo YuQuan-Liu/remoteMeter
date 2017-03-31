@@ -6,8 +6,8 @@ $(function() {
 	tabCloseEven();
 	
 	$('#topmenu a').click(function() {
-		$('#topmenu a').removeClass('active');
-		$(this).addClass('active');
+		$('#topmenu li').css('background-color','#22709a');
+		$(this).parent().css('background-color','#104e6f');
 		var name = $(this).attr('name');
 		if(name=='index'){
 			$('body').layout('collapse','west');  

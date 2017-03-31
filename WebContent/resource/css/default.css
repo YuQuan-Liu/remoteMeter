@@ -37,15 +37,15 @@ a:hover{ color:Red; text-decoration:none;}
 .micon-magic{ background-position:0px -500px;}
 .micon-database{ background-position:-20px -140px;}
 #topmenu{padding:0px; margin:0px;list-type:none; float:right; margin-right: 80px;}
-#topmenu li{ float:left;height:40px;line-height:40px; margin:40px 2px 0px 2px; text-align:center; list-style-type:none;border-radius:5px;}
+#topmenu li{ float:left;height:50px;line-height:50px; margin:40px 2px 0px 2px; text-align:center; list-style-type:none;border-radius:5px;}
 #topmenu li a{	font-size:14px; color:#fff; font-weight:bold; display:block;}
 #topmenu li a.active{color:rgb(33, 217, 232);}
-.nav_ico1 { background-color:#22709a; width:91px;}
-.nav_ico2 { background-color:#22709a; width:91px;}
-.nav_ico3 { background-color:#22709a; width:91px;}
-.nav_ico4 { background-color:#22709a; width:91px;}
-.nav_ico5 { background-color:#22709a; width:91px;}
-.nav_ico6 { background-color:#22709a; width:91px;}
+.nav_ico1 { background:#104e6f url(../images/home.png) center no-repeat; width:81px;}
+.nav_ico2 { background:#22709a url(../images/admin.png) center no-repeat; width:81px;}
+.nav_ico3 { background:#22709a url(../images/info.png) center no-repeat; width:81px;}
+.nav_ico4 { background:#22709a url(../images/meter.png) center no-repeat; width:81px;}
+.nav_ico5 { background:#22709a url(../images/charge.png) center no-repeat; width:81px;}
+.nav_ico6 { background:#22709a url(../images/statis.png) center no-repeat; width:81px;}
 
 
 #north-head{background-color:#0081c2}
