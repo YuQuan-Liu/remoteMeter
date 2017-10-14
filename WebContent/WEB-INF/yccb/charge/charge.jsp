@@ -189,7 +189,7 @@ $(function(){
 	      	{field:'actionTime',title:'<fmt:message key='charge.paytime'/>',width:60},
 	      	{field:'adminName',title:'<fmt:message key='charge.payadmin'/>',width:60},
 	      	{field:'action',title:'<fmt:message key='common.action'/>',width:90,halign:'center',align:'center',formatter: function(value,row,index){
-				return  "<c:if test="${menus['undo']=='t'}"><a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' ><fmt:message key='undo'/></a></c:if><a href='#' class='operateHref' onclick='chargeprint("+row.pid+")' ><fmt:message key='charge.chargeprint'/></a>"+
+				return  "<c:if test="${menus['undo']=='t'}"><a href='#' class='operateHref' onclick='cancelPay("+row.pid+","+index+")' ><fmt:message key='undo'/></a></c:if>"+
 				"<a href='#' class='operateHref' onclick='chargedetailprint("+row.pid+")'><fmt:message key='charge.detailprint'/></a>";
 	  		}}
 	    ]]
@@ -417,7 +417,7 @@ $(function(){
 									msg : '<fmt:message key='charge.chargeok'/>',
 									showType : 'slide'
 								});
-								window.open("${path}/charge/charge/printcharge.do?cplid="+data.cplid,"_blank");
+								window.open("${path}/charge/charge/printdetailcharge.do?cplid="+data.cplid+"&cid="+pid,"_blank");
 								$('#customerBalance').textbox('setValue',data.balance);
 							}else{
 								$.messager.show({
@@ -437,10 +437,6 @@ $(function(){
 			}
 		});
 		
-	}
-	
-	function chargeprint(cplid){
-		window.open("${path}/charge/charge/printcharge.do?cplid="+cplid,"_blank");
 	}
 	
 	function chargedetailprint(cplid){

@@ -257,62 +257,73 @@ public class ChargeCtrl {
 	@RequestMapping(value="/charge/charge/printdetailcharge")
 	public ModelAndView detailPrint(HttpServletRequest request,Model model,int cid,int cplid) throws Exception{
 		
-		//根据小区ID  时间  预付费标识  获取用户的交费信息
-		Map map = new HashMap();
+		Map map = new HashMap();  //保存详单报表中的所有单个信息
 		
-
+		List<SettledView> list = new ArrayList<>();  //两次交费之间的所有扣费信息
+		BigDecimal sumDemoney = new BigDecimal(0);  //两次交费之间的扣费总和
+		BigDecimal sumafterde = new BigDecimal(0);  //当前交费之后所有的扣费总和
+		BigDecimal sumafterpay = chargeService.sumAfterPay(cid,cplid);  //当前交费记录之后所有交费总和
+		BigDecimal lastBalance = new BigDecimal(0);   //上期余额
+		BigDecimal thisBalance = new BigDecimal(0);   //本期余额
+		
 		//根据交费记录  获取  本次交费记录  上一次交费记录  的信息  获取时间   打印详单使用
 		List<Customerpaylog> paylogs = chargeService.getPaylogLimit2(cid,cplid);
-		if(paylogs.size() == 1){
-			//如果只有一条  则添加一个当前日期当选择扣费信息的结束
-			Customerpaylog cpl = new Customerpaylog();
-			cpl.setActionTime(new Date());
-			paylogs.add(cpl);
+		Customerpaylog thispaylog = null;  //本次交费
+		Customerpaylog lastpaylog = null;  //上次交费
+		
+		CustomerpaylogView paylogview = chargeService.getPaylog(cplid);  //用户本次交费情况及当前余额
+		
+		if(paylogs.size() == 1){   //这是第一次交费
+			thispaylog = paylogs.get(0);
+			thisBalance = thispaylog.getAmount();  //本期余额 = 本次交费
+		}else{   //这个不是第一次交费
+			thispaylog = paylogs.get(0);  //本次交费
+			lastpaylog = paylogs.get(1);  //上次交费
+			//获取用户下  两条交费记录之间的扣费信息
+			list = chargeService.getMeterDeLog(cid,lastpaylog.getActionTime(),thispaylog.getActionTime());
+			SettledView view = null;
+			for(int i = 0;i < list.size();i++){
+				view = list.get(i);
+				view.setMeterreadtime(view.getMeterreadtime().substring(0, 10));  //只取读表时间的yyyy-MM-dd
+				sumDemoney = sumDemoney.add(view.getDemoney());
+			}
+			
+			//当前交费记录之后的所有的扣费信息
+			List<SettledView> listsumde = chargeService.getMeterDeLog(cid,thispaylog.getActionTime(),new Date());
+			for(int i = 0;i < listsumde.size();i++){
+				view = listsumde.get(i);
+				sumafterde = sumafterde.add(view.getDemoney());
+			}
+			
+			
+			lastBalance = paylogview.getCustomerBalance();   //账户余额
+			//上期余额 = 账户余额+本次之后所有扣费-本次交费-本次之后所有交费-本次所有扣费
+			lastBalance = lastBalance.add(sumafterde).add(sumDemoney).subtract(thispaylog.getAmount()).subtract(sumafterpay);
+			
+			//本期余额 = 上期余额 + 本期交费 - 本期所有扣费
+			thisBalance = lastBalance.add(thispaylog.getAmount()).subtract(sumDemoney);
+			
 		}
-		List<SettledView> list = new ArrayList<>();
-		
-		BigDecimal sumDemoney = new BigDecimal(0);
-		/**
-		 * 获取用户下  两条交费记录之间的扣费信息
-		 */
-		list = chargeService.getMeterDeLog(cid,paylogs.get(0).getActionTime(),paylogs.get(1).getActionTime());
-		SettledView view = null;
-		for(int i = 0;i < list.size();i++){
-			view = list.get(i);
-			sumDemoney = sumDemoney.add(view.getDemoney());
+		//将详情凑成4的倍数行
+		int listaddfake = 4 - list.size()%4;
+		SettledView fakeview = null;
+		for(int i = 0;i < listaddfake;i++){
+			list.add(fakeview);
 		}
-		
-		//当前交费记录之后的所有的扣费信息
-		List<SettledView> listsumde = chargeService.getMeterDeLog(cid,paylogs.get(0).getActionTime(),new Date());
-		BigDecimal sumafterde = new BigDecimal(0);;
-		for(int i = 0;i < listsumde.size();i++){
-			view = listsumde.get(i);
-			sumafterde = sumafterde.add(view.getDemoney());
-		}
-		
-		BigDecimal sumafterpay = chargeService.sumAfterPay(cid,cplid);
-		
 
-		CustomerView cv = custService.getCustomerViewbyCid(cid);
-		BigDecimal lastBalance = cv.getCustomerBalance();   //上次交费余额
-		lastBalance = lastBalance.add(sumafterde).subtract(paylogs.get(0).getAmount()).subtract(sumafterpay);
-		
-		BigDecimal thisBalance = lastBalance.add(paylogs.get(0).getAmount()).subtract(sumDemoney);
-		
-		map.put("sumDemoney", sumDemoney.doubleValue());
 		map.put("list",list);
-		map.put("amount", paylogs.get(0).getAmount().doubleValue());
+		map.put("sumDemoney", sumDemoney.doubleValue());
 		map.put("lastBalance", lastBalance.doubleValue());
 		map.put("thisBalance", thisBalance.doubleValue());
-		map.put("c_num", cv.getC_num());
-		map.put("customerName", cv.getCustomerName());
-		map.put("customerAddr", cv.getCustomerAddr());
+		map.put("amount", thispaylog.getAmount().doubleValue());
+		map.put("cnAmount", TransRMB.transform(thispaylog.getAmount().toString()));
+		map.put("c_num", paylogview.getC_num());
+		map.put("customerName", paylogview.getCustomerName());
+		map.put("customerAddr", paylogview.getCustomerAddr());
+		map.put("adminName", paylogview.getAdminName());
+		map.put("paydate", paylogview.getActionTime().substring(0, 19));//只取读表时间的yyyy-MM-dd HH:mm:ss
 		
-		UserForSession admin = WebUtil.getCurrUser(request);
-		Watercompany wc = waterCompanyService.getById(admin.getWaterComId()+"");
-		map.put("header",wc.getCompanyName()+"扣费详单");
-		
-		return new ModelAndView("predetail",map);
+		return new ModelAndView("chargedetail",map);
 	}
 	
 	@RequestMapping(value="/charge/charge/draw",produces="application/json;charset=UTF-8")
