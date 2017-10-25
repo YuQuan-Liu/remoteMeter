@@ -85,6 +85,7 @@ function checkGPRSAddr(){
 							<option value="2" selected="selected"><fmt:message key='g.188'/></option>
 							<option value="3"><fmt:message key='g.hdeg'/>2</option>
 							<option value="4">D10</option>
+							<option value="5">188V2</option>
 						</select>
 	    			</td>
 	    		</tr>
