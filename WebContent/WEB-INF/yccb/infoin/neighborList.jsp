@@ -150,7 +150,11 @@ $(function(){
 									if(value == 4){
 										return "D10";
 									}else{
-										return "<fmt:message key='common.exception'/>";
+										if(value == 5){
+											return "188V2";
+										}else{
+											return "<fmt:message key='common.exception'/>";
+										}
 									}
 								}
 							}
