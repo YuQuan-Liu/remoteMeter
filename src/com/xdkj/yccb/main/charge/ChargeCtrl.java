@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -275,7 +276,20 @@ public class ChargeCtrl {
 		
 		if(paylogs.size() == 1){   //这是第一次交费
 			thispaylog = paylogs.get(0);
-			thisBalance = thispaylog.getAmount();  //本期余额 = 本次交费
+			
+			//获取用户下  两条交费记录之间的扣费信息
+			Calendar cal = Calendar.getInstance();
+			cal.set(Calendar.YEAR, 2010);
+			list = chargeService.getMeterDeLog(cid,cal.getTime(),thispaylog.getActionTime());
+			SettledView view = null;
+			for(int i = 0;i < list.size();i++){
+				view = list.get(i);
+				view.setMeterreadtime(view.getMeterreadtime().substring(0, 10));  //只取读表时间的yyyy-MM-dd
+				sumDemoney = sumDemoney.add(view.getDemoney());
+			}
+			thisBalance = thispaylog.getAmount().subtract(sumDemoney);  //本期余额 = 本次交费 - 以前多有扣费
+			
+			
 		}else{   //这个不是第一次交费
 			thispaylog = paylogs.get(0);  //本次交费
 			lastpaylog = paylogs.get(1);  //上次交费
