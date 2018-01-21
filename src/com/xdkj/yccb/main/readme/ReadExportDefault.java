@@ -40,18 +40,20 @@ public class ReadExportDefault extends AbstractExcelView{
 		cell = getCell(sheet, 0, 3);
 		setText(cell, "楼-单元-户");
 		cell = getCell(sheet, 0, 4);
+		setText(cell, "余额");
+		cell = getCell(sheet, 0, 5);
 		setText(cell, "给水号");
 		
-		cell = getCell(sheet, 0, 5);
+		cell = getCell(sheet, 0, 6);
 		setText(cell, "表状态");
 		
-		cell = getCell(sheet, 0, 6);
-		setText(cell, "表地址");
 		cell = getCell(sheet, 0, 7);
-		setText(cell, "表读数");
+		setText(cell, "表地址");
 		cell = getCell(sheet, 0, 8);
-		setText(cell, "抄表时间");
+		setText(cell, "表读数");
 		cell = getCell(sheet, 0, 9);
+		setText(cell, "抄表时间");
+		cell = getCell(sheet, 0, 10);
 		setText(cell, "序列号");
 		
 		
@@ -75,9 +77,12 @@ public class ReadExportDefault extends AbstractExcelView{
 					setText(cell, readView.getC_num());
 					break;
 				case 4:
-					setText(cell, readView.getM_apid());
+					setText(cell, readView.getCustomerBalance().doubleValue()+"");
 					break;
 				case 5:
+					setText(cell, readView.getM_apid());
+					break;
+				case 6:
 //					表状态
 					String meterstate = "正常";
 					switch (readView.getMeterState()){
@@ -99,7 +104,7 @@ public class ReadExportDefault extends AbstractExcelView{
 					}
 					cell.setCellValue(meterstate);
 					break;
-				case 6:
+				case 7:
 //					setText(cell, readView.getReaddata()+"");
 					if(readView.getMeterAddr().length()>3){
 						cell.setCellValue(readView.getMeterAddr());
@@ -107,14 +112,14 @@ public class ReadExportDefault extends AbstractExcelView{
 						cell.setCellValue(readView.getCollectorAddr()+String.format("%03d",Integer.parseInt(readView.getMeterAddr())));
 					}
 					break;
-				case 7:
+				case 8:
 //					setText(cell, readView.getReaddata()+"");
 					cell.setCellValue(readView.getReaddata());
 					break;
-				case 8:
+				case 9:
 					setText(cell, readView.getReadtime());
 					break;
-				case 9:
+				case 10:
 					setText(cell, readView.getM_id()+"");
 					break;
 				default:
