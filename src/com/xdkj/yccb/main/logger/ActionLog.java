@@ -22,6 +22,9 @@ public class ActionLog {
 	}
 	public void setType(int type) {
 		this.type = type;
+		this.actionname = actionName(type);
+	}
+	private String actionName(int type) {
 		String action = "";
 		switch(type){
 			case 1 : action = "添加管理员"; break;
@@ -58,7 +61,7 @@ public class ActionLog {
 			case 32: action = "记录减免吨数"; break;
 			case 33: action = "扣费记录转到虚表吨数"; break;
 		}
-		this.actionname = action;
+		return action;
 	}
 	public String getRemark() {
 		return remark;
@@ -70,6 +73,7 @@ public class ActionLog {
 		super();
 		this.adminid = adminid;
 		this.type = type;
+		this.actionname = actionName(type);
 		this.remark = remark;
 	}
 	@Override

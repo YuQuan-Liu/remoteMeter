@@ -64,7 +64,7 @@ public class NonRemoteCtrl {
 	private ReadDao readDao;
 	@Autowired
 	private SysParaDao sysParaDao;
-	private static final Logger logger = LoggerFactory.getLogger(NeighborCtrl.class);
+	private static final Logger logger = LoggerFactory.getLogger(NonRemoteCtrl.class);
 	
 	@RequestMapping(value="/readme/read/unremotelist")
 	public String nonRemoteList(HttpServletRequest request,Model model){
