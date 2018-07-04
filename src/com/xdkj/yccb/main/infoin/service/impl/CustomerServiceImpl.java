@@ -14,6 +14,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.main.adminor.dao.AdministratorDAO;
 import com.xdkj.yccb.main.adminor.dao.MeterKindDao;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
+import com.xdkj.yccb.main.charge.ChargeCtrl;
 import com.xdkj.yccb.main.charge.dto.ControlWarnView;
 import com.xdkj.yccb.main.charge.service.ChargeService;
 import com.xdkj.yccb.main.entity.Customer;
@@ -40,7 +43,7 @@ import com.xdkj.yccb.main.infoin.dto.CustomerMeter;
 import com.xdkj.yccb.main.infoin.dto.CustomerView;
 import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
 import com.xdkj.yccb.main.readme.dao.WasteLogDao;
 import com.xdkj.yccb.main.readme.quartz.QuartzManager;
@@ -64,8 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
 	private AdministratorDAO administratorDAO;
 	@Autowired
 	private ChargeService chargeService;
-	@Autowired
-	private ActionLogService actionLogService;
+	private static final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 	
 	@Override
 	public List<CustomerView> getCustomerby(String n_id, String c_num) {
@@ -715,7 +717,7 @@ public class CustomerServiceImpl implements CustomerService {
 			jo.put("r", 0);
 		}else{
 			//log
-			actionLogService.addActionlog(adminid, 30, "adjustmeter~newcid:"+customerid+"gaddr:"+gaddr+"caddr:"+caddr+"maddr:"+maddr+"oldcid:"+m.getCustomer().getPid());
+			logger.info(new ActionLog(adminid, 30, "adjustmeter~newcid:"+customerid+"gaddr:"+gaddr+"caddr:"+caddr+"maddr:"+maddr+"oldcid:"+m.getCustomer().getPid()).toString());
 
 			customerDao.adjustMeter(customerid,m.getPid(),m.getCustomer().getPid());
 			jo.put("r", 1);

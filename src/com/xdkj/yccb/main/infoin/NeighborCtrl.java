@@ -3,6 +3,8 @@ package com.xdkj.yccb.main.infoin;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,7 @@ import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.main.readme.quartz.QuartzManager;
 import com.xdkj.yccb.security.UserForSession;
 
@@ -38,8 +40,7 @@ public class NeighborCtrl {
 	private NeighborService neighborService;
 	@Autowired
 	private AdministratorDAO administratorDAO;
-	@Autowired
-	private ActionLogService actionLogService;
+	private static final Logger logger = LoggerFactory.getLogger(NeighborCtrl.class);
 	
 	@RequestMapping(value="/infoin/neighbor/list")
 	public String neighborList(){
@@ -71,7 +72,7 @@ public class NeighborCtrl {
 	public String add(HttpServletRequest request,Neighbor nv){
 		UserForSession admin = WebUtil.getCurrUser(request);
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 10, "neighborname:"+nv.getNeighborName());
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 10, "neighborname:"+nv.getNeighborName()).toString());
 		
 		return neighborService.addNeighbor(admin.getPid(),admin.getWaterComId(),admin.getDepart_id(),nv);
 	}
@@ -106,7 +107,7 @@ public class NeighborCtrl {
 	@ResponseBody
 	public String delete(HttpServletRequest request,int pid){
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 11, "neighborid:"+pid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 11, "neighborid:"+pid).toString());
 		
 		return neighborService.deleteNbrById(pid);
 	}
@@ -122,7 +123,7 @@ public class NeighborCtrl {
 	public String deleteGprsById(HttpServletRequest request,@RequestParam("pid") int pid){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 13, "gprsid:"+pid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 13, "gprsid:"+pid).toString());
 				
 		return neighborService.deleteGprsById(pid);
 	}
@@ -147,7 +148,7 @@ public class NeighborCtrl {
 		gs.setNeighbor(nbr);
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 12, "gprsaddr:"+gs.getGprsaddr());
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 12, "gprsaddr:"+gs.getGprsaddr()).toString());
 		return neighborService.addGprs(gs);
 	}
 	

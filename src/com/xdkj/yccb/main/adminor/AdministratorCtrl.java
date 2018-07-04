@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +24,10 @@ import com.xdkj.yccb.main.adminor.dto.DepartmentView;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.adminor.service.DepartmentService;
 import com.xdkj.yccb.main.entity.Admininfo;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.main.sys.dto.RoleView;
 import com.xdkj.yccb.main.sys.service.RoleService;
+import com.xdkj.yccb.security.LoginCtrl;
 /**
  * 管理员controller
  * @author SGR
@@ -37,8 +41,7 @@ public class AdministratorCtrl {
 	private RoleService roleService;
 	@Autowired
 	private DepartmentService departmentService;
-	@Autowired
-	private ActionLogService actionLogService;
+	private static final Logger logger = LoggerFactory.getLogger(AdministratorCtrl.class);
 	
 	public static final String adminorList = "/adminor/adminList";//管理员列表页面
 	public static final String addAdminor = "/adminor/adminAdd";//管理员添加页面
@@ -89,7 +92,7 @@ public class AdministratorCtrl {
 		}
 		admin.setSid(1);  //默认的监督ID为系统第一个  暂时不允许用户自己定义   需要修改联系西岛
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 1, admin.toString()+"roleid"+roleid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 1, admin.toString()+"roleid"+roleid).toString());
 		
 		return adminstratorService.addAdmin(admin,roleid);
 	}
@@ -129,7 +132,7 @@ public class AdministratorCtrl {
 	@ResponseBody
 	public String delete(HttpServletRequest request,int pid){
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 2, "adminid:"+pid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 2, "adminid:"+pid).toString());
 		
 		return JSON.toJSONString(adminstratorService.removeById(pid)+"");
 	}
@@ -153,7 +156,7 @@ public class AdministratorCtrl {
 	public String changerole(HttpServletRequest request,int pid,int rid){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 3, "adminid:"+pid+"roleid:"+rid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 3, "adminid:"+pid+"roleid:"+rid).toString());
 		return JSON.toJSONString(adminstratorService.changerole(pid,rid));
 	}
 	
@@ -161,7 +164,7 @@ public class AdministratorCtrl {
 	@ResponseBody
 	public String changedep(HttpServletRequest request,int pid,int did){
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 4, "adminid:"+pid+"depid:"+did);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 4, "adminid:"+pid+"depid:"+did).toString());
 		return JSON.toJSONString(adminstratorService.changedep(pid,did));
 	}
 }

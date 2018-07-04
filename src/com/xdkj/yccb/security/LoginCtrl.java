@@ -30,7 +30,6 @@ import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.RoleAuthority;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.logger.ActionLog;
-import com.xdkj.yccb.main.logger.ActionLogService;
 @Controller
 public class LoginCtrl {
 	@Autowired

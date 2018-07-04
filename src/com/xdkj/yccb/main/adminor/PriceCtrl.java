@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,7 @@ import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.PriceService;
 import com.xdkj.yccb.main.entity.Pricekind;
 import com.xdkj.yccb.main.entity.Watercompany;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.security.UserForSession;
 /**
  * 单价
@@ -33,8 +35,7 @@ import com.xdkj.yccb.security.UserForSession;
 public class PriceCtrl {
 	@Autowired
 	private PriceService priceService;
-	@Autowired
-	private ActionLogService actionLogService;
+	private static final Logger logger = LoggerFactory.getLogger(PriceCtrl.class);
 	
 	public static final String priceList = "/adminor/priceList";
 	public static final String priceAdd = "/adminor/priceAdd";
@@ -79,7 +80,7 @@ public class PriceCtrl {
 	public String addPriceKind(Pricekind pk,BasicpriceValues bpv,HttpServletRequest request){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 7, "pricekindname:"+pk.getPriceKindName());
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 7, "pricekindname:"+pk.getPriceKindName()).toString());
 		
 		int wcid = WebUtil.getCurrUser(request).getWaterComId();
 		pk.setWatercompany(new Watercompany(wcid));
@@ -97,7 +98,7 @@ public class PriceCtrl {
 	@ResponseBody
 	public String deletePK(HttpServletRequest request,int pid){
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 8, "pricekindid:"+pid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 8, "pricekindid:"+pid).toString());
 		return JSON.toJSONString(priceService.deletePK(pid));
 	}
 	
@@ -116,7 +117,7 @@ public class PriceCtrl {
 	public String changepk(HttpServletRequest request,int old_,int new_){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 9, "old_:"+old_+"new_:"+new_);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 9, "old_:"+old_+"new_:"+new_).toString());
 		return JSON.toJSONString(priceService.changepk(old_,new_));
 	}
 }

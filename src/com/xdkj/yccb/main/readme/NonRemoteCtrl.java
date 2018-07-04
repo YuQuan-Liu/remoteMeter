@@ -13,6 +13,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,9 +31,10 @@ import com.xdkj.yccb.main.adminor.dao.SysParaDao;
 import com.xdkj.yccb.main.entity.NonRemoteExport;
 import com.xdkj.yccb.main.entity.Readmeterlog;
 import com.xdkj.yccb.main.entity.RemoteExport;
+import com.xdkj.yccb.main.infoin.NeighborCtrl;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.main.readme.dao.NonRemoteExportDao;
 import com.xdkj.yccb.main.readme.dao.ReadDao;
 import com.xdkj.yccb.main.readme.dao.ReadLogDao;
@@ -54,8 +57,6 @@ public class NonRemoteCtrl {
 	@Autowired
 	private MeterService meterService;
 	@Autowired
-	private ActionLogService actionLogService;
-	@Autowired
 	private ReadLogDao readlogDao;
 	@Autowired
 	private NonRemoteExportDao nonremoteExportDao;
@@ -63,6 +64,7 @@ public class NonRemoteCtrl {
 	private ReadDao readDao;
 	@Autowired
 	private SysParaDao sysParaDao;
+	private static final Logger logger = LoggerFactory.getLogger(NeighborCtrl.class);
 	
 	@RequestMapping(value="/readme/read/unremotelist")
 	public String nonRemoteList(HttpServletRequest request,Model model){
@@ -176,7 +178,7 @@ public class NonRemoteCtrl {
 			try {
 				byte[] bytes = file.getBytes();
 				//log
-				actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 21, "excelPath:"+excelPath);
+				logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 21, "excelPath:"+excelPath).toString());
 				
 				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
 				

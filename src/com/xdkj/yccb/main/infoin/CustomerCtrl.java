@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +32,8 @@ import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.infoin.service.impl.CustomerServiceImpl;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.security.UserForSession;
 
 @Controller
@@ -43,9 +47,8 @@ public class CustomerCtrl {
 	@Autowired
 	private MeterkindService meterKindService;
 	@Autowired
-	private ActionLogService actionLogService;
-	@Autowired
 	private SysParaDao sysParaDao;
+	private static final Logger logger = LoggerFactory.getLogger(CustomerCtrl.class);
 	
 	@RequestMapping(value="/infoin/customer/list")
 	public String customerList(HttpServletRequest request,Model model){
@@ -106,7 +109,7 @@ public class CustomerCtrl {
 				String excelPath = sysParaDao.getValue("server_UpPath")+time+name.substring(name.lastIndexOf("\\")+1);
 				
 				//log
-				actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 18, "excelPath:"+excelPath);
+				logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 18, "excelPath:"+excelPath).toString());
 				
 //				System.out.println(excelPath);
 				File f = new File(excelPath);//new File(realPath+"\\"+name.substring(name.lastIndexOf("\\")+1));
@@ -149,7 +152,7 @@ public class CustomerCtrl {
 	public String addCustomer(HttpServletRequest request,CustomerView cv){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 14, "cnum:"+cv.getC_num());
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 14, "cnum:"+cv.getC_num()).toString());
 		
 		return JSON.toJSONString(customerService.addCustomer(cv,WebUtil.getCurrUser(request).getPid()));
 	}
@@ -159,7 +162,7 @@ public class CustomerCtrl {
 	public String deleteCustomer(HttpServletRequest request,int cid){
 
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 15, "cpid:"+cid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 15, "cpid:"+cid).toString());
 		 
 		return customerService.deleteCustomer(cid);
 	}
@@ -189,7 +192,7 @@ public class CustomerCtrl {
 	public String addMeter(HttpServletRequest request,MeterView mv){
 		UserForSession admin = WebUtil.getCurrUser(request);
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 16, "maddr:"+mv.getCollectorAddr()+"-"+mv.getMeterAddr());
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 16, "maddr:"+mv.getCollectorAddr()+"-"+mv.getMeterAddr()).toString());
 		
 		return JSON.toJSONString(customerService.addMeter(admin.getPid(),mv));
 	}
@@ -197,7 +200,7 @@ public class CustomerCtrl {
 	@ResponseBody
 	public String deleteMeter(HttpServletRequest request,int mid){
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 17, "mpid:"+mid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 17, "mpid:"+mid).toString());
 		
 		return customerService.deleteMeter(mid);
 	}
@@ -251,7 +254,7 @@ public class CustomerCtrl {
 //		System.out.println(new_maddr+"~"+new_read+"~"+meterid);
 //		return JSON.toJSONString();
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 27, "changemeter~mid:"+meterid+"newaddr:"+new_maddr+"end:"+end);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 27, "changemeter~mid:"+meterid+"newaddr:"+new_maddr+"end:"+end).toString());
 		
 		return customerService.changemeter(new_maddr,end,meterid);
 	}

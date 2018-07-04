@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.sf.json.processors.JsonBeanProcessor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ import com.alibaba.fastjson.JSON;
 import com.xdkj.yccb.common.TransRMB;
 import com.xdkj.yccb.common.WebUtil;
 import com.xdkj.yccb.common.encoder.Md5PwdEncoder;
+import com.xdkj.yccb.main.adminor.PriceCtrl;
 import com.xdkj.yccb.main.adminor.dto.PriceKindView;
 import com.xdkj.yccb.main.adminor.service.AdministratorService;
 import com.xdkj.yccb.main.adminor.service.PriceService;
@@ -43,7 +46,7 @@ import com.xdkj.yccb.main.infoin.dto.MeterView;
 import com.xdkj.yccb.main.infoin.dto.NeighborView;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.main.statistics.dto.MeterdeductionlogView;
 import com.xdkj.yccb.security.UserForSession;
 
@@ -67,9 +70,8 @@ public class ChargeCtrl {
 	@Autowired
 	private WaterCompanyService waterCompanyService;
 	@Autowired
-	private ActionLogService actionLogService;
-	@Autowired
 	private AdministratorService adminService;
+	private static final Logger logger = LoggerFactory.getLogger(ChargeCtrl.class);
 	
 	/**
 	 * 跳转收费页面
@@ -142,7 +144,7 @@ public class ChargeCtrl {
 	public String changePay(HttpServletRequest request,int custId,int prePaySign){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 22, "cid:"+custId+"~prepaySign:"+prePaySign);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 22, "cid:"+custId+"~prepaySign:"+prePaySign).toString());
 		
 		return chargeService.updatePayment(custId, prePaySign);
 	}
@@ -181,7 +183,7 @@ public class ChargeCtrl {
 			@RequestParam("meterId") String meterId){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 23, "mid:"+meterId+"~newpriceId:"+priceId);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 23, "mid:"+meterId+"~newpriceId:"+priceId).toString());
 		
 		return chargeService.updatePrice(meterId, priceId);
 	}
@@ -191,7 +193,7 @@ public class ChargeCtrl {
 	public String updateDeread(HttpServletRequest request,int deread,int m_id,int old){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 31, "mid:"+m_id+"~deread:"+deread+"~old:"+old);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 31, "mid:"+m_id+"~deread:"+deread+"~old:"+old).toString());
 		
 		Admininfo admininfo = adminService.getById(WebUtil.getCurrUser(request).getPid()+"");
 		Admininfo sadmininfo = adminService.getById(admininfo.getSid()+"");
@@ -205,7 +207,7 @@ public class ChargeCtrl {
 	@ResponseBody
 	public String canclePay(HttpServletRequest request,@RequestParam("custPayId") String custPayId){
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 25, "custPayId:"+custPayId);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 25, "custPayId:"+custPayId).toString());
 		
 		return chargeService.cancleCustPay(custPayId);
 	}
@@ -214,7 +216,7 @@ public class ChargeCtrl {
 	public String cancleCost(HttpServletRequest request,@RequestParam("meterDeLogId") String meterDeLogId){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 26, "meterDeLogId:"+meterDeLogId);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 26, "meterDeLogId:"+meterDeLogId).toString());
 		
 		return chargeService.cancleCost(meterDeLogId);
 	}
@@ -354,7 +356,7 @@ public class ChargeCtrl {
 	public String minusDeread(HttpServletRequest request,int mdlid,int minus){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 32, "mdlid:"+mdlid+"~minus:"+minus);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 32, "mdlid:"+mdlid+"~minus:"+minus).toString());
 		
 		return chargeService.minusDeread(mdlid, minus);
 	}
@@ -364,7 +366,7 @@ public class ChargeCtrl {
 	public String toVirtual(HttpServletRequest request,int mdlid,int tovirtual){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 33, "mdlid:"+mdlid+"~tovirtual:"+tovirtual);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 33, "mdlid:"+mdlid+"~tovirtual:"+tovirtual).toString());
 		
 		return chargeService.toVirtual(mdlid, tovirtual);
 	}

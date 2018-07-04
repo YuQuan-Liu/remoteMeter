@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +28,8 @@ import com.xdkj.yccb.main.entity.Department;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Watercompany;
 import com.xdkj.yccb.main.infoin.service.NeighborService;
-import com.xdkj.yccb.main.logger.ActionLogService;
+import com.xdkj.yccb.main.logger.ActionLog;
+
 /**
  * 片区
  * @author SGR
@@ -43,8 +46,8 @@ public class DepartmentCtrl {
 	private DepartmentService departmentService;
 	@Autowired
 	private NeighborService neighborService;
-	@Autowired
-	private ActionLogService actionLogService;
+
+	private static final Logger logger = LoggerFactory.getLogger(DepartmentCtrl.class);
 	
 	@RequestMapping(value="/admin/dep/list")
 	public String depList(){
@@ -100,7 +103,7 @@ public class DepartmentCtrl {
 		int wcid = WebUtil.getCurrUser(request).getWaterComId();
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 5, Arrays.toString(nbr_ids));
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 5, Arrays.toString(nbr_ids)).toString());
 		
 		return JSON.toJSONString(departmentService.add(wcid,name,remark,nbr_ids));
 	}
@@ -148,7 +151,7 @@ public class DepartmentCtrl {
 	public String deletedep(HttpServletRequest request,int pid){
 		
 		//log
-		actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 6, "depid:"+pid);
+		logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(), 6, "depid:"+pid).toString());
 		
 		return JSON.toJSONString(departmentService.deletedep(pid));
 	}
