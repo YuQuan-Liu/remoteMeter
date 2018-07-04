@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +29,13 @@ import com.xdkj.yccb.main.entity.Admininfo;
 import com.xdkj.yccb.main.entity.Customer;
 import com.xdkj.yccb.main.entity.RoleAuthority;
 import com.xdkj.yccb.main.infoin.service.CustomerService;
+import com.xdkj.yccb.main.logger.ActionLog;
 import com.xdkj.yccb.main.logger.ActionLogService;
 @Controller
 public class LoginCtrl {
 	@Autowired
 	private AdministratorService administratorService;
-	@Autowired
-	private ActionLogService actionLogService;
+	private static final Logger logger = LoggerFactory.getLogger(LoginCtrl.class);
 	@Autowired
 	private CustomerService customerService;
 	
@@ -86,7 +88,7 @@ public class LoginCtrl {
     			}
     			ufs.setMenus(menus);
     			//log
-    			actionLogService.addActionlog(admin.getPid(), 28, "login:adminid"+admin.getPid());
+    			logger.info(new ActionLog(admin.getPid(), 28 , "login:adminid"+admin.getPid()).toString());
     			
     			request.getSession().setAttribute("curuser", ufs);
     			request.getSession().setAttribute("identity", identity);
@@ -114,7 +116,7 @@ public class LoginCtrl {
 
 		if(session.getAttribute("identity").equals("1")){
 			//log
-			actionLogService.addActionlog(WebUtil.getCurrUser(request).getPid(), 29, "logout:adminid"+WebUtil.getCurrUser(request).getPid());
+			logger.info(new ActionLog(WebUtil.getCurrUser(request).getPid(),29 ,"logout:adminid"+WebUtil.getCurrUser(request).getPid()).toString());
 		}
 		session.removeAttribute("curuser");
 		session.removeAttribute("identity");
