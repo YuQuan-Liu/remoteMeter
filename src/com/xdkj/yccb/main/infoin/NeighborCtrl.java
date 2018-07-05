@@ -199,14 +199,34 @@ public class NeighborCtrl {
 	@ResponseBody
 	public String querycjqs(int pid){
 		Gprs g = neighborService.getGprsById(pid);
-		return ConfigGPRS.querycjqs(g);
+		
+		String result = "";
+		switch(g.getGprsprotocol()){
+		case 2:
+			result = ConfigGPRS.querycjqs(g);
+			break;
+		case 5:
+			result = ConfigGPRS.querycjqsV2(g);
+			break;
+		}
+		return result;
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/addcjq",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String addcjq(int pid,String caddr){
 		Gprs g = neighborService.getGprsById(pid);
-		return ConfigGPRS.addcjq(g,caddr);
+		
+		String result = "";
+		switch(g.getGprsprotocol()){
+		case 2:
+			result = ConfigGPRS.addcjq(g,caddr);
+			break;
+		case 5:
+			result = ConfigGPRS.addcjqV2(g,caddr);
+			break;
+		}
+		return result;
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/deleteAllmeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
@@ -220,20 +240,50 @@ public class NeighborCtrl {
 	@ResponseBody
 	public String readJZQdata(int pid,String caddr){
 		Gprs g = neighborService.getGprsById(pid);
-		return ConfigGPRS.readJZQdata(g,caddr);
+		
+		String result = "";
+		switch(g.getGprsprotocol()){
+		case 2:
+			result = ConfigGPRS.readJZQdata(g,caddr);
+			break;
+		case 5:
+			result = ConfigGPRS.readJZQdataV2(g,caddr);
+			break;
+		}
+		return result;
 	}
 
 	@RequestMapping(value="/infoin/neighbor/jzqaddmeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String jzqaddmeters(int pid,String caddr,String[] maddrs){
 		Gprs g = neighborService.getGprsById(pid);
-		return ConfigGPRS.jzqaddmeters(g,caddr,maddrs);
+		
+		String result = "";
+		switch(g.getGprsprotocol()){
+		case 2:
+			result = ConfigGPRS.jzqaddmeters(g,caddr,maddrs);
+			break;
+		case 5:
+			result = ConfigGPRS.jzqaddmetersV2(g,caddr,maddrs);
+			break;
+		}
+		return result;
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/jzqdeletemeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String jzqdeletemeters(int pid,String caddr,String[] maddrs){
 		Gprs g = neighborService.getGprsById(pid);
-		return ConfigGPRS.jzqdeletemeters(g,caddr,maddrs);
+		
+		String result = "";
+		switch(g.getGprsprotocol()){
+		case 2:
+			result = ConfigGPRS.jzqdeletemeters(g,caddr,maddrs);
+			break;
+		case 5:
+			result = ConfigGPRS.jzqdeletemetersV2(g,caddr,maddrs);
+			break;
+		}
+		return result;
 	}
 }

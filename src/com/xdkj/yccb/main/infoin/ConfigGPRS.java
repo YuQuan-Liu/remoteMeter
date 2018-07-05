@@ -928,6 +928,7 @@ public class ConfigGPRS {
 			
 			/************************************操作**************************************/
 			byte[] framedata = new byte[6];
+			framedata[0] = (byte)0xAA;
 			for (int i = 0; i < 5; i++) {
 				framedata[1 + i] = cjqaddr[4 - i];
 			}
