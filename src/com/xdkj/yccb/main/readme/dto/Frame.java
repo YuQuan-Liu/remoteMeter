@@ -140,6 +140,15 @@ public class Frame {
 		this.cs = cs;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder frame_str = new StringBuilder();
+		for(int i=0;i < frame.length;i++){
+			frame_str.append(String.format("%02x", frame[i]&0xFF).toUpperCase() + " ");
+		}
+		return frame_str.toString();
+	}
+	
 	public Frame() {
 	}
 

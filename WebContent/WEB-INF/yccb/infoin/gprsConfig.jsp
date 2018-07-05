@@ -9,7 +9,7 @@
 <body>
  <input type="hidden" id="gprsconfig_nid" name="neighborid" value="${gprs.neighbor.pid }"/>
  <input type="hidden" id="gprsconfig_pid" name="pid" value="${gprs.pid }"/>
- <c:if test="${gprs.gprsprotocol==2 }">
+ <c:if test="${(gprs.gprsprotocol==2) || (gprs.gprsprotocol==5)}">
  	<div style="margin:10px;">
  		<label><fmt:message key='g.addr'/>：</label><span>${gprs.gprsaddr }</span>
  		<label><fmt:message key='m.caddr'/></label>
@@ -36,7 +36,7 @@
  	
  	<table id="gprsmetersTbl" style="width:100%;height:300px;"></table>
  </c:if>
- <c:if test="${gprs.gprsprotocol!=2 }">
+ <c:if test="${(gprs.gprsprotocol!=2) && (gprs.gprsprotocol !=5)}">
  	<div style="margin:10px;">
  		<label>暂不支持远程配置</label>
  	</div>
