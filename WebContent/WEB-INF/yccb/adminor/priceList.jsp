@@ -20,7 +20,7 @@ $(function(){
 			return 'height:30px;';
 		},
 	    columns:[[
-	        {field:'pid',title:'ID',width:100,checkbox:true},   
+	        {field:'pid',title:'ID',width:100,title:'单价ID'},   
 	        {field:'priceKindName',title:'<fmt:message key='price.name'/>',width:100,halign:'center'},
 // 	        {field:'watercompany',title:'自来水公司',width:100},
 	        {field:'remark',title:'<fmt:message key='common.remark'/>',width:100,halign:'center'},
