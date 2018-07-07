@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import com.xdkj.yccb.main.readme.dto.Frame;
 public class ConfigGPRS {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ConfigGPRS.class);
+	private static final int METER_BATCH = 3;
 	/**
 	 * 登录集中器
 	 * @param s
@@ -946,6 +949,7 @@ public class ConfigGPRS {
 				byte[] middle_data = new byte[256];
 				int frame_count = 0;
 				int frame_all = 0; 
+				HashMap<String,String> receiveMeters = new HashMap<>();
 				while(!rcv_over){
 					byte[] deal = new byte[512];
 					int middle = 0;
@@ -965,6 +969,13 @@ public class ConfigGPRS {
 							break;
 						case 1:  //这一帧正确处理
 							//get the frame len
+							
+							byte seq_ = (byte) (deal[13] & 0x0F); // 当前帧的seq
+							Frame ack = new Frame(0,(byte)(Frame.ZERO | Frame.PRM_MASTER |Frame.PRM_M_SECOND),Frame.AFN_YES,
+									(byte)(Frame.ZERO|Frame.SEQ_FIN|Frame.SEQ_FIR | seq_),(byte)0x01,gprsaddr,new byte[0]);
+							logger.info("write jzq data ack: "+ ack.toString());
+							out.write(ack.getFrame());
+							
 							int framelen = (deal[1]&0xFF) | ((deal[2]&0xFF)<<8);
 							framelen = framelen >> 2;
 							frame_all = (deal[15]&0xFF) | ((deal[16]&0xFF)<<8);
@@ -982,12 +993,10 @@ public class ConfigGPRS {
 								
 								String maddrstr = "";
 								for(int k = 0;k < 7;k++){
-									maddrstr = maddrstr+String.format("%02x", maddrbytes[k]&0xFF)+" ";
+									maddrstr = maddrstr+String.format("%02x", maddrbytes[k]&0xFF);
 								}
-								logger.info("read jzq data cjq: "+ caddr+"; meteraddr: "+maddrstr); 
-								JSONObject jao = new JSONObject();
-								ja.add(jao);
-								jao.put("maddr", maddrstr);
+								logger.info("read jzq data cjq: "+ caddr+"; meteraddr: "+maddrstr);
+								receiveMeters.put(maddrstr, maddrstr);
 							}
 							//多帧时   为接收下一帧做准备
 							middle = middle - framelen-8;
@@ -1002,6 +1011,12 @@ public class ConfigGPRS {
 							break;
 						}
 						if(rcv_over){
+							for(Entry<String, String> entry: receiveMeters.entrySet()){
+								JSONObject jao = new JSONObject();
+								ja.add(jao);
+								jao.put("maddr", entry.getKey());
+							}
+							done = true;
 							break;
 						}
 					}
@@ -1127,6 +1142,7 @@ public class ConfigGPRS {
 				logger.info("singleadd: "+ added + ";meteraddr: "+maddrs[i]+";reason:"+singlereason);
 				
 			}
+			done=true;
 		} catch (Exception e) {
 			done = false;
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -1185,8 +1201,8 @@ public class ConfigGPRS {
 			/*************Add meters*********************/
 			int metercount = maddrs.length;
 			//将表地址分成多组添加
-			int times = metercount / 10;  //10个一组添加多少次
-			int remain = metercount % 10;
+			int times = metercount / METER_BATCH;  //10个一组添加多少次
+			int remain = metercount % METER_BATCH;
 			if(remain > 0){
 				times += 1;
 			}
@@ -1194,10 +1210,10 @@ public class ConfigGPRS {
 			for(int i = 0;i < times;i++){
 				JSONObject jao = new JSONObject();
 				ja.add(jao);
-				int meters = 10;
+				int meters = METER_BATCH;
 				if(i == times - 1){
 					if(remain == 0){
-						meters = 10;
+						meters = METER_BATCH;
 					}else{
 						meters = remain;
 					}
@@ -1213,8 +1229,8 @@ public class ConfigGPRS {
 				
 				String meters_this = "";   //本次添加的表的地址
 				for(int j = 0;j < meters;j++){
-					meters_this = maddrs[i*10+j] + ":" + meters_this ;
-					byte[] maddr = StringUtil.string2Byte(maddrs[i*10+j]);
+					meters_this = maddrs[i*METER_BATCH+j] + ":" + meters_this ;
+					byte[] maddr = StringUtil.string2Byte(maddrs[i*METER_BATCH+j]);
 					for(int z = 0;z < 7;z++){
 						framedata[7+7*j + z] =  maddr[6-z];
 					}
@@ -1230,7 +1246,7 @@ public class ConfigGPRS {
 				for(int z = 0;z<3 && !added;z++){
 					out.write(addmeter.getFrame());
 					//等待集中器收到的回应
-					s.setSoTimeout(7000);
+					s.setSoTimeout(10000);
 					byte[] data = new byte[100];
 					int count = 0;
 					while((count = in.read(data, 0, 100)) > 0){
@@ -1253,6 +1269,7 @@ public class ConfigGPRS {
 				jao.put("reason", singlereason);
 				logger.info("singleadd: "+ added + ";meteraddr: "+meters_this+";reason:"+singlereason);
 			}
+			done=true;
 		} catch (Exception e) {
 			done = false;
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -1365,6 +1382,7 @@ public class ConfigGPRS {
 				jao.put("reason", singlereason);
 				logger.info("singledelete: "+ deleted + ";meteraddr: "+maddrs[i]+";reason:"+singlereason);
 			}
+			done=true;
 		} catch (Exception e) {
 			done = false;
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -1421,11 +1439,11 @@ public class ConfigGPRS {
 				throw new RuntimeException(reason);
 			}
 						
-			/*************Add meters*********************/
+			/*************Delete meters*********************/
 			int metercount = maddrs.length;
 			//将表地址分成多组添加
-			int times = metercount / 10;  //10个一组添加多少次
-			int remain = metercount % 10;
+			int times = metercount / METER_BATCH;  //10个一组添加多少次
+			int remain = metercount % METER_BATCH;
 			if(remain > 0){
 				times += 1;
 			}
@@ -1433,10 +1451,10 @@ public class ConfigGPRS {
 			for(int i = 0;i < times;i++){
 				JSONObject jao = new JSONObject();
 				ja.add(jao);
-				int meters = 10;
+				int meters = METER_BATCH;
 				if(i == times - 1){
 					if(remain == 0){
-						meters = 10;
+						meters = METER_BATCH;
 					}else{
 						meters = remain;
 					}
@@ -1452,8 +1470,8 @@ public class ConfigGPRS {
 				
 				String meters_this = "";   //本次添加的表的地址
 				for(int j = 0;j < meters;j++){
-					meters_this = maddrs[i*10+j] + ":" + meters_this ;
-					byte[] maddr = StringUtil.string2Byte(maddrs[i*10+j]);
+					meters_this = maddrs[i*METER_BATCH+j] + ":" + meters_this ;
+					byte[] maddr = StringUtil.string2Byte(maddrs[i*METER_BATCH+j]);
 					for(int z = 0;z < 7;z++){
 						framedata[7+7*j + z] =  maddr[6-z];
 					}
@@ -1464,25 +1482,25 @@ public class ConfigGPRS {
 						Frame.AFN_CONFIG, (byte)(Frame.ZERO|Frame.SEQ_FIN|Frame.SEQ_FIR|Frame.SEQ_CON), 
 						(byte)0x06, gprsaddr, framedata);
 				logger.info("add meters : "+ addmeter.toString());
-				boolean added = false;
+				boolean deleted = false;
 				String singlereason = "";
-				for(int z = 0;z<3 && !added;z++){
+				for(int z = 0;z<3 && !deleted;z++){
 					out.write(addmeter.getFrame());
 					//等待集中器收到的回应
 					s.setSoTimeout(7000);
 					byte[] data = new byte[100];
 					int count = 0;
 					while((count = in.read(data, 0, 100)) > 0){
-						logger.info("add meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
+						logger.info("delete meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
 						break;
 					}
 					
 					if(Frame.checkFrame(Arrays.copyOf(data, 17))){
-						logger.info("add meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
+						logger.info("delete meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
 						if(data[14] == (byte)0x01){
-							added = true;
+							deleted = true;
 						}else{
-							added = false;
+							deleted = false;
 							singlereason = "帧错误";
 						}
 					}
@@ -1490,8 +1508,9 @@ public class ConfigGPRS {
 				}
 				jao.put("done", true);
 				jao.put("reason", singlereason);
-				logger.info("singleadd: "+ added + ";meteraddr: "+meters_this+";reason:"+singlereason);
+				logger.info("singledelete: "+ deleted + ";meteraddr: "+meters_this+";reason:"+singlereason);
 			}
+			done=true;
 		} catch (Exception e) {
 			done = false;
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
