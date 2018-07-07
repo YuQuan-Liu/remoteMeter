@@ -11,13 +11,15 @@ import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.xdkj.yccb.common.StringUtil;
 import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.readme.dto.Frame;
 
 public class QuartzCleanValve implements Job{
-	
+	private static final Logger logger = LoggerFactory.getLogger(QuartzCleanValve.class);
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		
@@ -48,7 +50,7 @@ public class QuartzCleanValve implements Job{
 		if(s == null){
 			//没有连接到监听程序  
 			reason = "连接监听异常";
-			System.out.println("阀门控制:"+gprs.getGprsaddr()+reason);
+			logger.info("阀门控制:"+gprs.getGprsaddr()+reason);
 			return;
 			
 		}
@@ -73,7 +75,7 @@ public class QuartzCleanValve implements Job{
 				e.printStackTrace();
 			}
 			reason = "集中器不在线";
-			System.out.println("阀门控制:"+gprs.getGprsaddr()+reason);
+			logger.info("阀门控制:"+gprs.getGprsaddr()+reason);
 			return;
 		}
 		
@@ -96,7 +98,7 @@ public class QuartzCleanValve implements Job{
 				e.printStackTrace();
 			}
 			reason = "序列号未同步";
-			System.out.println("阀门控制:"+gprs.getGprsaddr()+reason);
+			logger.info("阀门控制:"+gprs.getGprsaddr()+reason);
 			return;
 		}
 		

@@ -13,6 +13,8 @@ import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
@@ -24,7 +26,7 @@ import com.xdkj.yccb.main.entity.Neighbor;
 
 @Component
 public class QuartzManager {
-	
+	private static final Logger logger = LoggerFactory.getLogger(QuartzManager.class);
 	
 	public static Scheduler sche;
 	
@@ -46,7 +48,7 @@ public class QuartzManager {
 				.withSchedule(CronScheduleBuilder.cronSchedule("0 0 "+day_hour[1]+" "+day_hour[0]+" * ?"))
 				.build();
 		try {
-			System.out.println("定时添加：nid:"+n.getPid()+"name:"+n.getNeighborName()+"timer:"+timer+"adminid:"+admin.getPid());
+			logger.info("定时添加：nid:"+n.getPid()+"name:"+n.getNeighborName()+"timer:"+timer+"adminid:"+admin.getPid());
 			sche.scheduleJob(jobDetail, trigger);
 		} catch (SchedulerException e) {
 			e.printStackTrace();
@@ -72,7 +74,7 @@ public class QuartzManager {
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(mins).repeatForever())
 				.build();
 		try {
-			System.out.println("定时添加：mid:"+m.getPid()+"mins:"+mins+"adminid:"+admin.getPid());
+			logger.info("定时添加：mid:"+m.getPid()+"mins:"+mins+"adminid:"+admin.getPid());
 			sche.scheduleJob(jobDetail, trigger);
 		} catch (SchedulerException e) {
 			e.printStackTrace();
@@ -108,7 +110,7 @@ public class QuartzManager {
 //				sche.resumeTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
 			}
 			addJobMeter(m,n, admin);
-			System.out.println("定时修改：mid:"+m.getPid()+"mins:"+mins+"adminid:"+admin.getPid());
+			logger.info("定时修改：mid:"+m.getPid()+"mins:"+mins+"adminid:"+admin.getPid());
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
@@ -128,7 +130,7 @@ public class QuartzManager {
 			}
 			addJobNeighbor(n, admin);
 			
-			System.out.println("定时修改：nid:"+n.getPid()+"name:"+n.getNeighborName()+"timer:"+timer+"adminid:"+admin.getPid());
+			logger.info("定时修改：nid:"+n.getPid()+"name:"+n.getNeighborName()+"timer:"+timer+"adminid:"+admin.getPid());
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
@@ -140,7 +142,7 @@ public class QuartzManager {
 			sche.pauseTrigger(TriggerKey.triggerKey(n.getPid()+"t", "neighbor"));
 			sche.unscheduleJob(TriggerKey.triggerKey(n.getPid()+"t", "neighbor"));
 			sche.deleteJob(JobKey.jobKey(n.getPid()+"j", "neighbor"));
-			System.out.println("定时删除：nid:"+n.getPid()+"name:"+n.getNeighborName());
+			logger.info("定时删除：nid:"+n.getPid()+"name:"+n.getNeighborName());
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
@@ -152,7 +154,7 @@ public class QuartzManager {
 			sche.pauseTrigger(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
 			sche.unscheduleJob(TriggerKey.triggerKey(m.getPid()+"t", "meter"));
 			sche.deleteJob(JobKey.jobKey(m.getPid()+"j", "meter"));
-			System.out.println("定时删除：mid:"+m.getPid());
+			logger.info("定时删除：mid:"+m.getPid());
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
