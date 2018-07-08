@@ -77,6 +77,15 @@ public class ReadCtrl {
 		
 	}
 	
+	@RequestMapping(value="/readme/read/readgprs",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String ReadGPRS(HttpServletRequest request,String gprsaddr,String n_id){
+		
+		UserForSession admin = WebUtil.getCurrUser(request);
+		return readMeter.readGPRS(neighborService.getByAddr(gprsaddr), neighborService.getNbrById(Integer.parseInt(n_id)), adminDao.getById(admin.getPid()));
+		
+	}
+	
 	@RequestMapping(value="/readme/read/readmeter",produces="application/json;charset=UTF-8")
 	@ResponseBody
 	public String ReadMeter(HttpServletRequest request,String m_id){

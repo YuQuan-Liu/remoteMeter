@@ -22,6 +22,7 @@
 	    		</select>
 	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbor()" id="readthisbtn"><fmt:message key='read.this'/></a>
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" id="readallbtn"><fmt:message key='read.all'/></a>
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readGPRS()" id="readgprsbtn">抄单个集中器</a>
 			</span>
 			<span style="margin-left:200px;">
 				<select class="easyui-combobox" id="export_frame" name="export_frame" style="width:200px;" data-options="panelHeight:'200'">
@@ -57,7 +58,7 @@ $(function(){
 		},
 		loadMsg:'<fmt:message key="main.loading"/>',
 		rownumbers:true,
-// 		singleSelect:true,  
+   		singleSelect:true,  
 		rowStyler:function(index,row){
 			
 		},
@@ -215,6 +216,37 @@ function readNeighbors(){
 		}
 	});
 	
+}
+
+function readGPRS(){
+	$('#readgprsbtn').linkbutton('disable');
+	var meters = $('#readmeterTab').datagrid('getSelections');
+	console.log(meters.length);
+	if(meters.length == 1){
+		var n_id = $("#neighbor").combobox("getValue");
+		var gprsaddr = meters[0]['g_addr'];
+		console.log(gprsaddr);
+		$.ajax({
+			type:"POST",
+			url:"${path}/readme/read/readgprs.do",
+			dataType:"json",
+			data:{
+				gprsaddr:gprsaddr,
+				n_id:n_id
+			},
+			success:function(data){
+				if(data.result == "success"){
+					$.messager.progress({title:"<fmt:message key='read.reading'/>",text:"",interval:100});
+					interval = setInterval(function(){checkreading(data.pid,-1);},1000);
+				}else{
+					$.messager.alert('Error','<fmt:message key='read.fail'/>');
+				}
+				$('#readgprsbtn').linkbutton('enable');
+			}
+		});
+	}else{
+		$.messager.alert('Error','只能选择一个表');
+	}
 }
 
 var readmeter_done = true;

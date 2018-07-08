@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.main.entity.Admininfo;
+import com.xdkj.yccb.main.entity.Gprs;
 import com.xdkj.yccb.main.entity.Meter;
 import com.xdkj.yccb.main.entity.Neighbor;
 import com.xdkj.yccb.main.entity.Readlog;
@@ -65,6 +66,45 @@ public class ReadMeter {
 		return sendToReadMeter(readlog,n,admin);
 	}
 
+	/**
+	 * 抄单个GPRS
+	 * @param g
+	 * @param admin
+	 * @return
+	 */
+	public String readGPRS(Gprs g, Neighbor n,Admininfo admin){
+		
+		JSONObject jo = new JSONObject();
+		//查看当前用户是否有抄表在进行
+//		ReadLogDao readLogDao = new ReadLogDaoImpl();
+		List<Readlog> readlogs = readLogDao.findadminReading(admin.getPid());
+		if(null != readlogs && readlogs.size() > 0){
+			//有抄表任务在进行
+			jo.put("function", "read");
+			jo.put("pid", readlogs.get(0).getPid());
+			jo.put("result", "fail");
+			jo.put("reason", "reading");
+			return jo.toJSONString();
+		}
+		
+		//往readlog 中插入一条抄表记录  并且获的抄表的id
+		Readlog readlog = new Readlog();
+		readlog.setObjectId(g.getPid());
+		readlog.setAdmininfo(admin);
+		readlog.setReadType(3);
+		readlog.setRemote(1);
+		readlog.setReadObject(4);
+		readlog.setIp(n.getIp());
+		readlog.setStartTime(new Date());
+		readlog.setReadStatus(0);
+		readlog.setFailReason("");
+		readlog.setSettle(0);
+		readlog.setResult("");
+		int readlogid = readLogDao.addReadLog(readlog);
+		
+		return sendToReadGPRS(readlog,g,admin);
+	}
+	
 	/**
 	 * 抄表
 	 * @param meter
@@ -184,6 +224,58 @@ public class ReadMeter {
 		InputStream in = null;
 		try {
 			socket = new Socket(n.getIp().trim(), 5555);
+			socket.setSoTimeout(3000);
+			out = socket.getOutputStream();
+			in = socket.getInputStream();
+			
+			out.write((jo.toJSONString()+"\r\n").getBytes());
+			
+			byte[] result = new byte[256];
+			int count = 0;
+			while((count = in.read(result)) > 0){
+				return new String(result, 0, count);
+			}
+		} catch (Exception e) {
+//			e.printStackTrace();
+			readLogDao.updateException(readlog,admin,e);
+			jo.put("function", "read");
+			jo.put("pid", readlog.getPid());
+			jo.put("result", "fail");
+			jo.put("reason", "error");
+		} finally{
+			try {
+				if(in != null){
+					in.close();
+				}
+				if(null != out){
+					out.close();
+				}
+				if(null != socket){
+					socket.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return jo.toJSONString();
+	}
+	
+	private String sendToReadGPRS(Readlog readlog,Gprs g, Admininfo admin){
+		JSONObject jo = new JSONObject();
+		jo.put("function", "read");
+		jo.put("pid", readlog.getPid());
+		
+		//建立socket 连接  IP 为小区对应的抄表IP  端口 5555
+		//发送json {"function":"read","pid":"12031"} 
+
+		//等待返回     并往上反
+		//{"function":"read","pid":"12031","result":"success"}  开始抄表
+		//{"function":"read","pid":"12031","result":"fail"}  抄表失败
+		Socket socket = null;
+		OutputStream out = null;
+		InputStream in = null;
+		try {
+			socket = new Socket(g.getIp().trim(), 5555);
 			socket.setSoTimeout(3000);
 			out = socket.getOutputStream();
 			in = socket.getInputStream();

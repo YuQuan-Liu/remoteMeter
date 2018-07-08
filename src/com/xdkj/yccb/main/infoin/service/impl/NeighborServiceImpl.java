@@ -192,6 +192,11 @@ public class NeighborServiceImpl implements NeighborService {
 	public Gprs getGprsById(int gprsId) {
 		return gprsDAO.getById(gprsId);
 	}
+	
+	@Override
+	public Gprs getByAddr(String g_addr){
+		return gprsDAO.getByAddr(g_addr);
+	}
 
 	@Override
 	public String deleteGprsById(int gprsId) {

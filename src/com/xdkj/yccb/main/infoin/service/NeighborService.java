@@ -34,6 +34,7 @@ public interface NeighborService {
 	String addGprs(Gprs gprs);
 	String updateGprs(Gprs gprs);
 	Gprs getGprsById(int gprsId);
+	Gprs getByAddr(String g_addr);
 	String deleteGprsById(int gprsId);
 	
 	List<GprsView> getGprsByNbrId(int nbrId);
