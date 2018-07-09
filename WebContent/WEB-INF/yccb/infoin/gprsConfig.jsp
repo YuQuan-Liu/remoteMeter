@@ -245,8 +245,9 @@ function addmeters(){
 						showType:'slide'
 					});
 				}else{
-					$.messager.alert({
+					$.messager.show({
 						title:"Info",
+						timeout:0,
 						msg:data.reason,
 						showType:'slide'
 					});
@@ -326,8 +327,9 @@ function deletemeters(){
 						showType:'slide'
 					});
 				}else{
-					$.messager.alert({
+					$.messager.show({
 						title:"Info",
+						timeout:0,
 						msg:data.reason,
 						showType:'slide'
 					});
