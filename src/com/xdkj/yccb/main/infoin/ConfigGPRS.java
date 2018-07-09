@@ -20,7 +20,7 @@ import com.xdkj.yccb.main.readme.dto.Frame;
 public class ConfigGPRS {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ConfigGPRS.class);
-	private static final int METER_BATCH = 3;
+	private static final int METER_BATCH = 1;
 	/**
 	 * 登录集中器
 	 * @param s
@@ -1368,7 +1368,7 @@ public class ConfigGPRS {
 				for(int z = 0;z<3 && !deleted;z++){
 					out.write(deletemeter.getFrame());
 					//等待集中器收到的回应
-					s.setSoTimeout(3000);
+					s.setSoTimeout(10000);
 					byte[] data = new byte[100];
 					int count = 0;
 					while((count = in.read(data, 0, 100)) > 0){
@@ -1499,7 +1499,7 @@ public class ConfigGPRS {
 				for(int z = 0;z<3 && !deleted;z++){
 					out.write(addmeter.getFrame());
 					//等待集中器收到的回应
-					s.setSoTimeout(7000);
+					s.setSoTimeout(10000);
 					byte[] data = new byte[100];
 					int count = 0;
 					while((count = in.read(data, 0, 100)) > 0){
