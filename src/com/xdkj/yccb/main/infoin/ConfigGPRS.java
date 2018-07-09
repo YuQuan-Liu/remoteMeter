@@ -128,6 +128,7 @@ public class ConfigGPRS {
 			}
 		} catch (IOException e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -233,6 +234,7 @@ public class ConfigGPRS {
 			}
 		} catch (IOException e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -331,6 +333,7 @@ public class ConfigGPRS {
 			}
 		} catch (IOException e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -429,6 +432,7 @@ public class ConfigGPRS {
 			}
 		} catch (IOException e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -524,6 +528,7 @@ public class ConfigGPRS {
 			}
 		} catch (IOException e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -625,6 +630,7 @@ public class ConfigGPRS {
 			}
 		} catch (IOException e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -714,6 +720,7 @@ public class ConfigGPRS {
 			}
 		} catch (IOException e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -868,6 +875,7 @@ public class ConfigGPRS {
 			}
 		} catch (Exception e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -1030,6 +1038,7 @@ public class ConfigGPRS {
 			}
 		} catch (Exception e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -1145,6 +1154,7 @@ public class ConfigGPRS {
 			done=true;
 		} catch (Exception e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -1272,6 +1282,7 @@ public class ConfigGPRS {
 			done=true;
 		} catch (Exception e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -1385,6 +1396,7 @@ public class ConfigGPRS {
 			done=true;
 		} catch (Exception e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
@@ -1513,6 +1525,7 @@ public class ConfigGPRS {
 			done=true;
 		} catch (Exception e) {
 			done = false;
+			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
 		} finally {
 			try {
