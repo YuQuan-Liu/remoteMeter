@@ -22,6 +22,11 @@
 	    		</select>
 	    		<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbor()" id="readthisbtn"><fmt:message key='read.this'/></a>
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readNeighbors()" id="readallbtn"><fmt:message key='read.all'/></a>
+				
+				<label>集中器:</label>
+				<select class="easyui-combobox" id="gprsselect" name="gprsselect" style="width:200px" data-options="panelHeight:'200',valueField:'gprsaddr',textField:'gprsaddr'">
+					<option value="">请选择集中器</option>
+	    		</select>
 				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="readGPRS()" id="readgprsbtn">抄单个集中器</a>
 			</span>
 			<span style="margin-left:200px;">
@@ -162,6 +167,11 @@ $(function(){
 });
 function showMeterdata(){
 	var n_id = $("#neighbor").combobox("getValue");
+	$('#gprsselect').combobox("loadData",[{
+	    "gprsaddr":""
+	}]);
+	$('#gprsselect').combobox("clear");
+	
 	if(n_id != ""){
 		$('#readmeterTab').datagrid({
 			url:"${path}/readme/read/listread.do",
@@ -169,6 +179,7 @@ function showMeterdata(){
 				n_id:n_id
 			}  
 		});
+		$('#gprsselect').combobox('reload','${path}/infoin/neighbor/gprsListContent.do?pid='+n_id);
 	}
 	
 }
@@ -219,13 +230,10 @@ function readNeighbors(){
 }
 
 function readGPRS(){
-	$('#readgprsbtn').linkbutton('disable');
-	var meters = $('#readmeterTab').datagrid('getSelections');
-	console.log(meters.length);
-	if(meters.length == 1){
-		var n_id = $("#neighbor").combobox("getValue");
-		var gprsaddr = meters[0]['g_addr'];
-		console.log(gprsaddr);
+	var n_id = $("#neighbor").combobox("getValue");
+	var gprsaddr = $("#gprsselect").combobox("getValue");
+	console.log(n_id+" : "+gprsaddr);
+	if(n_id != "" && gprsaddr != ""){ 
 		$.ajax({
 			type:"POST",
 			url:"${path}/readme/read/readgprs.do",
@@ -244,8 +252,6 @@ function readGPRS(){
 				$('#readgprsbtn').linkbutton('enable');
 			}
 		});
-	}else{
-		$.messager.alert('Error','只能选择一个表');
 	}
 }
 
@@ -462,6 +468,7 @@ function exportall(){
 		url:"${path}/readme/read/downloadall.do",
 	});
 }
+
 </script>
 </body>
 </html>
