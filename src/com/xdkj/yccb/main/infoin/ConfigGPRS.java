@@ -1124,26 +1124,30 @@ public class ConfigGPRS {
 				boolean added = false;
 				String singlereason = "";
 				for(int z = 0;z<3 && !added;z++){
-					out.write(addmeter.getFrame());
-					//等待集中器收到的回应
-					s.setSoTimeout(3000);
-					byte[] data = new byte[100];
-					int count = 0;
-					while((count = in.read(data, 0, 100)) > 0){
-						logger.info("add meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
-						break;
-					}
-					
-					if(Frame.checkFrame(Arrays.copyOf(data, 17))){
-						logger.info("add meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
-						if(data[14] == (byte)0x01){
-							added = true;
-						}else{
-							added = false;
-							singlereason = "帧错误";
+					try {
+						out.write(addmeter.getFrame());
+						//等待集中器收到的回应
+						s.setSoTimeout(3000);
+						byte[] data = new byte[100];
+						int count = 0;
+						while((count = in.read(data, 0, 100)) > 0){
+							logger.info("add meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
+							break;
 						}
+						
+						if(Frame.checkFrame(Arrays.copyOf(data, 17))){
+							logger.info("add meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
+							if(data[14] == (byte)0x01){
+								added = true;
+							}else{
+								added = false;
+								singlereason = "帧错误";
+							}
+						}
+						Thread.sleep(300);
+					} catch (Exception e) {
+						logger.error("尝试过程中出错", e);
 					}
-					Thread.sleep(300);
 				}
 				
 				jao.put("done",added);
@@ -1254,26 +1258,30 @@ public class ConfigGPRS {
 				boolean added = false;
 				String singlereason = "";
 				for(int z = 0;z<3 && !added;z++){
-					out.write(addmeter.getFrame());
-					//等待集中器收到的回应
-					s.setSoTimeout(10000);
-					byte[] data = new byte[100];
-					int count = 0;
-					while((count = in.read(data, 0, 100)) > 0){
-						logger.info("add meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
-						break;
-					}
-					
-					if(Frame.checkFrame(Arrays.copyOf(data, 17))){
-						logger.info("add meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
-						if(data[14] == (byte)0x01){
-							added = true;
-						}else{
-							added = false;
-							singlereason = "帧错误";
+					try {
+						out.write(addmeter.getFrame());
+						//等待集中器收到的回应
+						s.setSoTimeout(10000);
+						byte[] data = new byte[100];
+						int count = 0;
+						while((count = in.read(data, 0, 100)) > 0){
+							logger.info("add meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
+							break;
 						}
+						
+						if(Frame.checkFrame(Arrays.copyOf(data, 17))){
+							logger.info("add meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
+							if(data[14] == (byte)0x01){
+								added = true;
+							}else{
+								added = false;
+								singlereason = "帧错误";
+							}
+						}
+						Thread.sleep(300);
+					} catch (Exception e) {
+						logger.error("尝试过程中出错", e);
 					}
-					Thread.sleep(300);
 				}
 				jao.put("done", true);
 				jao.put("reason", singlereason);
@@ -1366,27 +1374,31 @@ public class ConfigGPRS {
 				boolean deleted = false;
 				String singlereason = "";
 				for(int z = 0;z<3 && !deleted;z++){
-					out.write(deletemeter.getFrame());
-					//等待集中器收到的回应
-					s.setSoTimeout(10000);
-					byte[] data = new byte[100];
-					int count = 0;
-					while((count = in.read(data, 0, 100)) > 0){
-						logger.info("delete meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
-						break;
-					}
-					
-					//判断接收到的集中器的回应
-					if(Frame.checkFrame(Arrays.copyOf(data, 17))){
-						logger.info("delete meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
-						if(data[14] == (byte)0x01){
-							deleted = true;
-						}else{
-							deleted = false;
-							singlereason = "帧错误";
+					try {
+						out.write(deletemeter.getFrame());
+						//等待集中器收到的回应
+						s.setSoTimeout(10000);
+						byte[] data = new byte[100];
+						int count = 0;
+						while((count = in.read(data, 0, 100)) > 0){
+							logger.info("delete meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
+							break;
 						}
+						
+						//判断接收到的集中器的回应
+						if(Frame.checkFrame(Arrays.copyOf(data, 17))){
+							logger.info("delete meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
+							if(data[14] == (byte)0x01){
+								deleted = true;
+							}else{
+								deleted = false;
+								singlereason = "帧错误";
+							}
+						}
+						Thread.sleep(300);
+					} catch (Exception e) {
+						logger.error("尝试过程中出错", e);
 					}
-					Thread.sleep(300);
 				}
 				
 				jao.put("done",deleted);
@@ -1497,26 +1509,30 @@ public class ConfigGPRS {
 				boolean deleted = false;
 				String singlereason = "";
 				for(int z = 0;z<3 && !deleted;z++){
-					out.write(addmeter.getFrame());
-					//等待集中器收到的回应
-					s.setSoTimeout(10000);
-					byte[] data = new byte[100];
-					int count = 0;
-					while((count = in.read(data, 0, 100)) > 0){
-						logger.info("delete meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
-						break;
-					}
-					
-					if(Frame.checkFrame(Arrays.copyOf(data, 17))){
-						logger.info("delete meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
-						if(data[14] == (byte)0x01){
-							deleted = true;
-						}else{
-							deleted = false;
-							singlereason = "帧错误";
+					try {
+						out.write(addmeter.getFrame());
+						//等待集中器收到的回应
+						s.setSoTimeout(10000);
+						byte[] data = new byte[100];
+						int count = 0;
+						while((count = in.read(data, 0, 100)) > 0){
+							logger.info("delete meter receive : "+ StringUtil.byteArrayToHexStr(data, count));
+							break;
 						}
+						
+						if(Frame.checkFrame(Arrays.copyOf(data, 17))){
+							logger.info("delete meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
+							if(data[14] == (byte)0x01){
+								deleted = true;
+							}else{
+								deleted = false;
+								singlereason = "帧错误";
+							}
+						}
+						Thread.sleep(300);
+					} catch (Exception e) {
+						logger.error("尝试过程中出错", e);
 					}
-					Thread.sleep(300);
 				}
 				jao.put("done", true);
 				jao.put("reason", singlereason);
