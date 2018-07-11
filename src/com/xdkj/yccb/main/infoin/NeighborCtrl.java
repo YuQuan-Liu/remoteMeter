@@ -273,8 +273,18 @@ public class NeighborCtrl {
 					break;
 				}
 				logger.info("add meters : "+ result);
-				ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), result.getJSONArray("result"));
+				ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), result);
 				ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 100);
+				
+				try {
+					Thread.sleep(7000);
+					if(ConfigGPRS.configGPRSStatus.get(g.getGprsaddr()) == 100){
+						ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), new JSONObject());
+						ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 0);
+					}
+				} catch (InterruptedException e) {
+				}
+				
 			}
 		}).start();
 		
@@ -302,8 +312,17 @@ public class NeighborCtrl {
 					break;
 				}
 				logger.info("delete meters : "+ result);
-				ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), result.getJSONArray("result"));
+				ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), result);
 				ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 100);
+				
+				try {
+					Thread.sleep(7000);
+					if(ConfigGPRS.configGPRSStatus.get(g.getGprsaddr()) == 100){
+						ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), new JSONObject());
+						ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 0);
+					}
+				} catch (InterruptedException e) {
+				}
 			}
 		}).start();
 		
@@ -321,11 +340,13 @@ public class NeighborCtrl {
 		int status = ConfigGPRS.configGPRSStatus.get(gprsaddr);
 		logger.info("check configing gprsaddr: "+gprsaddr+"; status: "+status);
 		if(status == 100){
-			JSONArray result = ConfigGPRS.configGPRSResult.get(gprsaddr);
+			JSONObject result = ConfigGPRS.configGPRSResult.get(gprsaddr);
 			logger.info("check configing gprsaddr: "+gprsaddr+"; result: "+result);
 			jo.put("done", true);
-			jo.put("result", result);
-			ConfigGPRS.configGPRSResult.put(gprsaddr, new JSONArray());
+			jo.put("result", result.getJSONArray("result"));
+			jo.put("good", result.getInteger("good"));
+			jo.put("error", result.getInteger("error"));
+			ConfigGPRS.configGPRSResult.put(gprsaddr, new JSONObject());
 			ConfigGPRS.configGPRSStatus.put(gprsaddr, 0);
 		}else{
 			jo.put("done", false);

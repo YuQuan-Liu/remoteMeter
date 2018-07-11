@@ -271,10 +271,20 @@ function checkconfiging(gprsaddr,action){
 				
 				if(action == "add"){
 					//添加表
+					if(data.good == 0 && data.error == 0){
+						$.messager.show({
+							title:"Info",
+							timeout:0,
+							msg:"添加表完成! 出现了异常请稍后再试",
+							showType:'slide'
+						});
+						return;
+					}
+					
 					$.messager.show({
 						title:"Info",
 						timeout:0,
-						msg:"添加表完成",
+						msg:"添加表完成! good: "+data.good+" ;error: "+data.error,
 						showType:'slide'
 					});
 					
@@ -298,10 +308,20 @@ function checkconfiging(gprsaddr,action){
 				}
 				if(action == "delete"){
 					//删除表
+					if(data.good == 0 && data.error == 0){
+						$.messager.show({
+							title:"Info",
+							timeout:0,
+							msg:"删除表完成! 出现了异常请稍后再试",
+							showType:'slide'
+						});
+						return;
+					}
+					
 					$.messager.show({
 						title:"Info",
 						timeout:0,
-						msg:"删除表完成",
+						msg:"删除表完成! good: "+data.good+" ;error: "+data.error,
 						showType:'slide'
 					});
 					

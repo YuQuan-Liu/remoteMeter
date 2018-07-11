@@ -23,7 +23,7 @@ public class ConfigGPRS {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigGPRS.class);
 	private static final int METER_BATCH = 5;
 	public static final ConcurrentHashMap<String, Integer> configGPRSStatus = new ConcurrentHashMap<>();
-	public static final ConcurrentHashMap<String, JSONArray> configGPRSResult = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<String, JSONObject> configGPRSResult = new ConcurrentHashMap<>();
 	
 	
 	/**
@@ -1083,6 +1083,8 @@ public class ConfigGPRS {
 		byte[] cjqaddr = StringUtil.string2Byte(caddr);
 		boolean done = false;
 		String reason = "";
+		int good = 0;
+		int error = 0;
 		
 		JSONObject jo = new JSONObject();
 		JSONArray ja = new JSONArray();
@@ -1128,7 +1130,7 @@ public class ConfigGPRS {
 				logger.info("add meter : "+ addmeter.toString());
 				boolean added = false;
 				String singlereason = "";
-				for(int z = 0;z<3 && !added;z++){
+				for(int z = 0;z<5 && !added;z++){
 					try {
 						out.write(addmeter.getFrame());
 						//等待集中器收到的回应
@@ -1144,12 +1146,13 @@ public class ConfigGPRS {
 							logger.info("add meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
 							if(data[14] == (byte)0x01){
 								added = true;
+								good = good + 1;
 							}else{
 								added = false;
 								singlereason = "帧错误";
 							}
 						}
-						Thread.sleep(300);
+						Thread.sleep(500);
 					} catch (Exception e) {
 						logger.error("尝试过程中出错", e);
 					}
@@ -1160,6 +1163,7 @@ public class ConfigGPRS {
 				logger.info("singleadd: "+ added + ";meteraddr: "+maddrs[i]+";reason:"+singlereason);
 				
 			}
+			error = maddrs.length - good;
 			done=true;
 		} catch (Exception e) {
 			done = false;
@@ -1180,6 +1184,8 @@ public class ConfigGPRS {
 				logger.error("gprsconfig error release resources ! gprsaddr: "+gprs.getGprsaddr(), e);
 			}
 		}
+		jo.put("good", good);
+		jo.put("error",error);
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
@@ -1201,6 +1207,8 @@ public class ConfigGPRS {
 		byte[] cjqaddr = StringUtil.string2Byte(caddr);
 		boolean done = false;
 		String reason = "";
+		int good = 0;
+		int error = 0;
 		
 		JSONObject jo = new JSONObject();
 		JSONArray ja = new JSONArray();
@@ -1276,6 +1284,7 @@ public class ConfigGPRS {
 							logger.info("add meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
 							if(data[14] == (byte)0x01){
 								added = true;
+								good = good + meters;
 							}else{
 								added = false;
 								singlereason = "帧错误";
@@ -1296,6 +1305,7 @@ public class ConfigGPRS {
 				Thread.sleep(1000);
 				logger.info("singleadd: "+ added + ";meteraddr: "+meters_this+";reason:"+singlereason);
 			}
+			error = metercount - good;
 			done=true;
 		} catch (Exception e) {
 			done = false;
@@ -1316,6 +1326,8 @@ public class ConfigGPRS {
 				logger.error("gprsconfig error release resources ! gprsaddr: "+gprs.getGprsaddr(), e);
 			}
 		}
+		jo.put("good", good);
+		jo.put("error", error);
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
@@ -1336,6 +1348,8 @@ public class ConfigGPRS {
 		byte[] gprsaddr = StringUtil.string2Byte(gprs.getGprsaddr());
 		boolean done = false;
 		String reason = "";
+		int good = 0;
+		int error = 0;
 		
 		JSONObject jo = new JSONObject();
 		JSONArray ja = new JSONArray();
@@ -1399,12 +1413,13 @@ public class ConfigGPRS {
 							logger.info("delete meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
 							if(data[14] == (byte)0x01){
 								deleted = true;
+								good = good + 1;
 							}else{
 								deleted = false;
 								singlereason = "帧错误";
 							}
 						}
-						Thread.sleep(300);
+						Thread.sleep(500);
 					} catch (Exception e) {
 						logger.error("尝试过程中出错", e);
 					}
@@ -1414,6 +1429,7 @@ public class ConfigGPRS {
 				jao.put("reason", singlereason);
 				logger.info("singledelete: "+ deleted + ";meteraddr: "+maddrs[i]+";reason:"+singlereason);
 			}
+			error = maddrs.length - good;
 			done=true;
 		} catch (Exception e) {
 			done = false;
@@ -1435,6 +1451,8 @@ public class ConfigGPRS {
 			}
 		}
 		
+		jo.put("good", good);
+		jo.put("error", error);
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
@@ -1456,6 +1474,8 @@ public class ConfigGPRS {
 		byte[] cjqaddr = StringUtil.string2Byte(caddr);
 		boolean done = false;
 		String reason = "";
+		int good = 0;
+		int error = 0;
 		
 		JSONObject jo = new JSONObject();
 		JSONArray ja = new JSONArray();
@@ -1530,6 +1550,7 @@ public class ConfigGPRS {
 							logger.info("delete meter result : "+ StringUtil.byteArrayToHexStr(data, 17));
 							if(data[14] == (byte)0x01){
 								deleted = true;
+								good = good + meters;
 							}else{
 								deleted = false;
 								singlereason = "帧错误";
@@ -1551,6 +1572,7 @@ public class ConfigGPRS {
 				Thread.sleep(1000);
 				logger.info("singledelete: "+ deleted + ";meteraddr: "+meters_this+";reason:"+singlereason);
 			}
+			error = metercount - good;
 			done=true;
 		} catch (Exception e) {
 			done = false;
@@ -1571,6 +1593,9 @@ public class ConfigGPRS {
 				logger.error("gprsconfig error release resources ! gprsaddr: "+gprs.getGprsaddr(), e);
 			}
 		}
+		
+		jo.put("good", good);
+		jo.put("error", error);
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
