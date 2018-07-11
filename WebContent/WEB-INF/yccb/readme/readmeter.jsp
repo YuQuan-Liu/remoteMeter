@@ -355,7 +355,7 @@ function checkreading(readlogid,index){
 						}
 					});
 					//显示小区的水损统计
-					showNeighborWaste(readlogid);
+					//showNeighborWaste(readlogid);
 				}else{
 					if(data.readobject == 3){
 						//单个表

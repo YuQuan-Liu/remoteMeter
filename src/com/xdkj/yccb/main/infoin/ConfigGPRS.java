@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,11 @@ import com.xdkj.yccb.main.readme.dto.Frame;
 public class ConfigGPRS {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ConfigGPRS.class);
-	private static final int METER_BATCH = 1;
+	private static final int METER_BATCH = 5;
+	public static final ConcurrentHashMap<String, Integer> configGPRSStatus = new ConcurrentHashMap<>();
+	public static final ConcurrentHashMap<String, JSONArray> configGPRSResult = new ConcurrentHashMap<>();
+	
+	
 	/**
 	 * 登录集中器
 	 * @param s
@@ -120,13 +125,13 @@ public class ConfigGPRS {
 					done = false;
 					reason = "帧异常";
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收应答失败";
 				logger.error(reason,e);
 				throw new RuntimeException(reason);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			done = false;
 			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -226,13 +231,13 @@ public class ConfigGPRS {
 					reason = "帧异常";
 				}
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收应答失败";
 				logger.error(reason,e);
 				throw new RuntimeException(reason);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			done = false;
 			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -325,13 +330,13 @@ public class ConfigGPRS {
 					reason = "帧异常";
 				}
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收失败";
 				logger.error(reason,e);
 				throw new RuntimeException(reason);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			done = false;
 			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -424,13 +429,13 @@ public class ConfigGPRS {
 					reason = "帧异常";
 				}
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收失败";
 				logger.error(reason,e);
 				throw new RuntimeException(reason);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			done = false;
 			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -520,13 +525,13 @@ public class ConfigGPRS {
 						reason = "帧异常";
 					}
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收失败";
 				logger.error(reason,e);
 				throw new RuntimeException(reason);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			done = false;
 			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -622,13 +627,13 @@ public class ConfigGPRS {
 						reason = "帧异常";
 					}
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收失败";
 				logger.error(reason,e);
 				throw new RuntimeException(reason);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			done = false;
 			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -712,13 +717,13 @@ public class ConfigGPRS {
 					}
 				}
 				
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收失败";
 				logger.error(reason,e);
 				throw new RuntimeException(reason);
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			done = false;
 			reason = "配置异常";
 			logger.error("gprsconfig error ! gprsaddr: "+gprs.getGprsaddr(), e);
@@ -867,7 +872,7 @@ public class ConfigGPRS {
 					}
 					
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收失败";
 				logger.error(reason,e);
@@ -1030,7 +1035,7 @@ public class ConfigGPRS {
 					}
 					
 				}
-			} catch (IOException e) {
+			} catch (Exception e) {
 				done = false;
 				reason = "接收失败";
 				logger.error(reason,e);
@@ -1070,7 +1075,7 @@ public class ConfigGPRS {
 	 * @param maddrs
 	 * @return
 	 */
-	public static String jzqaddmeters(Gprs gprs, String caddr, String[] maddrs) {
+	public static JSONObject jzqaddmeters(Gprs gprs, String caddr, String[] maddrs) {
 		Socket s = null;
 		OutputStream out = null;
 		InputStream in = null;
@@ -1178,7 +1183,7 @@ public class ConfigGPRS {
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
-		return jo.toString();
+		return jo;
 	}
 	
 	/**
@@ -1188,7 +1193,7 @@ public class ConfigGPRS {
 	 * @param maddrs
 	 * @return
 	 */
-	public static String jzqaddmetersV2(Gprs gprs, String caddr, String[] maddrs) {
+	public static JSONObject jzqaddmetersV2(Gprs gprs, String caddr, String[] maddrs) {
 		Socket s = null;
 		OutputStream out = null;
 		InputStream in = null;
@@ -1222,8 +1227,7 @@ public class ConfigGPRS {
 			}
 			
 			for(int i = 0;i < times;i++){
-				JSONObject jao = new JSONObject();
-				ja.add(jao);
+				
 				int meters = METER_BATCH;
 				if(i == times - 1){
 					if(remain == 0){
@@ -1249,7 +1253,6 @@ public class ConfigGPRS {
 						framedata[7+7*j + z] =  maddr[6-z];
 					}
 				}
-				jao.put("maddr", meters_this);
 				
 				Frame addmeter = new Frame(framedata.length, (byte)(Frame.ZERO | Frame.PRM_MASTER |Frame.PRM_M_SECOND), 
 						Frame.AFN_CONFIG, (byte)(Frame.ZERO|Frame.SEQ_FIN|Frame.SEQ_FIR|Frame.SEQ_CON), 
@@ -1257,7 +1260,7 @@ public class ConfigGPRS {
 				logger.info("add meters : "+ addmeter.toString());
 				boolean added = false;
 				String singlereason = "";
-				for(int z = 0;z<3 && !added;z++){
+				for(int z = 0;z<5 && !added;z++){
 					try {
 						out.write(addmeter.getFrame());
 						//等待集中器收到的回应
@@ -1278,13 +1281,19 @@ public class ConfigGPRS {
 								singlereason = "帧错误";
 							}
 						}
-						Thread.sleep(300);
+						Thread.sleep(500);
 					} catch (Exception e) {
 						logger.error("尝试过程中出错", e);
 					}
 				}
-				jao.put("done", true);
-				jao.put("reason", singlereason);
+				for(int j = 0;j < meters;j++){
+					JSONObject jao = new JSONObject();
+					ja.add(jao);
+					jao.put("maddr", maddrs[i*METER_BATCH+j]);
+					jao.put("done", added);
+					jao.put("reason", singlereason);
+				}
+				Thread.sleep(1000);
 				logger.info("singleadd: "+ added + ";meteraddr: "+meters_this+";reason:"+singlereason);
 			}
 			done=true;
@@ -1310,7 +1319,7 @@ public class ConfigGPRS {
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
-		return jo.toString();
+		return jo;
 	}
 
 	/**
@@ -1320,7 +1329,7 @@ public class ConfigGPRS {
 	 * @param maddrs
 	 * @return
 	 */
-	public static String jzqdeletemeters(Gprs gprs, String caddr, String[] maddrs) {
+	public static JSONObject jzqdeletemeters(Gprs gprs, String caddr, String[] maddrs) {
 		Socket s = null;
 		OutputStream out = null;
 		InputStream in = null;
@@ -1373,7 +1382,7 @@ public class ConfigGPRS {
 				logger.info("delete meter : "+ deletemeter.toString());
 				boolean deleted = false;
 				String singlereason = "";
-				for(int z = 0;z<3 && !deleted;z++){
+				for(int z = 0;z<5 && !deleted;z++){
 					try {
 						out.write(deletemeter.getFrame());
 						//等待集中器收到的回应
@@ -1429,7 +1438,7 @@ public class ConfigGPRS {
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
-		return jo.toString();
+		return jo;
 	}
 	
 	/**
@@ -1439,7 +1448,7 @@ public class ConfigGPRS {
 	 * @param maddrs
 	 * @return
 	 */
-	public static String jzqdeletemetersV2(Gprs gprs, String caddr, String[] maddrs) {
+	public static JSONObject jzqdeletemetersV2(Gprs gprs, String caddr, String[] maddrs) {
 		Socket s = null;
 		OutputStream out = null;
 		InputStream in = null;
@@ -1473,8 +1482,6 @@ public class ConfigGPRS {
 			}
 			
 			for(int i = 0;i < times;i++){
-				JSONObject jao = new JSONObject();
-				ja.add(jao);
 				int meters = METER_BATCH;
 				if(i == times - 1){
 					if(remain == 0){
@@ -1500,7 +1507,6 @@ public class ConfigGPRS {
 						framedata[7+7*j + z] =  maddr[6-z];
 					}
 				}
-				jao.put("maddr", meters_this);
 				
 				Frame addmeter = new Frame(framedata.length, (byte)(Frame.ZERO | Frame.PRM_MASTER |Frame.PRM_M_SECOND), 
 						Frame.AFN_CONFIG, (byte)(Frame.ZERO|Frame.SEQ_FIN|Frame.SEQ_FIR|Frame.SEQ_CON), 
@@ -1529,13 +1535,20 @@ public class ConfigGPRS {
 								singlereason = "帧错误";
 							}
 						}
-						Thread.sleep(300);
+						Thread.sleep(500);
 					} catch (Exception e) {
 						logger.error("尝试过程中出错", e);
 					}
 				}
-				jao.put("done", true);
-				jao.put("reason", singlereason);
+				
+				for(int j = 0;j < meters;j++){
+					JSONObject jao = new JSONObject();
+					ja.add(jao);
+					jao.put("maddr", maddrs[i*METER_BATCH+j]);
+					jao.put("done", deleted);
+					jao.put("reason", singlereason);
+				}
+				Thread.sleep(1000);
 				logger.info("singledelete: "+ deleted + ";meteraddr: "+meters_this+";reason:"+singlereason);
 			}
 			done=true;
@@ -1561,7 +1574,7 @@ public class ConfigGPRS {
 		jo.put("done", done);
 		jo.put("reason", reason);
 		jo.put("result", ja);
-		return jo.toString();
+		return jo;
 	}
 	
 	/**

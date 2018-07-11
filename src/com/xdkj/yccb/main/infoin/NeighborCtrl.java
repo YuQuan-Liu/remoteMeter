@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.xdkj.yccb.common.JsonDataUtil;
 import com.xdkj.yccb.common.PageBase;
 import com.xdkj.yccb.common.WebUtil;
@@ -255,35 +257,82 @@ public class NeighborCtrl {
 
 	@RequestMapping(value="/infoin/neighbor/jzqaddmeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String jzqaddmeters(int pid,String caddr,String[] maddrs){
-		Gprs g = neighborService.getGprsById(pid);
+	public String jzqaddmeters(int pid,final String caddr,final String[] maddrs){
+		final Gprs g = neighborService.getGprsById(pid);
+		ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 0);
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				JSONObject result = null;
+				switch(g.getGprsprotocol()){
+				case 2:
+					result = ConfigGPRS.jzqaddmeters(g,caddr,maddrs);
+					break;
+				case 5:
+					result = ConfigGPRS.jzqaddmetersV2(g,caddr,maddrs);
+					break;
+				}
+				logger.info("add meters : "+ result);
+				ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), result.getJSONArray("result"));
+				ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 100);
+			}
+		}).start();
 		
-		String result = "";
-		switch(g.getGprsprotocol()){
-		case 2:
-			result = ConfigGPRS.jzqaddmeters(g,caddr,maddrs);
-			break;
-		case 5:
-			result = ConfigGPRS.jzqaddmetersV2(g,caddr,maddrs);
-			break;
-		}
-		return result;
+		JSONObject jo = new JSONObject();
+		jo.put("done", true);
+		return jo.toJSONString();
 	}
 	
 	@RequestMapping(value="/infoin/neighbor/jzqdeletemeters",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
 	@ResponseBody
-	public String jzqdeletemeters(int pid,String caddr,String[] maddrs){
-		Gprs g = neighborService.getGprsById(pid);
+	public String jzqdeletemeters(int pid,final String caddr,final String[] maddrs){
+		final Gprs g = neighborService.getGprsById(pid);
+		ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 0);
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				JSONObject result = null;
+				switch(g.getGprsprotocol()){
+				case 2:
+					result = ConfigGPRS.jzqdeletemeters(g,caddr,maddrs);
+					break;
+				case 5:
+					result = ConfigGPRS.jzqdeletemetersV2(g,caddr,maddrs);
+					break;
+				}
+				logger.info("delete meters : "+ result);
+				ConfigGPRS.configGPRSResult.put(g.getGprsaddr(), result.getJSONArray("result"));
+				ConfigGPRS.configGPRSStatus.put(g.getGprsaddr(), 100);
+			}
+		}).start();
 		
-		String result = "";
-		switch(g.getGprsprotocol()){
-		case 2:
-			result = ConfigGPRS.jzqdeletemeters(g,caddr,maddrs);
-			break;
-		case 5:
-			result = ConfigGPRS.jzqdeletemetersV2(g,caddr,maddrs);
-			break;
-		}
-		return result;
+		JSONObject jo = new JSONObject();
+		jo.put("done", true);
+		return jo.toJSONString();
 	}
+	
+	
+	@RequestMapping(value="/infoin/neighbor/checkgprsconfig",produces="application/json;charset=UTF-8")
+	@ResponseBody
+	public String checkConfiging(HttpServletRequest request,String gprsaddr){
+		JSONObject jo = new JSONObject();
+		
+		int status = ConfigGPRS.configGPRSStatus.get(gprsaddr);
+		logger.info("check configing gprsaddr: "+gprsaddr+"; status: "+status);
+		if(status == 100){
+			JSONArray result = ConfigGPRS.configGPRSResult.get(gprsaddr);
+			logger.info("check configing gprsaddr: "+gprsaddr+"; result: "+result);
+			jo.put("done", true);
+			jo.put("result", result);
+			ConfigGPRS.configGPRSResult.put(gprsaddr, new JSONArray());
+			ConfigGPRS.configGPRSStatus.put(gprsaddr, 0);
+		}else{
+			jo.put("done", false);
+			jo.put("result", "");
+		}
+		return jo.toJSONString();
+		
+	}
+	
 }

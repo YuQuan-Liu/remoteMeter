@@ -9,6 +9,7 @@
 <body>
  <input type="hidden" id="gprsconfig_nid" name="neighborid" value="${gprs.neighbor.pid }"/>
  <input type="hidden" id="gprsconfig_pid" name="pid" value="${gprs.pid }"/>
+ <input type="hidden" id="gprsconfig_addr" name="gprsconfaddr" value="${gprs.gprsaddr }"/>
  <c:if test="${(gprs.gprsprotocol==2) || (gprs.gprsprotocol==5)}">
  	<div style="margin:10px;">
  		<label><fmt:message key='g.addr'/>：</label><span>${gprs.gprsaddr }</span>
@@ -101,14 +102,16 @@ function querycjqs(){
 			if(data.done == true){
 				$.messager.show({
 					height:400,
-					title:"Info",
+					timeout:0,
+					title:"全部采集器",
 					msg:data.cjqs,
 					showType:'slide'
 				});
 			}else{
 				$.messager.show({
 					title:"Info",
-					msg:data.reason,
+					timeout:0,
+					msg:"全部采集器失败: "+data.reason,
 					showType:'slide'
 				});
 			}
@@ -138,13 +141,15 @@ function addcjq(){
 			if(data.done == true){
 				$.messager.show({
 					title:"Info",
-					msg:"操作完成",
+					timeout:0,
+					msg:"添加采集器完成",
 					showType:'slide'
 				});
 			}else{
 				$.messager.show({
 					title:"Info",
-					msg:data.reason,
+					timeout:0,
+					msg:"添加采集器失败: "+data.reason,
 					showType:'slide'
 				});
 			}
@@ -165,13 +170,15 @@ function deleteAllmeters(){
 			if(data.done == true){
 				$.messager.show({
 					title:"Info",
-					msg:"操作完成",
+					timeout:0,
+					msg:"删除全部表完成",
 					showType:'slide'
 				});
 			}else{
 				$.messager.show({
 					title:"Info",
-					msg:data.reason,
+					timeout:0,
+					msg:"删除全部表: "+data.reason,
 					showType:'slide'
 				});
 			}
@@ -181,10 +188,12 @@ function deleteAllmeters(){
 	
 }
 
+var conf_interval;
 var configgprs_done = true;
 function addmeters(){
 	var gid = $("#gprsconfig_pid").val();
 	var caddr = $("#collectors").combobox("getValue");
+	var gprsaddr = $("#gprsconfig_addr").val();
 	if(caddr==""){
 		$.messager.show({
 			title:"Info",
@@ -209,7 +218,7 @@ function addmeters(){
 		var row = rows[i];
 		maddrs.push(row.meterAddr);
 	}
-	$.messager.alert('Info','根据表的数量不同，可能需要几分钟时间，请耐心等待');
+	
 	if(configgprs_done){
 		configgprs_done = false;
 		$.ajax({
@@ -224,31 +233,13 @@ function addmeters(){
 			},
 			success:function(data){
 				if(data.done == true){
-					var result = data.result;
-					for(var i = 0;i < result.length;i++){
-						var m = result[i];
-						for(var j=0; j<rows_all.length; j++){
-							var row_ = rows_all[j];
-							if(row_.meterAddr == m.maddr){
-								var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
-								if(m.done == true){
-									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'添加成功'}});
-								}else{
-									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*添加失败*'}}); 
-								}
-							}
-						}
-					}
-					$.messager.show({
-						title:"Info",
-						msg:"操作完成",
-						showType:'slide'
-					});
+					$.messager.progress({title:"努力中...",text:"",interval:100});
+					conf_interval = setInterval(function(){checkconfiging(gprsaddr,'add');},5000);
 				}else{
 					$.messager.show({
 						title:"Info",
 						timeout:0,
-						msg:data.reason,
+						msg:"添加表失败: "+data.reason,
 						showType:'slide'
 					});
 				}
@@ -264,8 +255,81 @@ function addmeters(){
 	}
 }
 
+function checkconfiging(gprsaddr,action){
+	var rows_all = $('#gprsmetersTbl').datagrid('getRows');
+	$.ajax({
+		type:"POST",
+		url:"${path}/infoin/neighbor/checkgprsconfig.do",
+		dataType:"json",
+		data:{
+			gprsaddr:gprsaddr
+		},
+		success:function(data){
+			if(data.done == true){
+				clearInterval(conf_interval);
+				$.messager.progress("close");
+				
+				if(action == "add"){
+					//添加表
+					$.messager.show({
+						title:"Info",
+						timeout:0,
+						msg:"添加表完成",
+						showType:'slide'
+					});
+					
+					var result = data.result;
+					console.log("result:"+result);
+					for(var i = 0;i < result.length;i++){
+						var m = result[i];
+						for(var j=0; j<rows_all.length; j++){
+							var row_ = rows_all[j];
+							if(row_.meterAddr == m.maddr){
+								var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
+								if(m.done == true){
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'添加成功'}});
+								}else{
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*添加失败*'}}); 
+								}
+							}
+						}
+					}
+					
+				}
+				if(action == "delete"){
+					//删除表
+					$.messager.show({
+						title:"Info",
+						timeout:0,
+						msg:"删除表完成",
+						showType:'slide'
+					});
+					
+					var result = data.result;
+					for(var i = 0;i < result.length;i++){
+						var m = result[i];
+						for(var j=0; j<rows_all.length; j++){
+							var row_ = rows_all[j];
+							if(row_.meterAddr == m.maddr){
+								var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
+								if(m.done == true){
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'删除成功'}});
+								}else{
+									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*删除失败*'}}); 
+								}
+							}
+						}
+					}
+				}
+				
+			}
+		}
+	});
+}
+
 function deletemeters(){
 	var gid = $("#gprsconfig_pid").val();
+	var gprsaddr = $("#gprsconfig_addr").val();
 	var caddr = $("#collectors").combobox("getValue");
 	if(caddr==""){
 		$.messager.show({
@@ -291,7 +355,7 @@ function deletemeters(){
 		var row = rows[i];
 		maddrs.push(row.meterAddr);
 	}
-	$.messager.alert('Info','根据表的数量不同，可能需要几分钟时间，请耐心等待');
+	
 	if(configgprs_done){
 		configgprs_done = false;
 		$.ajax({
@@ -306,31 +370,13 @@ function deletemeters(){
 			},
 			success:function(data){
 				if(data.done == true){
-					var result = data.result;
-					for(var i = 0;i < result.length;i++){
-						var m = result[i];
-						for(var j=0; j<rows_all.length; j++){
-							var row_ = rows_all[j];
-							if(row_.meterAddr == m.maddr){
-								var index_ = $("#gprsmetersTbl").datagrid('getRowIndex', row_);
-								if(m.done == true){
-									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'删除成功'}});
-								}else{
-									$("#gprsmetersTbl").datagrid('updateRow', {index:index_,row:{remark:'*删除失败*'}}); 
-								}
-							}
-						}
-					}
-					$.messager.show({
-						title:"Info",
-						msg:"操作完成",
-						showType:'slide'
-					});
+					$.messager.progress({title:"努力中...",text:"",interval:100});
+					conf_interval = setInterval(function(){checkconfiging(gprsaddr,'delete');},5000);
 				}else{
 					$.messager.show({
 						title:"Info",
 						timeout:0,
-						msg:data.reason,
+						msg:"删除表失败: "+data.reason,
 						showType:'slide'
 					});
 				}
@@ -373,7 +419,8 @@ function readJZQdata(){
 				if(data.done == false){
 					$.messager.show({
 						title:"Info",
-						msg:data.reason,
+						timeout:0,
+						msg:"读取数据失败: "+data.reason,
 						showType:'slide'
 					});
 				}
@@ -397,7 +444,8 @@ function readJZQdata(){
 					}
 					$.messager.show({
 						title:"Info",
-						msg:"操作完成",
+						timeout:0,
+						msg:"读取数据完成",
 						showType:'slide'
 					});
 				}else{
@@ -436,13 +484,15 @@ function configgprsslave(){
 			if(data.done == true){
 				$.messager.show({
 					title:"Info",
-					msg:"操作完成",
+					timeout:0,
+					msg:"设置底层类型完成",
 					showType:'slide'
 				});
 			}else{
 				$.messager.show({
 					title:"Info",
-					msg:data.reason,
+					timeout:0,
+					msg:"设置底层类型: "+data.reason,
 					showType:'slide'
 				});
 			}
@@ -463,13 +513,15 @@ function querygprsslave(){
 			if(data.done == true){
 				$.messager.show({
 					title:"Info",
-					msg:data.slave,
+					timeout:0,
+					msg:"底层类型: "+data.slave,
 					showType:'slide'
 				});
 			}else{
 				$.messager.show({
 					title:"Info",
-					msg:data.reason,
+					timeout:0,
+					msg:"底层类型失败: "+data.reason,
 					showType:'slide'
 				});
 			}
