@@ -187,9 +187,9 @@ function showMeterdata(){
 //单击某个小区之后  抄表成功返回  设置当前抄表对应的readlog id
 var readlogid = 0;
 function readNeighbor(){
-	$('#readthisbtn').linkbutton('disable');
 	var n_id = $("#neighbor").combobox("getValue");
 	if(n_id != ""){
+		$('#readthisbtn').linkbutton('disable');
 		$.ajax({
 			type:"POST",
 			url:"${path}/readme/read/readneighbor.do",
